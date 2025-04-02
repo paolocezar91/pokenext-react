@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'Pokedex';
+  src: url('/fonts/PokemonGB.ttf') format('ttf'),
+      url('/fonts/PokemonGB.woff2') format('woff2');
+}
+
+:root {
+  --background: #000000;
+  --pokedex-red: #dc0a2d;
+  --foreground: #ffffff;
+  --thumb-size: 12rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Pokedex';
+}
