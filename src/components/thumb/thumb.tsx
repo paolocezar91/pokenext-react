@@ -1,13 +1,13 @@
-import PokeAPI, { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
+import { IPokemon, IPokemonType } from 'pokeapi-typescript';
 import Image from 'next/image';
-import { CSSProperties } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import './thumb.scss'
 
-function getArtwork(id: number) {
+export function getArtwork(id: number) {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 }
 
-function getNumber(id: number) {
+export function getNumber(id: number) {
   return ('00' + id.toString()).slice(-3);
 }
 
@@ -16,11 +16,11 @@ export function getBackgroundStyle(types: IPokemonType[] = []): CSSProperties {
 	return colors.length === 1 ? { 'background': `${colors[0]}` } : getGradientStyle(colors);
 }
 
-export function getGradientStyle(colors: string[]): CSSProperties {
+function getGradientStyle(colors: string[]): CSSProperties {
 	return { background: `linear-gradient(90deg, ${colors[0]} 0%, ${colors[1]} 100%)`};
 }
 
-export function getTypeColor(type: string) {
+function getTypeColor(type: string) {
 	return {
 		normal: '#A8A77A',
 		fire: '#EE8130',
@@ -43,28 +43,37 @@ export function getTypeColor(type: string) {
 	}[type] ?? '#CCCCCC';
 }
 
-export async function getStaticProps({ pkmn }: Readonly<{ pkmn: INamedApiResource<IPokemon> }>) {
-  const pokemon = await PokeAPI.Pokemon.get(pkmn.name);
-  return { props: { pokemon }};
-}
+export default function PokemonThumb({ pokemonData }: Readonly<{ pokemonData: IPokemon }>) {
+  const [pokemon, setPokemon] = useState<IPokemon | null>(null);
+  
+  useEffect(() => {
+    setPokemon(pokemonData);
+  }, [pokemonData])
+  
+  const loading = <span className='my-auto'>Loading...</span>;
 
-
-export default function PokemonThumb({ pokemon }: Readonly<{ pokemon: IPokemon }>) {
-
-  return (
+  const loaded = pokemon && (
     <div 
       className="pokemon flex flex-col justify-center items-center" 
-      style={getBackgroundStyle(pokemon.types)}
+      style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}}
     >
       <div className="img-hover-zoom pt-1">
-        
-          <Image
-            width={138}      
-            height={138}
-            className="artwork" src={getArtwork(pokemon.id)} alt={pokemon.name} />
+        <Image
+          width={138}      
+          height={138}
+          className="artwork"
+          src={getArtwork(pokemon.id)}
+          alt={pokemon.name}
+        />
       </div>
       <span className="name">{ pokemon.name }</span>
       <span className="id pb-2">#{ getNumber(pokemon.id) }</span>
+    </div>
+  );
+
+  return (
+    <div className="pokemon flex flex-col justify-center items-center">
+      { pokemon ? loaded : loading }
     </div>
   );
 }
