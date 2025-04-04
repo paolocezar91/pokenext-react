@@ -2,6 +2,7 @@ import { IPokemon, IPokemonType } from 'pokeapi-typescript';
 import Image from 'next/image';
 import { CSSProperties, useEffect, useState } from 'react';
 import './thumb.scss'
+import { IPkmn } from '@/app/types';
 
 export function getArtwork(id: number) {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
@@ -43,8 +44,8 @@ function getTypeColor(type: string) {
 	}[type] ?? '#CCCCCC';
 }
 
-export default function PokemonThumb({ pokemonData }: Readonly<{ pokemonData: IPokemon }>) {
-  const [pokemon, setPokemon] = useState<IPokemon | null>(null);
+export default function PokemonThumb({ pokemonData }: Readonly<{ pokemonData: IPkmn }>) {
+  const [pokemon, setPokemon] = useState<IPkmn | null>(null);
   
   useEffect(() => {
     setPokemon(pokemonData);

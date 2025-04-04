@@ -3,7 +3,7 @@ import { useParams } from 'next/navigation';
 import PokeAPI, { IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { Image } from 'react-bootstrap';
 import { getArtwork, getBackgroundStyle, getNumber } from '@/components/thumb/thumb';
-import RootLayout from '@/components/layout/layout';
+import RootLayout from '@/app/layout';
 import Link from 'next/link';
 import { GetStaticPropsContext } from 'next';
 import './[id].scss';
@@ -26,6 +26,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: { id, pokemonData, speciesData, typesData }
   }
+}
+
+export function capitilize(s: string) {
+  return String(s[0]).toUpperCase() + String(s).slice(1);
 }
 
 export function getStaticPaths() {
@@ -95,7 +99,7 @@ export default function PokemonDetails({
   if (!pokemon || !species || types.length === 0) return 'Loading...';
   
   return (
-    <RootLayout>
+    <RootLayout title={`Next.js Pokédex Demo - ${capitilize(pokemon.name)}`}>
       <div className="mx-auto p-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 divide-x-4 divide-[#111]">
           <div className="md:col-span-1 flex flex-col items-start">

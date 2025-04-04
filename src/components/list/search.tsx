@@ -1,5 +1,7 @@
-import './list.scss';
+'use client';
+
 import { ChangeEvent, useState } from 'react';
+import './list.scss';
 
 
 export default function PokemonSearch() {
