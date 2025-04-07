@@ -1,20 +1,32 @@
+'use client';
+
 import { IPkmn } from '@/app/types';
 import Link from 'next/link';
 import PokemonThumb from '../thumb/thumb';
-import './list.scss';
 
-export default function PokemonList({ pokemons, ref, inView }: Readonly<{ pokemons: IPkmn[], ref: (node?: Element | null) => void, inView: boolean }>) {
-  
+export default function PokemonList({
+  pokemons,
+  ref,
+  inView,
+  searched
+}: Readonly<{
+  pokemons: IPkmn[],
+  ref: (node?: Element | null) => void,
+  inView: boolean,
+  searched: boolean
+}>) {  
   return (
-    <div className="list flex justify-center flex-row flex-wrap p-4">
-      { 
-        pokemons.map((pokemon, i) => {
-          return <Link href={`/pokemon/${i + 1}`} key={i} className="my-1 mx-1 link">
-            <PokemonThumb pokemonData={pokemon} />
-          </Link>
-        })
-      }
-      {!inView && <div className='pokemon flex flex-col justify-center items-center' ref={ref}> Loading... </div>}
+    <div className="list-container">
+      <div className="list relative flex justify-center flex-row flex-wrap p-4">
+        { 
+          pokemons.map((pokemon, i) => {
+            return <Link href={`/pokemon/${i + 1}`} key={i} className="my-1 mx-1 link">
+              <PokemonThumb pokemonData={pokemon} />
+            </Link>;
+          })
+        }
+        {!inView && !searched && <div className="ref" ref={ref}></div>}
+      </div>
     </div>
   );
 }

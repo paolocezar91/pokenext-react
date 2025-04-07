@@ -1,15 +1,21 @@
 .pokemon {
     z-index:0;
     position: relative;
-    border-radius: 8px;
-    width: var(--thumb-size);
-    height: var(--thumb-size);
+    border-radius: 24px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
+    background-color: var(--pokedex-red);
     overflow: hidden;
+    opacity: 0.9;
+    transition: opacity .5 ease;
+    .pokemon-shadow {
+        position: absolute;
+        border-radius: 100%;
+        transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg) rotateZ(0) translateX(0) translateY(32px) translateZ(0) skewX(0) skewY(0);
+    }
     .name, .id {
         text-align: center;
         font-weight: bold;
-        color: #FFFFFF;
+        color: var(--foreground)
     }    
     .name {
         font-size: 16px;
@@ -23,22 +29,18 @@
         overflow: hidden;
         img {
             height: 100%;
-            transform: scale(0.9);
+            transform: scale(0.7) translateY(-25);
             transition: transform .5s ease;
         }
         
     }
-    .type {
-        border-radius: 8px;
-        padding: 4px;
-        background-color: grey;
-    }
     &:hover {
+        opacity: 1;
         &:after {
             animation: slide 1.5s infinite 0s;
         }
         .img-hover-zoom img {
-            transform: scale(1.0);
+            transform: scale(0.75) translateY(-25);
         }
     }
     &:after {
@@ -46,7 +48,7 @@
         top:0;
         transform: translateX(100%) rotate(45deg);
         width: 300%;
-        height: calc(var(--thumb-size) * 3);
+        height: 36rem;
         position: absolute;
         z-index: 1;
         background: -moz-linear-gradient(left, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(128,186,232,0) 99%, rgba(125,185,232,0) 100%); /* FF3.6+ */

@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import PokeAPI, { IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
-import { Image } from 'react-bootstrap';
-import { getArtwork, getBackgroundStyle, getNumber } from '@/components/thumb/thumb';
-import RootLayout from '@/app/layout';
-import Link from 'next/link';
-import { GetStaticPropsContext } from 'next';
 import './[id].scss';
+import PokeAPI, { IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
+import { useEffect, useState } from 'react';
+import { GetStaticPropsContext } from 'next';
+import { Image } from 'react-bootstrap';
+import Link from 'next/link';
+import PokemonThumb from '@/components/thumb/thumb';
+import RootLayout from '@/app/layout';
+import { useParams } from 'next/navigation';
 interface PokeIPokemon extends IPokemon {
   cries: {
     legacy?: string;
@@ -15,17 +15,11 @@ interface PokeIPokemon extends IPokemon {
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id) || '1';
-  const pokemonData = await PokeAPI.Pokemon.resolve(id)
-  const [speciesData, typesData] = await Promise.all([
-    PokeAPI.PokemonSpecies.fetch(pokemonData.id),
-    Promise.all(pokemonData.types.map(type => 
-      PokeAPI.Type.fetch(type.type.name)
-    ))
-  ]);
+  const pokemonData = await PokeAPI.Pokemon.resolve(id);
 
   return {
-    props: { id, pokemonData, speciesData, typesData }
-  }
+    props: { id, pokemonData }
+  };
 }
 
 export function capitilize(s: string) {
@@ -37,8 +31,8 @@ export function getStaticPaths() {
 
   return {
     paths: ids.map(id => ({ params: { id } })),
-    fallback: false
-  }
+    fallback: true
+  };
 }
 
 export default function PokemonDetails({
@@ -52,11 +46,9 @@ export default function PokemonDetails({
   speciesData: IPokemonSpecies;
   typesData: IType[];
 }) {
-  const [pokemon, setPokemon] = useState<PokeIPokemon | null>(null);
-  const [species, setSpecies] = useState<IPokemonSpecies | null>(null);
-  const [types, setTypes] = useState<IType[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  
+  const [pokemon, setPokemon] = useState<PokeIPokemon>(pokemonData);
+  const [species, setSpecies] = useState<IPokemonSpecies>(speciesData);
+  const [types, setTypes] = useState<IType[]>(typesData);  
   const params = useParams();
   const currentId = id || params?.id;
 
@@ -64,19 +56,39 @@ export default function PokemonDetails({
     if (!currentId) return;
     
     const setPokemonData = () => {
-      try {
-        // Fetch pokemon data
+      const getPokemonMetadata = async () => {
+        const fetchSpecies = async (id: string) => {
+          try {
+            return await (await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)).json();            
+          } catch (error) {
+            console.error(error);
+          }
+        };
+        const fetchType = async (id: string) => {
+          try {
+            return await (await fetch(`https://pokeapi.co/api/v2/type/${id}`)).json();
+          } catch (error) {
+            console.error(error);
+          }
+        };
+        
+        const [speciesData, typesData] = await Promise.all([
+          fetchSpecies(String(pokemonData.id)),
+          Promise.all(pokemonData.types.map(type => fetchType(type.type.name)))
+        ]);
+
         setPokemon(pokemonData);
         setSpecies(speciesData);
         setTypes(typesData);
-      } catch (err) {
-        setError('Failed to fetch Pokémon data');
-        console.error(err);
-      }
+      };
+      
+      
+      getPokemonMetadata();
+      
     };
     
     setPokemonData();
-  }, [currentId, pokemonData, speciesData, typesData]);
+  }, [currentId, pokemon, pokemonData, speciesData, typesData]);
   
   const getFlavorText = () => {
     return species?.flavor_text_entries[0]?.flavor_text.replace('', ' ') || '';
@@ -84,7 +96,7 @@ export default function PokemonDetails({
   
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getTypeIcon = (type: any): string => {
-    return type['sprites']['generation-iv']['heartgold-soulsilver'].name_icon;
+    return type['sprites']['generation-vi']['x-y'].name_icon;
   };
   
   const isNextFirstGen = () => {
@@ -95,28 +107,14 @@ export default function PokemonDetails({
     return pokemon ? pokemon.id - 1 > 0 : false;
   };
   
-  if (error) return <div>Error: {error}</div>;
   if (!pokemon || !species || types.length === 0) return 'Loading...';
   
   return (
     <RootLayout title={`Next.js Pokédex Demo - ${capitilize(pokemon.name)}`}>
       <div className="mx-auto p-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 divide-x-4 divide-[#111]">
-          <div className="md:col-span-1 flex flex-col items-start">
-            <div 
-              className="pokemon-image w-full flex flex-col justify-center items-center p-4 rounded-lg shadow-md"
-              style={getBackgroundStyle(pokemon.types)}
-            >
-                <div className="img-hover-zoom pt-1">
-                  <Image
-                    className="artwork max-w-full h-auto" 
-                    src={getArtwork(pokemon.id)} 
-                    alt={pokemon.name} 
-                  />
-                </div>
-              <span className="name capitalize">{pokemon.name}</span>
-              <span className="id pb-2">#{getNumber(pokemon.id)}</span>
-            </div>
+        <div className="flex">
+          <div className="thumb flex flex-col items-start mr-4">
+            <PokemonThumb pokemonData={pokemon} size="large" />            
             <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
               {types.map((type, i) => (
                 <Image
@@ -129,68 +127,67 @@ export default function PokemonDetails({
               ))}
             </div>
           </div>
-        
-          <div className="md:col-span-3 pokemon-details p-6 bg-white rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-4 border-b-white pb-4 border-b-4">
-              About <span className="capitalize">{pokemon.name}</span>
-            </h2>
-          
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="pokemon-description">
-                <h3 className="text-lg font-semibold mb-2">Description</h3>
-                <p>{getFlavorText()}</p>
-              </div>
-          
-              <div className="pokemon-size">
-                <h3 className="text-lg font-semibold mb-2">Size</h3>
-                <p>Height: {pokemon.height / 10} m</p>
-                <p>Weight: {pokemon.weight / 10} kg</p>
-              </div>
-          
-              <div className="pokemon-abilities">
-                <h3 className="text-lg font-semibold mb-2">Abilities</h3>
-                <ul className="list-disc pl-5">
-                  {pokemon.abilities.map((ability, i) => (
-                    <li key={i} className="capitalize">
-                    {ability.ability.name}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-          
-              {pokemon.cries?.legacy && (
-                <div className="pokemon-cries">
-                <h3 className="text-lg font-semibold mb-2">Cry</h3>
-                <audio controls src={pokemon.cries.legacy} className="w-full" />
+          <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
+            <div className="about">  
+              <h2 className="text-2xl font-bold mb-4 border-b-white pb-4 border-b-4">
+                About <span className="capitalize">{pokemon.name}</span>
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="pokemon-description">
+                  <h3 className="text-lg font-semibold mb-2">Description</h3>
+                  <p>{getFlavorText()}</p>
                 </div>
-              )}
+            
+                <div className="pokemon-size">
+                  <h3 className="text-lg font-semibold mb-2">Size</h3>
+                  <p>Height: {pokemon.height / 10} m</p>
+                  <p>Weight: {pokemon.weight / 10} kg</p>
+                </div>
+            
+                <div className="pokemon-abilities">
+                  <h3 className="text-lg font-semibold mb-2">Abilities</h3>
+                  <ul className="list-disc pl-5">
+                    {pokemon.abilities.map((ability, i) => (
+                      <li key={i} className="capitalize">
+                        {ability.ability.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+            
+                {pokemon.cries?.legacy && (
+                  <div className="pokemon-cries">
+                    <h3 className="text-lg font-semibold mb-2">Cry</h3>
+                    <audio controls src={pokemon.cries.legacy} className="w-full" />
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
-        
         <div className="controls mt-6 flex justify-between">
-          <div className="previous">
+          <div className="previous flex-1 text-left">
             <Link
               href={`/pokemon/${pokemon.id - 1}`}
               className={`px-4 py-2 bg-transparent border-transparent  ${!isPrevFirstGen() ? 'disable-click' : 'hover:text-gray-800'}`}
             >
-              &lt;&lt; Previous
+              &lt; Prev
             </Link>
           </div>
-          <div>
+          <div className="flex-1 text-center">
             <Link
               href='/'
               className="px-4 py-2 bg-transparent border-transparent hover:text-gray-800"
             >
-              Back to List
+              Back
             </Link>
           </div>
-          <div className="next">
+          <div className="next flex-1 text-right">
             <Link
               href={`/pokemon/${pokemon.id + 1}`}
               className={`px-4 py-2 bg-transparent border-transparent  ${!isNextFirstGen() ? 'disable-click' : 'hover:text-gray-800'}`}
             >
-              Next &gt;&gt;
+              Next &gt;
             </Link>
           </div>
         </div>
