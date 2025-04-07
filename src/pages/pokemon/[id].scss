@@ -6,7 +6,7 @@ $size: 18rem;
     font-size: 16px;
     color: #fff;
     overflow: auto;
-    max-height: 60vh;
+    max-height: 75vh;
     hr {
         border-top-width: 8px;
     }
@@ -20,9 +20,6 @@ $size: 18rem;
     h3 {
         font-size: 1.2rem;
     }
-    ul {
-
-    }
 }
 
 .controls {
@@ -34,11 +31,4 @@ $size: 18rem;
             color: #333;
         }
     }
-}
-
-/* animation */
-
-@keyframes slide {
-    0% {transform:translateX(-100%) rotate(45deg);}
-    100% {transform:translateX(100%) rotate(45deg);}
 }

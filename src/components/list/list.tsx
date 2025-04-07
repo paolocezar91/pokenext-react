@@ -11,16 +11,17 @@ export default function PokemonList({
   searched
 }: Readonly<{
   pokemons: IPkmn[],
-  ref: (node?: Element | null) => void,
+  // eslint-disable-next-line no-unused-vars
+  ref: (_?: Element | null) => void,
   inView: boolean,
   searched: boolean
-}>) {  
+}>) {
   return (
     <div className="list-container">
       <div className="list relative flex justify-center flex-row flex-wrap p-4">
-        { 
+        {
           pokemons.map((pokemon, i) => {
-            return <Link href={`/pokemon/${i + 1}`} key={i} className="my-1 mx-1 link">
+            return <Link href={`/pokemon/${pokemon.name}`} key={i} className="my-1 mx-1 link">
               <PokemonThumb pokemonData={pokemon} />
             </Link>;
           })

@@ -17,8 +17,9 @@ const eslintConfig = [
       'semi': 'error',
       'indent': ['error', 2],
       'no-multi-spaces': ['error'],
-      "sort-imports": "error",
+      "no-trailing-spaces": "error",
       "no-console": "off",
+      "no-unused-vars": "error",
       "no-restricted-syntax": [
         "error",
         {

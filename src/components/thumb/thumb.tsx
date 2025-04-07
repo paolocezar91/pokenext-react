@@ -1,8 +1,8 @@
-import './thumb.scss';
-import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import { IPkmn } from '@/app/types';
-import { IPokemonType } from 'pokeapi-typescript';
 import Image from 'next/image';
+import { IPokemonType } from 'pokeapi-typescript';
+import { CSSProperties, Suspense, useEffect, useState } from 'react';
+import './thumb.scss';
 
 export function getArtwork(id: number) {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
@@ -44,7 +44,7 @@ function getTypeColor(type: string) {
   }[type] ?? '#CCCCCC';
 }
 
-export default function PokemonThumb({ 
+export default function PokemonThumb({
   pokemonData,
   size = 'small'
 }: Readonly<{
@@ -52,19 +52,24 @@ export default function PokemonThumb({
   size?: string
 }>) {
   const [pokemon, setPokemon] = useState<IPkmn | null>(null);
-  
+
   useEffect(() => {
     setPokemon(pokemonData);
   }, [pokemonData]);
-  
+
   const loading = <span className={`my-auto`}>Loading...</span>;
-  const isSmall = size === 'small';
+  const isTiny = size === 'tiny' && ['w-40 h-40', 'h-[160px]', 'mb-1', 'text-xs'];
+  const isSmall = size === 'small' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
+  const classes = isTiny || isSmall || ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
 
   const loaded = pokemon && (
-    <div style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}} className={`pokemon flex flex-col justify-center items-center ${isSmall ? 'w-50 h-50' : 'w-80 h-80'}`}>
-      <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${isSmall ? 'w-50 h-50' : 'w-75 h-75'}`}></div>
+    <div
+      style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}}
+      className={`pokemon flex flex-col justify-center items-center ${classes[0]}`}
+    >
+      <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
       <div className="img-hover-zoom w-full h-full">
-        <div className={`relative w-full ${isSmall ? 'h-[200px]' : 'h-[320px]'}`}>
+        <div className={`relative w-full ${classes[1]}`}>
           <Image
             className="artwork"
             fill={true}
@@ -75,8 +80,8 @@ export default function PokemonThumb({
           />
         </div>
       </div>
-      <span className="name">{ pokemon.name }</span>
-      <span className={`id ${isSmall ? 'mb-2' : 'mb-4'} `}>#{ getNumber(pokemon.id) }</span>
+      <span className={`name ${classes[3]}`}>{ pokemon.name }</span>
+      <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>
     </div>
   );
 

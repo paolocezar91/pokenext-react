@@ -1,14 +1,14 @@
 'use client';
 
 import '@/app/globals.css';
-import { INamedApiResourceList, IPokemon } from 'pokeapi-typescript';
-import { useEffect, useState } from 'react';
+import RootLayout from '@/app/layout';
 import { IPkmn } from '@/app/types';
-import { Metadata } from "next";
 import PokemonList from '@/components/list/list';
 import PokemonSearch from '@/components/list/search';
-import RootLayout from '@/app/layout';
 import Spinner from '@/components/spinner/spinner';
+import { Metadata } from "next";
+import { INamedApiResourceList, IPokemon } from 'pokeapi-typescript';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 const NUMBERS_OF_POKEMON = 25;
@@ -52,7 +52,7 @@ export default function Main({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<boolean>(false);
   const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
-  
+
   useEffect(() => {
     async function loadMorePkmn() {
       setLoading(true);
@@ -70,22 +70,26 @@ export default function Main({ pokemonsData }: { pokemonsData: IPkmn[] }) {
     }
   }, [pokemonsData, pokemons, inView, offset, loading]);
 
-  const searchPokemon = (filterText: string) => {
-    setPokemons(pokemonsBackup.filter(pkmn => {
-      const types = [pkmn.types[0].type.name, pkmn.types[1]?.type.name ?? ''].filter(t => t);
-      return [...types, pkmn.name].some((value) => filterText.toLowerCase().includes(value));
-    }));
+  const filter = (filterText: string) => {
     setFiltered(!!filterText);
-    if(!filterText) {
+    if(filterText) {
+      setPokemons(pokemonsBackup.filter(pkmn => {
+        const filteredValues = [pkmn.name, pkmn.types[0].type.name];
+        if(pkmn.types[1]) {
+          filteredValues.push(pkmn.types[1].type.name);
+        }
+        return filteredValues.some((value) => value.toLowerCase().includes(filterText.toLowerCase()));
+      }));
+    } else {
       setPokemons(pokemonsBackup);
     }
   };
 
   if (!pokemons) return null;
-  
+
   return (
     <RootLayout title={String(metadata.title)}>
-      <PokemonSearch onFilter={searchPokemon}/>
+      <PokemonSearch onFilter={filter}/>
       <PokemonList pokemons={pokemons} ref={ref} inView={inView} searched={filtered}/>
       {loading && <Spinner /> }
     </RootLayout>

@@ -1,9 +1,9 @@
 'use client';
 
-import "./layout.scss";
 import "@/app/globals.css";
 import Head from "next/head";
 import Header from "../components/header/header";
+import "./layout.scss";
 
 export default function RootLayout({
   children,

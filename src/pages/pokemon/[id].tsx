@@ -1,20 +1,22 @@
-import './[id].scss';
-import PokeAPI, { IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
-import { useEffect, useState } from 'react';
-import { GetStaticPropsContext } from 'next';
-import { Image } from 'react-bootstrap';
-import Link from 'next/link';
-import PokemonThumb from '@/components/thumb/thumb';
 import RootLayout from '@/app/layout';
+import { SpeciesChain } from '@/app/types';
+import PokemonAbilities from '@/components/details/abilities';
+import PokemonCries from '@/components/details/cries';
+import PokemonDescription from '@/components/details/description';
+import PokemonEvolutionChain from '@/components/details/evolution-chain';
+import PokemonSize from '@/components/details/size';
+import PokemonTypes from '@/components/details/types';
+import PokemonThumb from '@/components/thumb/thumb';
+import { GetStaticPropsContext } from 'next';
 import { useParams } from 'next/navigation';
-interface PokeIPokemon extends IPokemon {
-  cries: {
-    legacy?: string;
-  };
-}
+import PokeAPI, { IEvolutionChain, IPokemon, IPokemonSpecies, IPokemonType, IType } from 'pokeapi-typescript';
+import { useEffect, useState } from 'react';
+import './[id].scss';
+import PokemonControls from './controls';
+import Spinner from '@/components/spinner/spinner';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
-  const id = String(context?.params?.id) || '1';
+  const id = String(context?.params?.id);
   const pokemonData = await PokeAPI.Pokemon.resolve(id);
 
   return {
@@ -37,161 +39,116 @@ export function getStaticPaths() {
 
 export default function PokemonDetails({
   id,
-  pokemonData,
-  speciesData,
-  typesData 
+  pokemonData
 }: {
   id: string,
-  pokemonData: PokeIPokemon;
-  speciesData: IPokemonSpecies;
-  typesData: IType[];
+  pokemonData: IPokemon
 }) {
-  const [pokemon, setPokemon] = useState<PokeIPokemon>(pokemonData);
-  const [species, setSpecies] = useState<IPokemonSpecies>(speciesData);
-  const [types, setTypes] = useState<IType[]>(typesData);  
+  const [pokemon, setPokemon] = useState<IPokemon>(pokemonData);
+  const [speciesChain, setSpeciesChain] = useState<SpeciesChain>({ loaded: false, chain: {}});
+  const [species, setSpecies] = useState<IPokemonSpecies | null>(null);
+  const [types, setTypes] = useState<IType[]>([]);
+  const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
+  const [loaded, setLoaded] = useState<boolean>(false);
+
   const params = useParams();
   const currentId = id || params?.id;
 
   useEffect(() => {
     if (!currentId) return;
-    
+
     const setPokemonData = () => {
+      setLoaded(false);
+
+      speciesChain.loaded = false;
+      speciesChain.chain = {};
+
+      const fetchPokemon = async (id: string): Promise<IPokemon> => {
+        return await (await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)).json() as IPokemon;
+      };
+      const fetchSpecies = async (id: string): Promise<IPokemonSpecies> => {
+        return await (await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)).json() as IPokemonSpecies;
+      };
+      const fetchTypes = async (types: IPokemonType[]): Promise<IType[]> => {
+        const fetchType = async (id: string) => await (await fetch(`https://pokeapi.co/api/v2/type/${id}`)).json() as IType;
+        return Promise.all(types.map(type => fetchType(type.type.name)));
+      };
+      const fetchEvolutionChain = async (species: IPokemonSpecies) => {
+        const url = species.evolution_chain.url as string;
+
+        try {
+          return await (await fetch(url)).json();
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
       const getPokemonMetadata = async () => {
-        const fetchSpecies = async (id: string) => {
-          try {
-            return await (await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)).json();            
-          } catch (error) {
-            console.error(error);
-          }
-        };
-        const fetchType = async (id: string) => {
-          try {
-            return await (await fetch(`https://pokeapi.co/api/v2/type/${id}`)).json();
-          } catch (error) {
-            console.error(error);
-          }
-        };
-        
         const [speciesData, typesData] = await Promise.all([
           fetchSpecies(String(pokemonData.id)),
-          Promise.all(pokemonData.types.map(type => fetchType(type.type.name)))
+          fetchTypes(pokemonData.types),
         ]);
 
-        setPokemon(pokemonData);
-        setSpecies(speciesData);
-        setTypes(typesData);
+        if(pokemonData) setPokemon(pokemonData);
+        if(typesData.length) setTypes(typesData);
+        if(speciesData) {
+          setSpecies(speciesData);
+          const evolutionChain = await fetchEvolutionChain(speciesData) as IEvolutionChain;
+          setEvolutionChain(evolutionChain);
+
+          speciesChain.chain.first = [await fetchPokemon(evolutionChain.chain.species.name)];
+          if(evolutionChain.chain?.evolves_to?.[0]) {
+            speciesChain.chain.second = await Promise.all(
+              evolutionChain.chain.evolves_to.map((evolves_to) => {
+                return fetchPokemon(evolves_to.species.name);
+              })
+            );
+            if(evolutionChain.chain.evolves_to[0].evolves_to[0]) {
+              speciesChain.chain.third = await Promise.all(
+                evolutionChain.chain.evolves_to[0].evolves_to.map((evolves_to) => {
+                  return fetchPokemon(evolves_to.species.name);
+                })
+              );
+            } else {
+              speciesChain.chain.third = [];
+            }
+          } else {
+            speciesChain.chain.second = [];
+            speciesChain.chain.third = [];
+          }
+          speciesChain.loaded = true;
+          setSpeciesChain(speciesChain);
+          setLoaded(true);
+        }
       };
-      
-      
+
       getPokemonMetadata();
-      
     };
-    
+
     setPokemonData();
-  }, [currentId, pokemon, pokemonData, speciesData, typesData]);
-  
-  const getFlavorText = () => {
-    return species?.flavor_text_entries[0]?.flavor_text.replace('', ' ') || '';
-  };
-  
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const getTypeIcon = (type: any): string => {
-    return type['sprites']['generation-vi']['x-y'].name_icon;
-  };
-  
-  const isNextFirstGen = () => {
-    return pokemon ? pokemon.id + 1 <= 151: false;
-  };
-  
-  const isPrevFirstGen = () => {
-    return pokemon ? pokemon.id - 1 > 0 : false;
-  };
-  
-  if (!pokemon || !species || types.length === 0) return 'Loading...';
-  
+  }, [currentId]);
+
   return (
-    <RootLayout title={`Next.js Pokédex Demo - ${capitilize(pokemon.name)}`}>
-      <div className="mx-auto p-4">
+    <RootLayout title={`Next.js Pokédex Demo - ${pokemon ? capitilize(pokemon.name) : 'Loading...'}`}>
+      {!loaded && <Spinner />}
+      {loaded && <div className="mx-auto p-4">
         <div className="flex">
           <div className="thumb flex flex-col items-start mr-4">
-            <PokemonThumb pokemonData={pokemon} size="large" />            
-            <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
-              {types.map((type, i) => (
-                <Image
-                  key={i}
-                  src={getTypeIcon(type)}
-                  height="100%"
-                  alt={type.name} 
-                  className="h-5"
-                />
-              ))}
-            </div>
+            <PokemonThumb pokemonData={pokemon} size="large" />
+            <PokemonTypes types={types} />
           </div>
           <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
-            <div className="about">  
-              <h2 className="text-2xl font-bold mb-4 border-b-white pb-4 border-b-4">
-                About <span className="capitalize">{pokemon.name}</span>
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="pokemon-description">
-                  <h3 className="text-lg font-semibold mb-2">Description</h3>
-                  <p>{getFlavorText()}</p>
-                </div>
-            
-                <div className="pokemon-size">
-                  <h3 className="text-lg font-semibold mb-2">Size</h3>
-                  <p>Height: {pokemon.height / 10} m</p>
-                  <p>Weight: {pokemon.weight / 10} kg</p>
-                </div>
-            
-                <div className="pokemon-abilities">
-                  <h3 className="text-lg font-semibold mb-2">Abilities</h3>
-                  <ul className="list-disc pl-5">
-                    {pokemon.abilities.map((ability, i) => (
-                      <li key={i} className="capitalize">
-                        {ability.ability.name}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-            
-                {pokemon.cries?.legacy && (
-                  <div className="pokemon-cries">
-                    <h3 className="text-lg font-semibold mb-2">Cry</h3>
-                    <audio controls src={pokemon.cries.legacy} className="w-full" />
-                  </div>
-                )}
-              </div>
+            <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
+              {species && <PokemonDescription species={species} />}
+              <PokemonSize pokemon={pokemon} />
+              <PokemonAbilities pokemon={pokemon} />
+              <PokemonCries pokemon={pokemon} />
+              { evolutionChain && <PokemonEvolutionChain speciesChain={speciesChain} evolutionChain={evolutionChain} />}
             </div>
           </div>
         </div>
-        <div className="controls mt-6 flex justify-between">
-          <div className="previous flex-1 text-left">
-            <Link
-              href={`/pokemon/${pokemon.id - 1}`}
-              className={`px-4 py-2 bg-transparent border-transparent  ${!isPrevFirstGen() ? 'disable-click' : 'hover:text-gray-800'}`}
-            >
-              &lt; Prev
-            </Link>
-          </div>
-          <div className="flex-1 text-center">
-            <Link
-              href='/'
-              className="px-4 py-2 bg-transparent border-transparent hover:text-gray-800"
-            >
-              Back
-            </Link>
-          </div>
-          <div className="next flex-1 text-right">
-            <Link
-              href={`/pokemon/${pokemon.id + 1}`}
-              className={`px-4 py-2 bg-transparent border-transparent  ${!isNextFirstGen() ? 'disable-click' : 'hover:text-gray-800'}`}
-            >
-              Next &gt;
-            </Link>
-          </div>
-        </div>
-      </div>
+        <PokemonControls pokemon={pokemon} />
+      </div>}
     </RootLayout>
   );
 }

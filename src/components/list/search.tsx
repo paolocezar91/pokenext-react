@@ -2,9 +2,9 @@ import './list.scss';
 import { ChangeEvent, useState } from 'react';
 
 export default function PokemonFilter({ onFilter }: { onFilter: (data: string) => void }) {
+  
 
   const [filterText, setFilterText] = useState('');
-
 
   const handleFilter = (text: string) => {
     setFilterText(text);
