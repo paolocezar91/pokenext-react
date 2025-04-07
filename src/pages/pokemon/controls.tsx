@@ -3,11 +3,11 @@ import { IPokemon } from "pokeapi-typescript";
 
 export default function PokemonControls({ pokemon }: { pokemon: IPokemon }) {
 
-  const isNextFirstGen = () => {
-    return pokemon ? pokemon.id + 1 <= 151: false;
+  const isLast = () => {
+    return pokemon ? pokemon.id + 1 <= 1025: false;
   };
 
-  const isPrevFirstGen = () => {
+  const greaterThanZero = () => {
     return pokemon ? pokemon.id - 1 > 0 : false;
   };
 
@@ -15,7 +15,7 @@ export default function PokemonControls({ pokemon }: { pokemon: IPokemon }) {
     <div className="previous flex-1 text-left">
       <Link
         href={`/pokemon/${pokemon.id - 1}`}
-        className={`px-4 py-2 bg-transparent border-transparent  ${!isPrevFirstGen() ? 'disable-click' : 'hover:text-gray-800'}`}
+        className={`px-4 py-2 bg-transparent border-transparent  ${!greaterThanZero() ? 'disable-click' : 'hover:text-gray-800'}`}
       >
         &laquo; Prev
       </Link>
@@ -31,7 +31,7 @@ export default function PokemonControls({ pokemon }: { pokemon: IPokemon }) {
     <div className="next flex-1 text-right">
       <Link
         href={`/pokemon/${pokemon.id + 1}`}
-        className={`px-4 py-2 bg-transparent border-transparent  ${!isNextFirstGen() ? 'disable-click' : 'hover:text-gray-800'}`}
+        className={`px-4 py-2 bg-transparent border-transparent  ${!isLast() ? 'disable-click' : 'hover:text-gray-800'}`}
       >
         Next &raquo;
       </Link>

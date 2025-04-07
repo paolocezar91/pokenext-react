@@ -28,7 +28,7 @@ export async function getPokemonPage(offset: number, limit: number): Promise<IPk
       pkmnList.results.map(async (pkmn) => {
         const pokemon = (await(await fetch(`https://pokeapi.co/api/v2/pokemon/${pkmn.name}/`)).json()) as IPokemon;
         //const pokemon = await PokeAPI.Pokemon.fetch(pkmn.name);
-        return { name: pokemon.name, types: pokemon.types, id: pokemon.id };
+        return { name: pokemon.name, types: pokemon.types, id: pokemon.id, sprites: pokemon.sprites };
       })
     );
 
