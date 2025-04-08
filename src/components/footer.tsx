@@ -24,7 +24,7 @@ export default function Footer({ pokemon }: { pokemon: IPokemon }) {
     </div>
     <div className="flex-1 text-center">
       <Link
-        href='/'
+        href='/pokedex/'
         className="px-4 py-2 bg-transparent border-transparent hover:text-gray-800"
       >
         { t('actions.backToList') }

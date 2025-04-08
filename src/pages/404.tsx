@@ -24,7 +24,6 @@ export default function NotFound() {
         }
       }, 1000);
     };
-    console.log('timer');
     startTimer(3);
   }, []);
 

@@ -2,8 +2,10 @@ import Image from 'next/image';
 import { IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import './thumb.scss';
+import { IPkmn } from '@/app/types';
+import Spinner from '../spinner/spinner';
 
-export function getArtwork(pokemon: IPokemon) {
+export function getArtwork(pokemon: IPokemon | IPkmn) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return [(pokemon.sprites as any).other['official-artwork'].front_default, (pokemon.sprites as any).other['official-artwork'].front_shiny];
 }
@@ -49,11 +51,11 @@ export default function PokemonThumb({
   shinyInput,
   size = 'small',
 }: Readonly<{
-  pokemonData: IPokemon,
+  pokemonData: IPokemon | IPkmn,
   shinyInput?: boolean,
   size?: string,
 }>) {
-  const [pokemon, setPokemon] = useState<IPokemon | null>(null);
+  const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
 
   useEffect(() => {
@@ -98,7 +100,7 @@ export default function PokemonThumb({
   );
 
   return (
-    <Suspense>
+    <Suspense fallback={<Spinner />}>
       {pokemon ? loaded : loading}
       {
         shinyInput && <label className="w-full text-right mt-1" htmlFor="shiny">

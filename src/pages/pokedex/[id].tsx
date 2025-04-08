@@ -132,10 +132,8 @@ export default function PokemonDetails({
     setPokemonData();
   }, [currentId]);
 
-  const title = pokemon ? `Pokedex -- ${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`;
-
   return (
-    <RootLayout title={title}>
+    <RootLayout title={pokemon ? `Pokedex -- ${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`}>
       {!loaded && <Spinner />}
       {loaded && <div className="mx-auto p-4">
         <div className="flex">

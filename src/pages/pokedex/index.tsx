@@ -29,11 +29,11 @@ export async function getPokemonPage(offset: number, limit: number): Promise<IPk
   }
 }
 
-export async function getStaticProps({ locale }: GetStaticPropsContext) {
+export async function getStaticProps({ locale = 'en' }: GetStaticPropsContext) {
   return {
     props: {
       pokemonsData: await getPokemonPage(STARTING_POKEMON, NUMBERS_OF_POKEMON),
-      ...(await serverSideTranslations(locale || 'en', ['common']))
+      ...(await serverSideTranslations(locale, ['common']))
     },
   };
 }
@@ -80,10 +80,8 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   if (!pokemons) return null;
 
-  const title = `Pokedex -- Next.js Demo`;
-
   return (
-    <RootLayout title={title}>
+    <RootLayout title="Pokedex -- Next.js Demo">
       <PokemonSearch onFilter={filter}/>
       <PokemonList pokemons={pokemons} ref={ref} inView={inView} searched={filtered}/>
       {loading && <Spinner /> }
