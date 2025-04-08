@@ -2,14 +2,9 @@ import Image from 'next/image';
 import { IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import './thumb.scss';
-import FormCheckInput from 'react-bootstrap/esm/FormCheckInput';
-import { FormCheck } from 'react-bootstrap';
-
-// export function getArtwork(id: number) {
-//   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
-// }
 
 export function getArtwork(pokemon: IPokemon) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return [(pokemon.sprites as any).other['official-artwork'].front_default, (pokemon.sprites as any).other['official-artwork'].front_shiny];
 }
 
@@ -104,17 +99,17 @@ export default function PokemonThumb({
   return (
     <Suspense>
       {pokemon ? loaded : loading}
-      {isNormal &&
-      <label className="w-full text-right mt-1" htmlFor="shiny">
-        <input
-          id="shiny"
-          name="shiny"
-          className='mt-2 mr-2 text-xs'
-          type="checkbox"
-          checked={shiny}
-          onClick={()=> setShiny(!shiny)}
-        />Shiny
-      </label>
+      {
+        isNormal && <label className="w-full text-right mt-1" htmlFor="shiny">
+          Shiny <input
+            id="shiny"
+            name="shiny"
+            className='mt-2 text-xs'
+            type="checkbox"
+            checked={shiny}
+            onChange={()=> setShiny(!shiny)}
+          />
+        </label>
       }
     </Suspense>
   );

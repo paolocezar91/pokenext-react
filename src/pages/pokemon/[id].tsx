@@ -3,7 +3,7 @@ import { SpeciesChain } from '@/app/types';
 import PokemonAbilities from '@/components/details/abilities';
 import PokemonCries from '@/components/details/cries';
 import PokemonDescription from '@/components/details/description';
-import PokemonEvolutionChain from '@/components/details/evolution-chain';
+import PokemonEvolutionChart from '@/components/details/evolution-chart';
 import PokemonSize from '@/components/details/size';
 import PokemonTypes from '@/components/details/types';
 import PokemonThumb from '@/components/thumb/thumb';
@@ -135,15 +135,16 @@ export default function PokemonDetails({
         <div className="flex">
           <div className="thumb flex flex-col items-start mr-4">
             <PokemonThumb pokemonData={pokemon} size="large" />
+            <hr className="border-solid border-2 border-foreground mt-4 w-full" />
             <PokemonTypes types={types} />
+            <PokemonCries pokemon={pokemon} />
           </div>
           <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
             <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
               {species && <PokemonDescription species={species} />}
               <PokemonSize pokemon={pokemon} />
               <PokemonAbilities pokemon={pokemon} />
-              <PokemonCries pokemon={pokemon} />
-              { evolutionChain && <PokemonEvolutionChain speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+              { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
             </div>
           </div>
         </div>

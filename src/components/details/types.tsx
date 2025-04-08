@@ -3,7 +3,7 @@ import { IType } from "pokeapi-typescript";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getTypeIcon = (type: any): string => {
-  return type['sprites']['generation-vi']['x-y'].name_icon;
+  return type['sprites']['generation-viii']['sword-shield'].name_icon;
 };
 
 export default function PokemonTypes({ types }: { types: IType[] }) {
@@ -12,10 +12,9 @@ export default function PokemonTypes({ types }: { types: IType[] }) {
       <Image
         key={i}
         src={getTypeIcon(type)}
+        width="100"
         height="20"
-        width="50"
         alt={type.name}
-        className="h-5"
       />
     ))}
   </div>);
