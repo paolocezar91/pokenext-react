@@ -1,12 +1,13 @@
 $size: 18rem;
 
 .pokemon-details {
-    background-color: #00000050;
+    background-color: var(--pokedex-screen);
     border-radius: 8px;
     font-size: 16px;
     color: #fff;
     overflow: auto;
-    max-height: 75vh;
+    max-height: 80vh;
+    height: 80vh;
     hr {
         border-top-width: 8px;
     }

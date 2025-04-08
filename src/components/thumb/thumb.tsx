@@ -46,10 +46,12 @@ function getTypeColor(type: string) {
 
 export default function PokemonThumb({
   pokemonData,
-  size = 'small'
+  shinyInput,
+  size = 'small',
 }: Readonly<{
   pokemonData: IPokemon,
-  size?: string
+  shinyInput?: boolean,
+  size?: string,
 }>) {
   const [pokemon, setPokemon] = useState<IPokemon | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
@@ -61,7 +63,6 @@ export default function PokemonThumb({
   const loading = <span className={`my-auto`}>Loading...</span>;
   const isTiny = size === 'tiny' && ['w-40 h-40', 'h-[160px]', 'mb-1', 'text-xs'];
   const isSmall = size === 'small' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
-  const isNormal = size !== 'tiny' && size !== 'small';
   const classes = isTiny || isSmall || ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
 
   const loaded = pokemon && (
@@ -100,11 +101,11 @@ export default function PokemonThumb({
     <Suspense>
       {pokemon ? loaded : loading}
       {
-        isNormal && <label className="w-full text-right mt-1" htmlFor="shiny">
-          Shiny <input
+        shinyInput && <label className="w-full text-right mt-1" htmlFor="shiny">
+          Shiny<input
             id="shiny"
             name="shiny"
-            className='mt-2 text-xs'
+            className="mt-2 ml-2 text-xs"
             type="checkbox"
             checked={shiny}
             onChange={()=> setShiny(!shiny)}

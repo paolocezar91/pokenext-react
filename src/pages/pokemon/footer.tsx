@@ -1,21 +1,21 @@
 import Link from "next/link";
 import { IPokemon } from "pokeapi-typescript";
 
-export default function PokemonControls({ pokemon }: { pokemon: IPokemon }) {
+export default function Footer({ pokemon }: { pokemon: IPokemon }) {
 
   const isLast = () => {
     return pokemon ? pokemon.id + 1 <= 1025: false;
   };
 
-  const greaterThanZero = () => {
+  const isFirst = () => {
     return pokemon ? pokemon.id - 1 > 0 : false;
   };
 
-  return (<div className="controls mt-6 flex justify-between">
+  return (<div className="controls ml-[-2rem] px-6 container fixed bottom-0 mb-6 flex justify-between">
     <div className="previous flex-1 text-left">
       <Link
         href={`/pokemon/${pokemon.id - 1}`}
-        className={`px-4 py-2 bg-transparent border-transparent  ${!greaterThanZero() ? 'disable-click' : 'hover:text-gray-800'}`}
+        className={`px-4 py-2 bg-transparent border-transparent  ${!isFirst() ? 'disable-click' : 'hover:text-gray-800'}`}
       >
         &laquo; Prev
       </Link>

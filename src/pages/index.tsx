@@ -15,8 +15,8 @@ const NUMBERS_OF_POKEMON = 25;
 const STARTING_POKEMON = 0;
 
 export const metadata: Metadata = {
-  title: "Next.js Pokédex Demo",
-  description: 'A React.js Demo for a 151 Pokemon Pokedex'
+  title: "Pokédex -- Next.js Demo",
+  description: 'A Next.js Demo for a 151 Pokemon Pokedex'
 };
 
 export async function getPokemonPage(offset: number, limit: number): Promise<IPkmn[]> {

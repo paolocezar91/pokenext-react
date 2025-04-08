@@ -44,8 +44,8 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
   );
   return (
     <div className="evolution-chain col-span-2 mt-2">
-      <h3 className="text-lg font-semibold mb-2">Evolution Chart</h3>
-      {!!speciesChain.loaded && <ul className="flex items-start">
+      <h3 className="text-lg font-semibold mb-4">- Evolution Chart -</h3>
+      {!!speciesChain.loaded && <ul className="flex items-start justify-arpund">
         {speciesChain.chain.first?.length &&
           <li>
             <Link className="flex-2" href={`/pokemon/${speciesChain.chain.first[0].name}`}>

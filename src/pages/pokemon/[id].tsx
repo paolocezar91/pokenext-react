@@ -6,22 +6,24 @@ import PokemonDescription from '@/components/details/description';
 import PokemonEvolutionChart from '@/components/details/evolution-chart';
 import PokemonSize from '@/components/details/size';
 import PokemonTypes from '@/components/details/types';
-import PokemonThumb from '@/components/thumb/thumb';
+import Spinner from '@/components/spinner/spinner';
+import PokemonThumb, { getNumber } from '@/components/thumb/thumb';
 import { GetStaticPropsContext } from 'next';
 import { useParams } from 'next/navigation';
 import PokeAPI, { IEvolutionChain, IPokemon, IPokemonSpecies, IPokemonType, IType } from 'pokeapi-typescript';
 import { useEffect, useState } from 'react';
 import './[id].scss';
-import PokemonControls from './controls';
-import Spinner from '@/components/spinner/spinner';
+import Footer from './footer';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
-  const pokemonData = await PokeAPI.Pokemon.resolve(id);
-
-  return {
-    props: { id, pokemonData }
-  };
+  try {
+    const pokemonData = await PokeAPI.Pokemon.resolve(id);
+    return { props: { id, pokemonData }};
+  } catch (error) {
+    console.log(error);
+    return { props: { redirect: true } };
+  }
 }
 
 export function capitilize(s: string) {
@@ -128,14 +130,15 @@ export default function PokemonDetails({
     setPokemonData();
   }, [currentId]);
 
+  const title = pokemon ? `Pokédex -- ${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : 'Loading...';
   return (
-    <RootLayout title={`Next.js Pokédex Demo - ${pokemon ? capitilize(pokemon.name) : 'Loading...'}`}>
+    <RootLayout title={title}>
       {!loaded && <Spinner />}
       {loaded && <div className="mx-auto p-4">
         <div className="flex">
           <div className="thumb flex flex-col items-start mr-4">
-            <PokemonThumb pokemonData={pokemon} size="large" />
-            <hr className="border-solid border-2 border-foreground mt-4 w-full" />
+            <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
+            <hr className="border-solid border-2 border-foreground mt-2 w-full" />
             <PokemonTypes types={types} />
             <PokemonCries pokemon={pokemon} />
           </div>
@@ -148,7 +151,7 @@ export default function PokemonDetails({
             </div>
           </div>
         </div>
-        <PokemonControls pokemon={pokemon} />
+        <Footer pokemon={pokemon} />
       </div>}
     </RootLayout>
   );
