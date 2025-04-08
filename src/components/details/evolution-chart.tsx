@@ -1,10 +1,13 @@
 'use server';
 import { SpeciesChain } from "@/app/types";
-import PokemonThumb from "../thumb/thumb";
-import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";
 import Link from "next/link";
+import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";
+import { useTranslation } from "react-i18next";
+import PokemonThumb from "../thumb/thumb";
 
 export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: { evolutionChain: IEvolutionChain, speciesChain: SpeciesChain }) {
+  const { t } = useTranslation('common');
+
   const kebabToCapitilize = (name: string) => {
     return name.replaceAll('-',' ');
   };
@@ -33,7 +36,7 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
               </span>
               <span className="font-bold text-xl">&mdash;&raquo;</span>
             </div>
-            <Link className="flex-2" href={`/pokemon/${pkmn.name}`}>
+            <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
               <PokemonThumb pokemonData={pkmn} size="tiny" />
             </Link>
           </li>
@@ -44,11 +47,11 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
   );
   return (
     <div className="evolution-chain col-span-2 mt-2">
-      <h3 className="text-lg font-semibold mb-4">- Evolution Chart -</h3>
+      <h3 className="text-lg font-semibold mb-4">- { t('pokedex.details.evolutionChart.title') } -</h3>
       {!!speciesChain.loaded && <ul className="flex items-start justify-arpund">
         {speciesChain.chain.first?.length &&
           <li>
-            <Link className="flex-2" href={`/pokemon/${speciesChain.chain.first[0].name}`}>
+            <Link className="flex-2" href={`/pokedex/${speciesChain.chain.first[0].name}`}>
               <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="tiny"/>
             </Link>
           </li>

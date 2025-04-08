@@ -1,0 +1,30 @@
+{
+    "pokedex": {
+        "pokedex": "Pokédex",
+        "loading": "Loading",
+        "details": {
+            "shiny": "Shiny",
+            "size": { 
+                "title": "Size",
+                "height": "Height",
+                "weight": "Weight"
+            },
+            "abilities": {
+                "title": "abilities"
+            },
+            "evolutionChart": {
+                "title": "Evolution Chart"
+            }
+        }
+    },
+    "actions": {
+        "next": "Next",
+        "prev": "Prev",
+        "backToList": "Back to List",
+        "search": "Search",
+        "go": {
+            "button": "Go",
+            "placeholder": "Name or number"
+        }
+    }
+}

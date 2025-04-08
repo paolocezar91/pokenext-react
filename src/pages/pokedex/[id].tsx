@@ -1,3 +1,6 @@
+'use client';
+
+import { fetchPokemon, fetchSpecies, fetchTypes } from '@/app/api';
 import RootLayout from '@/app/layout';
 import { SpeciesChain } from '@/app/types';
 import PokemonAbilities from '@/components/details/abilities';
@@ -9,20 +12,27 @@ import PokemonTypes from '@/components/details/types';
 import Spinner from '@/components/spinner/spinner';
 import PokemonThumb, { getNumber } from '@/components/thumb/thumb';
 import { GetStaticPropsContext } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useParams } from 'next/navigation';
-import PokeAPI, { IEvolutionChain, IPokemon, IPokemonSpecies, IPokemonType, IType } from 'pokeapi-typescript';
+import PokeAPI, { IEvolutionChain, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { useEffect, useState } from 'react';
 import './[id].scss';
-import Footer from './footer';
+import Footer from '../../components/footer';
+import { useTranslation } from 'react-i18next';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
     const pokemonData = await PokeAPI.Pokemon.resolve(id);
-    return { props: { id, pokemonData }};
+    return {
+      props: {
+        id,
+        pokemonData,
+        ...(await serverSideTranslations(context.locale || 'en', ['common']))
+      }
+    };
   } catch (error) {
     console.log(error);
-    return { props: { redirect: true } };
   }
 }
 
@@ -53,6 +63,8 @@ export default function PokemonDetails({
   const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
 
+  const { t } = useTranslation('common');
+
   const params = useParams();
   const currentId = id || params?.id;
 
@@ -65,16 +77,6 @@ export default function PokemonDetails({
       speciesChain.loaded = false;
       speciesChain.chain = {};
 
-      const fetchPokemon = async (id: string): Promise<IPokemon> => {
-        return await (await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)).json() as IPokemon;
-      };
-      const fetchSpecies = async (id: string): Promise<IPokemonSpecies> => {
-        return await (await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)).json() as IPokemonSpecies;
-      };
-      const fetchTypes = async (types: IPokemonType[]): Promise<IType[]> => {
-        const fetchType = async (id: string) => await (await fetch(`https://pokeapi.co/api/v2/type/${id}`)).json() as IType;
-        return Promise.all(types.map(type => fetchType(type.type.name)));
-      };
       const fetchEvolutionChain = async (species: IPokemonSpecies) => {
         const url = species.evolution_chain.url as string;
 
@@ -130,7 +132,8 @@ export default function PokemonDetails({
     setPokemonData();
   }, [currentId]);
 
-  const title = pokemon ? `Pokédex -- ${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : 'Loading...';
+  const title = pokemon ? `Pokedex -- ${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`;
+
   return (
     <RootLayout title={title}>
       {!loaded && <Spinner />}

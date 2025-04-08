@@ -21,7 +21,7 @@ export default function PokemonList({
       <div className="list relative flex justify-center flex-row flex-wrap p-4">
         {
           pokemons.map((pokemon, i) => {
-            return <Link href={`/pokemon/${pokemon.name}`} key={i} className="my-1 mx-1 link">
+            return <Link href={`/pokedex/${pokemon.name}`} key={i} className="my-1 mx-1 link">
               <PokemonThumb pokemonData={pokemon} />
             </Link>;
           })

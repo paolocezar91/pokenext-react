@@ -15,10 +15,10 @@ export default function RootLayout({
   return (
     <>
       <Head>
-        <title>{ String(title) }</title>
+        <title>{ title }</title>
       </Head>
       <div className="container mx-auto">
-        <Header title={ String(title) } />
+        <Header title={ title } />
         <main className="p-4">
           {children}
         </main>

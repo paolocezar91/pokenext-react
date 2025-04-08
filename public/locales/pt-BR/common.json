@@ -1,0 +1,30 @@
+{
+    "pokedex": {
+        "pokedex": "PokéAgenda",
+        "loading": "Carregando",
+        "details": {
+            "shiny": "Shiny",
+            "size": { 
+                "title": "Tamanho",
+                "height": "Altura",
+                "weight": "Peso"
+            },
+            "abilities": {
+                "title": "Habilidades"
+            },
+            "evolutionChart": {
+                "title": "Cadeia de Evoluçao"
+            }
+        }
+    },
+    "actions": {
+        "next": "Próximo",
+        "prev": "Anterior",
+        "backToList": "Voltar a lista",
+        "search": "Buscar",
+        "go": {
+            "button": "Ir",
+            "placeholder": "Nome ou numero"
+        }
+    }
+}

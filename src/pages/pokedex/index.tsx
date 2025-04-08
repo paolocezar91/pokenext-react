@@ -1,13 +1,14 @@
 'use client';
 
+import { fetchPokemonDataList, fetchPokemonList } from '@/app/api';
 import '@/app/globals.css';
 import RootLayout from '@/app/layout';
 import { IPkmn } from '@/app/types';
 import PokemonList from '@/components/list/list';
 import PokemonSearch from '@/components/list/search';
 import Spinner from '@/components/spinner/spinner';
-import { Metadata } from "next";
-import { INamedApiResourceList, IPokemon } from 'pokeapi-typescript';
+import { GetStaticPropsContext, Metadata } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
@@ -15,37 +16,29 @@ const NUMBERS_OF_POKEMON = 25;
 const STARTING_POKEMON = 0;
 
 export const metadata: Metadata = {
-  title: "Pokédex -- Next.js Demo",
+  title: `Pokédex -- Next.js Demo`,
   description: 'A Next.js Demo for a 151 Pokemon Pokedex'
 };
 
 export async function getPokemonPage(offset: number, limit: number): Promise<IPkmn[]> {
   try {
-    const pkmnListCall = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`);
-    const pkmnList = await pkmnListCall.json() as INamedApiResourceList<IPokemon>;
-    // const pkmnList = await PokeAPI.Pokemon.list(limit, offset);
-    const pokemonData = await Promise.all(
-      pkmnList.results.map(async (pkmn) => {
-        const pokemon = (await(await fetch(`https://pokeapi.co/api/v2/pokemon/${pkmn.name}/`)).json()) as IPokemon;
-        //const pokemon = await PokeAPI.Pokemon.fetch(pkmn.name);
-        return { name: pokemon.name, types: pokemon.types, id: pokemon.id, sprites: pokemon.sprites };
-      })
-    );
-
-    return pokemonData;
+    return await fetchPokemonDataList(await fetchPokemonList(limit, offset));
   } catch (error) {
     console.log(error);
     return [];
   }
 }
 
-export async function getStaticProps() {
+export async function getStaticProps({ locale }: GetStaticPropsContext) {
   return {
-    props: { pokemonsData: await getPokemonPage(STARTING_POKEMON, NUMBERS_OF_POKEMON) },
+    props: {
+      pokemonsData: await getPokemonPage(STARTING_POKEMON, NUMBERS_OF_POKEMON),
+      ...(await serverSideTranslations(locale || 'en', ['common']))
+    },
   };
 }
 
-export default function Main({ pokemonsData }: { pokemonsData: IPkmn[] }) {
+export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const { ref, inView } = useInView();
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
   const [pokemonsBackup, setPokemonsBackup] = useState<IPkmn[]>(pokemonsData);
@@ -87,8 +80,10 @@ export default function Main({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   if (!pokemons) return null;
 
+  const title = `Pokedex -- Next.js Demo`;
+
   return (
-    <RootLayout title={String(metadata.title)}>
+    <RootLayout title={title}>
       <PokemonSearch onFilter={filter}/>
       <PokemonList pokemons={pokemons} ref={ref} inView={inView} searched={filtered}/>
       {loading && <Spinner /> }

@@ -1,6 +1,17 @@
+import nextI18nextConfig from './next-i18next.config.js';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      // Basic redirect
+      {
+        source: '/',
+        destination: '/pokedex',
+        permanent: true,
+      },
+    ];
+  },
   /* config options here */
   images: {
     remotePatterns: [
@@ -19,6 +30,7 @@ const nextConfig: NextConfig = {
     // number of pages that should be kept simultaneously without being disposed
     pagesBufferLength: 1,
   },
+  i18n: nextI18nextConfig.i18n
 };
 
 export default nextConfig;
