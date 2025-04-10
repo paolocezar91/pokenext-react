@@ -7,8 +7,7 @@ import { IPkmn } from '@/app/types';
 import PokemonList from '@/components/list/list';
 import PokemonSearch from '@/components/list/search';
 import Spinner from '@/components/spinner/spinner';
-import { GetStaticPropsContext, Metadata } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 

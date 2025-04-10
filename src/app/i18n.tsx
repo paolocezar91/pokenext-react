@@ -1,8 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from "i18next-http-backend";
-import enUS from "../../public/locales/en/common.json";
-import ptBR from "../../public/locales/pt/common.json";
+import enUS from "../../public/locales/en-US/common.json";
+import ptBR from "../../public/locales/pt-BR/common.json";
 
 const resources = {
   'en-US': {

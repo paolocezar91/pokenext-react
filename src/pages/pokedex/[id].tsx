@@ -12,13 +12,12 @@ import PokemonTypes from '@/components/details/types';
 import Spinner from '@/components/spinner/spinner';
 import PokemonThumb, { getNumber } from '@/components/thumb/thumb';
 import { GetStaticPropsContext } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useParams } from 'next/navigation';
 import PokeAPI, { IEvolutionChain, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
-import { useEffect, useState } from 'react';
-import './[id].scss';
-import Controls from '../../components/controls';
+import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import Controls from '../../components/controls';
+import './[id].scss';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
@@ -134,25 +133,27 @@ export default function PokemonDetails({
   return (
     <RootLayout title={pokemon ? `Pokedex -- ${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`}>
       {!loaded && <Spinner />}
-      {loaded && <div className="mx-auto p-4">
-        <div className="flex">
-          <div className="thumb flex flex-col items-start mr-4">
-            <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
-            <hr className="border-solid border-2 border-foreground mt-2 w-full" />
-            <PokemonTypes types={types} />
-            <PokemonCries pokemon={pokemon} />
-          </div>
-          <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
-            <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
-              {species && <PokemonDescription species={species} />}
-              <PokemonSize pokemon={pokemon} />
-              <PokemonAbilities pokemon={pokemon} />
-              { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+      <Suspense>
+        {<div className="mx-auto p-4">
+          <div className="flex">
+            <div className="thumb flex flex-col items-start mr-4">
+              <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
+              <hr className="border-solid border-2 border-foreground mt-2 w-full" />
+              <PokemonTypes types={types} />
+              <PokemonCries pokemon={pokemon} />
+            </div>
+            <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
+              <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
+                {species && <PokemonDescription species={species} />}
+                <PokemonSize pokemon={pokemon} />
+                <PokemonAbilities pokemon={pokemon} />
+                { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+              </div>
             </div>
           </div>
-        </div>
-        <Controls pokemon={pokemon} />
-      </div>}
+          <Controls pokemon={pokemon} />
+        </div>}
+      </Suspense>
     </RootLayout>
   );
 }
