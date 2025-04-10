@@ -2,7 +2,7 @@ import { IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 
 export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   return (<div className="pokemon-abilities mt-2">
     <h3 className="text-lg font-semibold mb-4">- { t('pokedex.details.abilities.title') } -</h3>

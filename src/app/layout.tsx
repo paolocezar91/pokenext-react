@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import Head from "next/head";
 import Header from "../components/header/header";
 import "./layout.scss";
+import Footer from "@/components/footer";
 
 export default function RootLayout({
   children,
@@ -22,6 +23,7 @@ export default function RootLayout({
         <main className="p-4">
           {children}
         </main>
+        <Footer />
       </div>
     </>
   );

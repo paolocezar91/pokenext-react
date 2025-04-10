@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import PokemonThumb from "../thumb/thumb";
 
 export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: { evolutionChain: IEvolutionChain, speciesChain: SpeciesChain }) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const kebabToCapitilize = (name: string) => {
     return name.replaceAll('-',' ');

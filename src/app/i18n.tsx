@@ -1,35 +1,32 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import Backend from "i18next-http-backend";
-import LanguageDetector from "i18next-browser-languagedetector";
-import translationEN from "../../public/locales/en-US/common.json";
-import translationPTBR from "../../public/locales/pt-BR/common.json";
+import enUS from "../../public/locales/en/common.json";
+import ptBR from "../../public/locales/pt/common.json";
 
 const resources = {
   'en-US': {
-    translation: translationEN
+    common: enUS
   },
   'pt-BR': {
-    translation: translationPTBR
+    common: ptBR
   }
 };
 
 function initI18nProd() {
-  i18n
-    .use(Backend)
-    .use(LanguageDetector)
-  // pass the i18n instance to react-i18next.
-    .use(initReactI18next)
-  // init i18next
-  // for all options read: https://www.i18next.com/overview/configuration-options
-    .init({
-      fallbackLng: 'en-US',
-      resources,
-      debug: true,
-      interpolation: {
-        escapeValue: false, // not needed for react as it escapes by default
-      }
-    });
+  if(!i18n.isInitialized)
+    i18n
+      .use(Backend)
+      .use(initReactI18next)
+      .init({
+        fallbackLng: 'en-US',
+        defaultNS: 'common',
+        resources,
+        debug: true,
+        interpolation: {
+          escapeValue: false
+        }
+      });
 }
 
 export default initI18nProd;

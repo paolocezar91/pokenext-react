@@ -7,13 +7,13 @@ import { useTranslation } from "react-i18next";
 
 export default function Header({ title }: Readonly<{ title: string }>) {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const goTo = ((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const idx = (event.currentTarget[0] as HTMLInputElement).value;
     if(!!idx) {
-      router.push(`/pokemon/${idx}`);
+      router.push(`/pokedex/${idx}`);
     }
   });
 

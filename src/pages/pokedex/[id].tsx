@@ -17,7 +17,7 @@ import { useParams } from 'next/navigation';
 import PokeAPI, { IEvolutionChain, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { useEffect, useState } from 'react';
 import './[id].scss';
-import Footer from '../../components/footer';
+import Controls from '../../components/controls';
 import { useTranslation } from 'react-i18next';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
@@ -28,11 +28,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       props: {
         id,
         pokemonData,
-        ...(await serverSideTranslations(context.locale || 'en', ['common']))
       }
     };
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -63,7 +62,7 @@ export default function PokemonDetails({
   const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
 
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const params = useParams();
   const currentId = id || params?.id;
@@ -152,7 +151,7 @@ export default function PokemonDetails({
             </div>
           </div>
         </div>
-        <Footer pokemon={pokemon} />
+        <Controls pokemon={pokemon} />
       </div>}
     </RootLayout>
   );

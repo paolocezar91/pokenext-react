@@ -3,7 +3,7 @@ import './list.scss';
 import { ChangeEvent, useState } from 'react';
 
 export default function PokemonFilter({ onFilter }: { onFilter: (_: string) => void }) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   const [filterText, setFilterText] = useState('');
 

@@ -24,16 +24,15 @@ export async function getPokemonPage(offset: number, limit: number): Promise<IPk
   try {
     return await fetchPokemonDataList(await fetchPokemonList(limit, offset));
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 }
 
-export async function getStaticProps({ locale = 'en' }: GetStaticPropsContext) {
+export async function getStaticProps() {
   return {
     props: {
       pokemonsData: await getPokemonPage(STARTING_POKEMON, NUMBERS_OF_POKEMON),
-      ...(await serverSideTranslations(locale, ['common']))
     },
   };
 }
