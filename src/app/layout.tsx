@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import Head from "next/head";
 import Header from "../components/header/header";
 import "./layout.scss";
+import Footer from "@/components/footer";
 
 export default function RootLayout({
   children,
@@ -12,16 +13,20 @@ export default function RootLayout({
   children: React.ReactNode;
   title: string
 }>) {
+
+  title = 'Pokédex -- ' + title;
+
   return (
     <>
       <Head>
-        <title>{ String(title) }</title>
+        <title>{ title }</title>
       </Head>
       <div className="container mx-auto">
-        <Header title={ String(title) } />
+        <Header title={ title } />
         <main className="p-4">
           {children}
         </main>
+        <Footer />
       </div>
     </>
   );

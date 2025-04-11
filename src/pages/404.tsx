@@ -2,23 +2,30 @@
 
 import RootLayout from "@/app/layout";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
-export default function Custom404() {
+export default function NotFound() {
+  const [seconds, setSeconds] = useState<number>(3);
   const router = useRouter();
-  let seconds = 3;
 
-  function startTimer(duration: number) {
-    let timer = duration;
-    setInterval(function () {
-      seconds = timer % 60;
+  const goTo = () => {
+    router.push('/pokedex');
+  };
 
-      if (--timer < 0) {
-        router.push('/');
-      }
-    }, 1000);
-  }
+  useEffect(() => {
+    const startTimer = (duration: number) => {
+      let timer = duration;
+      const interval = setInterval(() => {
+        setSeconds(timer % 60);
 
-  startTimer(3);
+        if (--timer < 0) {
+          clearInterval(interval);
+          goTo();
+        }
+      }, 1000);
+    };
+    startTimer(3);
+  }, []);
 
   const title = '404 - Page Not Found';
 
@@ -26,7 +33,7 @@ export default function Custom404() {
     <RootLayout title={title}>
       <div>
         <h1>{title}</h1>
-        <p>You will be redirected in {seconds}</p>
+        <p>You will be redirected in {seconds} seconds</p>
       </div>
     </RootLayout>
   );

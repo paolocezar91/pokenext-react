@@ -6,8 +6,8 @@ $size: 18rem;
     font-size: 16px;
     color: #fff;
     overflow: auto;
-    max-height: 80vh;
-    height: 80vh;
+    max-height: 70vh;
+    height: 70vh;
     hr {
         border-top-width: 8px;
     }
@@ -19,7 +19,6 @@ $size: 18rem;
 
 .controls {
     a {
-        color: #fff;
         &.disable-click{
             pointer-events: none;
             text-decoration: none;

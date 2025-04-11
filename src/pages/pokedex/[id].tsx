@@ -1,28 +1,38 @@
+'use client';
+
+import { fetchEvolutionChain, fetchPokemon, fetchSpecies, fetchTypes } from '@/app/api';
 import RootLayout from '@/app/layout';
 import { SpeciesChain } from '@/app/types';
 import PokemonAbilities from '@/components/details/abilities';
 import PokemonCries from '@/components/details/cries';
 import PokemonDescription from '@/components/details/description';
-import PokemonEvolutionChart from '@/components/details/evolution-chart';
+import PokemonEvolutionChart from '@/components/details/evolution-chart/evolution-chart';
 import PokemonSize from '@/components/details/size';
 import PokemonTypes from '@/components/details/types';
 import Spinner from '@/components/spinner/spinner';
 import PokemonThumb, { getNumber } from '@/components/thumb/thumb';
 import { GetStaticPropsContext } from 'next';
 import { useParams } from 'next/navigation';
-import PokeAPI, { IEvolutionChain, IPokemon, IPokemonSpecies, IPokemonType, IType } from 'pokeapi-typescript';
-import { useEffect, useState } from 'react';
+import PokeAPI, { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
+import { Suspense, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Controls from '../../components/controls';
 import './[id].scss';
-import Footer from './footer';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
     const pokemonData = await PokeAPI.Pokemon.resolve(id);
-    return { props: { id, pokemonData }};
+    const previousAndAfter = await(PokeAPI.Pokemon.list(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0));
+    return {
+      props: {
+        id: pokemonData.id,
+        pokemonData,
+        previousAndAfter
+      }
+    };
   } catch (error) {
-    console.log(error);
-    return { props: { redirect: true } };
+    console.error(error);
   }
 }
 
@@ -31,7 +41,7 @@ export function capitilize(s: string) {
 }
 
 export function getStaticPaths() {
-  const ids = Array.from({length: 151}, (_, i) => String(i + 1));
+  const ids = Array.from({length: 1025}, (_, i) => String(i + 1));
 
   return {
     paths: ids.map(id => ({ params: { id } })),
@@ -41,10 +51,12 @@ export function getStaticPaths() {
 
 export default function PokemonDetails({
   id,
-  pokemonData
+  pokemonData,
+  previousAndAfter
 }: {
   id: string,
-  pokemonData: IPokemon
+  pokemonData: IPokemon,
+  previousAndAfter: INamedApiResourceList<IPokemon>
 }) {
   const [pokemon, setPokemon] = useState<IPokemon>(pokemonData);
   const [speciesChain, setSpeciesChain] = useState<SpeciesChain>({ loaded: false, chain: {}});
@@ -52,6 +64,8 @@ export default function PokemonDetails({
   const [types, setTypes] = useState<IType[]>([]);
   const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
+
+  const { t } = useTranslation();
 
   const params = useParams();
   const currentId = id || params?.id;
@@ -64,26 +78,6 @@ export default function PokemonDetails({
 
       speciesChain.loaded = false;
       speciesChain.chain = {};
-
-      const fetchPokemon = async (id: string): Promise<IPokemon> => {
-        return await (await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)).json() as IPokemon;
-      };
-      const fetchSpecies = async (id: string): Promise<IPokemonSpecies> => {
-        return await (await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`)).json() as IPokemonSpecies;
-      };
-      const fetchTypes = async (types: IPokemonType[]): Promise<IType[]> => {
-        const fetchType = async (id: string) => await (await fetch(`https://pokeapi.co/api/v2/type/${id}`)).json() as IType;
-        return Promise.all(types.map(type => fetchType(type.type.name)));
-      };
-      const fetchEvolutionChain = async (species: IPokemonSpecies) => {
-        const url = species.evolution_chain.url as string;
-
-        try {
-          return await (await fetch(url)).json();
-        } catch (error) {
-          console.error(error);
-        }
-      };
 
       const getPokemonMetadata = async () => {
         const [speciesData, typesData] = await Promise.all([
@@ -130,29 +124,30 @@ export default function PokemonDetails({
     setPokemonData();
   }, [currentId]);
 
-  const title = pokemon ? `Pokédex -- ${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : 'Loading...';
   return (
-    <RootLayout title={title}>
+    <RootLayout title={pokemon ? `${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`}>
       {!loaded && <Spinner />}
-      {loaded && <div className="mx-auto p-4">
-        <div className="flex">
-          <div className="thumb flex flex-col items-start mr-4">
-            <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
-            <hr className="border-solid border-2 border-foreground mt-2 w-full" />
-            <PokemonTypes types={types} />
-            <PokemonCries pokemon={pokemon} />
-          </div>
-          <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
-            <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
-              {species && <PokemonDescription species={species} />}
-              <PokemonSize pokemon={pokemon} />
-              <PokemonAbilities pokemon={pokemon} />
-              { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+      <Suspense>
+        {loaded && <div className="mx-auto p-4">
+          <div className="flex">
+            <div className="thumb flex flex-col items-start mr-4">
+              <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
+              <hr className="border-solid border-2 border-white mt-2 w-full" />
+              <PokemonTypes types={types} />
+              <PokemonCries pokemon={pokemon} />
+            </div>
+            <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
+              <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
+                {species && <PokemonDescription species={species} />}
+                <PokemonSize pokemon={pokemon} />
+                <PokemonAbilities pokemon={pokemon} />
+                { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+              </div>
             </div>
           </div>
-        </div>
-        <Footer pokemon={pokemon} />
-      </div>}
+          <Controls pokemon={pokemon} previousAndAfter={previousAndAfter} />
+        </div>}
+      </Suspense>
     </RootLayout>
   );
 }

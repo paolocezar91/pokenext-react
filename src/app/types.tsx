@@ -4,6 +4,7 @@ export type IPkmn = {
     name: string;
     types: IPokemonType[]
     id: number;
+    sprites: unknown;
 }
 
 export type SpeciesChain = {

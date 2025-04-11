@@ -1,3 +1,14 @@
+.loading {
+    z-index:0;
+    position: relative;
+    border-radius: 24px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
+    background-color: var(--pokedex-red);
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    display: block;
+}
 .pokemon {
     z-index:0;
     position: relative;
@@ -11,6 +22,16 @@
         position: absolute;
         border-radius: 100%;
         transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg) rotateZ(0) translateX(0) translateY(32px) translateZ(0) skewX(0) skewY(0);
+    }
+    &.small {
+        .pokemon-shadow {
+            transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg) rotateZ(0) translateX(0) translateY(11px) translateZ(0) skewX(0) skewY(0);
+        }
+    }
+    &.tiny {
+        .pokemon-shadow {
+            transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg) rotateZ(0) translateX(0) translateY(-10px) translateZ(0) skewX(0) skewY(0);
+        }
     }
     .name, .id {
         text-align: center;

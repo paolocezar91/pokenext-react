@@ -1,0 +1,34 @@
+{
+    "pokedex": {
+        "pokedex": "Pokédex",
+        "loading": "Loading",
+        "details": {
+            "shiny": "Shiny",
+            "size": { 
+                "title": "Size",
+                "height": "Height",
+                "weight": "Weight"
+            },
+            "abilities": {
+                "title": "Abilities"
+            },
+            "evolutionChart": {
+                "title": "Evolution Chart"
+            }
+        }
+    },
+    "footer": {
+        "languages": "Languages"
+    },
+    "actions": {
+        "next": "Next",
+        "prev": "Prev",
+        "backToList": "Back to List",
+        "go": {
+            "placeholder": "Search",
+            "tooltip": "Try '25' or 'Pikachu'...",
+            "button": "Go"
+        },
+        "filter": "Filter"
+    }
+}

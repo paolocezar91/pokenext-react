@@ -1,0 +1,34 @@
+{
+    "pokedex": {
+        "pokedex": "PokéAgenda",
+        "loading": "Carregando",
+        "details": {
+            "shiny": "Shiny",
+            "size": { 
+                "title": "Tamanho",
+                "height": "Altura",
+                "weight": "Peso"
+            },
+            "abilities": {
+                "title": "Habilidades"
+            },
+            "evolutionChart": {
+                "title": "Cadeia de Evoluçao"
+            }
+        }
+    },
+    "footer": {
+        "languages": "Linguas"
+    },
+    "actions": {
+        "next": "Próximo",
+        "prev": "Anterior",
+        "backToList": "Voltar a lista",
+        "go": {
+            "placeholder": "Buscar",
+            "tooltip": "Tente '25' ou 'Pikachu'...",
+            "button": "Vai"
+        },
+        "filter": "Filtrar"
+    }
+}
