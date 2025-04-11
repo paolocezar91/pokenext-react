@@ -12,7 +12,7 @@ import { ArrowDownRight, ArrowRight } from "@deemlol/next-icons";
 import { capitilize } from "@/pages/pokedex/[id]";
 import Tooltip from "@/components/tooltip/tooltip";
 
-export const kebabToCapitilize = (name: string) => {
+export const kebabToSpace = (name: string) => {
   return name.replaceAll('-',' ');
 };
 
@@ -26,13 +26,13 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
           const evolution_details = evolves_to[idx].evolution_details[0];
           return <li className="mb-2 items-center flex text-xs" key={idx}>
             <div className="flex flex-col items-center flex-1 mx-3">
-              <span className="flex text-center">
+              {evolution_details && <span className="flex text-center">
                 <PokemonEvolutionLevel evolution_details={evolution_details} />
                 <PokemonEvolutionItem evolution_details={evolution_details} />
                 <PokemonEvolutionLocation evolution_details={evolution_details} />
                 <PokemonEvolutionHappiness evolution_details={evolution_details} />
                 <PokemonEvolutionTrade evolution_details={evolution_details} />
-              </span>
+              </span>}
               <span className="font-bold text-xl">{idx === 0 ? <ArrowRight /> : <ArrowDownRight />}</span>
             </div>
             <Tooltip content={`${capitilize(pkmn.name)} - #${getNumber(pkmn.id - 1)}`}>
@@ -48,7 +48,7 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
   );
   return (
     <div className="evolution-chain col-span-2 mt-2">
-      <h3 className="text-lg font-semibold mb-4">- { t('pokedex.details.evolutionChart.title') } -</h3>
+      <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.evolutionChart.title') }</h3>
       {!!speciesChain.loaded && <ul className="flex items-start justify-center">
         {speciesChain.chain.first?.length &&
           <li>

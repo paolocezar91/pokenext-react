@@ -13,7 +13,7 @@ export default function PokemonList({
 }>) {
   return (
     <div className="list-container">
-      <div className="list relative flex justify-center flex-row flex-wrap p-4">
+      <div className="list relative flex justify-center flex-row flex-wrap p-4 rounded-b-lg">
         {
           pokemons.map((pokemon, i) => {
             return <Link href={`/pokedex/${pokemon.name}`} key={i} className="my-1 mx-1 link">

@@ -7,6 +7,7 @@ import PokemonAbilities from '@/components/details/abilities';
 import PokemonCries from '@/components/details/cries';
 import PokemonDescription from '@/components/details/description';
 import PokemonEvolutionChart from '@/components/details/evolution-chart/evolution-chart';
+import PokemonStats from '@/components/details/stats';
 import PokemonSize from '@/components/details/size';
 import PokemonTypes from '@/components/details/types';
 import Spinner from '@/components/spinner/spinner';
@@ -58,14 +59,13 @@ export default function PokemonDetails({
   pokemonData: IPokemon,
   previousAndAfter: INamedApiResourceList<IPokemon>
 }) {
-  console.log(pokemonData);
-
   const [pokemon, setPokemon] = useState<IPokemon>(pokemonData);
   const [speciesChain, setSpeciesChain] = useState<SpeciesChain>({ loaded: false, chain: {}});
   const [species, setSpecies] = useState<IPokemonSpecies | null>(null);
   const [types, setTypes] = useState<IType[]>([]);
   const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
+  console.log(previousAndAfter);
 
   const { t } = useTranslation();
 
@@ -131,18 +131,19 @@ export default function PokemonDetails({
       {!loaded && <Spinner />}
       <Suspense>
         {loaded && <div className="mx-auto p-4">
-          <div className="flex">
-            <div className="thumb flex flex-col items-start mr-4">
+          <div className="flex sm:flex-col md:flex-row">
+            <div className="thumb flex flex-col md:items-start mr-4 sm:self-center md:self-start">
               <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
-              <hr className="border-solid border-2 border-white mt-2 w-full" />
+              <hr className="border-solid border-2 border-(--pokedex-red-light) mt-2 w-full" />
               <PokemonTypes types={types} />
               <PokemonCries pokemon={pokemon} />
             </div>
-            <div className="pokemon-details sm:mb-4 p-6 bg-white rounded-lg shadow-md">
+            <div className="pokemon-details sm:mt-4 sm:mb-4 md:mt-0 p-6 bg-white rounded-lg shadow-md">
               <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
                 {species && <PokemonDescription species={species} />}
                 <PokemonSize pokemon={pokemon} />
                 <PokemonAbilities pokemon={pokemon} />
+                <PokemonStats pokemon={pokemon} />
                 { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
               </div>
             </div>

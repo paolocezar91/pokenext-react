@@ -14,10 +14,16 @@
             },
             "evolutionChart": {
                 "title": "Cadeia de Evoluçao"
+            },
+            "stats": {
+                "title": "Estatísticas Base"
             }
         },
         "listOrTable": "List or Table view"
-
+    },
+    "table": {
+        "name": "Nome",
+        "types": "Tipo(s)"
     },
     "footer": {
         "languages": "Línguas"
@@ -25,6 +31,7 @@
     "actions": {
         "next": "Próximo",
         "prev": "Anterior",
+        "back": "Voltar",
         "backToList": "Voltar a lista",
         "go": {
             "placeholder": "Buscar...",

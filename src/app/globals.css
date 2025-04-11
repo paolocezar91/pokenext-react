@@ -8,9 +8,8 @@
 
 :root {
   --background: #171717;
+  --pokedex-red-light: #f7bfb7;
   --pokedex-red: #dc0a2d;
-  --header-bg: #b00824;
-  --pokedex-screen: #77081a;
   --pokedex-blue-light: #a9d3f5;
   --pokedex-blue: #509bfb;
   --pokedex-blue-dark: #156da1;

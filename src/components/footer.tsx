@@ -11,7 +11,7 @@ export default function Footer() {
     i18n.changeLanguage(e.target.value);
   };
 
-  return (<div className="footer px-6 container fixed bottom-0 mb-6 flex justify-between border-solid border-t-4 border-white">
+  return (<div className="footer px-6  container fixed bottom-0 pb-6 flex justify-between border-solid border-t-4 border-(--pokedex-red-light) bg-(--pokedex-red)">
     <div className="next flex-1 pt-4 text-right">
       <Tooltip content={t('footer.languages')}>
         <select

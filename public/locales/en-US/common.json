@@ -14,9 +14,16 @@
             },
             "evolutionChart": {
                 "title": "Evolution Chart"
+            },
+            "stats": {
+                "title": "Base Stats"
             }
         },
         "listOrTable": "List or Table view"
+    },
+    "table": {
+        "name": "Name",
+        "types": "Type(s)"
     },
     "footer": {
         "languages": "Languages"
@@ -24,6 +31,7 @@
     "actions": {
         "next": "Next",
         "prev": "Prev",
+        "back": "Back",
         "backToList": "Back to List",
         "go": {
             "placeholder": "Search...",

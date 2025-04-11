@@ -25,7 +25,7 @@ export default function Controls({
     return pokemon ? pokemon.id - 1 > 0 : false;
   };
 
-  return (<div className="controls ml-[-2rem] px-8 container fixed bottom-15 mb-6 flex justify-between pb-2">
+  return (<div className="controls ml-[-2rem] px-8 container fixed bottom-15 pt-2 pb-6 flex justify-between pb-2">
     <div className="previous flex-1 text-left">
       <Tooltip
         content={`${capitilize(previousAndAfter.results[0].name)} - #${getNumber(pokemon.id - 1)}`}
@@ -33,9 +33,9 @@ export default function Controls({
       >
         <Link
           href={`/pokedex/${previousAndAfter.results[0].name}`}
-          className={`px-4 py-2 bg-transparent border-transparent  ${!isFirst() ? 'disable-click' : 'hover:text-gray-800'}`}
+          className={`flex px-2 py-2 bg-transparent border-transparent rounded  ${!isFirst() ? 'disable-click' : 'hover:bg-(--pokedex-red) hover:text-gray-800'}`}
         >
-          <ChevronLeft2 className="inline" /> { t('actions.prev') }
+          <ChevronLeft2 className="inline mr-2" /> { t('actions.prev') }
         </Link>
       </Tooltip>
     </div>
@@ -43,9 +43,9 @@ export default function Controls({
       <Tooltip content={t('actions.backToList')}>
         <Link
           href='/pokedex/'
-          className="px-4 py-2 bg-transparent border-transparent hover:text-gray-800"
+          className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red)"
         >
-          <List className="inline" /> { t('actions.backToList') }
+          <List className="inline mr-2" /> { t('actions.back') }
         </Link>
       </Tooltip>
     </div>
@@ -56,9 +56,9 @@ export default function Controls({
       >
         <Link
           href={`/pokedex/${previousAndAfter.results[2].name}`}
-          className={`px-4 py-2 bg-transparent border-transparent  ${!isLast() ? 'disable-click' : 'hover:text-gray-800'}`}
+          className={`flex px-2 py-2 bg-transparent border-transparent rounded ${!isLast() ? 'disable-click' : 'hover:bg-(--pokedex-red) hover:text-gray-800'}`}
         >
-          { t('actions.next') } <ChevronRight2 className="inline" />
+          { t('actions.next') } <ChevronRight2 className="inline ml-2" />
         </Link>
       </Tooltip>
     </div>

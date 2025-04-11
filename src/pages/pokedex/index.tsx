@@ -87,7 +87,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   return (
     <RootLayout title="Next.js Demo">
-      <div className="flex items-center my-3">
+      <div className="flex items-center bg-(--pokedex-red) p-4 w-[45%] border-b-2 border-solid border-black rounded-t-lg">
         <PokemonFilter onFilter={filter} />
         <div className="flex ml-4">
           <Tooltip content={t('pokedex.listOrTable')}>
