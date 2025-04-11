@@ -15,20 +15,25 @@
             "evolutionChart": {
                 "title": "Cadeia de Evoluçao"
             }
-        }
+        },
+        "listOrTable": "List or Table view"
+
     },
     "footer": {
-        "languages": "Linguas"
+        "languages": "Línguas"
     },
     "actions": {
         "next": "Próximo",
         "prev": "Anterior",
         "backToList": "Voltar a lista",
         "go": {
-            "placeholder": "Buscar",
+            "placeholder": "Buscar...",
             "tooltip": "Tente '25' ou 'Pikachu'...",
             "button": "Vai"
         },
-        "filter": "Filtrar"
+        "filter": {
+            "placeholder": "Filtrar por nome ou tipo...",
+            "tooltip": "Tente 'Bulbasaur' ou 'grass'"
+        }
     }
 }

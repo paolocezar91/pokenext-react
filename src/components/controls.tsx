@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import Tooltip from "./tooltip/tooltip";
 import { capitilize } from "@/pages/pokedex/[id]";
 import { getNumber } from "./thumb/thumb";
+import { ChevronRight2, ChevronLeft2, List } from "@deemlol/next-icons";
+
+
 
 export default function Controls({
   pokemon,
@@ -32,7 +35,7 @@ export default function Controls({
           href={`/pokedex/${previousAndAfter.results[0].name}`}
           className={`px-4 py-2 bg-transparent border-transparent  ${!isFirst() ? 'disable-click' : 'hover:text-gray-800'}`}
         >
-        &laquo; { t('actions.prev') }
+          <ChevronLeft2 className="inline" /> { t('actions.prev') }
         </Link>
       </Tooltip>
     </div>
@@ -42,7 +45,7 @@ export default function Controls({
           href='/pokedex/'
           className="px-4 py-2 bg-transparent border-transparent hover:text-gray-800"
         >
-          { t('actions.backToList') }
+          <List className="inline" /> { t('actions.backToList') }
         </Link>
       </Tooltip>
     </div>
@@ -55,7 +58,7 @@ export default function Controls({
           href={`/pokedex/${previousAndAfter.results[2].name}`}
           className={`px-4 py-2 bg-transparent border-transparent  ${!isLast() ? 'disable-click' : 'hover:text-gray-800'}`}
         >
-          { t('actions.next') } &raquo;
+          { t('actions.next') } <ChevronRight2 className="inline" />
         </Link>
       </Tooltip>
     </div>

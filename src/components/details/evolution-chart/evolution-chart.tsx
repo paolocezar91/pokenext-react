@@ -2,12 +2,15 @@ import { SpeciesChain } from "@/app/types";
 import Link from "next/link";
 import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
-import PokemonThumb from "../../thumb/thumb";
+import PokemonThumb, { getNumber } from "../../thumb/thumb";
 import PokemonEvolutionTrade from "./trade";
 import PokemonEvolutionItem from "./item";
 import PokemonEvolutionLocation from "./location";
 import PokemonEvolutionLevel from "./lvl";
 import PokemonEvolutionHappiness from "./happiness";
+import { ArrowDownRight, ArrowRight } from "@deemlol/next-icons";
+import { capitilize } from "@/pages/pokedex/[id]";
+import Tooltip from "@/components/tooltip/tooltip";
 
 export const kebabToCapitilize = (name: string) => {
   return name.replaceAll('-',' ');
@@ -30,11 +33,13 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
                 <PokemonEvolutionHappiness evolution_details={evolution_details} />
                 <PokemonEvolutionTrade evolution_details={evolution_details} />
               </span>
-              <span className="font-bold text-xl">&mdash;&raquo;</span>
+              <span className="font-bold text-xl">{idx === 0 ? <ArrowRight /> : <ArrowDownRight />}</span>
             </div>
-            <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
-              <PokemonThumb pokemonData={pkmn} size="tiny" />
-            </Link>
+            <Tooltip content={`${capitilize(pkmn.name)} - #${getNumber(pkmn.id - 1)}`}>
+              <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
+                <PokemonThumb pokemonData={pkmn} size="tiny" title={false} />
+              </Link>
+            </Tooltip>
           </li>
           ;
         })
@@ -44,12 +49,14 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
   return (
     <div className="evolution-chain col-span-2 mt-2">
       <h3 className="text-lg font-semibold mb-4">- { t('pokedex.details.evolutionChart.title') } -</h3>
-      {!!speciesChain.loaded && <ul className="flex items-start justify-arpund">
+      {!!speciesChain.loaded && <ul className="flex items-start justify-center">
         {speciesChain.chain.first?.length &&
           <li>
-            <Link className="flex-2" href={`/pokedex/${speciesChain.chain.first[0].name}`}>
-              <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="tiny"/>
-            </Link>
+            <Tooltip content={`${capitilize(speciesChain.chain.first[0].name)} - #${getNumber(speciesChain.chain.first[0].id - 1)}`}>
+              <Link className="flex-2" href={`/pokedex/${speciesChain.chain.first[0].name}`}>
+                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="tiny" title={false}/>
+              </Link>
+            </Tooltip>
           </li>
         }
         {!!speciesChain.chain.second?.length && <li>{chainColumn(speciesChain.chain.second, evolutionChain.chain.evolves_to)}</li>}

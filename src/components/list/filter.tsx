@@ -1,6 +1,7 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './list.scss';
+import Tooltip from '../tooltip/tooltip';
 
 export default function PokemonFilter({ onFilter }: { onFilter: (_: string) => void }) {
   const { t } = useTranslation();
@@ -16,12 +17,14 @@ export default function PokemonFilter({ onFilter }: { onFilter: (_: string) => v
   };
 
   return (
-    <input
-      value={filterText}
-      name="filter"
-      className="w-full text-sm bg-white rounded-lg border-2 border-[#212529] text-[#212529] p-2 my-3"
-      type="text"
-      placeholder={t("actions.filter")}
-      onChange={handleFilter} />
+    <Tooltip content={t("actions.filter.tooltip")}>
+      <input
+        value={filterText}
+        name="filter"
+        className="w-100 text-sm bg-white rounded-lg border-2 border-[#212529] text-[#212529] p-2"
+        type="text"
+        placeholder={t("actions.filter.placeholder")}
+        onChange={handleFilter} />
+    </Tooltip>
   );
 }

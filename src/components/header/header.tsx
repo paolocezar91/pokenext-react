@@ -39,7 +39,7 @@ export default function Header({ title }: Readonly<{ title: string }>) {
           <Tooltip position="bottom" content={t('actions.go.tooltip')}>
             <form onSubmit={goTo}>
               <input placeholder={t('actions.go.placeholder')} type="text" className="lg:w-60 md:w-20  ml-2 py-1 text-black placeholder-gray-500 text-xs" />
-              <button type="submit" className="px-2 text-sm text-white bg-(--pokedex-blue) py-1">{ t("actions.go.button") }!</button>
+              <button type="submit" className="px-2 text-sm text-white bg-(--pokedex-blue) hover:bg-(--pokedex-blue-dark) py-1">{ t("actions.go.button") }!</button>
             </form>
           </Tooltip>
         </span>

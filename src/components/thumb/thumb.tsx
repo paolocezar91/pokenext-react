@@ -50,10 +50,12 @@ export default function PokemonThumb({
   pokemonData,
   shinyInput,
   size = 'small',
+  title = true
 }: Readonly<{
   pokemonData: IPokemon | IPkmn,
   shinyInput?: boolean,
   size?: string,
+  title?: boolean,
 }>) {
   const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
@@ -70,7 +72,7 @@ export default function PokemonThumb({
   const loaded = pokemon && (
     <div
       style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}}
-      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size}`}
+      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!title ? 'titleless' : ''}`}
     >
       <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
       <div className="img-hover-zoom w-full h-full">
@@ -94,8 +96,8 @@ export default function PokemonThumb({
           />}
         </div>
       </div>
-      <span className={`name ${classes[3]}`}>{ pokemon.name }</span>
-      <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>
+      {title && <span className={`name ${classes[3]}`}>{ pokemon.name }</span>}
+      {title && <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>}
     </div>
   );
 

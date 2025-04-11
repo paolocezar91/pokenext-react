@@ -58,6 +58,8 @@ export default function PokemonDetails({
   pokemonData: IPokemon,
   previousAndAfter: INamedApiResourceList<IPokemon>
 }) {
+  console.log(pokemonData);
+
   const [pokemon, setPokemon] = useState<IPokemon>(pokemonData);
   const [speciesChain, setSpeciesChain] = useState<SpeciesChain>({ loaded: false, chain: {}});
   const [species, setSpecies] = useState<IPokemonSpecies | null>(null);

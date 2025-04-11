@@ -21,7 +21,8 @@
     .pokemon-shadow {
         position: absolute;
         border-radius: 100%;
-        transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg) rotateZ(0) translateX(0) translateY(32px) translateZ(0) skewX(0) skewY(0);
+        transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg);
+        margin-top: -1rem;
     }
     &.small {
         .pokemon-shadow {
@@ -49,10 +50,22 @@
         overflow: hidden;
         img {
             height: 100%;
-            transform: scale(0.7) translateY(-25);
+            transform: scale(0.7);
+            margin-top: -1rem;
             transition: transform .5s ease;
         }
         
+    }
+    &.titleless {
+        .pokemon-shadow {
+            margin-top: 0;
+        }
+        .img-hover-zoom {
+            img {
+                margin-top: 0;
+            }
+            
+        }
     }
     &:hover {
         opacity: 1;
@@ -60,7 +73,7 @@
             animation: slide 1.5s infinite 0s;
         }
         .img-hover-zoom img {
-            transform: scale(0.75) translateY(-25);
+            transform: scale(0.75);
         }
     }
     &:after {

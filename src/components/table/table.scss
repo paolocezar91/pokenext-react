@@ -1,8 +1,6 @@
-.list {
+.table-container {
     background-color: var(--pokedex-screen);
     border-radius: 8px;
     height: 68vh;
-    overflow: auto;
-    a { text-decoration: none; }
-    
+    overflow: auto;    
 }
