@@ -1,9 +1,9 @@
+import { IPkmn } from '@/app/types';
 import Image from 'next/image';
 import { IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
-import './thumb.scss';
-import { IPkmn } from '@/app/types';
 import Spinner from '../spinner/spinner';
+import './thumb.scss';
 
 export function getArtwork(pokemon: IPokemon | IPkmn) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -62,7 +62,7 @@ export default function PokemonThumb({
     setPokemon(pokemonData);
   }, [pokemonData]);
 
-  const loading = <span className={`my-auto`}>Loading...</span>;
+  const loading = <span className="loading text-xs my-auto"><Spinner /></span>;
   const isTiny = size === 'tiny' && ['w-40 h-40', 'h-[160px]', 'mb-1', 'text-xs'];
   const isSmall = size === 'small' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
   const classes = isTiny || isSmall || ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
@@ -70,7 +70,7 @@ export default function PokemonThumb({
   const loaded = pokemon && (
     <div
       style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}}
-      className={`pokemon flex flex-col justify-center items-center ${classes[0]}`}
+      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size}`}
     >
       <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
       <div className="img-hover-zoom w-full h-full">

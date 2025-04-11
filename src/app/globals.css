@@ -10,7 +10,7 @@
   --background: #171717;
   --pokedex-red: #dc0a2d;
   --header-bg: #b00824;
-  --pokedex-screen: #b00824;
+  --pokedex-screen: #77081a;
   --pokedex-blue: #509bfb;
   --foreground: #ffffff;
   --thumb-size: 12rem;
@@ -25,4 +25,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: 'Pokedex';
+}
+
+a {
+  color: #fff;
+  &:hover {
+      color: #f7bfb7;
+  }
 }

@@ -22,7 +22,7 @@ function initI18nProd() {
         fallbackLng: 'en-US',
         defaultNS: 'common',
         resources,
-        debug: true,
+        debug: false,
         interpolation: {
           escapeValue: false
         }

@@ -13,6 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
   title: string
 }>) {
+
+  title = 'Pokédex -- ' + title;
+
   return (
     <>
       <Head>

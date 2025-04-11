@@ -5,13 +5,13 @@ import '@/app/globals.css';
 import RootLayout from '@/app/layout';
 import { IPkmn } from '@/app/types';
 import PokemonList from '@/components/list/list';
-import PokemonSearch from '@/components/list/search';
+import PokemonFilter from '@/components/list/filter';
 import Spinner from '@/components/spinner/spinner';
 import { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-const NUMBERS_OF_POKEMON = 25;
+const NUMBERS_OF_POKEMON = 20;
 const STARTING_POKEMON = 0;
 
 export const metadata: Metadata = {
@@ -37,7 +37,7 @@ export async function getStaticProps() {
 }
 
 export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
-  const { ref, inView } = useInView();
+  const { ref, inView } = useInView({ threshold: 1 });
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
   const [pokemonsBackup, setPokemonsBackup] = useState<IPkmn[]>(pokemonsData);
   const [loading, setLoading] = useState<boolean>(false);
@@ -46,17 +46,17 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   useEffect(() => {
     async function loadMorePkmn() {
-      setLoading(true);
       const morePkmn = await getPokemonPage(offset, NUMBERS_OF_POKEMON);
       if (morePkmn.length > 0){
         setPokemons(pkmn => [...pkmn, ...morePkmn]);
         setPokemonsBackup(pokemons);
         setOffset(offset => offset + NUMBERS_OF_POKEMON);
-        setLoading(false);
+        setTimeout(() => setLoading(false));
       }
     }
 
     if (inView && !loading) {
+      setLoading(true);
       loadMorePkmn();
     }
   }, [pokemonsData, pokemons, inView, offset, loading]);
@@ -65,10 +65,8 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
     setFiltered(!!filterText);
     if(filterText) {
       setPokemons(pokemonsBackup.filter(pkmn => {
-        const filteredValues = [pkmn.name, pkmn.types[0].type.name];
-        if(pkmn.types[1]) {
-          filteredValues.push(pkmn.types[1].type.name);
-        }
+        const filteredValues = [pkmn.name];
+
         return filteredValues.some((value) => value.toLowerCase().includes(filterText.toLowerCase()));
       }));
     } else {
@@ -79,9 +77,11 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   if (!pokemons) return null;
 
   return (
-    <RootLayout title="Pokedex -- Next.js Demo">
-      <PokemonSearch onFilter={filter}/>
-      <PokemonList pokemons={pokemons} ref={ref} inView={inView} searched={filtered}/>
+    <RootLayout title="Next.js Demo">
+      <PokemonFilter onFilter={filter}/>
+      <PokemonList pokemons={pokemons}>
+        {!inView && !filtered && <div className="ref" ref={ref}></div>}
+      </PokemonList>
       {loading && <Spinner /> }
     </RootLayout>
   );

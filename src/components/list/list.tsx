@@ -6,15 +6,10 @@ import PokemonThumb from '../thumb/thumb';
 
 export default function PokemonList({
   pokemons,
-  ref,
-  inView,
-  searched
+  children
 }: Readonly<{
   pokemons: IPkmn[],
-  // eslint-disable-next-line no-unused-vars
-  ref: (_?: Element | null) => void,
-  inView: boolean,
-  searched: boolean
+  children: React.ReactNode;
 }>) {
   return (
     <div className="list-container">
@@ -26,7 +21,7 @@ export default function PokemonList({
             </Link>;
           })
         }
-        {!inView && !searched && <div className="ref" ref={ref}></div>}
+        { children }
       </div>
     </div>
   );

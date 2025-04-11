@@ -9,7 +9,7 @@ export default function NotFound() {
   const router = useRouter();
 
   const goTo = () => {
-    router.push('/');
+    router.push('/pokedex');
   };
 
   useEffect(() => {

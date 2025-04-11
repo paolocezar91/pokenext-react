@@ -17,14 +17,18 @@
             }
         }
     },
+    "footer": {
+        "languages": "Linguas"
+    },
     "actions": {
         "next": "Próximo",
         "prev": "Anterior",
         "backToList": "Voltar a lista",
-        "search": "Buscar",
         "go": {
-            "button": "Ir",
-            "placeholder": "Nome ou numero"
-        }
+            "placeholder": "Buscar",
+            "tooltip": "Tente '25' ou 'Pikachu'...",
+            "button": "Vai"
+        },
+        "filter": "Filtrar"
     }
 }

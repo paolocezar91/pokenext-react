@@ -17,14 +17,18 @@
             }
         }
     },
+    "footer": {
+        "languages": "Languages"
+    },
     "actions": {
         "next": "Next",
         "prev": "Prev",
         "backToList": "Back to List",
-        "search": "Search",
         "go": {
-            "button": "Go",
-            "placeholder": "Name or number"
-        }
+            "placeholder": "Search",
+            "tooltip": "Try '25' or 'Pikachu'...",
+            "button": "Go"
+        },
+        "filter": "Filter"
     }
 }
