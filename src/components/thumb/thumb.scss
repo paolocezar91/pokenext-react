@@ -24,12 +24,12 @@
         transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg);
         margin-top: -1rem;
     }
-    &.small {
+    &.base {
         .pokemon-shadow {
             transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg) rotateZ(0) translateX(0) translateY(11px) translateZ(0) skewX(0) skewY(0);
         }
     }
-    &.tiny {
+    &.sm {
         .pokemon-shadow {
             transform: scaleX(.9) scaleY(.9) scaleZ(1) rotateX(290deg) rotateY(353deg) rotateZ(0) translateX(0) translateY(-10px) translateZ(0) skewX(0) skewY(0);
         }

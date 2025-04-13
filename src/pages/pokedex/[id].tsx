@@ -19,6 +19,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Controls from '../../components/controls';
 import './[id].scss';
+import { normalizePokemonName } from './utils';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
@@ -35,10 +36,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   } catch (error) {
     console.error(error);
   }
-}
-
-export function capitilize(s: string) {
-  return String(s[0]).toUpperCase() + String(s).slice(1);
 }
 
 export function getStaticPaths() {
@@ -65,8 +62,6 @@ export default function PokemonDetails({
   const [types, setTypes] = useState<IType[]>([]);
   const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
-  console.log(previousAndAfter);
-
   const { t } = useTranslation();
 
   const params = useParams();
@@ -127,30 +122,33 @@ export default function PokemonDetails({
   }, [currentId]);
 
   return (
-    <RootLayout title={pokemon ? `${capitilize(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`}>
-      {!loaded && <Spinner />}
-      <Suspense>
-        {loaded && <div className="mx-auto p-4">
-          <div className="flex sm:flex-col md:flex-row">
-            <div className="thumb flex flex-col md:items-start mr-4 sm:self-center md:self-start">
-              <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
-              <hr className="border-solid border-2 border-(--pokedex-red-light) mt-2 w-full" />
-              <PokemonTypes types={types} />
-              <PokemonCries pokemon={pokemon} />
-            </div>
-            <div className="pokemon-details sm:mt-4 sm:mb-4 md:mt-0 p-6 bg-white rounded-lg shadow-md">
-              <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
-                {species && <PokemonDescription species={species} />}
-                <PokemonSize pokemon={pokemon} />
-                <PokemonAbilities pokemon={pokemon} />
-                <PokemonStats pokemon={pokemon} />
-                { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+    <RootLayout title={pokemon ? `${normalizePokemonName(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`}>
+      <div className="wrapper p-4 bg-(--pokedex-red)">
+        {!loaded && <Spinner />}
+        <Suspense>
+          {loaded && <div className="mx-auto p-4 bg-background rounded shadow-md">
+            <div className="flex sm:flex-col md:flex-row">
+              <div className="thumb flex flex-col md:items-start mr-4 sm:self-center md:self-start">
+                <PokemonThumb pokemonData={pokemon} size="large" shinyInput={true}/>
+                <hr className="border-solid border-2 border-(--pokedex-red-light) mt-2 w-full" />
+                <PokemonTypes types={types} />
+                <PokemonCries pokemon={pokemon} />
+                <div className="flex-1"></div>
+                <Controls pokemon={pokemon} previousAndAfter={previousAndAfter} />
+              </div>
+              <div className="pokemon-details border-l-4 border-solid border-l-white sm:mt-4 sm:mb-4 md:mt-0 md:mb-0 pt-0 p-6">
+                <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {species && <PokemonDescription species={species} />}
+                  <PokemonSize pokemon={pokemon} />
+                  <PokemonAbilities pokemon={pokemon} />
+                  <PokemonStats pokemon={pokemon} />
+                  { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+                </div>
               </div>
             </div>
-          </div>
-          <Controls pokemon={pokemon} previousAndAfter={previousAndAfter} />
-        </div>}
-      </Suspense>
+          </div>}
+        </Suspense>
+      </div>
     </RootLayout>
   );
 }

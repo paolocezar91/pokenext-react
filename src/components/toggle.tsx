@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 
+// eslint-disable-next-line no-unused-vars
 export default function Toggle({value, children, onChange}: {value: boolean, children?: React.ReactNode, onChange: (_: boolean) => void }) {
   const [checked, setChecked] = useState<boolean>(value);
 

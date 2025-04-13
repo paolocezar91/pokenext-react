@@ -1,10 +1,10 @@
+import { normalizePokemonName } from "@/pages/pokedex/utils";
+import { ArrowUturnLeftIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { INamedApiResourceList, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
-import Tooltip from "./tooltip/tooltip";
-import { capitilize } from "@/pages/pokedex/[id]";
 import { getNumber } from "./thumb/thumb";
-import { ChevronRight2, ChevronLeft2, List } from "@deemlol/next-icons";
+import Tooltip from "./tooltip/tooltip";
 
 
 
@@ -25,17 +25,17 @@ export default function Controls({
     return pokemon ? pokemon.id - 1 > 0 : false;
   };
 
-  return (<div className="controls ml-[-2rem] px-8 container fixed bottom-15 pt-2 pb-6 flex justify-between pb-2">
+  return (<div className="controls sm:mt-0 md:mt-40 px-8 container flex justify-between">
     <div className="previous flex-1 text-left">
       <Tooltip
-        content={`${capitilize(previousAndAfter.results[0].name)} - #${getNumber(pokemon.id - 1)}`}
+        content={`${normalizePokemonName(previousAndAfter.results[0].name)} - #${getNumber(pokemon.id - 1)}`}
         disabled={!isFirst()}
       >
         <Link
           href={`/pokedex/${previousAndAfter.results[0].name}`}
           className={`flex px-2 py-2 bg-transparent border-transparent rounded  ${!isFirst() ? 'disable-click' : 'hover:bg-(--pokedex-red) hover:text-gray-800'}`}
         >
-          <ChevronLeft2 className="inline mr-2" /> { t('actions.prev') }
+          <ChevronDoubleLeftIcon className="w-7" />
         </Link>
       </Tooltip>
     </div>
@@ -45,20 +45,20 @@ export default function Controls({
           href='/pokedex/'
           className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red)"
         >
-          <List className="inline mr-2" /> { t('actions.back') }
+          <ArrowUturnLeftIcon className="w-7" />
         </Link>
       </Tooltip>
     </div>
     <div className="next flex-1 text-right">
       <Tooltip
-        content={`${capitilize(previousAndAfter.results[2].name)} - #${getNumber(pokemon.id + 1)}`}
+        content={`${normalizePokemonName(previousAndAfter.results[2].name)} - #${getNumber(pokemon.id + 1)}`}
         disabled={!isLast()}
       >
         <Link
           href={`/pokedex/${previousAndAfter.results[2].name}`}
           className={`flex px-2 py-2 bg-transparent border-transparent rounded ${!isLast() ? 'disable-click' : 'hover:bg-(--pokedex-red) hover:text-gray-800'}`}
         >
-          { t('actions.next') } <ChevronRight2 className="inline ml-2" />
+          <ChevronDoubleRightIcon className="w-7" />
         </Link>
       </Tooltip>
     </div>

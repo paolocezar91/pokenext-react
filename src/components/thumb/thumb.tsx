@@ -4,6 +4,7 @@ import { IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import Spinner from '../spinner/spinner';
 import './thumb.scss';
+import { normalizePokemonName } from '@/pages/pokedex/utils';
 
 export function getArtwork(pokemon: IPokemon | IPkmn) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -49,7 +50,7 @@ function getTypeColor(type: string) {
 export default function PokemonThumb({
   pokemonData,
   shinyInput,
-  size = 'small',
+  size = 'base',
   title = true
 }: Readonly<{
   pokemonData: IPokemon | IPkmn,
@@ -65,9 +66,11 @@ export default function PokemonThumb({
   }, [pokemonData]);
 
   const loading = <span className="loading text-xs my-auto"><Spinner /></span>;
-  const isTiny = size === 'tiny' && ['w-40 h-40', 'h-[160px]', 'mb-1', 'text-xs'];
-  const isSmall = size === 'small' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
-  const classes = isTiny || isSmall || ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
+  const isXS = size === 'xs' && ['w-30 h-30', 'h-[120px]', 'mb-0', 'text-xs'];
+  const isSM = size === 'sm' && ['w-40 h-40', 'h-[160px]', 'mb-1', 'text-xs'];
+  const isBase = size === 'base' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
+  const isLG = ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
+  const classes = isXS || isSM || isBase || isLG;
 
   const loaded = pokemon && (
     <div
@@ -82,7 +85,7 @@ export default function PokemonThumb({
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pokemon)[0]}
-            alt={pokemon.name}
+            alt={normalizePokemonName(pokemon.name)}
             priority={true}
 
           />}
@@ -91,12 +94,12 @@ export default function PokemonThumb({
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pokemon)[1]}
-            alt={pokemon.name}
+            alt={normalizePokemonName(pokemon.name)}
             priority={true}
           />}
         </div>
       </div>
-      {title && <span className={`name ${classes[3]}`}>{ pokemon.name }</span>}
+      {title && <span className={`name ${classes[3]}`}>{ normalizePokemonName(pokemon.name) }</span>}
       {title && <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>}
     </div>
   );

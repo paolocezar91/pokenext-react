@@ -1,5 +1,5 @@
+import { kebabToSpace } from "@/pages/pokedex/utils";
 import Image from "next/image";
-import { kebabToSpace } from "./evolution-chart";
 import { IEvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionTrade({evolution_details}: {evolution_details: IEvolutionDetail}) {

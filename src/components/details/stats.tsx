@@ -1,6 +1,5 @@
-import { capitilize } from "@/pages/pokedex/[id]";
+import { capitilize, kebabToSpace } from "@/pages/pokedex/utils";
 import { IPokemon } from "pokeapi-typescript";
-import { kebabToSpace } from "./evolution-chart/evolution-chart";
 import { useTranslation } from "react-i18next";
 
 export default function PokemonStats({pokemon}: {pokemon: IPokemon}) {

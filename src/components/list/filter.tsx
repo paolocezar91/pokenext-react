@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import './list.scss';
 import Tooltip from '../tooltip/tooltip';
 
+// eslint-disable-next-line no-unused-vars
 export default function PokemonFilter({ onFilter }: { onFilter: (_: string) => void }) {
   const { t } = useTranslation();
 

@@ -1,20 +1,16 @@
 import { SpeciesChain } from "@/app/types";
+import Tooltip from "@/components/tooltip/tooltip";
+import { normalizePokemonName } from "@/pages/pokedex/utils";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import PokemonThumb, { getNumber } from "../../thumb/thumb";
-import PokemonEvolutionTrade from "./trade";
+import PokemonEvolutionHappiness from "./happiness";
 import PokemonEvolutionItem from "./item";
 import PokemonEvolutionLocation from "./location";
 import PokemonEvolutionLevel from "./lvl";
-import PokemonEvolutionHappiness from "./happiness";
-import { ArrowDownRight, ArrowRight } from "@deemlol/next-icons";
-import { capitilize } from "@/pages/pokedex/[id]";
-import Tooltip from "@/components/tooltip/tooltip";
-
-export const kebabToSpace = (name: string) => {
-  return name.replaceAll('-',' ');
-};
+import PokemonEvolutionTrade from "./trade";
 
 export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: { evolutionChain: IEvolutionChain, speciesChain: SpeciesChain }) {
   const { t } = useTranslation();
@@ -33,11 +29,13 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
                 <PokemonEvolutionHappiness evolution_details={evolution_details} />
                 <PokemonEvolutionTrade evolution_details={evolution_details} />
               </span>}
-              <span className="font-bold text-xl">{idx === 0 ? <ArrowRight /> : <ArrowDownRight />}</span>
+              <span className="font-bold text-xl">
+                <ArrowRightIcon className="w-7" />
+              </span>
             </div>
-            <Tooltip content={`${capitilize(pkmn.name)} - #${getNumber(pkmn.id - 1)}`}>
+            <Tooltip content={`${normalizePokemonName(pkmn.name)} - #${getNumber(pkmn.id - 1)}`}>
               <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
-                <PokemonThumb pokemonData={pkmn} size="tiny" title={false} />
+                <PokemonThumb pokemonData={pkmn} size="sm" title={false} />
               </Link>
             </Tooltip>
           </li>
@@ -52,9 +50,9 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
       {!!speciesChain.loaded && <ul className="flex items-start justify-center">
         {speciesChain.chain.first?.length &&
           <li>
-            <Tooltip content={`${capitilize(speciesChain.chain.first[0].name)} - #${getNumber(speciesChain.chain.first[0].id - 1)}`}>
+            <Tooltip content={`${normalizePokemonName(speciesChain.chain.first[0].name)} - #${getNumber(speciesChain.chain.first[0].id - 1)}`}>
               <Link className="flex-2" href={`/pokedex/${speciesChain.chain.first[0].name}`}>
-                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="tiny" title={false}/>
+                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="sm" title={false}/>
               </Link>
             </Tooltip>
           </li>

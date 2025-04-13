@@ -10,7 +10,7 @@
     "lint-fix": "next lint --fix"
   },
   "dependencies": {
-    "@deemlol/next-icons": "^0.1.9",
+    "@heroicons/react": "^2.2.0",
     "bootstrap": "^5.3.3",
     "debounce": "^2.2.0",
     "i18next": "^24.2.3",

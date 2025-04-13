@@ -1,4 +1,4 @@
-import { INamedApiResourceList, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
+import { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
 
 export const fetchPokemonList = async (limit:number , offset: number) => await (await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)).json() as INamedApiResourceList<IPokemon>;
 
@@ -23,10 +23,9 @@ export const fetchTypes = async (types: IPokemonType[]): Promise<IType[]> => {
 };
 
 export const fetchEvolutionChain = async (species: IPokemonSpecies) => {
-  const url = species.evolution_chain.url as string;
-
-  return await fetchURL(url);
-
+  return await fetchURL<IEvolutionChain>(species.evolution_chain.url);
 };
 
-export const fetchURL = async (url: string) => await (await fetch(url, {cache: 'force-cache'})).json() as T;
+export async function fetchURL<T>(url: string) {
+  return await (await fetch(url, {cache: 'force-cache'})).json() as T;
+};

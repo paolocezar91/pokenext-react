@@ -1,4 +1,4 @@
-import { kebabToSpace } from "./evolution-chart";
+import { kebabToSpace } from "@/pages/pokedex/utils";
 import { IEvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionLocation({evolution_details}: {evolution_details: IEvolutionDetail}) {

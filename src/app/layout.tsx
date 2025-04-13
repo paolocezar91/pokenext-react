@@ -23,7 +23,7 @@ export default function RootLayout({
       </Head>
       <div className="container mx-auto">
         <Header title={ title } />
-        <main className="p-4">
+        <main>
           {children}
         </main>
         <Footer />

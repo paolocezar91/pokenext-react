@@ -10,7 +10,7 @@ import Spinner from '@/components/spinner/spinner';
 import PokemonTable from '@/components/table/table';
 import Toggle from '@/components/toggle';
 import Tooltip from '@/components/tooltip/tooltip';
-import { Table, Trello } from '@deemlol/next-icons';
+import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -87,28 +87,30 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   return (
     <RootLayout title="Next.js Demo">
-      <div className="flex items-center bg-(--pokedex-red) p-4 w-[45%] border-b-2 border-solid border-black rounded-t-lg">
-        <PokemonFilter onFilter={filter} />
-        <div className="flex ml-4">
-          <Tooltip content={t('pokedex.listOrTable')}>
-            <div className="flex">
-              <Trello className="inline mr-3" />
-              <Toggle value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
-              <Table className="inline" />
-            </div>
-          </Tooltip>
+      <div className="wrapper p-4">
+        <div className="flex items-center bg-(--pokedex-red) p-4 w-max border-b-2 border-solid border-black rounded-t-lg">
+          <PokemonFilter onFilter={filter} />
+          <div className="flex ml-4">
+            <Tooltip content={t('pokedex.listOrTable')}>
+              <div className="flex">
+                <Squares2X2Icon className="w-7 mr-3" />
+                <Toggle value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
+                <TableCellsIcon className="w-7" />
+              </div>
+            </Tooltip>
+          </div>
         </div>
+        {
+          !listTableToggle ?
+            <PokemonList pokemons={pokemons}>
+              {!inView && !filtered && <div className="ref" ref={ref}></div>}
+            </PokemonList> :
+            <PokemonTable pokemons={pokemons}>
+              {!inView && !filtered && <div className="ref" ref={ref}></div>}
+            </PokemonTable>
+        }
+        {loading && <Spinner /> }
       </div>
-      {
-        !listTableToggle ?
-          <PokemonList pokemons={pokemons}>
-            {!inView && !filtered && <div className="ref" ref={ref}></div>}
-          </PokemonList> :
-          <PokemonTable pokemons={pokemons}>
-            {!inView && !filtered && <div className="ref" ref={ref}></div>}
-          </PokemonTable>
-      }
-      {loading && <Spinner /> }
     </RootLayout>
   );
 }

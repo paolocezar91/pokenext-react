@@ -12,8 +12,8 @@ export default function PokemonList({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="list-container">
-      <div className="list relative flex justify-center flex-row flex-wrap p-4 rounded-b-lg">
+    <div className="list-container p-4 bg-(--pokedex-red)">
+      <div className="list relative overflow-auto h-[68vh] p-4 rounded bg-background flex justify-center flex-row flex-wrap rounded-b-lg">
         {
           pokemons.map((pokemon, i) => {
             return <Link href={`/pokedex/${pokemon.name}`} key={i} className="my-1 mx-1 link">

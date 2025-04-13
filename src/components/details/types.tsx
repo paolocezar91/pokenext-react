@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { IType } from "pokeapi-typescript";
 import Tooltip from "../tooltip/tooltip";
-import { capitilize } from "@/pages/pokedex/[id]";
+import { capitilize } from "@/pages/pokedex/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getTypeIcon = (type: any): string => {
