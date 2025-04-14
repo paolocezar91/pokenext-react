@@ -33,9 +33,9 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
                 <ArrowRightIcon className="w-7" />
               </span>
             </div>
-            <Tooltip content={`${normalizePokemonName(pkmn.name)} - #${getNumber(pkmn.id - 1)}`}>
+            <Tooltip content={`${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}`}>
               <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
-                <PokemonThumb pokemonData={pkmn} size="sm" title={false} />
+                <PokemonThumb pokemonData={pkmn} size="sm" hasName={false} />
               </Link>
             </Tooltip>
           </li>
@@ -47,12 +47,12 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
   return (
     <div className="evolution-chain col-span-2 mt-2">
       <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.evolutionChart.title') }</h3>
-      {!!speciesChain.loaded && <ul className="flex items-start justify-center">
+      {!!speciesChain.loaded && <ul className="flex items-start justify-start">
         {speciesChain.chain.first?.length &&
           <li>
-            <Tooltip content={`${normalizePokemonName(speciesChain.chain.first[0].name)} - #${getNumber(speciesChain.chain.first[0].id - 1)}`}>
+            <Tooltip content={`${normalizePokemonName(speciesChain.chain.first[0].name)} #${getNumber(speciesChain.chain.first[0].id)}`}>
               <Link className="flex-2" href={`/pokedex/${speciesChain.chain.first[0].name}`}>
-                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="sm" title={false}/>
+                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="sm" hasName={false}/>
               </Link>
             </Tooltip>
           </li>

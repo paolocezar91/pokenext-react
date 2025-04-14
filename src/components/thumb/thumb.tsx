@@ -1,14 +1,23 @@
 import { IPkmn } from '@/app/types';
+import { normalizePokemonName } from '@/pages/pokedex/utils';
 import Image from 'next/image';
 import { IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import Spinner from '../spinner/spinner';
 import './thumb.scss';
-import { normalizePokemonName } from '@/pages/pokedex/utils';
 
-export function getArtwork(pokemon: IPokemon | IPkmn) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return [(pokemon.sprites as any).other['official-artwork'].front_default, (pokemon.sprites as any).other['official-artwork'].front_shiny];
+export function getArtwork(pokemon: IPokemon | IPkmn, varieties: string[]) {
+  const rv: Record<string, string[]> = {
+    normal: [],
+    shiny: []
+  };
+
+  [pokemon.id, ...varieties].forEach((var_id) => {
+    rv.normal.push(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${var_id}.png`);
+    rv.shiny.push(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${var_id}.png`);
+  });
+
+  return rv;
 }
 
 export function getNumber(id: number) {
@@ -49,20 +58,31 @@ function getTypeColor(type: string) {
 
 export default function PokemonThumb({
   pokemonData,
-  shinyInput,
+  hasShinyCheckbox,
   size = 'base',
-  title = true
+  hasName = true,
+  // hasVarieties = false
 }: Readonly<{
   pokemonData: IPokemon | IPkmn,
-  shinyInput?: boolean,
+  hasShinyCheckbox?: boolean,
   size?: string,
-  title?: boolean,
+  hasName?: boolean,
+  // hasVarieties?: boolean,
 }>) {
   const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
+  // const [varieties, setVarieties] = useState<string[]>([]);
+
 
   useEffect(() => {
     setPokemon(pokemonData);
+    // const getVarieties = async () => {
+    //   const species = await fetchSpecies(String(pokemonData.name));
+    //   setVarieties(species.varieties.map(v => getIdFromUrlSubstring(v.pokemon.url)));
+    // };
+    // if(hasVarieties){
+    //   getVarieties();
+    // }
   }, [pokemonData]);
 
   const loading = <span className="loading text-xs my-auto"><Spinner /></span>;
@@ -75,7 +95,7 @@ export default function PokemonThumb({
   const loaded = pokemon && (
     <div
       style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}}
-      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!title ? 'titleless' : ''}`}
+      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!hasName ? 'titleless' : ''}`}
     >
       <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
       <div className="img-hover-zoom w-full h-full">
@@ -84,7 +104,7 @@ export default function PokemonThumb({
             className="artwork"
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pokemon)[0]}
+            src={getArtwork(pokemon, []).normal[0]}
             alt={normalizePokemonName(pokemon.name)}
             priority={true}
 
@@ -93,14 +113,14 @@ export default function PokemonThumb({
             className="artwork"
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pokemon)[1]}
+            src={getArtwork(pokemon, []).shiny[0]}
             alt={normalizePokemonName(pokemon.name)}
             priority={true}
           />}
         </div>
       </div>
-      {title && <span className={`name ${classes[3]}`}>{ normalizePokemonName(pokemon.name) }</span>}
-      {title && <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>}
+      {hasName && <span className={`name ${classes[3]}`}>{ normalizePokemonName(pokemon.name) }</span>}
+      {hasName && <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>}
     </div>
   );
 
@@ -108,7 +128,7 @@ export default function PokemonThumb({
     <Suspense fallback={<Spinner />}>
       {pokemon ? loaded : loading}
       {
-        shinyInput && <label className="w-full text-right mt-1" htmlFor="shiny">
+        pokemon && hasShinyCheckbox && <label className="w-full text-right mt-1" htmlFor="shiny">
           Shiny<input
             id="shiny"
             name="shiny"

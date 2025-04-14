@@ -21,9 +21,9 @@ export default function RootLayout({
       <Head>
         <title>{ title }</title>
       </Head>
-      <div className="container mx-auto">
+      <div className="mx-auto">
         <Header title={ title } />
-        <main>
+        <main className="sm:w-min md:w-[initial]">
           {children}
         </main>
         <Footer />

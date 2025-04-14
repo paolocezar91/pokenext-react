@@ -2,6 +2,7 @@
     "pokedex": {
         "pokedex": "Pokédex",
         "loading": "Loading",
+        "notFound": "Pokémon not found",
         "details": {
             "shiny": "Shiny",
             "size": { 
@@ -19,7 +20,7 @@
                 "title": "Base Stats"
             }
         },
-        "listOrTable": "List or Table view"
+        "toggleView": "Thumbnail or Table view"
     },
     "table": {
         "name": "Name",
@@ -35,12 +36,12 @@
         "backToList": "Back to List",
         "go": {
             "placeholder": "Search...",
-            "tooltip": "Try '1' or 'Bulbasaur'...",
+            "tooltip": "Try \"1\" or \"Bulbasaur\"...",
             "button": "Go"
         },
         "filter": {
             "placeholder": "Filter by name or type...",
-            "tooltip": "Try 'Bulbasaur' or 'grass'"
+            "tooltip": "Try \"Bulbasaur\" or \"grass\""
         }
     }
 }

@@ -32,7 +32,7 @@ export default function PokemonTable({
                 return <tr key={i} className="bg-background">
                   <td className={`px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
                     <Link href={`/pokedex/${pokemon.name}`}>
-                      <PokemonThumb pokemonData={pokemon} size="xs" title={false} />
+                      <PokemonThumb pokemonData={pokemon} size="xs" hasName={false} />
                     </Link>
                   </td>
                   <td className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-white': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>

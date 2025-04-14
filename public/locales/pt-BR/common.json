@@ -2,6 +2,7 @@
     "pokedex": {
         "pokedex": "PokéAgenda",
         "loading": "Carregando",
+        "notFound": "Pokémon não encontrado",
         "details": {
             "shiny": "Shiny",
             "size": { 
@@ -19,7 +20,7 @@
                 "title": "Estatísticas Base"
             }
         },
-        "listOrTable": "List or Table view"
+        "toggleView": "Miniaturas ou Tabela"
     },
     "table": {
         "name": "Nome",
@@ -35,12 +36,12 @@
         "backToList": "Voltar a lista",
         "go": {
             "placeholder": "Buscar...",
-            "tooltip": "Tente '25' ou 'Pikachu'...",
+            "tooltip": "Tente \"1\" ou \"Bulbasaur\"...",
             "button": "Vai"
         },
         "filter": {
             "placeholder": "Filtrar por nome ou tipo...",
-            "tooltip": "Tente 'Bulbasaur' ou 'grass'"
+            "tooltip": "Tente \"Bulbasaur\" ou \"grass\""
         }
     }
 }

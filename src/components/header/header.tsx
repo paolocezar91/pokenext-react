@@ -20,10 +20,10 @@ export default function Header({ title }: Readonly<{ title: string }>) {
 
   return (
     <nav className="relative navbar flex flex-wrap items-center justify-between border-b-4 border-solid border-(--pokedex-red-light)">
-      <div className="flex w-full pt-1 pb-1 mx-auto items-center justify-between">
+      <div className="flex w-full pt-1 pb-1 mx-auto items-center justify-between text-sm">
         <Link
           href="/pokedex/"
-          className="navbar-brand pt-2 pb-2 text-lg whitespace-nowrap"
+          className="navbar-brand pt-2 pb-2"
         >
           <Image
             priority={true}
@@ -32,7 +32,9 @@ export default function Header({ title }: Readonly<{ title: string }>) {
             height={48}
             alt={title}
             className="mx-2 inline" />
-          { title }
+          <span className="hidden md:inline">
+            { title }
+          </span>
         </Link>
 
         <span className="go-to border-solid border-2 border-black bg-foreground rounded mr-4">

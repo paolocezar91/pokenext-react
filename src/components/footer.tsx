@@ -12,11 +12,13 @@ export default function Footer() {
     i18n.changeLanguage(e.target.value);
   };
 
-  return (<div className="footer container fixed bottom-0 flex justify-between border-solid border-t-4 border-(--pokedex-red-light) bg-(--pokedex-red)">
-    <div className="flex items-center text-xs p-4">
-      <Link href="https://github.com/paolocezar91/">Done by Paolo Pestalozzi</Link>
+  return (<div className="footer w-full fixed bottom-0 flex justify-between border-solid border-t-2 border-(--pokedex-red-light) bg-(--pokedex-red) py-2 px-4">
+    <div className="flex items-center text-xs">
+      <p>
+        By <Link href="https://github.com/paolocezar91/" target="_blank" className="underline">Paolo Pestalozzi</Link> with <Link href="https://pokeapi.co/" target="_blank" className="underline">PokeAPI</Link> and <Link href="http://nextjs.org/" target="_blank" className="underline">Next.js</Link>.
+      </p>
     </div>
-    <div className="next flex-1 text-right p-4">
+    <div className="next flex-1 text-right">
       <Tooltip content={t('footer.languages')}>
         <select
           className="border-solid border-2 border-background text-background bg-foreground py-2 rounded text-xs"

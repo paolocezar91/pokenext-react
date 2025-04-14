@@ -48,6 +48,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [listTableToggle, setListTableToggle] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<boolean>(false);
+
   const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
   const {t} = useTranslation('common');
 
@@ -87,16 +88,18 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   return (
     <RootLayout title="Next.js Demo">
-      <div className="wrapper p-4">
-        <div className="flex items-center bg-(--pokedex-red) p-4 w-max border-b-2 border-solid border-black rounded-t-lg">
-          <PokemonFilter onFilter={filter} />
-          <div className="flex ml-4">
-            <Tooltip content={t('pokedex.listOrTable')}>
-              <div className="flex">
+      <div className="wrapper h-[inherit] p-4">
+        <div className="flex items-center ">
+          <div className="flex items-center bg-(--pokedex-red) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
+            <PokemonFilter className="flex" onFilter={filter} />
+          </div>
+          <div className="flex-1">
+            <Tooltip content={t('pokedex.toggleView')}>
+              <label className="ml-4 flex">
                 <Squares2X2Icon className="w-7 mr-3" />
                 <Toggle value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
                 <TableCellsIcon className="w-7" />
-              </div>
+              </label>
             </Tooltip>
           </div>
         </div>
