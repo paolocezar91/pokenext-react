@@ -15,6 +15,7 @@ import { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
+import { useLocalStorage } from './utils';
 
 const NUMBERS_OF_POKEMON = 20;
 const STARTING_POKEMON = 494;
@@ -46,7 +47,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
   const [pokemonsBackup, setPokemonsBackup] = useState<IPkmn[]>(pokemonsData);
   const [loading, setLoading] = useState<boolean>(false);
-  const [listTableToggle, setListTableToggle] = useState<boolean>(false);
+  const [listTableToggle, setListTableToggle] = useLocalStorage('list-table', false);
   const [filtered, setFiltered] = useState<boolean>(false);
 
   const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
@@ -59,7 +60,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
         setPokemons(pkmn => [...pkmn, ...morePkmn]);
         setPokemonsBackup(pokemons);
         setOffset(offset => offset + NUMBERS_OF_POKEMON);
-        setTimeout(() => setLoading(false));
+        setTimeout(() => setLoading(false), 0);
       }
     }
 
@@ -86,34 +87,34 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   if (!pokemons) return null;
 
+  const refElement = !inView && !filtered && <div className="ref" ref={ref}></div>;
+
   return (
     <RootLayout title="Next.js Demo">
-      <div className="wrapper h-[inherit] p-4">
-        <div className="flex items-center ">
-          <div className="flex items-center bg-(--pokedex-red) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
-            <PokemonFilter className="flex" onFilter={filter} />
+      {pokemons &&
+        <div className="wrapper h-[inherit] p-4">
+          <div className="flex items-center">
+            <div className="flex items-center bg-(--pokedex-red) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
+              <PokemonFilter className="flex" onFilter={filter} />
+            </div>
+            <div className="flex-1">
+              <Tooltip content={t('pokedex.toggleView')}>
+                <label className="ml-4 flex">
+                  <Squares2X2Icon className="w-7 mr-3" />
+                  <Toggle value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
+                  <TableCellsIcon className="w-7" />
+                </label>
+              </Tooltip>
+            </div>
           </div>
-          <div className="flex-1">
-            <Tooltip content={t('pokedex.toggleView')}>
-              <label className="ml-4 flex">
-                <Squares2X2Icon className="w-7 mr-3" />
-                <Toggle value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
-                <TableCellsIcon className="w-7" />
-              </label>
-            </Tooltip>
-          </div>
+          {
+            !listTableToggle ?
+              <PokemonList pokemons={pokemons}>{refElement}</PokemonList> :
+              <PokemonTable pokemons={pokemons}>{refElement}</PokemonTable>
+          }
+          {loading && <Spinner /> }
         </div>
-        {
-          !listTableToggle ?
-            <PokemonList pokemons={pokemons}>
-              {!inView && !filtered && <div className="ref" ref={ref}></div>}
-            </PokemonList> :
-            <PokemonTable pokemons={pokemons}>
-              {!inView && !filtered && <div className="ref" ref={ref}></div>}
-            </PokemonTable>
-        }
-        {loading && <Spinner /> }
-      </div>
+      }
     </RootLayout>
   );
 }

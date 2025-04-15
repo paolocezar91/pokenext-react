@@ -5,7 +5,7 @@ export const fetchPokemonList = async (limit:number , offset: number) => (await 
 export const fetchPokemonDataList = async (pkmnList: INamedApiResourceList<IPokemon>) => await Promise.all(
   pkmnList.results.map(async (pkmn) => {
     const pokemon = await _fetchAndJson(`https://pokeapi.co/api/v2/pokemon/${pkmn.name}/`) as IPokemon;
-    return { name: pokemon.name, types: pokemon.types, id: pokemon.id, sprites: pokemon.sprites };
+    return { name: pokemon.name, types: pokemon.types, id: pokemon.id, sprites: pokemon.sprites, stats: pokemon.stats };
   })
 );
 

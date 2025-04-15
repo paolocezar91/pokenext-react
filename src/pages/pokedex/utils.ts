@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 export function capitilize(str = '') {
   const splitStr = str.toLowerCase().split(' ');
@@ -67,16 +67,35 @@ export const kebabToSpace = (name: string) => {
 
 export const getIdFromUrlSubstring = (url = '') => url.split("/")[url.split("/").length - 2];
 
-export function useLocalStorage<T>(key: string, fallbackValue: T) {
-  const [value, setValue] = useState(fallbackValue);
-  useEffect(() => {
-    const stored = localStorage.getItem(key);
-    setValue(stored ? JSON.parse(stored) : fallbackValue);
-  }, [fallbackValue, key]);
+
+export function useLocalStorage<T>(
+  key: string,
+  defaultValue: T
+): [T, Dispatch<SetStateAction<T>>] {
+  const isMounted = useRef(false);
+  const [value, setValue] = useState<T>(defaultValue);
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
+    try {
+      const item = window.localStorage.getItem(key);
+      if (item) {
+        setValue(JSON.parse(item));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+    return () => {
+      isMounted.current = false;
+    };
+  }, [key]);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } else {
+      isMounted.current = true;
+    }
   }, [key, value]);
 
-  return [value, setValue] as const;
+  return [value, setValue];
 }

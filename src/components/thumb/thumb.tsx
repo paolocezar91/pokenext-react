@@ -29,6 +29,11 @@ export function getBackgroundStyle(types: IPokemonType[] = []): CSSProperties {
   return colors.length === 1 ? { 'background': `${colors[0]}` } : getGradientStyle(colors);
 }
 
+export function getBackgroundStyleWithStrings(types: string[] = []): CSSProperties {
+  const colors = types?.map(type => getTypeColor(type)) || [];
+  return colors.length === 1 ? { 'background': `${colors[0]}` } : getGradientStyle(colors);
+}
+
 function getGradientStyle(colors: string[]): CSSProperties {
   return { background: `linear-gradient(90deg, ${colors[0]} 0%, ${colors[1]} 100%)`};
 }

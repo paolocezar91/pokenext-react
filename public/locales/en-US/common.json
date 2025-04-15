@@ -22,6 +22,9 @@
             "varieties": {
                 "title": "Varieties"
             },
+            "defensiveChart": {
+                "title": "Defensive Chart"
+            },
             "moves": {
                 "title": "Moves",
                 "chooseVersion": "Choose a version",

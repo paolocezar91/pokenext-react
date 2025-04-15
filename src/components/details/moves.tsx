@@ -118,22 +118,13 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
     {versionGroupActive && <div className="moveset-picker">
       <p className="text-xs">{t('pokedex.details.moves.learntBy')}:</p>
       <div className="movesets flex my-2">
-        <button
-          className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-white mr-2 rounded hover:bg-(--pokedex-red) ${'level-up' === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
-          onClick={() => setMovesetActive('level-up')}
-        >Level Up</button>
-        <button
-          className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-white mr-2 rounded hover:bg-(--pokedex-red) ${'machine' === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
-          onClick={() => setMovesetActive('machine')}
-        >TM/HM</button>
-        <button
-          className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-white mr-2 rounded hover:bg-(--pokedex-red) ${'tutor' === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
-          onClick={() => setMovesetActive('tutor')}
-        >Tutor</button>
-        <button
-          className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-white mr-2 rounded hover:bg-(--pokedex-red) ${'egg' === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
-          onClick={() => setMovesetActive('egg')}
-        >Egg (Breed)</button>
+        {Object.keys(moves[versionGroupActive].moveset).map((moveset, idx) => {
+          return !!moves[versionGroupActive].moveset[moveset].length && <button
+            key={idx}
+            className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-white mr-2 rounded hover:bg-(--pokedex-red) ${moveset === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
+            onClick={() => setMovesetActive(moveset)}
+          >{moveset === 'machine' ? 'TM/HM' : capitilize(kebabToSpace(moveset))}</button>;
+        })}
       </div>
     </div>}
     <Suspense fallback={<Spinner />}>
@@ -175,13 +166,11 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
                 return 0;
               })
               .map((move, idx) => {
-                return move.details && <tr className="border-solid border-b-2 border-white align-bottom" key={idx}>
+                return move.details && <tr className="border-solid border-b-1 border-white align-middle" key={idx}>
                   {movesetActive === 'level-up' && <td className="py-2">{move.level_learned_at}</td>}
                   {movesetActive === 'machine' && <td className="py-2 uppercase">{(move.tmDetails?.item.name)}</td>}
                   <td className="py-2">
-                    <Tooltip position="right" content={move.details.effect_entries?.[0]?.effect}>
-                      {capitilize(kebabToSpace(move.move))}
-                    </Tooltip>
+                    {capitilize(kebabToSpace(move.move))}
                   </td>
                   <td className="py-2">
                     <Image
@@ -191,13 +180,15 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
                       src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url))} />
                   </td>
                   <td className="py-2">
-                    <Tooltip content={capitilize(move.details.damage_class.name)}>
-                      <Image
-                        width="35"
-                        height="35"
-                        alt={move.details.damage_class.name}
-                        src={`/move-${move.details.damage_class.name}.png`} />
-                    </Tooltip>
+                    <span className="flex">
+                      <Tooltip content={capitilize(move.details.damage_class.name)}>
+                        <Image
+                          width="35"
+                          height="35"
+                          alt={move.details.damage_class.name}
+                          src={`/move-${move.details.damage_class.name}.png`} />
+                      </Tooltip>
+                    </span>
                   </td>
                   <td className="py-2">{ move.details.power ?? '-' }</td>
                   <td className="py-2">{ move.details.accuracy ?? '-' }</td>

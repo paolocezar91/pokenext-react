@@ -1,8 +1,11 @@
 import { IPkmn } from '@/app/types';
-import { capitilize, normalizePokemonName } from '@/pages/pokedex/utils';
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '@/pages/pokedex/utils';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import PokemonThumb, { getNumber } from '../thumb/thumb';
+import { getTypeIconById } from '../details/types';
+import Image from 'next/image';
+import { statName } from '../details/stats';
 
 export default function PokemonTable({
   pokemons,
@@ -16,14 +19,22 @@ export default function PokemonTable({
   return (
     <div className="table-container p-4 bg-(--pokedex-red)">
       <div className="overflow-auto h-[68vh] relative rounded">
-        <table className="w-full">
+        <table className="w-full text-xs">
           <thead>
             <tr className="sticky top-0 bg-(--pokedex-red) z-1">
-              <th className="text-center px-4 py-4 w-[10%]">Pokémon</th>
-              <th className="text-center px-4 py-4 w-[7%]">#</th>
-              <th className="text-left px-4 py-4 w-[50%]">{t('table.name')}</th>
-              <th className="text-left px-4 py-4">{t('table.types')}</th>
-              <th></th>
+              <th className="w-[1%] text-center px-2 py-2">Pokémon</th>
+              <th className="w-[2%] text-center px-2 py-2">#</th>
+              <th className="w-[5%] text-left px-2 py-2">{t('table.name')}</th>
+              <th className="w-[10%] text-left px-2 py-2">{t('table.types')}</th>
+              { pokemons[0].stats.map((stat, idx) => {
+                return <th
+                  key={idx}
+                  className="w-[5%] text-left px-2 py-2"
+                >
+                  { statName(stat.stat.name) }
+                </th>;
+              }) }
+              <th className="w-[1%]"></th>
             </tr>
           </thead>
           <tbody>
@@ -35,7 +46,7 @@ export default function PokemonTable({
                       <PokemonThumb pokemonData={pokemon} size="xs" hasName={false} />
                     </Link>
                   </td>
-                  <td className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-white': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
+                  <td className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-white text-center': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
                     <Link href={`/pokedex/${pokemon.name}`}>
                     #{getNumber(pokemon.id)}
                     </Link>
@@ -46,7 +57,25 @@ export default function PokemonTable({
                     </Link>
                   </td>
                   <td className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-white': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
-                    {(pokemon.types.map((t) => capitilize(t.type.name)).join("/"))}</td>
+                    {pokemon.types.map((t, idx) =>
+                      <Image
+                        key={idx}
+                        width="100"
+                        height="20"
+                        className={`${idx !== 0 || pokemon.types.length === 1 ? '' : 'mb-2'}`}
+                        alt={capitilize(t.type.name)}
+                        src={ getTypeIconById(getIdFromUrlSubstring(t.type.url) )} />
+                    )}
+                  </td>
+                  { pokemon.stats.map((stat, idx) => {
+                    return <td
+                      key={idx}
+                      className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-white': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}
+                    >
+                      { stat.base_stat }
+                    </td>;
+                  }) }
+                  <td></td>
                 </tr>;
               })
             }

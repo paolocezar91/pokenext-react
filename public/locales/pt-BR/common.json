@@ -22,6 +22,9 @@
             "varieties": {
                 "title": "Variedades"
             },
+            "defensiveChart": {
+                "title": "Carta Defensiva"
+            },
             "moves": {
                 "title": "Golpes",
                 "chooseVersion": "Escolha a versão",
