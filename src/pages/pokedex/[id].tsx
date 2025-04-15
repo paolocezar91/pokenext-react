@@ -1,35 +1,35 @@
 'use client';
 
 import { fetchEvolutionChain, fetchPokemon, fetchSpecies, fetchTypes } from '@/app/api';
+import RootLayout from '@/app/layout';
 import { SpeciesChain } from '@/app/types';
 import PokemonAbilities from '@/components/details/abilities';
 import PokemonCries from '@/components/details/cries';
 import PokemonDescription from '@/components/details/description';
 import PokemonEvolutionChart from '@/components/details/evolution-chart/evolution-chart';
-import PokemonStats from '@/components/details/stats';
+import PokemonMoves from '@/components/details/moves';
 import PokemonSize from '@/components/details/size';
+import PokemonStats from '@/components/details/stats';
 import PokemonTypes from '@/components/details/types';
+import PokemonVarieties from '@/components/details/varieties';
 import Spinner from '@/components/spinner/spinner';
 import PokemonThumb, { getNumber } from '@/components/thumb/thumb';
+import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 import { GetStaticPropsContext } from 'next';
+import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import PokeAPI, { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonMoveVersion, IPokemonSpecies, IType } from 'pokeapi-typescript';
+import PokeAPI, { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Controls from '../../components/controls';
 import './[id].scss';
 import { getIdFromUrlSubstring, normalizePokemonName } from './utils';
-import RootLayout from '@/app/layout';
-import Link from 'next/link';
-import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
-import PokemonVarieties from '@/components/details/varieties';
-import PokemonMoves from '@/components/details/moves';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
     const pokemonData = await fetchPokemon(id);
-    const previousAndAfter = await(PokeAPI.Pokemon.list(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0));
+    const previousAndAfter = await PokeAPI.Pokemon.list(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
     return {
       props: {
         id: pokemonData.id,
@@ -69,10 +69,8 @@ export default function PokemonDetails({
   const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
   const { t } = useTranslation();
-
   const params = useParams();
-  const currentId = !error ? (id || params?.id) : undefined;
-
+  const currentId = !error ? id || params?.id : undefined;
 
   useEffect(() => {
     if (!currentId) return;

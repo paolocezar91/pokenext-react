@@ -51,15 +51,13 @@ const Tooltip: React.FC<TooltipProps> = ({
       >
         {children}
       </div>
-      {isVisible && (
-        <div
-          id="tooltip-content"
-          role="tooltip"
-          className={`tooltip-content tooltip-${position}`}
-        >
-          {content}
-        </div>
-      )}
+      {isVisible && <div
+        id="tooltip-content"
+        role="tooltip"
+        className={`tooltip-content tooltip-${position}`}
+      >
+        {content}
+      </div>}
     </div>
   );
 };

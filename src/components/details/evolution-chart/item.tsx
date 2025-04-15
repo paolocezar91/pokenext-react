@@ -3,7 +3,7 @@ import Image from "next/image";
 import { IEvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionItem({evolution_details}: {evolution_details: IEvolutionDetail}) {
-  return (evolution_details.item?.name &&
+  return evolution_details.item?.name &&
     <span> use
       <span className="flex flex-col items-center text-xs">
         {kebabToSpace(evolution_details.item?.name)}
@@ -14,5 +14,5 @@ export default function PokemonEvolutionItem({evolution_details}: {evolution_det
           alt={kebabToSpace(evolution_details.item?.name)}
         />
       </span>
-    </span>);
+    </span>;
 }

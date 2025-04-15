@@ -39,6 +39,6 @@ async function _fetchAndJson(url: string) {
     }
     throw { status: 404, text: data.statusText };
   } catch (error) {
-    throw ({ error });
+    throw { error };
   }
 }

@@ -21,7 +21,6 @@ const eslintConfig = [
       "no-console": "off",
       "no-unused-vars": "error",
       "no-extra-parens": "error",
-
       "no-restricted-syntax": [
         "error",
         {

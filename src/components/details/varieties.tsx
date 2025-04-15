@@ -23,16 +23,16 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
     getVarieties();
   }, [name, species.varieties]);
 
-  return (<div className="pokemon-varieties col-span-2 mt-2">
+  return <div className="pokemon-varieties col-span-2 mt-2">
     <h3 className="text-lg font-semibold mb-4">{t('pokedex.details.varieties.title')}</h3>
     <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
-      {!!forms.length && varieties.map((pkmn, i) => (
+      {!!forms.length && varieties.map((pkmn, i) =>
         <Tooltip key={i} content={`${normalizePokemonName(pkmn.name)}`}>
           <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
             <PokemonThumb pokemonData={pkmn} size="sm" hasName={false} isMega={forms[i].is_mega} />
           </Link>
         </Tooltip>
-      ))}
+      )}
     </div>
-  </div>);
+  </div>;
 }

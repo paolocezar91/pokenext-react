@@ -90,7 +90,7 @@ export default function PokemonThumb({
   const isLG = ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
   const classes = isXS || isSM || isBase || isLG;
 
-  const loaded = pokemon && (
+  const loaded = pokemon &&
     <div
       style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}}
       className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!hasName ? 'titleless' : ''}`}
@@ -127,7 +127,7 @@ export default function PokemonThumb({
       {hasName && <span className={`name w-60 ${classes[3]}`}>{ normalizePokemonName(pokemon.name) }</span>}
       {hasName && <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>}
     </div>
-  );
+  ;
 
   return (
     <Suspense fallback={<Spinner />}>
