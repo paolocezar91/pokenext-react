@@ -18,6 +18,19 @@
             },
             "stats": {
                 "title": "Estatísticas Base"
+            },
+            "varieties": {
+                "title": "Variedades"
+            },
+            "moves": {
+                "title": "Golpes",
+                "chooseVersion": "Escolha a versão",
+                "learntBy": "Aprendido como",
+                "name": "Nome",
+                "type": "Tipo",
+                "class": "Classe",
+                "power": "Poder",
+                "accuracy": "Exatidão"
             }
         },
         "toggleView": "Miniaturas ou Tabela"

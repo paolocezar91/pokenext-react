@@ -12,7 +12,7 @@ export default function Header({ title }: Readonly<{ title: string }>) {
 
   const goTo = ((event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const idx = (event.currentTarget[0] as HTMLInputElement).value;
+    const idx = (event.currentTarget[0] as HTMLInputElement).value.toLowerCase();
     if(!!idx) {
       router.push(`/pokedex/${idx}`);
     }

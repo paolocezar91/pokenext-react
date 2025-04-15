@@ -13,7 +13,7 @@ import Spinner from '@/components/spinner/spinner';
 import PokemonThumb, { getNumber } from '@/components/thumb/thumb';
 import { GetStaticPropsContext } from 'next';
 import { useParams } from 'next/navigation';
-import PokeAPI, { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
+import PokeAPI, { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonMoveVersion, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Controls from '../../components/controls';
@@ -22,6 +22,8 @@ import { getIdFromUrlSubstring, normalizePokemonName } from './utils';
 import RootLayout from '@/app/layout';
 import Link from 'next/link';
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
+import PokemonVarieties from '@/components/details/varieties';
+import PokemonMoves from '@/components/details/moves';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
@@ -60,8 +62,6 @@ export default function PokemonDetails({
   previousAndAfter: INamedApiResourceList<IPokemon>,
   error?: { statusText: string, status: number }
 }) {
-
-
   const [pokemon, setPokemon] = useState<IPokemon>(pokemonData);
   const [speciesChain, setSpeciesChain] = useState<SpeciesChain>({ loaded: false, chain: {}});
   const [species, setSpecies] = useState<IPokemonSpecies | null>(null);
@@ -100,7 +100,6 @@ export default function PokemonDetails({
           const ec = await fetchEvolutionChain(speciesData) as IEvolutionChain;
           setEvolutionChain(ec);
 
-
           const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
           speciesChain.chain.first = [await fetchPokemon(evolve_to_id)];
           if(ec.chain?.evolves_to?.[0]) {
@@ -136,10 +135,9 @@ export default function PokemonDetails({
     setPokemonData();
   }, [currentId]);
 
-
   if(error)
     return <RootLayout title={`404 - ${t('pokedex.notFound')}`}>
-      <div className="p-4">
+      <div className="container p-4">
         <h2 className="border-b-2 border-solid border-white text-lg inline">404 - { t('pokedex.notFound') }</h2>
         <p className="pt-4 ml-4 flex align-center">
           <Link
@@ -155,7 +153,7 @@ export default function PokemonDetails({
 
   return (
     <RootLayout title={pokemon ? `${normalizePokemonName(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`}>
-      <div className="wrapper h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
+      <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
         {!loaded && <Spinner />}
         <Suspense>
           {loaded && <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
@@ -174,7 +172,10 @@ export default function PokemonDetails({
                   <PokemonSize pokemon={pokemon} />
                   <PokemonAbilities pokemon={pokemon} />
                   <PokemonStats pokemon={pokemon} />
-                  { evolutionChain && <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+                  { species && species.varieties.length > 1 && <PokemonVarieties name={pokemon.name} species={species} />}
+                  { evolutionChain && !!speciesChain.chain.second.length &&
+                    <PokemonEvolutionChart speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+                  <PokemonMoves pokemon={pokemon} />
                 </div>
               </div>
             </div>

@@ -12,17 +12,17 @@ export default function PokemonStats({pokemon}: {pokemon: IPokemon}) {
         <tr className="text-left">
           {
             pokemon.stats.map((stat, i) => {
-              return(<th className={`px-2 py-2 border-solid border-b-2 border-white align-bottom ${i===0 ?'uppercase w-[5%]':'w-[12%]'}`} key={i}>
+              return(<th className={`border-solid border-b-2 border-white align-bottom ${i===0 ?'uppercase w-[5%]':'w-[12%]'}`} key={i}>
                 {capitilize(kebabToSpace(stat.stat.name))}
               </th>);})
           }
-          <th className={`w-[12%] px-2 py-2 border-solid border-b-2 border-white align-bottom`}>Total</th>
+          <th className={`w-[12%] align-bottom`}>Total</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          {pokemon.stats.map((stat, i) => (<td className="px-2 py-2" key={i}>{stat.base_stat}</td>))}
-          <td className="px-2 py-2">{pokemon.stats.reduce((acc, stat) => acc += stat.base_stat, 0)}</td>
+          {pokemon.stats.map((stat, i) => (<td key={i}>{stat.base_stat}</td>))}
+          <td>{pokemon.stats.reduce((acc, stat) => acc += stat.base_stat, 0)}</td>
         </tr>
       </tbody>
     </table>

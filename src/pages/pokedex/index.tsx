@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 
 const NUMBERS_OF_POKEMON = 20;
-const STARTING_POKEMON = 0;
+const STARTING_POKEMON = 494;
 
 export const metadata: Metadata = {
   title: `Pokédex -- Next.js Demo`,

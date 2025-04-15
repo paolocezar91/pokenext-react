@@ -61,18 +61,16 @@ export default function PokemonThumb({
   hasShinyCheckbox,
   size = 'base',
   hasName = true,
-  // hasVarieties = false
+  isMega = false,
 }: Readonly<{
   pokemonData: IPokemon | IPkmn,
   hasShinyCheckbox?: boolean,
   size?: string,
+  isMega?: boolean,
   hasName?: boolean,
-  // hasVarieties?: boolean,
 }>) {
   const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
-  // const [varieties, setVarieties] = useState<string[]>([]);
-
 
   useEffect(() => {
     setPokemon(pokemonData);
@@ -101,25 +99,32 @@ export default function PokemonThumb({
       <div className="img-hover-zoom w-full h-full">
         <div className={`relative w-full ${classes[1]}`}>
           {!shiny && <Image
-            className="artwork"
+            className="artwork z-1"
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pokemon, []).normal[0]}
             alt={normalizePokemonName(pokemon.name)}
             priority={true}
-
           />}
           {shiny && <Image
-            className="artwork"
+            className="artwork z-1"
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pokemon, []).shiny[0]}
             alt={normalizePokemonName(pokemon.name)}
             priority={true}
           />}
+          {isMega && <Image
+            className="artwork opacity-40 z-2"
+            fill={true}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            src="/mega-evo.png"
+            alt={normalizePokemonName(pokemon.name)}
+            priority={true}
+          />}
         </div>
       </div>
-      {hasName && <span className={`name ${classes[3]}`}>{ normalizePokemonName(pokemon.name) }</span>}
+      {hasName && <span className={`name w-60 ${classes[3]}`}>{ normalizePokemonName(pokemon.name) }</span>}
       {hasName && <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>}
     </div>
   );

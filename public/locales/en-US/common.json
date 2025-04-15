@@ -18,6 +18,19 @@
             },
             "stats": {
                 "title": "Base Stats"
+            },
+            "varieties": {
+                "title": "Varieties"
+            },
+            "moves": {
+                "title": "Moves",
+                "chooseVersion": "Choose a version",
+                "learntBy": "Learnt By",
+                "name": "Name",
+                "type": "Type",
+                "class": "Class",
+                "power": "Power",
+                "accuracy": "Accuracy"
             }
         },
         "toggleView": "Thumbnail or Table view"
