@@ -1,4 +1,4 @@
-import { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
+import { IEvolutionChain, IMove, INamedApiResourceList, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
 
 export const fetchPokemonList = async (limit:number , offset: number) => (await _fetchAndJson(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)) as INamedApiResourceList<IPokemon>;
 
@@ -8,6 +8,10 @@ export const fetchPokemonDataList = async (pkmnList: INamedApiResourceList<IPoke
     return { name: pokemon.name, types: pokemon.types, id: pokemon.id, sprites: pokemon.sprites, stats: pokemon.stats };
   })
 );
+
+export const fetchMove = async (id: string): Promise<IMove> => {
+  return await _fetchAndJson(`https://pokeapi.co/api/v2/move/${id}`) as IMove;
+};
 
 export const fetchPokemon = async (id: string): Promise<IPokemon> => {
   return await _fetchAndJson(`https://pokeapi.co/api/v2/pokemon/${id}`) as IPokemon;

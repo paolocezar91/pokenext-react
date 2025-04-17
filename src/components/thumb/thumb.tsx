@@ -1,21 +1,16 @@
 import { IPkmn } from '@/app/types';
-import { normalizePokemonName } from '@/pages/pokedex/utils';
+import { getIdFromUrlSubstring, normalizePokemonName } from '@/pages/pokedex/utils';
 import Image from 'next/image';
-import { IPokemon, IPokemonType } from 'pokeapi-typescript';
+import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import Spinner from '../spinner/spinner';
 import './thumb.scss';
 
-export function getArtwork(pokemon: IPokemon | IPkmn, varieties: string[]) {
+export function getArtwork(id: number) {
   const rv: Record<string, string[]> = {
-    normal: [],
-    shiny: []
+    normal: [`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`],
+    shiny: [`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`]
   };
-
-  [pokemon.id, ...varieties].forEach((var_id) => {
-    rv.normal.push(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${var_id}.png`);
-    rv.shiny.push(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${var_id}.png`);
-  });
 
   return rv;
 }
@@ -63,30 +58,31 @@ function getTypeColor(type: string) {
 
 export default function PokemonThumb({
   pokemonData,
-  hasShinyCheckbox,
+  pokemonDataSmall,
+  hasShinyCheckbox = false,
   size = 'base',
   hasName = true,
   isMega = false,
 }: Readonly<{
-  pokemonData: IPokemon | IPkmn,
+  pokemonData?: IPokemon | IPkmn,
+  pokemonDataSmall?: INamedApiResource<IPokemon>,
   hasShinyCheckbox?: boolean,
   size?: string,
   isMega?: boolean,
   hasName?: boolean,
 }>) {
   const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
+  const [pokemonSmall, setPokemonSmall] = useState<INamedApiResource<IPokemon> | null>(null);
+
   const [shiny, setShiny] = useState<boolean>(false);
 
   useEffect(() => {
-    setPokemon(pokemonData);
-    // const getVarieties = async () => {
-    //   const species = await fetchSpecies(String(pokemonData.name));
-    //   setVarieties(species.varieties.map(v => getIdFromUrlSubstring(v.pokemon.url)));
-    // };
-    // if(hasVarieties){
-    //   getVarieties();
-    // }
-  }, [pokemonData]);
+    if(pokemonData)
+      setPokemon(pokemonData);
+    if(pokemonDataSmall)
+      setPokemonSmall(pokemonDataSmall);
+
+  }, [pokemonData, pokemonDataSmall]);
 
   const loading = <span className="loading text-xs my-auto"><Spinner /></span>;
   const isXS = size === 'xs' && ['w-30 h-30', 'h-[120px]', 'mb-0', 'text-xs'];
@@ -95,9 +91,20 @@ export default function PokemonThumb({
   const isLG = ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
   const classes = isXS || isSM || isBase || isLG;
 
-  const loaded = pokemon &&
+  let pkmn;
+  if (pokemonSmall) {
+    pkmn = {
+      id: Number(getIdFromUrlSubstring(pokemonSmall.url)),
+      name: pokemonSmall?.name
+    };
+  } else if(pokemon) {
+    pkmn = pokemon;
+  }
+
+
+  const loaded = pkmn &&
     <div
-      style={ pokemon ? getBackgroundStyle(pokemon.types) : {'background': '#CCCCC'}}
+      style={ pkmn ? getBackgroundStyle(pkmn?.types ?? []) : {'background': '#CCCCC'}}
       className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!hasName ? 'titleless' : ''}`}
     >
       <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
@@ -107,16 +114,16 @@ export default function PokemonThumb({
             className="artwork z-1"
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pokemon, []).normal[0]}
-            alt={normalizePokemonName(pokemon.name)}
+            src={getArtwork(pkmn.id).normal[0]}
+            alt={`${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}}`}
             priority={true}
           />}
           {shiny && <Image
             className="artwork z-1"
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pokemon, []).shiny[0]}
-            alt={normalizePokemonName(pokemon.name)}
+            src={getArtwork(pkmn.id).shiny[0]}
+            alt={`Shiny ${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}}`}
             priority={true}
           />}
           {isMega && <Image
@@ -124,21 +131,21 @@ export default function PokemonThumb({
             fill={true}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src="/mega-evo.png"
-            alt={normalizePokemonName(pokemon.name)}
+            alt={normalizePokemonName(pkmn.name)}
             priority={true}
           />}
         </div>
       </div>
-      {hasName && <span className={`name w-60 ${classes[3]}`}>{ normalizePokemonName(pokemon.name) }</span>}
-      {hasName && <span className={`id ${classes[2]} ${classes[3]}`}>#{ getNumber(pokemon.id) }</span>}
+      {hasName && <span className={`name text-white w-60 ${classes[3]}`}>{ normalizePokemonName(pkmn.name) }</span>}
+      {hasName && <span className={`id text-white  ${classes[2]} ${classes[3]}`}>#{ getNumber(pkmn.id) }</span>}
     </div>
   ;
 
   return (
     <Suspense fallback={<Spinner />}>
-      {pokemon ? loaded : loading}
+      {pkmn ? loaded : loading}
       {
-        pokemon && hasShinyCheckbox && <label className="w-full text-right mt-1" htmlFor="shiny">
+        hasShinyCheckbox && <label className="w-full text-right mt-1" htmlFor="shiny">
           Shiny<input
             id="shiny"
             name="shiny"

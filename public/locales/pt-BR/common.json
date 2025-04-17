@@ -33,7 +33,9 @@
                 "type": "Tipo",
                 "class": "Classe",
                 "power": "Poder",
-                "accuracy": "Exatidão"
+                "accuracy": "Exatidão",
+                "pp": "PP"
+
             }
         },
         "toggleView": "Miniaturas ou Tabela"

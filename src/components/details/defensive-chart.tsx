@@ -77,29 +77,30 @@ function getDefensiveMatchup(types: PokemonType[]): DefensiveMatchup {
   return result;
 }
 
+const getFractionValue = (value: number) => {
+  let rv = '';
+  switch(value) {
+  case 0.25:
+    rv = '1/4';
+    break;
+  case 0.5:
+    rv = '1/2';
+    break;
+  case undefined:
+    rv = '-';
+    break;
+  default:
+    rv = String(value);
+    break;
+  }
+  return rv;
+};
+
 export default function PokemonDefensiveChart({ types, name }: {types: string[], name: string}) {
   const {t} = useTranslation('common');
   const defensiveChart = getDefensiveMatchup(types as PokemonType[]);
-  const getFractionValue = (value: number) => {
-    let rv = '';
-    switch(value) {
-    case 0.25:
-      rv = '1/4';
-      break;
-    case 0.5:
-      rv = '1/2';
-      break;
-    case undefined:
-      rv = '-';
-      break;
-    default:
-      rv = String(value);
-      break;
-    }
-    return rv;
-  };
 
-  return <div className="defensive-chart">
+  return <div className="defensive-chart col-span-2 md:col-span-1">
     <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.defensiveChart.title') }</h3>
     <div className="flex flex-wrap">
       {

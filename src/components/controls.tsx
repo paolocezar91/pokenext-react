@@ -29,6 +29,7 @@ export default function Controls({
     <Tooltip
       content={`${normalizePokemonName(name)} #${getNumber(id)}`}
       disabled={!isFirst()}
+
     >
       <Link
         href={`/pokedex/${previousAndAfter.results[0]?.name}`}
@@ -52,6 +53,7 @@ export default function Controls({
 
   const goNext = (name: string, id: number) => <div className="next flex-1 text-right">
     <Tooltip
+
       content={`${normalizePokemonName(name)} #${getNumber(id)}`}
       disabled={!isLast()}
     >

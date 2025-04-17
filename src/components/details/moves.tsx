@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import Spinner from "../spinner/spinner";
 import Tooltip from "../tooltip/tooltip";
 import { getTypeIconById } from "./types";
+import Link from "next/link";
 
 type Moveset = {
   move: string;
@@ -107,7 +108,7 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
           .map(([name], idx) => {
             return <button
               key={idx}
-              className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-white mr-2 rounded hover:bg-(--pokedex-red) ${name === versionGroupActive ? 'active bg-(--pokedex-red)' : ''}`}
+              className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:bg-(--pokedex-red) ${name === versionGroupActive ? 'active bg-(--pokedex-red)' : ''}`}
               onClick={() => setVersionGroupActive(name)}
             >
               {capitilize(kebabToSpace(name))}
@@ -121,7 +122,7 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
         {Object.keys(moves[versionGroupActive].moveset).map((moveset, idx) => {
           return !!moves[versionGroupActive].moveset[moveset].length && <button
             key={idx}
-            className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-white mr-2 rounded hover:bg-(--pokedex-red) ${moveset === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
+            className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:bg-(--pokedex-red) ${moveset === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
             onClick={() => setMovesetActive(moveset)}
           >{moveset === 'machine' ? 'TM/HM' : capitilize(kebabToSpace(moveset))}</button>;
         })}
@@ -132,25 +133,25 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
         {showTable && <table className="w-full">
           <thead>
             <tr className="text-left">
-              {movesetActive === 'level-up' && <th className="w-[10%] border-solid border-b-2 border-white align-bottom">
+              {movesetActive === 'level-up' && <th className="w-[10%] border-solid border-b-2 border-foreground align-bottom">
                 Lv.
               </th>}
-              {movesetActive === 'machine' && <th className="w-[10%] border-solid border-b-2 border-white align-bottom">
+              {movesetActive === 'machine' && <th className="w-[10%] border-solid border-b-2 border-foreground align-bottom">
                 TM/HM
               </th>}
-              <th className="border-solid border-b-2 border-white align-bottom">
+              <th className="border-solid border-b-2 border-foreground align-bottom">
                 {t('pokedex.details.moves.name')}
               </th>
-              <th className="border-solid border-b-2 border-white align-bottom">
+              <th className="border-solid border-b-2 border-foreground align-bottom">
                 {t('pokedex.details.moves.type')}
               </th>
-              <th className="border-solid border-b-2 border-white align-bottom">
+              <th className="border-solid border-b-2 border-foreground align-bottom">
                 {t('pokedex.details.moves.class')}
               </th>
-              <th className="border-solid border-b-2 border-white align-bottom">
+              <th className="border-solid border-b-2 border-foreground align-bottom">
                 {t('pokedex.details.moves.power')}
               </th>
-              <th className="border-solid border-b-2 border-white align-bottom">
+              <th className="border-solid border-b-2 border-foreground align-bottom">
                 {t('pokedex.details.moves.accuracy')}
               </th>
             </tr>
@@ -166,11 +167,13 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
                 return 0;
               })
               .map((move, idx) => {
-                return move.details && <tr className="border-solid border-b-1 border-white align-middle" key={idx}>
+                return move.details && <tr className="border-solid border-b-1 border-foreground align-middle" key={idx}>
                   {movesetActive === 'level-up' && <td className="py-2">{move.level_learned_at}</td>}
                   {movesetActive === 'machine' && <td className="py-2 uppercase">{(move.tmDetails?.item.name)}</td>}
                   <td className="py-2">
-                    {capitilize(kebabToSpace(move.move))}
+                    <Link href={`/moves/${move.move}`}>
+                      {capitilize(kebabToSpace(move.move))}
+                    </Link>
                   </td>
                   <td className="py-2">
                     <Image

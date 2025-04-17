@@ -3,21 +3,19 @@ import './tooltip.scss'; // Same CSS as before
 
 type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
 
-interface TooltipProps {
-  children: React.ReactNode;
-  content: React.ReactNode;
-  position?: TooltipPosition;
-  delay?: number;
-  disabled?: boolean;
-}
-
-const Tooltip: React.FC<TooltipProps> = ({
+export default function Tooltip({
   children,
   content,
   position = 'top',
   delay = 0,
   disabled = false,
-}) => {
+}: {
+  children: React.ReactNode;
+  content: React.ReactNode;
+  position?: TooltipPosition;
+  delay?: number;
+  disabled?: boolean;
+}) {
   const [isVisible, setIsVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
@@ -61,5 +59,3 @@ const Tooltip: React.FC<TooltipProps> = ({
     </div>
   );
 };
-
-export default Tooltip;

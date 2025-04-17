@@ -18,7 +18,7 @@ import { useInView } from 'react-intersection-observer';
 import { useLocalStorage } from './utils';
 
 const NUMBERS_OF_POKEMON = 20;
-const STARTING_POKEMON = 494;
+const STARTING_POKEMON = 0;
 
 export const metadata: Metadata = {
   title: `Pokédex -- Next.js Demo`,
@@ -49,7 +49,6 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [listTableToggle, setListTableToggle] = useLocalStorage('list-table', false);
   const [filtered, setFiltered] = useState<boolean>(false);
-
   const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
   const {t} = useTranslation('common');
 

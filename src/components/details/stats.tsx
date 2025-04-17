@@ -33,30 +33,31 @@ export const statName = (name: string) => {
 export default function PokemonStats({pokemon}: {pokemon: IPokemon}) {
   const {t} = useTranslation('common');
 
-  const progressBar = (value: number) => {
+  const progressBar = (value: number, dividedBy: number) => {
     return <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-      <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${value*100/255}%`}}></div>
+      <div className="bg-blue-600 h-2.5 rounded-full" style={{width: `${value*100/dividedBy}%`}}></div>
     </div>;
   };
   const total = pokemon.stats.reduce((acc, stat) => acc += stat.base_stat, 0);
 
 
-  return <div className="stats">
+  return <div className="stats col-span-2 md:col-span-1">
     <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.stats.title') }</h3>
     <table className="w-full">
       <tbody>
         {pokemon.stats.map((stat, i) => {
           return <tr key={i}>
-            <td className={`w-[20%] ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
+            <th className={`w-[20%] text-left ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
               { statName(stat.stat.name) }
-            </td>
-            <td className={`w-[13%] pl-4 ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>{stat.base_stat}</td>
-            <td className={`${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>{progressBar(stat.base_stat)}</td>
+            </th>
+            <td className={`w-[18%] text-center px-4 ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>{stat.base_stat}</td>
+            <td className={`${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>{progressBar(stat.base_stat, 255)}</td>
           </tr>;
         })}
         <tr>
-          <td className="w-[20%] border-t-1 border-solid border-white pt-1">Total</td>
-          <td colSpan={2} className="border-t-1 border-solid border-white  pt-1 pl-4">{total}</td>
+          <th className="w-[20%] text-left border-t-1 border-solid border-foreground">Total</th>
+          <td className="w-[18%] text-center border-t-1 border-solid border-foreground px-4">{total}</td>
+          <td className="border-t-1 border-solid border-foreground">{progressBar(total, 255*6)}</td>
         </tr>
       </tbody>
     </table>

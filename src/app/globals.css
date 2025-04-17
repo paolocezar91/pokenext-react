@@ -2,35 +2,42 @@
 
 @font-face {
   font-family: 'Pokedex';
-  src: url('/fonts/PokemonGB.ttf') format('ttf'),
-      url('/fonts/PokemonGB.woff2') format('woff2');
+  src: url('/fonts/PokemonClassic.ttf') format('ttf'),
+      url('/fonts/PokemonClassic.woff2') format('woff2');
 }
 
 :root {
   --background: #171717;
+  --foreground: #ffffff;
   --pokedex-red-light: #f7bfb7;
   --pokedex-red: #dc0a2d;
   --pokedex-blue-light: #a9d3f5;
   --pokedex-blue: #509bfb;
   --pokedex-blue-dark: #156da1;
-  --foreground: #ffffff;
   --thumb-size: 12rem;
 }
 
-@theme inline {
+@theme dark {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
 }
 
 body {
-  background: var(--background);
+  background: #171717;
   color: var(--foreground);
   font-family: 'Pokedex';
 }
 
 a {
-  color: #fff;
+  color: var(--foreground);
   &:hover {
       color: #f7bfb7;
   }
+}
+
+h2, h3 {
+  font-weight: bold;
+  border-bottom: 4px solid var(--foreground);
+  padding-left: 4px;
+  margin-top: 4px;
 }

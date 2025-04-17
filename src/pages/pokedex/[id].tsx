@@ -165,7 +165,7 @@ export default function PokemonDetails({
                 <div className="flex-1"></div>
                 <Controls pokemon={pokemon} previousAndAfter={previousAndAfter} />
               </div>
-              <div className="pokemon-details sm:border-0 md:border-l-4 border-solid border-l-white sm:mt-4 sm:mb-4 md:mt-0 md:mb-0 p-4 pt-0">
+              <div className="pokemon-details sm:border-0 md:border-l-4 border-solid border-l-foreground sm:mt-4 sm:mb-4 md:mt-0 md:mb-0 p-4 pt-0">
                 <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
                   {species && <PokemonDescription species={species} />}
                   <PokemonSize pokemon={pokemon} />

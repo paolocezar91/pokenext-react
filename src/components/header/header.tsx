@@ -23,7 +23,7 @@ export default function Header({ title }: Readonly<{ title: string }>) {
       <div className="flex w-full pt-1 pb-1 mx-auto items-center justify-between text-sm">
         <Link
           href="/pokedex/"
-          className="navbar-brand pt-2 pb-2"
+          className="navbar-brand pt-2 pb-2 flex items-center"
         >
           <Image
             priority={true}
@@ -37,10 +37,10 @@ export default function Header({ title }: Readonly<{ title: string }>) {
           </span>
         </Link>
 
-        <span className="go-to border-solid border-2 border-black bg-foreground rounded mr-4">
+        <span className="go-to border-solid border-2 border-black bg-white rounded mr-4">
           <Tooltip position="bottom" content={t('actions.go.tooltip')}>
             <form onSubmit={goTo}>
-              <input placeholder={t('actions.go.placeholder')} type="text" className="w-30 ml-2 py-1 text-black placeholder-gray-500 text-xs" />
+              <input placeholder={t('actions.go.placeholder')} type="text" className="w-30 ml-2 py-1 text-black bg-white placeholder-gray-500 text-xs" />
               <button type="submit" className="px-2 text-sm text-white bg-(--pokedex-blue) hover:bg-(--pokedex-blue-dark) py-1 border-l-2 border-solid border-black">{ t("actions.go.button") }!</button>
             </form>
           </Tooltip>

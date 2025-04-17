@@ -33,7 +33,8 @@
                 "type": "Type",
                 "class": "Class",
                 "power": "Power",
-                "accuracy": "Accuracy"
+                "accuracy": "Accuracy",
+                "pp": "PP"
             }
         },
         "toggleView": "Thumbnail or Table view"

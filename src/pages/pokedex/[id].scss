@@ -2,20 +2,13 @@ $size: 18rem;
 
 .pokemon-details {
     font-size: 14px;
-    color: #fff;
     overflow: auto;
     max-height: 80vh;
     height: 78vh;
     hr {
         border-top-width: 8px;
     }
-    h2, h3 {
-        color: #fff;
-        font-weight: bold;
-        border-bottom: 4px solid #fff;
-        padding-left: 4px;
-        margin-top: 4px;
-    }
+    
 }
 
 .controls {
