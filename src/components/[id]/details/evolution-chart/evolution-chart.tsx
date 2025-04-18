@@ -1,11 +1,11 @@
 import { SpeciesChain } from "@/app/types";
-import Tooltip from "@/components/tooltip/tooltip";
+import Tooltip from "@/components/shared/tooltip/tooltip";
 import { normalizePokemonName } from "@/pages/pokedex/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
-import PokemonThumb, { getNumber } from "../../thumb/thumb";
+import PokemonThumb, { getNumber } from "../../../shared/thumb/thumb";
 import PokemonEvolutionHappiness from "./happiness";
 import PokemonEvolutionItem from "./item";
 import PokemonEvolutionLocation from "./location";

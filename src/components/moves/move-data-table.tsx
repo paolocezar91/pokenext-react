@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { IMove } from "pokeapi-typescript";
-import { getTypeIconById } from "@/components/details/types";
+import { getTypeIconById } from "@/components/[id]/details/types";
 import { getIdFromUrlSubstring } from "@/pages/pokedex/utils";
-import Tooltip from "@/components/tooltip/tooltip";
+import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useTranslation } from "react-i18next";
 
 interface MoveDataTableProps {

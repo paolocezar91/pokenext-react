@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Tooltip from '../tooltip/tooltip';
+import Tooltip from '../../shared/tooltip/tooltip';
 
 // eslint-disable-next-line no-unused-vars
 export default function PokemonFilter({ onFilter, className }: { onFilter: (_: string) => void, className?: string }) {

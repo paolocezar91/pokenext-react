@@ -3,8 +3,8 @@ import { ArrowUturnLeftIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } fro
 import Link from "next/link";
 import { INamedApiResourceList, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
-import { getNumber } from "./thumb/thumb";
-import Tooltip from "./tooltip/tooltip";
+import { getNumber } from "../shared/thumb/thumb";
+import Tooltip from "../shared/tooltip/tooltip";
 
 
 

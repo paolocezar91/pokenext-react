@@ -2,7 +2,7 @@
 
 import { IPkmn } from '@/app/types';
 import Link from 'next/link';
-import PokemonThumb from '../thumb/thumb';
+import PokemonThumb from '../../shared/thumb/thumb';
 import './list.scss';
 
 export default function PokemonList({

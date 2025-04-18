@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
-import { getBackgroundStyleWithStrings } from "../thumb/thumb";
-import Tooltip from "../tooltip/tooltip";
+import { getBackgroundStyleWithStrings } from "../../shared/thumb/thumb";
+import Tooltip from "../../shared/tooltip/tooltip";
 import { capitilize } from "@/pages/pokedex/utils";
 
 type PokemonType =

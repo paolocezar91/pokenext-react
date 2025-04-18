@@ -5,8 +5,8 @@ import Link from "next/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Spinner from "../spinner/spinner";
-import Tooltip from "../tooltip/tooltip";
+import Spinner from "../../shared/spinner";
+import Tooltip from "../../shared/tooltip/tooltip";
 import { getTypeIconById } from "./types";
 
 type Moveset = {
@@ -130,7 +130,7 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
     </div>}
 
     <div className="tables mb-6">
-      {!showTable && <div className="p-4 flex items-center justify-center">
+      {versionGroupActive && movesetActive && !showTable && <div className="p-4 flex items-center justify-center">
         <Spinner />
       </div>}
       {showTable && <table className="w-full">

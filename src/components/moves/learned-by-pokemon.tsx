@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { INamedApiResource, IPokemon } from "pokeapi-typescript";
-import { getNumber } from "@/components/thumb/thumb";
+import { getNumber } from "@/components/shared/thumb/thumb";
 import { getIdFromUrlSubstring, normalizePokemonName } from "@/pages/pokedex/utils";
 import { useTranslation } from "react-i18next";
 

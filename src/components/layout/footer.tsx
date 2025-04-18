@@ -1,7 +1,7 @@
 import { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
-import nextI18nextConfig from "../../next-i18next.config";
-import Tooltip from "./tooltip/tooltip";
+import nextI18nextConfig from "../../../next-i18next.config";
+import Tooltip from "@/components/shared/tooltip/tooltip";
 import Link from "next/link";
 
 export default function Footer() {

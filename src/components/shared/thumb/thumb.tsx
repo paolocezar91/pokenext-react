@@ -3,7 +3,7 @@ import { getIdFromUrlSubstring, normalizePokemonName } from '@/pages/pokedex/uti
 import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
-import Spinner from '../spinner/spinner';
+import Spinner from '../spinner';
 import './thumb.scss';
 
 export function getArtwork(id: number) {

@@ -2,10 +2,10 @@ import { IPkmn } from '@/app/types';
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '@/pages/pokedex/utils';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
-import PokemonThumb, { getNumber } from '../thumb/thumb';
-import { getTypeIconById } from '../details/types';
+import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';
+import { getTypeIconById } from '../../[id]/details/types';
 import Image from 'next/image';
-import { statName } from '../details/stats';
+import { statName } from '../../[id]/details/stats';
 
 export default function PokemonTable({
   pokemons,

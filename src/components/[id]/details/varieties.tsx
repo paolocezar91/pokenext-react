@@ -4,8 +4,8 @@ import Link from "next/link";
 import { IPokemon, IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import PokemonThumb from "../thumb/thumb";
-import Tooltip from "../tooltip/tooltip";
+import PokemonThumb from "../../shared/thumb/thumb";
+import Tooltip from "../../shared/tooltip/tooltip";
 
 export default function PokemonVarieties({ name, species }: { name: string, species: IPokemonSpecies }) {
   const [varieties, setVarieties] = useState<IPokemon[]>([]);

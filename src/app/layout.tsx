@@ -2,9 +2,9 @@
 
 import "@/app/globals.css";
 import Head from "next/head";
-import Header from "../components/header/header";
+import Header from "../components/layout/header/header";
 import "./layout.scss";
-import Footer from "@/components/footer";
+import Footer from "@/components/layout/footer";
 
 export default function RootLayout({
   children,
