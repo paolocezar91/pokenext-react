@@ -22,22 +22,24 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
         { normalizePokemonName(species.name) } -- {species.genera.find(g => g.language.name === 'en')?.genus}
       </span>
     </h2>
-    <div className="flex relative  pb-8">
-      <button
-        onClick={() => setFlavorIdx(flavorIdx => flavorIdx - 1)}
-        disabled={flavorIdx === 0}
-        className="text-xs mr-2 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
-      >
-        <ChevronLeftIcon />
-      </button>
+    <div className="flex items-end relative pb-8">
       <p>{getFlavorText(species)[flavorIdx].flavor_text}</p>
-      <button
-        onClick={() => setFlavorIdx(flavorIdx => flavorIdx + 1)}
-        disabled={getFlavorText(species).length - 1 === flavorIdx}
-        className="text-xs ml-2 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
-      >
-        <ChevronRightIcon className="w-5" />
-      </button>
+      <div className="flex">
+        <button
+          onClick={() => setFlavorIdx(flavorIdx => flavorIdx - 1)}
+          disabled={flavorIdx === 0}
+          className="text-xs mr-1 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
+        >
+          <ChevronLeftIcon className="w-5" />
+        </button>
+        <button
+          onClick={() => setFlavorIdx(flavorIdx => flavorIdx + 1)}
+          disabled={getFlavorText(species).length - 1 === flavorIdx}
+          className="text-xs ml-1 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
+        >
+          <ChevronRightIcon className="w-5" />
+        </button>
+      </div>
       <div className="absolute bottom-0 right-0">
         <small className="mr-2">({ capitilize(kebabToSpace(getFlavorText(species)[flavorIdx].version_group_name)) })</small>
         {flavorIdx + 1} / {getFlavorText(species).length}

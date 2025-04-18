@@ -11,6 +11,33 @@ export function capitilize(str = '') {
   return splitStr.join(' ');
 }
 
+export const normalizeVersionGroup = (text: string) => {
+  text = text.replace("red-blue", "Red/Blue");
+  text = text.replace("yellow", "Yellow");
+  text = text.replace("gold-silver", "Gold/Silver");
+  text = text.replace("crystal", "Crystal");
+  text = text.replace("ruby-sapphire", "Ruby/Sapphire");
+  text = text.replace("emerald", "Emerald");
+  text = text.replace("firered-leafgreen", "Fire Red/Leaf Green");
+  text = text.replace("diamond-pearl", "Diamond/Pearl");
+  text = text.replace("platinum", "Platinum");
+  text = text.replace("heartgold-soulsilver", "Heart Gold/Soul Silver");
+  text = text.replace("black-white", "Black/White");
+  text = text.replace("xd", "XD");
+  text = text.replace("colosseum", "Colosseum");
+  text = text.replace("black-2-white-2", "Black 2/White 2");
+  text = text.replace("x-y", "X/Y");
+  text = text.replace("omega-ruby-alpha-sapphire", "ORAS");
+  text = text.replace("sun-moon", "Sun Moon");
+  text = text.replace("ultra-sun-ultra-moon", "Ultra Sun/Ultra Moon");
+  text = text.replace("lets-go-pikachu-lets-go-eevee", "Let's Go Pikachu/Eevee");
+  text = text.replace("sword-shield", "Sword/Shield");
+  text = text.replace("brilliant-diamond-and-shining-pearl", "BD/SP");
+  text = text.replace("legends-arceus", "Legends: Arceus");
+  text = text.replace("scarlet-violet", "Scarlet/Violet");
+  return text;
+};
+
 export const normalizePokemonName = (text: string) => {
   // edge cases
   text = text.replace('nidoran-m', 'nidoran ♂');
@@ -63,6 +90,10 @@ export const normalizePokemonName = (text: string) => {
 
 export const kebabToSpace = (name: string) => {
   return name.replaceAll('-',' ');
+};
+
+export const kebabToSlash = (name: string) => {
+  return name.replaceAll('-','/');
 };
 
 export const getIdFromUrlSubstring = (url = '') => url.split("/")[url.split("/").length - 2];
