@@ -1,5 +1,5 @@
 import { fetchURL } from "@/app/api";
-import { normalizePokemonName } from "@/pages/pokedex/utils";
+import { normalizePokemonName } from "@/components/shared/utils";
 import Link from "next/link";
 import { IPokemon, IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
 import { useEffect, useState } from "react";

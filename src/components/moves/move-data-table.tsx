@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { IMove } from "pokeapi-typescript";
 import { getTypeIconById } from "@/components/[id]/details/types";
-import { getIdFromUrlSubstring } from "@/pages/pokedex/utils";
+import { getIdFromUrlSubstring } from "@/components/shared/utils";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useTranslation } from "react-i18next";
 

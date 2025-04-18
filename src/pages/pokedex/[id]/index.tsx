@@ -23,7 +23,7 @@ import { useParams } from 'next/navigation';
 import PokeAPI, { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '../utils';
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '../../../components/shared/utils';
 import './index.scss';
 
 export async function getStaticProps(context: GetStaticPropsContext) {

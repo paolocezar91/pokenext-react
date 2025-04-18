@@ -1,4 +1,4 @@
-import { kebabToSpace } from "@/pages/pokedex/utils";
+import { kebabToSpace } from "@/components/shared/utils";
 import Image from "next/image";
 import { IEvolutionDetail } from "pokeapi-typescript";
 

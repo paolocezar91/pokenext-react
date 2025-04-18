@@ -1,6 +1,6 @@
 import { SpeciesChain } from "@/app/types";
 import Tooltip from "@/components/shared/tooltip/tooltip";
-import { normalizePokemonName } from "@/pages/pokedex/utils";
+import { normalizePokemonName } from "@/components/shared/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";

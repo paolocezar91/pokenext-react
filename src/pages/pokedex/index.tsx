@@ -15,7 +15,7 @@ import { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { useLocalStorage } from './utils';
+import { useLocalStorage } from '../../components/shared/utils';
 
 const NUMBERS_OF_POKEMON = 20;
 const STARTING_POKEMON = 0;

@@ -1,5 +1,5 @@
 import { fetchURL } from "@/app/api";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/pages/pokedex/utils";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";

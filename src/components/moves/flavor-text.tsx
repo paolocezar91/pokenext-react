@@ -1,4 +1,4 @@
-import { capitilize, kebabToSpace, normalizeVersionGroup } from "@/pages/pokedex/utils";
+import { capitilize, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { IMove } from "pokeapi-typescript";
 import { useState } from "react";

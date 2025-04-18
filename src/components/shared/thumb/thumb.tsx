@@ -1,5 +1,5 @@
 import { IPkmn } from '@/app/types';
-import { getIdFromUrlSubstring, normalizePokemonName } from '@/pages/pokedex/utils';
+import { getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
 import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';

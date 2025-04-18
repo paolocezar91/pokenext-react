@@ -1,4 +1,4 @@
-import { capitilize } from "@/pages/pokedex/utils";
+import { capitilize } from "@/components/shared/utils";
 import Image from "next/image";
 import { IType } from "pokeapi-typescript";
 

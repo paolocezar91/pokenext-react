@@ -9,7 +9,7 @@ import MoveDataTable from "@/components/moves/move-data-table";
 import MoveTarget from "@/components/moves/move-target";
 import MoveEffect from "@/components/moves/move-effect";
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "../pokedex/utils";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "../../components/shared/utils";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);

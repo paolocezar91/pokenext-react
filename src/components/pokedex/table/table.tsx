@@ -1,5 +1,5 @@
 import { IPkmn } from '@/app/types';
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '@/pages/pokedex/utils';
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';

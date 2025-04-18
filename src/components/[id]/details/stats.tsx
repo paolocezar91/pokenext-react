@@ -1,4 +1,4 @@
-import { capitilize, kebabToSpace } from "@/pages/pokedex/utils";
+import { capitilize, kebabToSpace } from "@/components/shared/utils";
 import { IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 

@@ -1,4 +1,4 @@
-import { normalizePokemonName } from "@/pages/pokedex/utils";
+import { normalizePokemonName } from "@/components/shared/utils";
 import { ArrowUturnLeftIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { INamedApiResourceList, IPokemon } from "pokeapi-typescript";
