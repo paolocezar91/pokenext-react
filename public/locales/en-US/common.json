@@ -39,6 +39,26 @@
         },
         "toggleView": "Thumbnail or Table view"
     },
+    "moves": {
+        "title": "Move",
+        "flavorText": {
+            "empty": "No flavor text available"
+        },
+        "learnedBy": {
+            "title": "Learned by {{length}} pokémon"
+        },
+        "moveData": {
+            "title": "Move Data"
+        },
+        "moveEffect": {
+            "title": "Effect",
+            "empty": "No effect text available"
+        },
+        "moveTarget": {
+            "title": "Target",
+            "empty": "No description available"
+        }
+    },
     "table": {
         "name": "Name",
         "types": "Type(s)"

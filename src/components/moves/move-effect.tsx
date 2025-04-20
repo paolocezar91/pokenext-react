@@ -1,10 +1,8 @@
 import { IMove } from "pokeapi-typescript";
+import { useTranslation } from "react-i18next";
 
-interface MoveEffectProps {
-  moveData: IMove;
-}
-
-export default function MoveEffect({ moveData }: MoveEffectProps) {
+export default function MoveEffect({ moveData }: { moveData: IMove; }) {
+  const { t } = useTranslation('common');
 
   const getEffects = () => {
     return moveData.effect_entries.filter(effect => effect.language.name === 'en');
@@ -12,9 +10,12 @@ export default function MoveEffect({ moveData }: MoveEffectProps) {
 
   return (
     <div className="effect flex flex-col max-h-50 w-full">
-      <h3 className="text-lg mb-4">Effect</h3>
+      <h3 className="text-lg mb-4">{t('moves.moveEffect.title')}</h3>
       <div className="flex-1 py-1 h-[-webkit-fill-available] overflow-auto">
-        <p>{getEffects()[0].effect}</p>
+        { getEffects().length === 0 ?
+          <p>{t('moves.moveEffect.empty')}</p>:
+          <p>{getEffects()[0].effect}</p>
+        }
       </div>
     </div>
   );

@@ -59,21 +59,20 @@ function getTypeColor(type: string) {
 export default function PokemonThumb({
   pokemonData,
   pokemonDataSmall,
-  hasShinyCheckbox = false,
+  showShinyCheckbox,
   size = 'base',
-  hasName = true,
-  isMega = false,
+  showName,
+  isMega,
 }: Readonly<{
   pokemonData?: IPokemon | IPkmn,
   pokemonDataSmall?: INamedApiResource<IPokemon>,
-  hasShinyCheckbox?: boolean,
+  showShinyCheckbox?: boolean,
   size?: string,
+  showName?: boolean,
   isMega?: boolean,
-  hasName?: boolean,
 }>) {
   const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
   const [pokemonSmall, setPokemonSmall] = useState<INamedApiResource<IPokemon> | null>(null);
-
   const [shiny, setShiny] = useState<boolean>(false);
 
   useEffect(() => {
@@ -105,7 +104,7 @@ export default function PokemonThumb({
   const loaded = pkmn &&
     <div
       style={ pkmn ? getBackgroundStyle(pkmn?.types ?? []) : {'background': '#CCCCC'}}
-      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!hasName ? 'titleless' : ''}`}
+      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!showName ? 'titleless' : ''}`}
     >
       <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
       <div className="img-hover-zoom w-full h-full">
@@ -136,8 +135,8 @@ export default function PokemonThumb({
           />}
         </div>
       </div>
-      {hasName && <span className={`name text-white w-60 ${classes[3]}`}>{ normalizePokemonName(pkmn.name) }</span>}
-      {hasName && <span className={`id text-white  ${classes[2]} ${classes[3]}`}>#{ getNumber(pkmn.id) }</span>}
+      {showName && <span className={`name text-white w-60 ${classes[3]}`}>{ normalizePokemonName(pkmn.name) }</span>}
+      {showName && <span className={`id text-white  ${classes[2]} ${classes[3]}`}>#{ getNumber(pkmn.id) }</span>}
     </div>
   ;
 
@@ -145,7 +144,7 @@ export default function PokemonThumb({
     <Suspense fallback={<Spinner />}>
       {pkmn ? loaded : loading}
       {
-        hasShinyCheckbox && <label className="w-full text-right mt-1" htmlFor="shiny">
+        showShinyCheckbox && <label className="w-full text-right mt-1" htmlFor="shiny">
           Shiny<input
             id="shiny"
             name="shiny"

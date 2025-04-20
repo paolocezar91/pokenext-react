@@ -29,7 +29,11 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
       {!!forms.length && varieties.map((pkmn, i) =>
         <Tooltip key={i} content={`${normalizePokemonName(pkmn.name)}`}>
           <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
-            <PokemonThumb pokemonData={pkmn} size="sm" hasName={false} isMega={forms[i].is_mega} />
+            <PokemonThumb
+              pokemonData={pkmn}
+              size="sm"
+              isMega={forms[i].is_mega}
+            />
           </Link>
         </Tooltip>
       )}

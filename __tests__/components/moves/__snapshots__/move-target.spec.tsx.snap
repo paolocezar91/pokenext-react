@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MoveTarget Component should match snapshot with English description 1`] = `
+<DocumentFragment>
+  <div
+    class="target w-full mt-2"
+  >
+    <h3
+      class="text-lg font-semibold mb-4"
+    >
+      moves.moveTarget.title
+    </h3>
+    <p
+      data-testid="target-description"
+    >
+      Targets a specific move of the opponent
+    </p>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`MoveTarget Component should match snapshot with no valid description 1`] = `
+<DocumentFragment>
+  <div
+    class="target w-full mt-2"
+  >
+    <h3
+      class="text-lg font-semibold mb-4"
+    >
+      moves.moveTarget.title
+    </h3>
+    <p
+      data-testid="target-description"
+    >
+      moves.moveTarget.empty
+    </p>
+  </div>
+</DocumentFragment>
+`;

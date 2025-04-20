@@ -58,14 +58,14 @@ export default function MoveDetails({
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
-          <p>Loading move data...</p>
+          <p>{t('pokedex.loading')}...</p>
         </div>
       </RootLayout>
     );
   }
 
   return (
-    <RootLayout title={`Move: ${capitilize(kebabToSpace(moveData.name))}`}>
+    <RootLayout title={`${t('moves.title')}: ${capitilize(kebabToSpace(moveData.name))}`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
         <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">
           {/* Left Column */}

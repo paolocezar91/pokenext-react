@@ -158,7 +158,7 @@ export default function PokemonDetails({
           {loaded && <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
             <div className="flex flex-col md:flex-row h-[-webkit-fill-available]">
               <div className="thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
-                <PokemonThumb pokemonData={pokemon} size="large" hasShinyCheckbox={true}/>
+                <PokemonThumb pokemonData={pokemon} size="lg" showShinyCheckbox={true} showName={true} />
                 <hr className="border-solid border-2 border-white mt-2 w-full" />
                 <PokemonTypes types={types} />
                 <PokemonCries pokemon={pokemon} />

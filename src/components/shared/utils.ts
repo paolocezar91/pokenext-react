@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-export function capitilize(str = '') {
+export const capitilize = (str = '') => {
   const splitStr = str.toLowerCase().split(' ');
   for (let i = 0; i < splitStr.length; i++) {
     // You do not need to check if i is larger than splitStr length, as your for does that for you
@@ -9,7 +9,7 @@ export function capitilize(str = '') {
   }
   // Directly return the joined string
   return splitStr.join(' ');
-}
+};
 
 export const normalizeVersionGroup = (text: string) => {
   text = text.replace("red-blue", "Red/Blue");
@@ -27,12 +27,12 @@ export const normalizeVersionGroup = (text: string) => {
   text = text.replace("colosseum", "Colosseum");
   text = text.replace("black-2-white-2", "Black 2/White 2");
   text = text.replace("x-y", "X/Y");
-  text = text.replace("omega-ruby-alpha-sapphire", "ORAS");
+  text = text.replace("omega-ruby-alpha-sapphire", "Omega Ruby/Alpha Sapphire");
   text = text.replace("sun-moon", "Sun Moon");
   text = text.replace("ultra-sun-ultra-moon", "Ultra Sun/Ultra Moon");
   text = text.replace("lets-go-pikachu-lets-go-eevee", "Let's Go Pikachu/Eevee");
   text = text.replace("sword-shield", "Sword/Shield");
-  text = text.replace("brilliant-diamond-and-shining-pearl", "BD/SP");
+  text = text.replace("brilliant-diamond-and-shining-pearl", "Brill. Diaming/Shin. Pearl");
   text = text.replace("legends-arceus", "Legends: Arceus");
   text = text.replace("scarlet-violet", "Scarlet/Violet");
   return text;
@@ -99,10 +99,10 @@ export const kebabToSlash = (name: string) => {
 export const getIdFromUrlSubstring = (url = '') => url.split("/")[url.split("/").length - 2];
 
 
-export function useLocalStorage<T>(
+export const useLocalStorage = <T>(
   key: string,
   defaultValue: T
-): [T, Dispatch<SetStateAction<T>>] {
+): [T, Dispatch<SetStateAction<T>>] => {
   const isMounted = useRef(false);
   const [value, setValue] = useState<T>(defaultValue);
 
@@ -129,4 +129,4 @@ export function useLocalStorage<T>(
   }, [key, value]);
 
   return [value, setValue];
-}
+};

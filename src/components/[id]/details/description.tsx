@@ -8,12 +8,14 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
   const [flavorIdx, setFlavorIdx] = useState(0);
 
   const getFlavorText = (species: IPokemonSpecies) => {
-    return species?.flavor_text_entries.filter((text) => text.language.name === 'en').map((flavor) => {
-      return {
-        flavor_text: flavor.flavor_text.replace('', ' ') || '',
-        version_group_name: flavor.version.name
-      };
-    });
+    return species?.flavor_text_entries
+      .filter((text) => text.language.name === 'en')
+      .map((flavor) => {
+        return {
+          flavor_text: flavor.flavor_text.replace('', ' ') || '',
+          version_group_name: flavor.version.name
+        };
+      });
   };
 
   return <div className="pokemon-description col-span-2 capitilize">
@@ -22,7 +24,7 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
         { normalizePokemonName(species.name) } -- {species.genera.find(g => g.language.name === 'en')?.genus}
       </span>
     </h2>
-    <div className="flex items-end relative pb-8">
+    <div className="flex items-end relative pb-6">
       <p>{getFlavorText(species)[flavorIdx].flavor_text}</p>
       <div className="flex">
         <button

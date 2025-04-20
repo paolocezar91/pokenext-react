@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Toggle Component should match snapshot when checked 1`] = `
+<DocumentFragment>
+  <label
+    class="undefined inline-flex items-center cursor-pointer"
+    data-testid="toggle-label"
+    for="toggle-test"
+  >
+    <input
+      aria-label="Toggle"
+      checked=""
+      class="sr-only peer"
+      id="toggle-test"
+      type="checkbox"
+    />
+    <div
+      class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-(--pokedex-blue) dark:peer-focus:ring-white rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-(--pokedex-red-light) after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-(--pokedex-blue) dark:peer-checked:bg-(--pokedex-blue)"
+    />
+  </label>
+</DocumentFragment>
+`;
+
+exports[`Toggle Component should match snapshot when unchecked 1`] = `
+<DocumentFragment>
+  <label
+    class="undefined inline-flex items-center cursor-pointer"
+    data-testid="toggle-label"
+    for="toggle-test"
+  >
+    <input
+      aria-label="Toggle"
+      class="sr-only peer"
+      id="toggle-test"
+      type="checkbox"
+    />
+    <div
+      class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-(--pokedex-blue) dark:peer-focus:ring-white rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-(--pokedex-red-light) after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-(--pokedex-blue) dark:peer-checked:bg-(--pokedex-blue)"
+    />
+  </label>
+</DocumentFragment>
+`;
+
+exports[`Toggle Component should match snapshot with children 1`] = `
+<DocumentFragment>
+  <label
+    class="undefined inline-flex items-center cursor-pointer"
+    data-testid="toggle-label"
+    for="toggle-test"
+  >
+    <input
+      aria-label="Label"
+      class="sr-only peer"
+      id="toggle-test"
+      type="checkbox"
+    />
+    <div
+      class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-(--pokedex-blue) dark:peer-focus:ring-white rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-(--pokedex-red-light) after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-(--pokedex-blue) dark:peer-checked:bg-(--pokedex-blue)"
+    />
+    <span
+      class="ms-3 text-xs font-medium text-foreground"
+    >
+       Label 
+    </span>
+  </label>
+</DocumentFragment>
+`;

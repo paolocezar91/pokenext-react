@@ -1,0 +1,64 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header should match snapshot 1`] = `
+<DocumentFragment>
+  <nav
+    class="relative navbar flex flex-wrap items-center justify-between border-b-4 border-solid border-(--pokedex-red-light)"
+  >
+    <div
+      class="flex w-full pt-1 pb-1 mx-auto items-center justify-between"
+    >
+      <button
+        aria-description="Go to Home Page"
+        class="navbar-brand pt-2 pb-2 flex items-center btn btn-primary"
+        data-testid="home-page-link"
+        type="button"
+      >
+        <img
+          alt="title"
+          class="mx-2 inline"
+          data-nimg="1"
+          decoding="async"
+          height="48"
+          src="/logo.svg"
+          style="color: transparent;"
+          width="48"
+        />
+        <h1
+          class="text-sm hidden md:inline"
+        >
+          title
+        </h1>
+      </button>
+      <span
+        class="go-to border-solid border-2 border-black bg-white rounded mr-4"
+      >
+        <div
+          class="tooltip-container"
+        >
+          <div
+            class="tooltip-trigger"
+          >
+            <form
+              data-testid="form-go-to"
+            >
+              <input
+                class="w-30 ml-2 py-1 text-black bg-white placeholder-gray-500 text-xs"
+                name="pokemon-search"
+                placeholder="actions.go.placeholder"
+                type="text"
+              />
+              <button
+                class="px-2 text-sm text-white bg-(--pokedex-blue) hover:bg-(--pokedex-blue-dark) py-1 border-l-2 border-solid border-black"
+                type="submit"
+              >
+                actions.go.button!
+              </button>
+            </form>
+          </div>
+        </div>
+      </span>
+    </div>
+  </nav>
+</DocumentFragment>
+`;

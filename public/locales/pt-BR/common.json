@@ -40,6 +40,26 @@
         },
         "toggleView": "Miniaturas ou Tabela"
     },
+    "moves": {
+        "title": "Golpe",
+        "flavorText": {
+            "empty": "Texto não disponível"
+        },
+        "learnedBy": {
+            "title": "Aprendido por {{length}} pokémon"
+        },
+        "moveData": {
+            "title": "Informação do golpe"
+        },
+        "moveEffect": {
+            "title": "Efeito",
+            "empty": "Efeito não disponível"
+        },
+        "moveTarget": {
+            "title": "Alvo",
+            "empty": "Alvo não disponível"
+        }
+    },
     "table": {
         "name": "Nome",
         "types": "Tipo(s)"

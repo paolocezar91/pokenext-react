@@ -6,16 +6,16 @@ import RootLayout from '@/app/layout';
 import { IPkmn } from '@/app/types';
 import PokemonFilter from '@/components/pokedex/list/filter';
 import PokemonList from '@/components/pokedex/list/list';
-import Spinner from '@/components/shared/spinner';
 import PokemonTable from '@/components/pokedex/table/table';
+import Spinner from '@/components/shared/spinner';
 import Toggle from '@/components/shared/toggle';
 import Tooltip from '@/components/shared/tooltip/tooltip';
+import { useLocalStorage } from '@/components/shared/utils';
 import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
-import { useLocalStorage } from '../../components/shared/utils';
 
 const NUMBERS_OF_POKEMON = 20;
 const STARTING_POKEMON = 0;
@@ -99,8 +99,8 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
             <div className="flex-1">
               <Tooltip content={t('pokedex.toggleView')}>
                 <label className="ml-4 flex">
-                  <Squares2X2Icon className="w-7 mr-3" />
-                  <Toggle value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
+                  <Squares2X2Icon className="w-7" />
+                  <Toggle className="mx-2" id="list-table" value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
                   <TableCellsIcon className="w-7" />
                 </label>
               </Tooltip>

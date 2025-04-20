@@ -13,7 +13,7 @@ export default function LearnedByPokemon({ learnedByPokemon }: LearnedByPokemonP
 
   return (
     <div className="learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-      <h3 className="text-lg mb-4">Learned by {learnedByPokemon?.length} Pokémon</h3>
+      <h3 className="text-lg mb-4">{t('moves.learnedBy.title', { length: learnedByPokemon?.length })}</h3>
       <div className="overflow-auto flex-1 pr-4 h-50">
         {!!learnedByPokemon?.length &&
           <table className="w-full text-xs">

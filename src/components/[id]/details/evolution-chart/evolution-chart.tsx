@@ -34,7 +34,7 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
           </div>
           <Tooltip content={`${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}`}>
             <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
-              <PokemonThumb pokemonData={pkmn} size="sm" hasName={false} />
+              <PokemonThumb pokemonData={pkmn} size="sm" />
             </Link>
           </Tooltip>
         </li>
@@ -50,7 +50,7 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
           <li>
             <Tooltip content={`${normalizePokemonName(speciesChain.chain.first[0].name)} #${getNumber(speciesChain.chain.first[0].id)}`}>
               <Link className="flex-2" href={`/pokedex/${speciesChain.chain.first[0].name}`}>
-                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="sm" hasName={false}/>
+                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="sm"/>
               </Link>
             </Tooltip>
           </li>
