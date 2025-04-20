@@ -18,7 +18,7 @@ describe('Toggle Component', () => {
   });
 
   it('should render with checked state when value is true', () => {
-    render(<Toggle id="test" value={true} onChange={mockOnChange} />);
+    render(<Toggle id="test" value onChange={mockOnChange} />);
 
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toBeTruthy();
@@ -46,7 +46,7 @@ describe('Toggle Component', () => {
   });
 
   it('should call onChange with false when toggling from on to off', () => {
-    render(<Toggle id="test" value={true} onChange={mockOnChange} />);
+    render(<Toggle id="test" value onChange={mockOnChange} />);
 
     const checkbox = screen.getByRole('checkbox');
     fireEvent.click(checkbox);
@@ -79,7 +79,7 @@ describe('Toggle Component', () => {
   });
 
   it('should match snapshot when checked', () => {
-    const { asFragment } = render(<Toggle id="test" value={true} onChange={mockOnChange} />);
+    const { asFragment } = render(<Toggle id="test" value onChange={mockOnChange} />);
     expect(asFragment()).toMatchSnapshot();
   });
 

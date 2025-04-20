@@ -18,7 +18,7 @@ export default function PokemonList({
         {
           pokemons.map((pokemon, i) => {
             return <Link href={`/pokedex/${pokemon.name}`} key={i} className="my-1 mx-1 link">
-              <PokemonThumb pokemonData={pokemon} showName={true} />
+              <PokemonThumb pokemonData={pokemon} showName />
             </Link>;
           })
         }

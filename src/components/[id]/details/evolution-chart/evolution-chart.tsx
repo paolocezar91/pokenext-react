@@ -43,7 +43,7 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
     }</ul>;
 
   return (
-    <div className="evolution-chain col-span-2 mt-2">
+    <div className="evolution-chain col-span-2">
       <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.evolutionChart.title') }</h3>
       {!!speciesChain.loaded && <ul className="flex items-start justify-start">
         {speciesChain.chain.first?.length &&

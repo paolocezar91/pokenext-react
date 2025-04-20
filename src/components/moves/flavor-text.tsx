@@ -1,15 +1,19 @@
-import { capitilize, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
+import { capitilize, kebabToSpace, normalizeVersionGroup, useLocalStorage } from "@/components/shared/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { IMove } from "pokeapi-typescript";
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { TypeLocale } from "../layout/descriptionLang";
 
 export default function FlavorText({ moveData }: { moveData: IMove }) {
   const [flavorIdx, setFlavorIdx] = useState(0);
   const { t } = useTranslation('common');
+  const [descriptionLang] = useLocalStorage<TypeLocale>('descriptionLang', 'en');
+
 
   const getFlavors = () => {
-    return moveData.flavor_text_entries.filter(entry => entry.language.name === 'en');
+    return moveData.flavor_text_entries.filter(entry => entry.language.name === descriptionLang);
   };
 
   return (
@@ -21,7 +25,7 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
           : <>
             <p>{getFlavors()[flavorIdx]?.flavor_text}</p>
             <div className="flex">
-              <button
+              <Button
                 data-testid="previous-button"
                 aria-label={`${t('actions.previous')} flavor text`}
                 onClick={() => setFlavorIdx(flavorIdx => flavorIdx - 1)}
@@ -29,8 +33,8 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
                 className="text-xs mr-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
               >
                 <ChevronLeftIcon className="w-5" />
-              </button>
-              <button
+              </Button>
+              <Button
                 data-testid="next-button"
                 aria-label={`${t('actions.next')} flavor text`}
                 onClick={() => setFlavorIdx(flavorIdx => flavorIdx + 1)}
@@ -38,7 +42,7 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
                 className="text-xs ml-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
               >
                 <ChevronRightIcon className="w-5" />
-              </button>
+              </Button>
             </div>
             <div className="absolute bottom-0 right-0">
               <small className="mr-2">({normalizeVersionGroup(getFlavors()[flavorIdx].version_group.name)})</small>

@@ -100,34 +100,42 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
 
   return <div className="moves col-span-2 mt-2">
     <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.moves.title') }</h3>
-    <div className="version-picker my-2">
-      <p className="text-xs">{t('pokedex.details.moves.chooseVersion')}:</p>
-      {!!moves && <select
-        className="text-xs my-2 px-2 py-1 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:border-(--pokedex-red)"
-        onChange={(event) => setVersionGroupActive(event.target.value)}
-      >
-        <option className="background-white text-black" value="" disabled selected>Select</option>
-        {Object.entries(moves)
-          .sort((a, b) => a[1].id - b[1].id)
-          .map(([name], idx) => {
-            return <option className="background-white text-black" key={idx} value={name}>
-              {normalizeVersionGroup(name)}
-            </option>;
-          })}
-      </select>}
+    <div className="flex my-2">
+      {!!moves && <div className="version-picker">
+        <label className=" text-xs flex flex-col">{t('pokedex.details.moves.chooseVersion')}:
+          <select
+            className="bg-white text-black text-xs my-2 px-2 py-1 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:border-(--pokedex-red)"
+            onChange={(event) => setVersionGroupActive(event.target.value)}
+          >
+            <option className="bg-gray-300 text-white" value="" disabled selected>Select</option>
+            {Object.entries(moves)
+              .sort((a, b) => a[1].id - b[1].id)
+              .map(([name], idx) => {
+                return <option className="bg-white text-black text-black" key={idx} value={name}>
+                  {normalizeVersionGroup(name)}
+                </option>;
+              })}
+          </select>
+        </label>
+      </div>}
+      {versionGroupActive && <div className="moveset-picker">
+        <label className=" text-xs flex flex-col">{t('pokedex.details.moves.learntBy')}:
+          <select
+            className="bg-white text-black text-xs my-2 px-2 py-1 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:border-(--pokedex-red)"
+            onChange={(event) => setMovesetActive(event.target.value)}
+          >
+            <option className="bg-gray-300 text-white" value="" disabled selected>Select</option>
+            {Object.keys(moves[versionGroupActive].moveset).map((moveset, idx) => {
+              return !!moves[versionGroupActive].moveset[moveset].length && <option
+                key={idx}
+                value={moveset}
+                className="bg-white text-black"
+              >{moveset === 'machine' ? 'TM/HM' : capitilize(kebabToSpace(moveset))}</option>;
+            })}
+          </select>
+        </label>
+      </div>}
     </div>
-    {versionGroupActive && <div className="moveset-picker">
-      <p className="text-xs">{t('pokedex.details.moves.learntBy')}:</p>
-      <div className="movesets flex my-2">
-        {Object.keys(moves[versionGroupActive].moveset).map((moveset, idx) => {
-          return !!moves[versionGroupActive].moveset[moveset].length && <button
-            key={idx}
-            className={`text-xs px-2 py-2 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:bg-(--pokedex-red) ${moveset === movesetActive ? 'active bg-(--pokedex-red)' : ''}`}
-            onClick={() => setMovesetActive(moveset)}
-          >{moveset === 'machine' ? 'TM/HM' : capitilize(kebabToSpace(moveset))}</button>;
-        })}
-      </div>
-    </div>}
 
     <div className="tables mb-6">
       {versionGroupActive && movesetActive && !showTable && <div className="p-4 flex items-center justify-center">

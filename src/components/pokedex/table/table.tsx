@@ -1,9 +1,9 @@
 import { IPkmn } from '@/app/types';
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName, useLocalStorage } from '@/components/shared/utils';
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';
-import { getTypeIconById } from '../../[id]/details/types';
+import { getTypeIconById, TypeUrl } from '../../[id]/details/types';
 import Image from 'next/image';
 import { statName } from '../../[id]/details/stats';
 
@@ -15,6 +15,8 @@ export default function PokemonTable({
   children: React.ReactNode;
 }>) {
   const { t } = useTranslation('common');
+  const [typeArtworkUrl] = useLocalStorage<TypeUrl>('typeArtworkUrl', 'sword-shield');
+
 
   return <div className="table-container p-4 bg-(--pokedex-red)">
     <div className="overflow-auto h-[68vh] relative rounded">
@@ -63,7 +65,7 @@ export default function PokemonTable({
                     height="20"
                     className={`${idx !== 0 || pokemon.types.length === 1 ? '' : 'mb-2'}`}
                     alt={capitilize(t.type.name)}
-                    src={ getTypeIconById(getIdFromUrlSubstring(t.type.url) )} />
+                    src={ getTypeIconById(getIdFromUrlSubstring(t.type.url), typeArtworkUrl)} />
                 )}
               </td>
               { pokemon.stats.map((stat, idx) => {

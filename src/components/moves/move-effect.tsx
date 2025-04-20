@@ -1,11 +1,15 @@
 import { IMove } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
+import { useLocalStorage } from "../shared/utils";
+import { TypeLocale } from "../layout/descriptionLang";
 
 export default function MoveEffect({ moveData }: { moveData: IMove; }) {
   const { t } = useTranslation('common');
+  const [descriptionLang] = useLocalStorage<TypeLocale>('descriptionLang', 'en');
+
 
   const getEffects = () => {
-    return moveData.effect_entries.filter(effect => effect.language.name === 'en');
+    return moveData.effect_entries.filter(effect => effect.language.name === descriptionLang);
   };
 
   return (

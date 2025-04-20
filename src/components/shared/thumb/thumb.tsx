@@ -1,19 +1,40 @@
 import { IPkmn } from '@/app/types';
-import { getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
+import { getIdFromUrlSubstring, normalizePokemonName, useLocalStorage } from '@/components/shared/utils';
 import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import Spinner from '../spinner';
 import './thumb.scss';
 
-export function getArtwork(id: number) {
+export function getArtwork(id: number, sprite: ArtUrl
+) {
   const rv: Record<string, string[]> = {
-    normal: [`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`],
-    shiny: [`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`]
+    normal: [spritesUrl(id).regular[sprite]],
+    shiny: [spritesUrl(id).shiny[sprite]]
   };
 
   return rv;
 }
+
+export type ArtUrl = 'dream-world' | 'home' | 'official-artwork' | 'showdown'
+
+const spritesUrl = (id: number) => {
+  return {
+    regular: {
+      'dream-world': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`,
+      home: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`,
+      'official-artwork': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+      showdown: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`,
+    },
+    shiny: {
+      'dream-world': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/shiny/${id}.svg`,
+      home: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${id}.png`,
+      'official-artwork': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
+      showdown: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/shiny/${id}.gif`,
+
+    }
+  };
+};
 
 export function getNumber(id: number) {
   return ('000' + id.toString()).slice(-4);
@@ -74,6 +95,7 @@ export default function PokemonThumb({
   const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
   const [pokemonSmall, setPokemonSmall] = useState<INamedApiResource<IPokemon> | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
+  const [artworkUrl] = useLocalStorage<ArtUrl>('artworkUrl', 'official-artwork');
 
   useEffect(() => {
     if(pokemonData)
@@ -82,6 +104,10 @@ export default function PokemonThumb({
       setPokemonSmall(pokemonDataSmall);
 
   }, [pokemonData, pokemonDataSmall]);
+
+  useEffect(() => {
+    console.log(artworkUrl);
+  }, [artworkUrl]);
 
   const loading = <span className="loading text-xs my-auto"><Spinner /></span>;
   const isXS = size === 'xs' && ['w-30 h-30', 'h-[120px]', 'mb-0', 'text-xs'];
@@ -111,27 +137,27 @@ export default function PokemonThumb({
         <div className={`relative w-full ${classes[1]}`}>
           {!shiny && <Image
             className="artwork z-1"
-            fill={true}
+            fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pkmn.id).normal[0]}
+            src={getArtwork(pkmn.id, artworkUrl).normal[0]}
             alt={`${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}}`}
-            priority={true}
+            priority
           />}
           {shiny && <Image
             className="artwork z-1"
-            fill={true}
+            fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pkmn.id).shiny[0]}
+            src={getArtwork(pkmn.id, artworkUrl).shiny[0]}
             alt={`Shiny ${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}}`}
-            priority={true}
+            priority
           />}
           {isMega && <Image
             className="artwork opacity-40 z-2"
-            fill={true}
+            fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src="/mega-evo.png"
             alt={normalizePokemonName(pkmn.name)}
-            priority={true}
+            priority
           />}
         </div>
       </div>

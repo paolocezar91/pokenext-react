@@ -149,7 +149,6 @@ export default function PokemonDetails({
         </p>
       </div>
     </RootLayout>;
-
   return (
     <RootLayout title={pokemon ? `${normalizePokemonName(pokemon.name)} - #${getNumber(pokemon.id)}` : `${t('pokedex.loading')}...`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
@@ -158,7 +157,7 @@ export default function PokemonDetails({
           {loaded && <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
             <div className="flex flex-col md:flex-row h-[-webkit-fill-available]">
               <div className="thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
-                <PokemonThumb pokemonData={pokemon} size="lg" showShinyCheckbox={true} showName={true} />
+                <PokemonThumb pokemonData={pokemon} size="lg" showShinyCheckbox showName />
                 <hr className="border-solid border-2 border-white mt-2 w-full" />
                 <PokemonTypes types={types} />
                 <PokemonCries pokemon={pokemon} />
@@ -167,7 +166,7 @@ export default function PokemonDetails({
               </div>
               <div className="pokemon-details sm:border-0 md:border-l-4 border-solid border-l-foreground sm:mt-4 sm:mb-4 md:mt-0 md:mb-0 p-4 pt-0">
                 <div className="about grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {species && <PokemonDescription species={species} />}
+                  {species && <PokemonDescription pokemon={pokemon} species={species} />}
                   <PokemonSize pokemon={pokemon} />
                   <PokemonAbilities pokemon={pokemon} />
                   <PokemonStats pokemon={pokemon} />

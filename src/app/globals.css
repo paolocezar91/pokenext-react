@@ -41,3 +41,7 @@ h2, h3 {
   padding-left: 4px;
   margin-top: 4px;
 }
+
+input:focus{
+  outline: none;
+}
