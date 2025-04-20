@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { IMove } from "pokeapi-typescript";
 import { getTypeIconById } from "@/components/[id]/details/types";
-import { getIdFromUrlSubstring } from "@/components/shared/utils";
+import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useTranslation } from "react-i18next";
 
@@ -32,14 +32,18 @@ export default function MoveDataTable({ moveData }: MoveDataTableProps) {
           <th className="text-left">{t('pokedex.details.moves.class')}</th>
           <td className="py-1">
             <span className="flex">
-              <Tooltip content={moveData.damage_class.name}>
-                <Image
-                  loading="lazy"
-                  width="35"
-                  height="35"
-                  alt={`${moveData.damage_class.name}`}
-                  src={`/move-${moveData.damage_class.name}.png`}
-                />
+              <Tooltip content={capitilize(moveData.damage_class.name)}>
+                <span className="flex items-center">
+                  <Image
+                    loading="lazy"
+                    width="35"
+                    height="35"
+                    alt={`${moveData.damage_class.name}`}
+                    src={`/move-${moveData.damage_class.name}.png`}
+                    className="mr-2"
+                  />
+                  {capitilize(moveData.damage_class.name)}
+                </span>
               </Tooltip>
             </span>
           </td>

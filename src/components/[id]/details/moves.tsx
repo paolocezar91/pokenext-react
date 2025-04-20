@@ -169,8 +169,9 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
               }
               return 0;
             })
-            .map((move, idx) => {
-              return move.details && <tr className="border-solid border-b-1 border-foreground align-middle" key={idx}>
+            .map((move, idx, arr) => {
+              const isLast = idx === arr.length - 1;
+              return move.details && <tr className={`${!isLast ? 'border-solid border-b-1 border-foreground' : ''} align-middle`} key={idx}>
                 {movesetActive === 'level-up' && <td className="py-2">{move.level_learned_at}</td>}
                 {movesetActive === 'machine' && <td className="py-2 uppercase">{(move.tmDetails?.item.name)}</td>}
                 <td className="py-2">

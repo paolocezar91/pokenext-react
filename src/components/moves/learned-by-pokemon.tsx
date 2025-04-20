@@ -14,34 +14,38 @@ export default function LearnedByPokemon({ learnedByPokemon }: LearnedByPokemonP
   return (
     <div className="learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
       <h3 className="text-lg mb-4">{t('moves.learnedBy.title', { length: learnedByPokemon?.length })}</h3>
-      <div className="overflow-auto flex-1 pr-4 h-50">
-        {!!learnedByPokemon?.length &&
-          <table className="w-full text-xs">
-            <thead>
-              <tr className="sticky top-0 bg-background z-1">
-                <th className="w-[0%] text-white text-center px-2 py-2">#</th>
-                <th className="w-[5%] text-white text-left px-2 py-2">{t('table.name')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {learnedByPokemon.filter((_, idx) => idx < 100).map((pokemon, idx) =>
-                <tr key={idx} className="bg-background">
-                  <td className={`${idx < learnedByPokemon.length - 1 ? 'border-solid border-b-2 border-foreground text-center' : ''} px-2 py-1`}>
+      {!!learnedByPokemon?.length &&
+      <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
+        <table className="w-full text-xs">
+          <thead>
+            <tr className="sticky top-0 bg-background z-1">
+              <th className="w-[0%] text-white text-center px-2 py-2">#</th>
+              <th className="w-[5%] text-white text-left px-2 py-2">{t('table.name')}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {learnedByPokemon
+              .filter((_, idx) => idx < 100)
+              .map((pokemon, idx) => {
+                const isLast = idx === learnedByPokemon.length - 1;
+                return <tr key={idx} className="bg-background">
+                  <td className={`px-2 py-1 ${!isLast ? 'border-solid border-b-2 border-foreground text-center' : ''}`}>
                     <Link href={`/pokedex/${pokemon.name}`}>
                       #{getNumber(Number(getIdFromUrlSubstring(pokemon.url)))}
                     </Link>
                   </td>
-                  <td className={`${idx < learnedByPokemon.length - 1 ? 'border-solid border-b-2 border-foreground' : ''} px-2 py-1`}>
+                  <td className={`px-2 py-1 ${!isLast ? 'border-solid border-b-2 border-foreground' : ''}`}>
                     <Link className="text-bold" href={`/pokedex/${pokemon.name}`}>
                       {normalizePokemonName(pokemon.name)}
                     </Link>
                   </td>
-                </tr>
+                </tr>;
+              }
               )}
-            </tbody>
-          </table>
-        }
+          </tbody>
+        </table>
       </div>
+      }
     </div>
   );
 }

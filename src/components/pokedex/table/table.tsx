@@ -38,23 +38,24 @@ export default function PokemonTable({
         </thead>
         <tbody>
           { pokemons.map((pokemon, i) => {
+            const isLast = i === pokemons.length - 1;
             return <tr key={i} className="bg-background">
               <td className={`px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
                 <Link href={`/pokedex/${pokemon.name}`}>
                   <PokemonThumb pokemonData={pokemon} size="xs" />
                 </Link>
               </td>
-              <td className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-foreground text-center': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
+              <td className={`${!isLast ? 'border-solid border-b-2 border-foreground text-center': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
                 <Link href={`/pokedex/${pokemon.name}`}>
                     #{getNumber(pokemon.id)}
                 </Link>
               </td>
-              <td className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-foreground': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
+              <td className={`${!isLast ? 'border-solid border-b-2 border-foreground': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
                 <Link className="text-bold" href={`/pokedex/${pokemon.name}`}>
                   {normalizePokemonName(pokemon.name)}
                 </Link>
               </td>
-              <td className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-foreground': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
+              <td className={`${!isLast ? 'border-solid border-b-2 border-foreground': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
                 {pokemon.types.map((t, idx) =>
                   <Image
                     key={idx}
@@ -68,7 +69,7 @@ export default function PokemonTable({
               { pokemon.stats.map((stat, idx) => {
                 return <td
                   key={idx}
-                  className={`${i < pokemons.length - 1 ? 'border-solid border-b-2 border-foreground': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}
+                  className={`${!isLast ? 'border-solid border-b-2 border-foreground': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}
                 >
                   { stat.base_stat }
                 </td>;

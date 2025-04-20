@@ -69,14 +69,14 @@ export default function MoveDetails({
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
         <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">
           {/* Left Column */}
-          <div className="w-150 flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
+          <div className="sm:w-auto md:w-150 flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
             <FlavorText moveData={moveData} />
             <MoveDataTable moveData={moveData} />
             {targetData && <MoveTarget targetData={targetData} />}
           </div>
 
           {/* Right Column */}
-          <div className="w-full flex flex-col md:items-start mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
+          <div className="w-full h-[-webkit-fill-available] flex flex-col md:items-start mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
             <MoveEffect moveData={moveData} />
             <LearnedByPokemon learnedByPokemon={moveData.learned_by_pokemon} />
           </div>

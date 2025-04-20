@@ -2,7 +2,12 @@ import { ChangeEvent } from "react";
 
 
 export default function Toggle({
-  value, children, disabled, id, className, onChange
+  value,
+  children,
+  disabled,
+  id,
+  className,
+  onChange
 }: {
   value: boolean;
   id: string;

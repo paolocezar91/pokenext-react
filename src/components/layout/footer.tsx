@@ -29,7 +29,7 @@ export default function Footer({ currentLanguage = 'en-US' }: { currentLanguage?
           onChange={handleLangChange}>
           {
             locales.map((lang: string) => {
-              return <option key={lang} value={lang}>{lang}</option>;
+              return <option className="text-xs" key={lang} value={lang}>{lang}</option>;
             })
           }
         </select>
