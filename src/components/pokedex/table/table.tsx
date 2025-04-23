@@ -19,9 +19,9 @@ export default function PokemonTable({
 
 
   return <div className="table-container p-4 bg-(--pokedex-red)">
-    <div className="overflow-auto h-[68vh] relative rounded">
+    <div className="overflow-auto h-[72vh] relative rounded">
       <table className="w-full text-xs">
-        <thead>
+        <thead className="bg-(--pokedex-red)">
           <tr className="sticky top-0 bg-(--pokedex-red) z-1">
             <th className="w-[1%] text-white text-center px-2 py-2">Pokémon</th>
             <th className="w-[2%] text-white text-center px-2 py-2">#</th>
@@ -38,7 +38,7 @@ export default function PokemonTable({
             <th className="w-[1%]"></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-background">
           { pokemons.map((pokemon, i) => {
             const isLast = i === pokemons.length - 1;
             return <tr key={i} className="bg-background">
@@ -49,7 +49,7 @@ export default function PokemonTable({
               </td>
               <td className={`${!isLast ? 'border-solid border-b-2 border-foreground text-center': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>
                 <Link href={`/pokedex/${pokemon.name}`}>
-                    #{getNumber(pokemon.id)}
+                  {getNumber(pokemon.id)}
                 </Link>
               </td>
               <td className={`${!isLast ? 'border-solid border-b-2 border-foreground': ''} px-4 py-1 ${i===0 ? 'pt-4' : ''}`}>

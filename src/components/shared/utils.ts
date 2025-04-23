@@ -27,8 +27,8 @@ export const normalizeVersionGroup = (text: string) => {
   text = text.replace("colosseum", "Colosseum");
   text = text.replace("black-2-white-2", "Black 2/White 2");
   text = text.replace("x-y", "X/Y");
-  text = text.replace("omega-ruby-alpha-sapphire", "Omega Ruby/Alpha Sapphire");
-  text = text.replace("sun-moon", "Sun Moon");
+  text = text.replace("omega-ruby-alpha-sapphire", "OR/AS");
+  text = text.replace("sun-moon", "Sun/Moon");
   text = text.replace("ultra-sun-ultra-moon", "Ultra Sun/Ultra Moon");
   text = text.replace("lets-go-pikachu-lets-go-eevee", "Let's Go Pikachu/Eevee");
   text = text.replace("sword-shield", "Sword/Shield");

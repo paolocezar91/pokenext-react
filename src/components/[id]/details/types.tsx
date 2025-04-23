@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { capitilize, useLocalStorage } from "@/components/shared/utils";
 import Image from "next/image";
 import { IType } from "pokeapi-typescript";
@@ -9,7 +10,7 @@ export type TypeUrl = 'omega-ruby-alpha-sapphire'|
 'ultra-sun-ultra-moon'|
 'brilliant-diamond-and-shining-pearl'|
 'legends-arceus'|
-'sword-shield'
+'sword-shield';
 
 const spritesUrl = (id: string): Record<TypeUrl, string> => {
   return {

@@ -25,7 +25,10 @@ export const metadata: Metadata = {
   description: 'A Next.js Demo for a 151 Pokemon Pokedex'
 };
 
-export async function getPokemonPage(offset: number, limit: number): Promise<IPkmn[]> {
+export async function getPokemonPage(
+  offset: number,
+  limit: number
+): Promise<IPkmn[]> {
   try {
     return await fetchPokemonDataList(await fetchPokemonList(limit, offset));
   } catch (error) {
@@ -50,7 +53,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const [listTableToggle, setListTableToggle] = useLocalStorage('list-table', false);
   const [filtered, setFiltered] = useState<boolean>(false);
   const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
-  const {t} = useTranslation('common');
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     async function loadMorePkmn() {
@@ -91,7 +94,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   return (
     <RootLayout title="Next.js Demo">
       {pokemons &&
-        <div className="wrapper h-[inherit] p-4">
+        <div className="wrapper h-[inherit] p-4 bg-background">
           <div className="flex items-center">
             <div className="flex items-center bg-(--pokedex-red) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
               <PokemonFilter className="flex" onFilter={filter} />

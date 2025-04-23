@@ -7,7 +7,6 @@ import { getNumber } from "../shared/thumb/thumb";
 import Tooltip from "../shared/tooltip/tooltip";
 
 
-
 export default function Controls({
   pokemon,
   previousAndAfter
@@ -15,7 +14,7 @@ export default function Controls({
   pokemon: IPokemon,
   previousAndAfter: INamedApiResourceList<IPokemon>
 }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const isLast = () => {
     return pokemon ? pokemon.id + 1 <= 1025: false;
@@ -27,13 +26,21 @@ export default function Controls({
 
   const goPrev = (name: string, id: number) => <div className="previous flex-1 text-left">
     <Tooltip
-      content={`${normalizePokemonName(name)} #${getNumber(id)}`}
+      content={`${normalizePokemonName(name)} ${getNumber(id)}`}
       disabled={!isFirst()}
 
     >
       <Link
         href={`/pokedex/${previousAndAfter.results[0]?.name}`}
-        className={`flex px-2 py-2 bg-transparent border-transparent rounded ${!isFirst() ? 'disable-click' : 'hover:bg-(--pokedex-red) hover:text-gray-800'}`}
+        className={`
+          flex
+          px-2
+          py-2
+          bg-transparent
+          border-transparent
+          rounded
+          ${!isFirst() ? 'disable-click' : 'hover:bg-(--pokedex-red-dark)'}
+        `}
       >
         <ChevronDoubleLeftIcon className="w-7" />
       </Link>
@@ -44,7 +51,7 @@ export default function Controls({
     <Tooltip content={t('actions.backToList')}>
       <Link
         href='/pokedex/'
-        className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red)"
+        className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red-dark)"
       >
         <ArrowUturnLeftIcon className="w-7" />
       </Link>
@@ -54,12 +61,20 @@ export default function Controls({
   const goNext = (name: string, id: number) => <div className="next flex-1 text-right">
     <Tooltip
 
-      content={`${normalizePokemonName(name)} #${getNumber(id)}`}
+      content={`${normalizePokemonName(name)} ${getNumber(id)}`}
       disabled={!isLast()}
     >
       <Link
         href={`/pokedex/${pokemon.id > 1 ? previousAndAfter.results[2].name : previousAndAfter.results[1].name}`}
-        className={`flex px-2 py-2 bg-transparent border-transparent rounded ${!isLast() ? 'disable-click' : 'hover:bg-(--pokedex-red) hover:text-gray-800'}`}
+        className={`
+          flex
+          px-2
+          py-2
+          bg-transparent
+          border-transparent
+          rounded
+          ${!isLast() ? 'disable-click' : 'hover:bg-(--pokedex-red-dark)'}
+        `}
       >
         <ChevronDoubleRightIcon className="w-7" />
       </Link>

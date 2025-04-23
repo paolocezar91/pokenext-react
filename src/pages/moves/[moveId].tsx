@@ -14,7 +14,7 @@ import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "../../component
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
   try {
-    const moveData = await fetchMove(id) as IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[]};
+    const moveData = await fetchMove(id) as IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
     return {
       props: {
         moveData: {
@@ -29,10 +29,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 }
 
 export function getStaticPaths() {
-  const ids = Array.from({length: 1025}, (_, i) => String(i + 1));
+  const ids = Array.from({ length: 1025 }, (_, i) => String(i + 1));
 
   return {
-    paths: ids.map(moveId => ({ params: { moveId } })),
+    paths: ids.map(moveId => ({ params: { moveId }})),
     fallback: true
   };
 }

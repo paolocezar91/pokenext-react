@@ -1,5 +1,6 @@
 import { ChangeEvent, ReactNode } from "react";
 import { useLocalStorage } from "../shared/utils";
+import Select from "../shared/select";
 
 const locales = [
   "en",
@@ -25,20 +26,24 @@ export type TypeLocale = "en" |
     "zh-Hant" |
     "zh-Hans";
 
-export default function DescriptionLangSelect({ currentLanguage = 'en', children }: { currentLanguage?: TypeLocale, children?: ReactNode }) {
+export default function DescriptionLangSelect({
+  children,
+  currentLanguage = 'en',
+}: {
+  children?: ReactNode,
+  currentLanguage?: TypeLocale,
+}) {
   const [descriptionLang, setDescriptionLang] = useLocalStorage<TypeLocale>('descriptionLang', currentLanguage);
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setDescriptionLang(e.target.value as TypeLocale);
   };
-  return <label htmlFor="lang">
+
+  return <label htmlFor="description-lang">
     <div className="flex flex-col">
-      <span>
-        {children}
-      </span>
-      <select
-        className="border-solid border-2 border-black text-black bg-white py-1 rounded text-xs"
-        data-testid="lang"
-        id="lang"
+      <span>{children}</span>
+      <Select
+        data-testid="description-lang"
+        id="description-lang"
         value={descriptionLang}
         onChange={handleLangChange}>
         {
@@ -46,7 +51,8 @@ export default function DescriptionLangSelect({ currentLanguage = 'en', children
             return <option className="text-xs" key={lang} value={lang}>{lang}</option>;
           })
         }
-      </select>
+      </Select>
     </div>
+    <div className="text-xs hover:text-(--pokedex-red) w-75">Changes the data language</div>
   </label>;
 }

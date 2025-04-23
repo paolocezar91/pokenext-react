@@ -4,7 +4,7 @@ import Tooltip from '../../shared/tooltip/tooltip';
 
 // eslint-disable-next-line no-unused-vars
 export default function PokemonFilter({ onFilter, className }: { onFilter: (_: string) => void, className?: string }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   const [filterText, setFilterText] = useState('');
 

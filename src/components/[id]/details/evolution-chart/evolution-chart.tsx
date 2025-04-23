@@ -12,12 +12,41 @@ import PokemonEvolutionLocation from "./location";
 import PokemonEvolutionLevel from "./lvl";
 import PokemonEvolutionTrade from "./trade";
 
-export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: { evolutionChain: IEvolutionChain, speciesChain: SpeciesChain }) {
-  const { t } = useTranslation();
+export default function PokemonEvolutionChart({
+  pokemon,
+  speciesChain,
+  evolutionChain
+}: {
+  pokemon: IPokemon,
+  evolutionChain: IEvolutionChain,
+  speciesChain: SpeciesChain
+}) {
+  const { t } = useTranslation('common');
+
+  if(!!speciesChain.chain.first?.length && !speciesChain.chain.second?.length) {
+    return <div className="evolution-chain col-span-6 ">
+      <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.evolutionChart.title') }</h3>
+      <p>{normalizePokemonName(speciesChain.chain.first[0].name)} does not evolve</p>
+    </div>;
+  }
+
+
+  const firstPkmn = speciesChain.chain.first[0];
+  const firstChainColumn = <Tooltip
+    content={`${normalizePokemonName(firstPkmn.name)} ${getNumber(firstPkmn.id)}`}
+  >
+    <Link className="flex-2" href={`/pokedex/${firstPkmn.name}`}>
+      <PokemonThumb
+        className={`${pokemon.id === firstPkmn.id ? 'border-foreground': 'border-background'} border-solid border-2`}
+        pokemonData={firstPkmn}
+        size="sm"
+      />
+    </Link>
+  </Tooltip>;
 
   const chainColumn = (chain: IPokemon[], evolves_to: IChainLink[]) =>
-    <ul className="flex flex-col">{
-      chain.map((pkmn, idx) => {
+    <ul className="flex flex-col">
+      {chain.map((pkmn, idx) => {
         const evolution_details = evolves_to[idx].evolution_details[0];
         return <li className="mb-2 items-center flex text-xs" key={idx}>
           <div className="flex flex-col items-center flex-1 mx-3">
@@ -32,32 +61,32 @@ export default function PokemonEvolutionChart({ speciesChain, evolutionChain }: 
               <ArrowRightIcon className="w-7" />
             </span>
           </div>
-          <Tooltip content={`${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}`}>
+          <Tooltip content={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}`}>
             <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
-              <PokemonThumb pokemonData={pkmn} size="sm" />
+              <PokemonThumb
+                className={`${pokemon.id === pkmn.id ? 'border-foreground': 'border-background'} border-solid border-2`}
+                pokemonData={pkmn}
+                size="sm"
+              />
             </Link>
           </Tooltip>
-        </li>
-        ;
-      })
-    }</ul>;
+        </li>;
+      })}
+    </ul>;
 
   return (
-    <div className="evolution-chain col-span-2">
-      <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.evolutionChart.title') }</h3>
-      {!!speciesChain.loaded && <ul className="flex items-start justify-start">
-        {speciesChain.chain.first?.length &&
-          <li>
-            <Tooltip content={`${normalizePokemonName(speciesChain.chain.first[0].name)} #${getNumber(speciesChain.chain.first[0].id)}`}>
-              <Link className="flex-2" href={`/pokedex/${speciesChain.chain.first[0].name}`}>
-                <PokemonThumb pokemonData={speciesChain.chain.first[0]} size="sm"/>
-              </Link>
-            </Tooltip>
-          </li>
-        }
-        {!!speciesChain.chain.second?.length && <li>{chainColumn(speciesChain.chain.second, evolutionChain.chain.evolves_to)}</li>}
-        {!!speciesChain.chain.third?.length && <li>{chainColumn(speciesChain.chain.third, evolutionChain.chain.evolves_to[0].evolves_to)}</li>}
-      </ul>}
+    <div className="evolution-chain col-span-6 ">
+      <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.evolutionChart.title') }</h3>
+      {!!speciesChain.loaded &&
+        <ul className="flex items-start justify-start overflow-x-auto mt-4">
+          {!!speciesChain.chain.second?.length && <>
+            <li>{firstChainColumn}</li>
+            <li>{chainColumn(speciesChain.chain.second, evolutionChain.chain.evolves_to)}</li>
+          </>}
+          {!!speciesChain.chain.third?.length &&
+            <li>{chainColumn(speciesChain.chain.third, evolutionChain.chain.evolves_to[0].evolves_to)}</li>
+          }
+        </ul>}
     </div>
   );
 }

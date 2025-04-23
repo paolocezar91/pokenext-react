@@ -1,6 +1,8 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
+import stylisticTS from '@stylistic/eslint-plugin-ts';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,22 +16,24 @@ const eslintConfig = [
     extends: ["next/core-web-vitals", "next/typescript", "prettier"],
     rules: {
       'react/no-unescaped-entities': 'off',
-      'semi': 'error',
-      'indent': ['error', 2],
-      'no-multi-spaces': ['error'],
-      "no-trailing-spaces": "error",
-      "no-console": "off",
-      "no-unused-vars": "error",
-      "no-extra-parens": "error",
-      "no-restricted-syntax": [
-        "error",
-        {
-          "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
-          "message": "Unexpected property on console object was called"
-        }
-      ]
     },
   }),
+  {
+    plugins: {
+      '@stylistic/ts': stylisticTS
+    },
+    rules: {
+      'no-multi-spaces': ['error'],
+      "no-trailing-spaces": "error",
+      "no-unused-vars": "error",
+      "no-extra-parens": "error",
+      "max-len": ["error", { "code": 150 }],
+      '@stylistic/ts/semi': 'error',
+      '@stylistic/ts/indent': ['error', 2],
+      "@stylistic/ts/no-console": "off",
+      "@stylistic/ts/object-curly-spacing": ["error", "always", { "objectsInObjects": false }]
+    }
+  }
 ];
 
 export default eslintConfig;

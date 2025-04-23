@@ -28,14 +28,12 @@ export default function LearnedByPokemon({ learnedByPokemon }: LearnedByPokemonP
               .filter((_, idx) => idx < 100)
               .map((pokemon, idx) => {
                 const isLast = idx === learnedByPokemon.length - 1;
-                return <tr key={idx} className="bg-background">
-                  <td className={`px-2 py-1 ${!isLast ? 'border-solid border-b-2 border-foreground text-center' : ''}`}>
-                    <Link href={`/pokedex/${pokemon.name}`}>
-                      #{getNumber(Number(getIdFromUrlSubstring(pokemon.url)))}
-                    </Link>
+                return <tr key={idx} className={`${!isLast ? 'border-solid border-foreground  border-b-2' : ''}`}>
+                  <td className="p-2">
+                    {getNumber(Number(getIdFromUrlSubstring(pokemon.url)))}
                   </td>
-                  <td className={`px-2 py-1 ${!isLast ? 'border-solid border-b-2 border-foreground' : ''}`}>
-                    <Link className="text-bold" href={`/pokedex/${pokemon.name}`}>
+                  <td className="p-2">
+                    <Link className="hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`} >
                       {normalizePokemonName(pokemon.name)}
                     </Link>
                   </td>

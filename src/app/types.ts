@@ -1,14 +1,26 @@
 import { IPokemon, IPokemonStat, IPokemonType } from "pokeapi-typescript";
 
 export type IPkmn = {
-    name: string;
-    types: IPokemonType[]
-    id: number;
-    sprites: unknown;
-    stats: IPokemonStat[]
-}
+  name: string;
+  types: IPokemonType[]
+  id: number;
+  sprites: unknown;
+  stats: IPokemonStat[]
+};
 
 export type SpeciesChain = {
-    loaded: boolean;
-    chain: Record<string, IPokemon[]>
+  loaded: boolean;
+  chain: Record<string, IPokemon[]>
 };
+
+export type PokemonType =
+  | 'normal' | 'fire' | 'water' | 'electric' | 'grass' | 'ice'
+  | 'fighting' | 'poison' | 'ground' | 'flying' | 'psychic'
+  | 'bug' | 'rock' | 'ghost' | 'dragon' | 'dark' | 'steel' | 'fairy';
+
+export type DefensiveMatchup = {
+  weaknesses: Record<PokemonType, number>;
+  resistances: Record<PokemonType, number>;
+  immunities: Record<PokemonType, boolean>;
+};
+

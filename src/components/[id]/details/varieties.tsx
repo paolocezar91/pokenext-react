@@ -11,27 +11,34 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
   const [varieties, setVarieties] = useState<IPokemon[]>([]);
   const [forms, setForms] = useState<IPokemonForm[]>([]);
 
-  const {t} = useTranslation('common');
+  const { t } = useTranslation('common');
 
   useEffect(() => {
     const getVarieties = async () => {
-      const pokemonVarieties = await Promise.all(species.varieties.filter(v => v.pokemon.name !== name).map((v) => fetchURL<IPokemon>(v.pokemon.url)));
+      const pokemonVarieties = await Promise.all(
+        species.varieties
+          .filter(({ pokemon }) => pokemon.name !== name)
+          .map(({ pokemon }) => fetchURL<IPokemon>(pokemon.url))
+      );
       setVarieties(pokemonVarieties);
-      setForms(await Promise.all(pokemonVarieties.filter(v => v.name !== name).map((v) => fetchURL<IPokemonForm>(v.forms[0].url))));
+      setForms(await Promise.all(
+        pokemonVarieties
+          .filter(v => v.name !== name)
+          .map(v => fetchURL<IPokemonForm>(v.forms[0].url))));
     };
 
     getVarieties();
   }, [name, species.varieties]);
 
-  return <div className="pokemon-varieties col-span-2 mt-2">
-    <h3 className="text-lg font-semibold mb-4">{t('pokedex.details.varieties.title')}</h3>
+  return <div className="pokemon-varieties col-span-6 mt-2">
+    <h3 className="text-lg font-semibold mb-2">{t('pokedex.details.varieties.title')}</h3>
     <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
       {!!forms.length && varieties.map((pkmn, i) =>
         <Tooltip key={i} content={normalizePokemonName(pkmn.name)}>
           <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
             <PokemonThumb
               pokemonData={pkmn}
-              size="sm"
+              size="xs"
               isMega={forms[i].is_mega}
             />
           </Link>

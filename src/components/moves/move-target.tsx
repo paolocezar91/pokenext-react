@@ -13,7 +13,7 @@ export default function MoveTarget({ targetData }: {
 
   return (
     <div className="target w-full mt-2">
-      <h3 className="text-lg font-semibold mb-4">{t('moves.moveTarget.title')}</h3>
+      <h3 className="text-lg font-semibold mb-2">{t('moves.moveTarget.title')}</h3>
       {!description ?
         <p data-testid="target-description">{t('moves.moveTarget.empty')}</p>:
         <p data-testid="target-description">{description}</p>

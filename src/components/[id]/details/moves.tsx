@@ -1,5 +1,5 @@
 import { fetchURL } from "@/app/api";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup, useLocalStorage } from "@/components/shared/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";
@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../shared/spinner";
 import Tooltip from "../../shared/tooltip/tooltip";
-import { getTypeIconById } from "./types";
+import { getTypeIconById, TypeUrl } from "./types";
+import Select from "@/components/shared/select";
 
 type Moveset = {
   move: string;
@@ -15,19 +16,21 @@ type Moveset = {
   url: string;
   details?: IMove;
   tmDetails?: IMachine;
-}
+};
 
 type VersionMoveset = Record<string, {
   id: number,
   moveset: Record<string, Moveset[]>
-}>
+}>;
 
-export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
+export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
   const [moves, setMoves] = useState<VersionMoveset>({});
   const [movesetActive, setMovesetActive] = useState<string>('');
   const [versionGroupActive, setVersionGroupActive] = useState<string>('');
   const [showTable, setShowTable] = useState<boolean>(false);
   const { t } = useTranslation('common');
+  const [typeArtworkUrl] = useLocalStorage<TypeUrl>('typeArtworkUrl', 'sword-shield');
+
 
   useEffect(() => {
     const movesData = pokemon?.moves.reduce((acc, move) => {
@@ -72,7 +75,7 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
         );
 
         moves[versionGroupActive].moveset[movesetActive] = moves[versionGroupActive].moveset[movesetActive].map((move, idx) => {
-          return {...move, details: details[idx]};
+          return { ...move, details: details[idx] };
         });
 
         if(movesetActive === 'machine') {
@@ -85,7 +88,7 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
           );
 
           moves[versionGroupActive].moveset[movesetActive] = moves[versionGroupActive].moveset[movesetActive].map((move, idx) => {
-            return {...move, tmDetails: detailsMachine[idx]};
+            return { ...move, tmDetails: detailsMachine[idx] };
           });
         }
 
@@ -98,15 +101,12 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
     getMovesDetails();
   }, [versionGroupActive, movesetActive]);
 
-  return <div className="moves col-span-2 mt-2">
-    <h3 className="text-lg font-semibold mb-4">{ t('pokedex.details.moves.title') }</h3>
+  return <div className="moves col-span-6 mt-2">
+    <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.moves.title') }</h3>
     <div className="flex my-2">
       {!!moves && <div className="version-picker">
         <label className=" text-xs flex flex-col">{t('pokedex.details.moves.chooseVersion')}:
-          <select
-            className="bg-white text-black text-xs my-2 px-2 py-1 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:border-(--pokedex-red)"
-            onChange={(event) => setVersionGroupActive(event.target.value)}
-          >
+          <Select onChange={(event) => setVersionGroupActive(event.target.value)}>
             <option className="bg-gray-300 text-white" value="" disabled selected>Select</option>
             {Object.entries(moves)
               .sort((a, b) => a[1].id - b[1].id)
@@ -115,13 +115,12 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
                   {normalizeVersionGroup(name)}
                 </option>;
               })}
-          </select>
+          </Select>
         </label>
       </div>}
       {versionGroupActive && <div className="moveset-picker">
         <label className=" text-xs flex flex-col">{t('pokedex.details.moves.learntBy')}:
-          <select
-            className="bg-white text-black text-xs my-2 px-2 py-1 mb-2 border-solid border-2 border-foreground mr-2 rounded hover:border-(--pokedex-red)"
+          <Select
             onChange={(event) => setMovesetActive(event.target.value)}
           >
             <option className="bg-gray-300 text-white" value="" disabled selected>Select</option>
@@ -132,7 +131,7 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
                 className="bg-white text-black"
               >{moveset === 'machine' ? 'TM/HM' : capitilize(kebabToSpace(moveset))}</option>;
             })}
-          </select>
+          </Select>
         </label>
       </div>}
     </div>
@@ -141,14 +140,14 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
       {versionGroupActive && movesetActive && !showTable && <div className="p-4 flex items-center justify-center">
         <Spinner />
       </div>}
-      {showTable && <table className="w-full">
+      {showTable && <table className="w-full text-xs">
         <thead>
           <tr className="text-left">
-            {movesetActive === 'level-up' && <th className="w-[10%] border-solid border-b-2 border-foreground align-bottom">
-                Lv.
+            {movesetActive === 'level-up' && <th className="w-[5%] pr-2 text-right border-solid border-b-2 border-foreground align-bottom">
+              Lv.
             </th>}
-            {movesetActive === 'machine' && <th className="w-[10%] border-solid border-b-2 border-foreground align-bottom">
-                TM/HM
+            {movesetActive === 'machine' && <th className="w-[5%] pr-2 border-solid border-b-2 border-foreground align-bottom">
+              TM/HM
             </th>}
             <th className="border-solid border-b-2 border-foreground align-bottom">
               {t('pokedex.details.moves.name')}
@@ -180,10 +179,10 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
             .map((move, idx, arr) => {
               const isLast = idx === arr.length - 1;
               return move.details && <tr className={`${!isLast ? 'border-solid border-b-1 border-foreground' : ''} align-middle`} key={idx}>
-                {movesetActive === 'level-up' && <td className="py-2">{move.level_learned_at}</td>}
-                {movesetActive === 'machine' && <td className="py-2 uppercase">{(move.tmDetails?.item.name)}</td>}
+                {movesetActive === 'level-up' && <td className="py-2 pr-2 text-right">{move.level_learned_at}</td>}
+                {movesetActive === 'machine' && <td className="py-2 pr-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
                 <td className="py-2">
-                  <Link href={`/moves/${move.move}`}>
+                  <Link href={`/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
                     {capitilize(kebabToSpace(move.move))}
                   </Link>
                 </td>
@@ -192,7 +191,7 @@ export default function PokemonMoves({pokemon}: {pokemon: IPokemon}){
                     width="100"
                     height="20"
                     alt={capitilize(move.details.type.name)}
-                    src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url))} />
+                    src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), typeArtworkUrl)} />
                 </td>
                 <td className="py-2">
                   <span className="flex">

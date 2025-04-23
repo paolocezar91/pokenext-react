@@ -1,12 +1,13 @@
 import { TypeLocale } from "@/components/layout/descriptionLang";
-import { capitilize, kebabToSpace, normalizePokemonName, normalizeVersionGroup, useLocalStorage } from "@/components/shared/utils";
+import { capitilize, kebabToSpace, normalizePokemonName, useLocalStorage } from "@/components/shared/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { IPokemon, IPokemonSpecies } from "pokeapi-typescript";
+import { IPokemonSpecies } from "pokeapi-typescript";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
+import PokemonMisc from "./misc";
 
 
-export default function PokemonDescription({ pokemon, species }: { pokemon: IPokemon, species: IPokemonSpecies }) {
+export default function PokemonDescription({ species }: { species: IPokemonSpecies }) {
   const [flavorIdx, setFlavorIdx] = useState(0);
   const [descriptionLang] = useLocalStorage<TypeLocale>('descriptionLang', 'en');
 
@@ -22,16 +23,13 @@ export default function PokemonDescription({ pokemon, species }: { pokemon: IPok
       });
   };
 
-  console.log(species);
-
-
-  return <div className="pokemon-description col-span-2 capitilize">
-    <h2 className="text-xl font-semibold mb-4 ">
+  return <div className="pokemon-description col-span-6 capitilize">
+    <h2 className="text-xl font-semibold mb-4 bg-background z-10">
       <span>
         { normalizePokemonName(species.name) } -- {species.genera.find(g => g.language.name === descriptionLang)?.genus}
       </span>
     </h2>
-    <div className="flex items-end relative pb-6">
+    <div className="flex items-end relative justify-between pb-6">
       <p>{getFlavorText(species)[flavorIdx].flavor_text}</p>
       <div className="flex">
         <Button
@@ -54,9 +52,6 @@ export default function PokemonDescription({ pokemon, species }: { pokemon: IPok
         {flavorIdx + 1} / {getFlavorText(species).length}
       </div>
     </div>
-    {pokemon.game_indices.length !== 0 && <>
-      <h3 className="text-base">First Appeareance</h3>
-      <p>{normalizeVersionGroup(`${pokemon.game_indices[0].version.name}-${pokemon.game_indices[1].version.name}`)}</p>
-    </>}
+    {species && <PokemonMisc species={species} />}
   </div>;
 }

@@ -11,6 +11,8 @@
   --foreground: #ffffff;
   --pokedex-red-light: #f7bfb7;
   --pokedex-red: #dc0a2d;
+  --pokedex-red-dark: #ad142d;
+  --pokedex-red-darker: #87091e;
   --pokedex-blue-light: #a9d3f5;
   --pokedex-blue: #509bfb;
   --pokedex-blue-dark: #156da1;
@@ -26,13 +28,6 @@ body {
   background: #171717;
   color: var(--foreground);
   font-family: 'Pokedex';
-}
-
-a {
-  color: var(--foreground);
-  &:hover {
-      color: #f7bfb7;
-  }
 }
 
 h2, h3 {

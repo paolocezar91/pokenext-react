@@ -1,4 +1,4 @@
-import PokeNavbar from '@/components/layout/navbar/navbar';
+import Navbar from '@/components/layout/navbar/navbar';
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 import mockRouter from 'next-router-mock';
@@ -18,13 +18,13 @@ describe('Header', () => {
 
   it('should render title', () => {
     const title = 'title';
-    render(<PokeNavbar title={title} />);
+    render(<Navbar title={title} />);
     expect(screen.queryByRole('heading', {level: 1})).toBeInTheDocument();
   });
 
   it('should sent to home page', () => {
     const title = 'title';
-    render(<PokeNavbar title={title} />);
+    render(<Navbar title={title} />);
     const homePageLink = screen.getByTestId("home-page-link");
     fireEvent.click(homePageLink);
 
@@ -33,7 +33,7 @@ describe('Header', () => {
 
   it('should update input value and submit form', () => {
     const title = 'title';
-    render(<PokeNavbar title={title} />);
+    render(<Navbar title={title} />);
 
     // Get form elements
     const form = screen.getByTestId('form-go-to');
@@ -53,7 +53,7 @@ describe('Header', () => {
 
   it('should not navigate with empty input', () => {
     const title = 'title';
-    render(<PokeNavbar title={title} />);
+    render(<Navbar title={title} />);
 
     const form = screen.getByTestId('form-go-to');
     fireEvent.submit(form);
@@ -64,7 +64,7 @@ describe('Header', () => {
 
   it('should handle different pokemon names', () => {
     const title = 'title';
-    render(<PokeNavbar title={title} />);
+    render(<Navbar title={title} />);
 
     const testCases = [
       { input: '25', expected: '/pokedex/25' },
@@ -91,7 +91,7 @@ describe('Header', () => {
 
   it('should match snapshot', () => {
     const title = 'title';
-    const { asFragment } = render(<PokeNavbar title={title} />);
+    const { asFragment } = render(<Navbar title={title} />);
     expect(asFragment()).toMatchSnapshot();
   });
 });

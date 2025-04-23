@@ -1,8 +1,29 @@
 $size: 18rem;
 
+.wrapper {
+    overflow: initial;
+}
+
+@media screen and (max-width: 900px) {
+    .wrapper {
+        overflow: auto;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+    .controls {
+        background-color: var(--background);
+        position: -webkit-sticky;
+        top: 0;
+        z-index: 10;
+        left: 0;
+        margin-bottom: 0;
+    }
+}
+
+
+
 .pokemon-details {
     font-size: 14px;
-    overflow: auto;
     max-height: 80vh;
     height: 78vh;
     hr {

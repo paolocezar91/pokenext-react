@@ -16,28 +16,40 @@ export function getArtwork(id: number, sprite: ArtUrl
   return rv;
 }
 
-export type ArtUrl = 'dream-world' | 'home' | 'official-artwork' | 'showdown'
+export type ArtUrl = 'dream-world' | 'home' | 'official-artwork' | 'showdown';
 
 const spritesUrl = (id: number) => {
   return {
     regular: {
-      'dream-world': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`,
-      home: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`,
-      'official-artwork': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-      showdown: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`,
+      'dream-world':
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${id}.svg`,
+      home:
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`,
+      'official-artwork':
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+      showdown:
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/${id}.gif`,
     },
     shiny: {
-      'dream-world': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/shiny/${id}.svg`,
-      home: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${id}.png`,
-      'official-artwork': `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
-      showdown: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/shiny/${id}.gif`,
+      'dream-world':
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/shiny/${id}.svg`,
+      home:
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${id}.png`,
+      'official-artwork':
+
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
+      showdown:
+        `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/shiny/${id}.gif`,
 
     }
   };
 };
 
 export function getNumber(id: number) {
-  return ('000' + id.toString()).slice(-4);
+  if(id <= 1025) {
+    return `#${('000' + id.toString()).slice(-4)}`;
+  }
+  return '---';
 }
 
 export function getBackgroundStyle(types: IPokemonType[] = []): CSSProperties {
@@ -51,7 +63,7 @@ export function getBackgroundStyleWithStrings(types: string[] = []): CSSProperti
 }
 
 function getGradientStyle(colors: string[]): CSSProperties {
-  return { background: `linear-gradient(90deg, ${colors[0]} 0%, ${colors[1]} 100%)`};
+  return { background: `linear-gradient(90deg, ${colors[0]} 0%, ${colors[1]} 100%)` };
 }
 
 function getTypeColor(type: string) {
@@ -82,11 +94,13 @@ export default function PokemonThumb({
   pokemonDataSmall,
   showShinyCheckbox,
   size = 'base',
+  className,
   showName,
   isMega,
 }: Readonly<{
   pokemonData?: IPokemon | IPkmn,
   pokemonDataSmall?: INamedApiResource<IPokemon>,
+  className?: string,
   showShinyCheckbox?: boolean,
   size?: string,
   showName?: boolean,
@@ -105,10 +119,6 @@ export default function PokemonThumb({
 
   }, [pokemonData, pokemonDataSmall]);
 
-  useEffect(() => {
-    console.log(artworkUrl);
-  }, [artworkUrl]);
-
   const loading = <span className="loading text-xs my-auto"><Spinner /></span>;
   const isXS = size === 'xs' && ['w-30 h-30', 'h-[120px]', 'mb-0', 'text-xs'];
   const isSM = size === 'sm' && ['w-40 h-40', 'h-[160px]', 'mb-1', 'text-xs'];
@@ -126,11 +136,10 @@ export default function PokemonThumb({
     pkmn = pokemon;
   }
 
-
   const loaded = pkmn &&
     <div
-      style={ pkmn ? getBackgroundStyle(pkmn?.types ?? []) : {'background': '#CCCCC'}}
-      className={`pokemon flex flex-col justify-center items-center ${classes[0]} ${size} ${!showName ? 'titleless' : ''}`}
+      style={ pkmn ? getBackgroundStyle(pkmn?.types ?? []) : { 'background': '#CCCCC' }}
+      className={`pokemon flex flex-col mx-auto justify-center items-center ${className} ${classes[0]} ${size} ${!showName ? 'titleless' : ''}`}
     >
       <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
       <div className="img-hover-zoom w-full h-full">
@@ -140,7 +149,7 @@ export default function PokemonThumb({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pkmn.id, artworkUrl).normal[0]}
-            alt={`${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}}`}
+            alt={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
             priority
           />}
           {shiny && <Image
@@ -148,7 +157,7 @@ export default function PokemonThumb({
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pkmn.id, artworkUrl).shiny[0]}
-            alt={`Shiny ${normalizePokemonName(pkmn.name)} #${getNumber(pkmn.id)}}`}
+            alt={`Shiny ${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
             priority
           />}
           {isMega && <Image
@@ -162,7 +171,7 @@ export default function PokemonThumb({
         </div>
       </div>
       {showName && <span className={`name text-white w-60 ${classes[3]}`}>{ normalizePokemonName(pkmn.name) }</span>}
-      {showName && <span className={`id text-white  ${classes[2]} ${classes[3]}`}>#{ getNumber(pkmn.id) }</span>}
+      {showName && <span className={`id text-white  ${classes[2]} ${classes[3]}`}>{ getNumber(pkmn.id) }</span>}
     </div>
   ;
 
