@@ -9,12 +9,14 @@ export default function Tooltip({
   position = 'top',
   delay = 0,
   disabled = false,
+  className
 }: {
   children: React.ReactNode;
   content: React.ReactNode;
   position?: TooltipPosition;
   delay?: number;
   disabled?: boolean;
+  className?: string;
 }) {
   const [isVisible, setIsVisible] = useState(false);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
@@ -141,7 +143,7 @@ export default function Tooltip({
           ref={tooltipRef}
           id="tooltip-content"
           role="tooltip"
-          className={`tooltip-content tooltip-${finalPosition}`}
+          className={`tooltip-content tooltip-${finalPosition} rounded py-2 px-3 ${className}`}
           style={{
             top: `${coords.top}px`,
             left: `${coords.left}px`,

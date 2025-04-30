@@ -1,6 +1,7 @@
 import { ChangeEvent, ReactNode } from "react";
 import { useLocalStorage } from "../shared/utils";
 import Select from "../shared/select";
+import { useTranslation } from "react-i18next";
 
 const locales = [
   "en",
@@ -34,6 +35,8 @@ export default function DescriptionLangSelect({
   currentLanguage?: TypeLocale,
 }) {
   const [descriptionLang, setDescriptionLang] = useLocalStorage<TypeLocale>('descriptionLang', currentLanguage);
+  const { t } = useTranslation('common');
+
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setDescriptionLang(e.target.value as TypeLocale);
   };
@@ -53,6 +56,8 @@ export default function DescriptionLangSelect({
         }
       </Select>
     </div>
-    <div className="text-xs hover:text-(--pokedex-red) w-75">Changes the data language</div>
+    <div className="text-xs hover:text-(--pokedex-red) w-75">
+      { t('settings.languageOptions.descriptionLanguageTooltip') }
+    </div>
   </label>;
 }

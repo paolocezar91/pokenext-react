@@ -29,8 +29,8 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
         { normalizePokemonName(species.name) } -- {species.genera.find(g => g.language.name === descriptionLang)?.genus}
       </span>
     </h2>
-    <div className="flex items-end relative justify-between pb-6">
-      <p>{getFlavorText(species)[flavorIdx].flavor_text}</p>
+    <div className="flex items-end relative justify-between items-start pb-6">
+      <div>{getFlavorText(species)[flavorIdx].flavor_text}</div>
       <div className="flex">
         <Button
           onClick={() => setFlavorIdx(flavorIdx => flavorIdx - 1)}

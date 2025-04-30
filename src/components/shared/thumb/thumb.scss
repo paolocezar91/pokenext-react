@@ -1,18 +1,18 @@
 .loading {
     z-index:0;
     position: relative;
-    border-radius: 24px;
+    border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
     background-color: var(--pokedex-red);
     overflow: hidden;
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 120px;
     display: block;
 }
 .pokemon {
     z-index:0;
     position: relative;
-    border-radius: 24px;
+    border-radius: 8px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px;
     background-color: var(--pokedex-red);
     overflow: hidden;

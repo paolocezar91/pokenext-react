@@ -13,6 +13,9 @@
             "abilities": {
                 "title": "Abilities"
             },
+            "firstSeen": {
+                "title": "First Seen"
+            },
             "evolutionChart": {
                 "title": "Evolution Chart"
             },
@@ -25,6 +28,17 @@
             "defensiveChart": {
                 "title": "Defensive Chart"
             },
+            "misc": {
+                "eggGroups": "Egg Groups",
+                "baby": "Baby",
+                "legendary": "Legendary",
+                "mythical": "Mythical",
+                "growthRate": "Growth Rate",
+                "captureRate": "Catch Rate",
+                "hatchCounter": "Hatch Counter",
+                "yes": "Yes",
+                "no": "No"
+            },
             "moves": {
                 "title": "Moves",
                 "chooseVersion": "Choose a version",
@@ -36,8 +50,11 @@
                 "accuracy": "Accuracy",
                 "pp": "PP"
             }
-        },
-        "toggleView": "Thumbnail or Table view"
+        }
+    },
+    "menu": {
+        "home": "Home",
+        "settings": "Settings"
     },
     "moves": {
         "title": "Move",
@@ -63,8 +80,34 @@
         "name": "Name",
         "types": "Type(s)"
     },
-    "footer": {
-        "languages": "Languages"
+    "settings": {
+        "toggleView": "Thumbnail or Table view",
+        "title": "Settings",
+        "size": {
+            "title": "Thumb Size",
+            "xs": "Small",
+            "sm": "Normal",
+            "base": "Large"
+        },
+        "label": {
+            "title": "Thumb Label",
+            "tooltip": "Tooltip",
+            "thumbnail": "Thumbnail",
+            "none": "None"
+        },
+        "languageOptions":{
+            "title": "Language Options",
+            "language": "Language",
+            "languageTooltip": "Changes the app language",
+            "descriptionLanguage": "Description Language",
+            "descriptionLanguageTooltip": "Changes the data description language"
+        },
+        "artworkOptions": {
+            "title": "Artwork Options",
+            "thumbnail": "Thumbnail",
+            "typeIcon": "Type Icon"
+        },
+        "showThumb": "Show thumbnail"
     },
     "actions": {
         "next": "Next",

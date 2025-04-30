@@ -24,13 +24,13 @@ export default function Navbar({ title }: { title: string }) {
   };
   const items = <>
     <li className="mt-2">
-      <NavLink href="/pokedex/" isActive={router.pathname === '/pokedex'}>Home</NavLink>
+      <NavLink href="/pokedex/" isActive={router.pathname === '/pokedex'}>{t('menu.home')}</NavLink>
     </li>
     <li className="mt-2">
-      <NavLink href="/settings/" isActive={router.pathname === '/settings'}>Settings</NavLink>
+      <NavLink href="/settings/" isActive={router.pathname === '/settings'}>{t('menu.settings')}</NavLink>
     </li>
     <li className="mt-2">
-      <div className="go-to rounded md:mr-4 mr-0">
+      <div className="go-to rounded">
         <form onSubmit={goTo} data-testid="form-go-to w-inherit">
           <div className="h-10 flex">
             <input

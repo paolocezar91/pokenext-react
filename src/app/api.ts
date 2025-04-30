@@ -1,9 +1,9 @@
 import { IEvolutionChain, IMove, INamedApiResourceList, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
-const API_URL = 'http://localhost:3030';
+const API_URL = 'http://192.168.0.3:3030';
 // const API_URL = 'https://pokeapi.co';
 
 export const fetchPokemonList = async (limit:number , offset: number) =>
-  (await _fetchAndJson(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`)) as INamedApiResourceList<IPokemon>;
+  (await _fetchAndJson(`${API_URL}/api/v2/pokemon/?limit=${limit}&offset=${offset}`)) as INamedApiResourceList<IPokemon>;
 
 export const fetchPokemonDataList = async (pkmnList: INamedApiResourceList<IPokemon>) => await Promise.all(
   pkmnList.results.map(async (pkmn) => {

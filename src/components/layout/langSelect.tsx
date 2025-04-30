@@ -10,7 +10,7 @@ export default function LangSelect({
   children?: ReactNode,
   currentLanguage?: string,
 }) {
-  const { i18n } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const locales = nextI18nextConfig.i18n.locales;
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(e.target.value);
@@ -35,7 +35,9 @@ export default function LangSelect({
           })
         }
       </Select>
-      <div className="text-xs hover:text-(--pokedex-red) w-75">Changes the app language</div>
+      <div className="text-xs hover:text-(--pokedex-red) w-75">
+        { t('settings.languageOptions.languageTooltip') }
+      </div>
     </div>
   </label>;
 }

@@ -1,10 +1,10 @@
 import { IPkmn } from '@/app/types';
 import { getIdFromUrlSubstring, normalizePokemonName, useLocalStorage } from '@/components/shared/utils';
-import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import Spinner from '../spinner';
 import './thumb.scss';
+import Image from 'next/image';
 
 export function getArtwork(id: number, sprite: ArtUrl
 ) {
@@ -49,7 +49,7 @@ export function getNumber(id: number) {
   if(id <= 1025) {
     return `#${('000' + id.toString()).slice(-4)}`;
   }
-  return '---';
+  return 'N/A';
 }
 
 export function getBackgroundStyle(types: IPokemonType[] = []): CSSProperties {
@@ -120,8 +120,8 @@ export default function PokemonThumb({
   }, [pokemonData, pokemonDataSmall]);
 
   const loading = <span className="loading text-xs my-auto"><Spinner /></span>;
-  const isXS = size === 'xs' && ['w-30 h-30', 'h-[120px]', 'mb-0', 'text-xs'];
-  const isSM = size === 'sm' && ['w-40 h-40', 'h-[160px]', 'mb-1', 'text-xs'];
+  const isXS = size === 'xs' && ['w-30 h-30', 'h-[120px]', 'mb-2list', 'text-xs'];
+  const isSM = size === 'sm' && ['w-40 h-40', 'h-[160px]', 'mb-2', 'text-xs'];
   const isBase = size === 'base' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
   const isLG = ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
   const classes = isXS || isSM || isBase || isLG;
@@ -139,7 +139,13 @@ export default function PokemonThumb({
   const loaded = pkmn &&
     <div
       style={ pkmn ? getBackgroundStyle(pkmn?.types ?? []) : { 'background': '#CCCCC' }}
-      className={`pokemon flex flex-col mx-auto justify-center items-center ${className} ${classes[0]} ${size} ${!showName ? 'titleless' : ''}`}
+      className={`
+        pokemon flex flex-col mx-auto justify-center items-center
+        ${className ? className : ''}
+        ${classes[0]}
+        ${size}
+        ${!showName ? 'titleless' : ''}
+      `}
     >
       <div className={`pokemon-shadow bg-[rgba(0,0,0,0.2)] ${classes[0]}`}></div>
       <div className="img-hover-zoom w-full h-full">

@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { getBackgroundStyleWithStrings } from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
-import { capitilize } from "@/components/shared/utils";
+import { capitilize, normalizePokemonName } from "@/components/shared/utils";
 import { DefensiveMatchup, PokemonType } from "@/app/types";
 import { typeChart } from "./type-weakness-chart";
 
@@ -79,7 +79,7 @@ export default function PokemonDefensiveChart({ types, name }: { types: string[]
         Object.keys(typeChart).map((type, idx) => {
           let tooltipContent = '';
           let tooltipChild = '';
-
+          name = normalizePokemonName(name);
           if(defensiveChart.immunities[type as PokemonType]) {
             tooltipContent = `${name} is immune to ${capitilize(type)}`;
             tooltipChild = '0';

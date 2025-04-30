@@ -1,7 +1,8 @@
 'use client';
 
-import { fetchEvolutionChain, fetchPokemon, fetchSpecies, fetchTypes } from '@/app/api';
+import { fetchEvolutionChain, fetchPokemon, fetchPokemonList, fetchSpecies, fetchTypes } from '@/app/api';
 import RootLayout from '@/app/layout';
+import All from '@/app/poke-array';
 import { SpeciesChain } from '@/app/types';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
@@ -21,23 +22,21 @@ import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 import { GetStaticPropsContext } from 'next';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import PokeAPI, { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
+import { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   capitilize,
   getIdFromUrlSubstring,
-  kebabToSpace,
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
-import PokemonMisc from '@/components/[id]/details/misc';
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
     const pokemonData = await fetchPokemon(id);
-    const previousAndAfter = await PokeAPI.Pokemon.list(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
+    const previousAndAfter = await fetchPokemonList(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
     return {
       props: {
         id: pokemonData.id,
@@ -52,9 +51,10 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 export function getStaticPaths() {
   const ids = Array.from({ length: 1025 }, (_, i) => String(i + 1));
+  const all = All();
 
   return {
-    paths: ids.map(id => ({ params: { id }})),
+    paths: [...all, ...ids].map(id => ({ params: { id }})),
     fallback: true
   };
 }
@@ -197,7 +197,7 @@ export default function PokemonDetails({
             ">
               <div className="about grid grid-cols-1 md:grid-cols-6 gap-4">
                 {species && <PokemonDescription species={species} />}
-                <PokemonFirstAppearance pokemon={pokemon} species={species} />
+                <PokemonFirstAppearance pokemon={pokemon} species={species as IPokemonSpecies} />
                 <PokemonSize pokemon={pokemon} />
                 <PokemonAbilities pokemon={pokemon} />
                 <PokemonStats pokemon={pokemon} />

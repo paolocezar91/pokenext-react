@@ -32,7 +32,7 @@ export const normalizeVersionGroup = (text: string) => {
   text = text.replace("ultra-sun-ultra-moon", "Ultra Sun/Ultra Moon");
   text = text.replace("lets-go-pikachu-lets-go-eevee", "Let's Go Pikachu/Eevee");
   text = text.replace("sword-shield", "Sword/Shield");
-  text = text.replace("brilliant-diamond-and-shining-pearl", "Brill. Diaming/Shin. Pearl");
+  text = text.replace("brilliant-diamond-and-shining-pearl", "Brill. Diamond/Shin. Pearl");
   text = text.replace("legends-arceus", "Legends: Arceus");
   text = text.replace("scarlet-violet", "Scarlet/Violet");
   return text;
@@ -45,13 +45,12 @@ export const normalizePokemonName = (text: string) => {
   text = text.replace('mr-mime', 'mr. Mime');
   text = text.replace('mime-jr', 'mime Jr.');
   text = text.replace('mr-rime', 'mr. Rime');
-  text = text.replace('-altered', '');
-  text = text.replace('-land', '');
+  text = text.replace('-altered', ' (Altered)');
+  text = text.replace('-land', ' (Land)');
   text = text.replace('-red-striped', ' (Red Striped)');
   text = text.replace('-blue-striped', ' (Blue Striped)');
   text = text.replace('-white-striped', ' (White Striped)');
-  text = text.replace('-standard', '');
-  text = text.replace('-standard', '');
+  text = text.replace('-standard', ' (Standard)');
   text = text.replace('-incarnate', ' (Incarnate)');
   text = text.replace('-therian', ' (Therian)');
   text = text.replace('-ordinary', '');

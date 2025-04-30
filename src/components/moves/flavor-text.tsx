@@ -19,7 +19,7 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
   return (
     <div className="flavor w-full">
       <h3 className="text-xl font-semibold mb-4">{capitilize(kebabToSpace(moveData.name))}</h3>
-      <div className="flex items-end relative justify-between pb-6">
+      <div className="flex items-end relative items-start justify-between pb-6">
         {getFlavors().length === 0 ?
           <p> {t('moves.flavorText.empty')} </p>
           : <>

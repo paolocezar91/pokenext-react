@@ -13,6 +13,9 @@
             "abilities": {
                 "title": "Habilidades"
             },
+            "firstSeen": {
+                "title": "Estreiou em"
+            },
             "evolutionChart": {
                 "title": "Cadeia de Evoluçao"
             },
@@ -25,6 +28,17 @@
             "defensiveChart": {
                 "title": "Carta Defensiva"
             },
+            "misc": {
+                "eggGroups": "Grupos de Ovo",
+                "baby": "Bebê",
+                "legendary": "Lendário",
+                "mythical": "Mítico",
+                "growthRate": "Taxa de Crescimento",
+                "captureRate": "Taxa de Captura",
+                "hatchCounter": "Contador de Choca",
+                "yes": "Sim",
+                "no": "Não"
+            },
             "moves": {
                 "title": "Golpes",
                 "chooseVersion": "Escolha a versão",
@@ -35,10 +49,12 @@
                 "power": "Poder",
                 "accuracy": "Exatidão",
                 "pp": "PP"
-
             }
-        },
-        "toggleView": "Miniaturas ou Tabela"
+        }
+    },
+    "menu": {
+        "home": "Início",
+        "settings": "Config."
     },
     "moves": {
         "title": "Golpe",
@@ -64,8 +80,34 @@
         "name": "Nome",
         "types": "Tipo(s)"
     },
-    "footer": {
-        "languages": "Línguas"
+    "settings": {
+        "toggleView": "Miniatura ou Tabela",
+        "title": "Configurações",
+        "size": {
+            "title": "Tamanho Miniatura",
+            "xs": "Pequeno",
+            "sm": "Normal",
+            "base": "Grande"
+        },
+        "label": {
+            "title": "Texto Miniatura",
+            "tooltip": "Tooltip",
+            "thumbnail": "Miniatura",
+            "none": "Sem texto"
+        },
+        "languageOptions":{
+            "title": "Opções de Línguas",
+            "language": "Línguas",
+            "languageTooltip": "Troca a língua da App",
+            "descriptionLanguage": "Línguas (descrição)",
+            "descriptionLanguageTooltip": "Troca a língua das descrições"
+        },
+        "artworkOptions": {
+            "title": "Opções de Artes",
+            "thumbnail": "Miniatura",
+            "typeIcon": "Tipo (ícones)"
+        },
+        "showThumb": "Mostrar miniatura"
     },
     "actions": {
         "next": "Próximo",

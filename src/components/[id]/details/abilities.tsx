@@ -23,7 +23,7 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
     getAbility();
   }, [pokemon.abilities]);
 
-  return abilityDetails && <div className="pokemon-abilities col-span-6 md:col-span-3">
+  return abilityDetails && <div className="pokemon-abilities col-span-6 md:col-span-2">
     <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.abilities.title') }</h3>
     <ul className="list-disc pl-5">
       {pokemon.abilities.map((ability, i) =>

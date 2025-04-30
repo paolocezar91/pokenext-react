@@ -35,7 +35,7 @@ export default function ArtworkSelect({ children }: { children?: ReactNode }) {
       width="100"
       height="20"
       alt="Normal"
-      className="md:mt-8 mt-4 md:my-0 my-4 md:ml-4 sm:ml-0 bg-(--pokedex-red) rounded"
+      className="md:mt-8 p-1 mt-4 md:my-0 my-4 md:ml-4 sm:ml-0 bg-white rounded"
       src={ getArtwork(1, artworkUrl).normal[0] } />
   </div>;
 }
