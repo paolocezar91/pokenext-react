@@ -31,8 +31,8 @@ export function Settings({ children }: { children: ReactNode }) {
   </div>;
 }
 
-export function SettingsItem({ children, title, htmlFor }: { children: ReactNode, title: string, htmlFor: string }) {
-  return <div className="settings-item">
+export function SettingsItem({ children, title, htmlFor, className }: { children: ReactNode, title?: string, htmlFor?: string, className?: string }) {
+  return <div className={`settings-item ${className}`}>
     <label className="text-xs" htmlFor={htmlFor}>
       {title}
       {children}

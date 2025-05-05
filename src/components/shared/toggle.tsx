@@ -3,41 +3,31 @@ import { ChangeEvent } from "react";
 
 export default function Toggle({
   value,
-  children,
   disabled,
   id,
   className,
+  childrenLeft,
+  childrenRight,
+  size = 'base',
   onChange
 }: {
   value: boolean;
   id: string;
   disabled?: boolean;
   className?: string;
-  children?: React.ReactNode;
+  childrenLeft?: React.ReactNode;
+  childrenRight?: React.ReactNode;
+  size?: 'sm' | 'base'
   onChange: (_: boolean) => void
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.checked);
   };
 
-  return <label
-    className={`${className} inline-flex items-center cursor-pointer`}
-    htmlFor={`toggle-${id}`}
-    data-testid="toggle-label"
-  >
-    <input
-      id={`toggle-${id}`}
-      type="checkbox"
-      className="sr-only peer"
-      checked={value}
-      onChange={handleChange}
-      disabled={disabled}
-      aria-label={(typeof children === 'string' ? children : 'Toggle')}
-    />
-    <div className="
-      relative
-      w-11
-      h-6
+  const heightBase = 'w-11 h-6 after:h-5 after:w-5';
+  const heightSM = 'w-7 h-4 after:h-3 after:w-3';
+  const height = size === 'sm' ? heightSM : heightBase;
+  const baseClass = `relative
       bg-gray-700
       border-gray-600
       rounded-full
@@ -58,11 +48,29 @@ export default function Toggle({
       after:bg-white
       after:border-gray-300
       after:border
-      after:rounded-full
-      after:h-5
-      after:w-5
-    "></div>
-    {children && <span className="ms-3 text-xs font-medium text-foreground"> {children} </span>}
+      after:rounded-full`;
+
+  return <label
+    className={`${className} inline-flex items-center cursor-pointer`}
+    htmlFor={`toggle-${id}`}
+    data-testid="toggle-label"
+  >
+    <input
+      id={`toggle-${id}`}
+      type="checkbox"
+      className="sr-only peer"
+      checked={value}
+      onChange={handleChange}
+      disabled={disabled}
+      aria-label={
+        (typeof childrenRight === 'string' ? childrenRight : typeof childrenLeft === 'string' ? childrenLeft : 'Toggle')}
+    />
+    {childrenLeft && <span className="ms-3 mr-2 text-xs font-medium text-foreground"> {childrenLeft} </span>}
+    <div className={`
+      ${baseClass}
+      ${height}
+    `}></div>
+    {childrenRight && <span className="ms-3 ml-2 text-xs font-medium text-foreground"> {childrenRight} </span>}
   </label>
   ;
 }

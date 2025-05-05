@@ -52,7 +52,6 @@ export default function PokemonList({
         list
         relative
         h-[-webkit-fill-available]
-
         overflow-auto
         rounded
         bg-background
