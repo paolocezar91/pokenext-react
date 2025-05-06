@@ -2,7 +2,7 @@
 
 import { fetchEvolutionChain, fetchPokemon, fetchPokemonList, fetchSpecies, fetchTypes } from '@/app/api';
 import RootLayout from '@/app/layout';
-import All from '@/app/poke-array';
+import All from '@/app/poke-array.json';
 import { SpeciesChain } from '@/app/types';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
@@ -51,7 +51,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 export function getStaticPaths() {
   const ids = Array.from({ length: 1025 }, (_, i) => String(i + 1));
-  const all = All();
+  const all = All.map((pokemon) => pokemon.name);
 
   return {
     paths: [...all, ...ids].map(id => ({ params: { id }})),

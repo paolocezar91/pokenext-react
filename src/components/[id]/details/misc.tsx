@@ -19,7 +19,7 @@ export default function PokemonMisc({
         [
           [t('pokedex.details.misc.eggGroups'), species?.egg_groups.map(eg => normalize(eg.name)).join(', ')],
           [t('pokedex.details.misc.baby'), species.is_baby ? t('pokedex.details.misc.yes') : t('pokedex.details.misc.no')],
-          [t('pokedex.details.misc.legendary'), species.is_legendary ? t('tpokedex.details.misc.yes') : t('pokedex.details.misc.no')],
+          [t('pokedex.details.misc.legendary'), species.is_legendary ? t('pokedex.details.misc.yes') : t('pokedex.details.misc.no')],
           [t('pokedex.details.misc.mythical'), species.is_mythical ? t('pokedex.details.misc.yes'): t('pokedex.details.misc.no')],
           [t('pokedex.details.misc.growthRate'), normalize(species.growth_rate.name) ],
           [t('pokedex.details.misc.captureRate'), `${species.capture_rate} (${captureRate.toFixed(2)}%)`],

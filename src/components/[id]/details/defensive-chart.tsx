@@ -74,7 +74,7 @@ export default function PokemonDefensiveChart({ types, name }: { types: string[]
 
   return <div className="defensive-chart col-span-6 md:col-span-3">
     <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.defensiveChart.title') }</h3>
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap text-white">
       {
         Object.keys(typeChart).map((type, idx) => {
           let tooltipContent = '';

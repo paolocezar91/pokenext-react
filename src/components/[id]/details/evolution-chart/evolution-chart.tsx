@@ -37,7 +37,7 @@ export default function PokemonEvolutionChart({
   >
     <Link className="flex-2" href={`/pokedex/${firstPkmn.name}`}>
       <PokemonThumb
-        className={`${pokemon.id === firstPkmn.id ? 'border-foreground': 'border-background'} border-solid border-2`}
+        className={`${pokemon.id === firstPkmn.id ? 'border-foreground': 'border-transparent'} border-solid border-4`}
         pokemonData={firstPkmn}
         size="sm"
       />
@@ -64,7 +64,7 @@ export default function PokemonEvolutionChart({
           <Tooltip content={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}`}>
             <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
               <PokemonThumb
-                className={`${pokemon.id === pkmn.id ? 'border-foreground': 'border-background'} border-solid border-2`}
+                className={`${pokemon.id === pkmn.id ? 'border-foreground': 'border-transparent'} border-solid border-4`}
                 pokemonData={pkmn}
                 size="sm"
               />

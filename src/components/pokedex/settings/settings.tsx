@@ -1,13 +1,30 @@
 import { Cog8ToothIcon } from "@heroicons/react/24/solid";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
 export function Settings({ children }: { children: ReactNode }) {
   const [showSettings, setShowSettings] = useState(false);
   const { t } = useTranslation('common');
+  const settingsRef = useRef<HTMLDivElement>(null);
 
-  return <div className="settings absolute right-[3rem] top-[-3rem] z-15 text-xs">
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
+        setShowSettings(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  return <div
+    ref={settingsRef}
+    className="settings absolute right-[3rem] top-[-3rem] z-15 text-xs"
+  >
     <Button
       onClick={() => setShowSettings(!showSettings)}
       className={`p-1

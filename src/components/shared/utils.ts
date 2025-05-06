@@ -86,6 +86,16 @@ export const normalizePokemonName = (text: string) => {
   text = text.replace('-frost', ' (Frost)');
   text = text.replace('-fan', ' (Fan)');
   text = text.replace('-mow', ' (Mow)');
+  text = text.replace('-normal', '');
+  text = text.replace('-average', '');
+  text = text.replace('-shield', ' (Shield)');
+  text = text.replace('-midday', ' (Midday)');
+  text = text.replace('-solo', '');
+  text = text.replace('-amped', ' (Amped)');
+  text = text.replace('-ice', ' (Ice)');
+  text = text.replace('-family-of-four', ' (Family of Four)');
+  text = text.replace('-zero', ' (Zero)');
+  text = text.replace('-two-segment', ' (Two Segment)');
 
   return capitilize(text);
 };

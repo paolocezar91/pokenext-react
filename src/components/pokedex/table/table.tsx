@@ -70,7 +70,7 @@ export default function PokemonTable({
         <thead className="bg-(--pokedex-red)">
           <tr className="sticky top-0 bg-(--pokedex-red) z-1">
             <th className="w-[1%] text-white text-center px-2 py-2"></th>
-            {(showShowColumn || showColumn[0]) && <th className="text-white text-center px-2 py-2">
+            {(showShowColumn || showColumn[0]) && <th className="w-0 text-white text-center px-2 py-2">
               { !showShowColumn ? '#' :
                 <Toggle
                   size="sm"
@@ -80,7 +80,7 @@ export default function PokemonTable({
                   onChange={(e) => handleShowColumnChange(e, 0)} />
               }
             </th>}
-            {(showShowColumn || showColumn[1]) && <th className="text-white text-left px-2 py-2">
+            {(showShowColumn || showColumn[1]) && <th className="w-[18%] text-white text-left px-2 py-2">
               { !showShowColumn ? t('table.name') :
                 <Toggle
                   size="sm"
@@ -150,11 +150,9 @@ export default function PokemonTable({
                 ${!isLast ? 'border-solid border-b-2 border-foreground': ''} 
                 ${!showThumb ? 'py-4': 'py-2'} 
               `}>
-                <Tooltip className="!p-2 !rounded-xl" content={<PokemonThumb pokemonData={pokemon} size={thumbSize} />}>
-                  <Link className="text-bold" href={`/pokedex/${pokemon.name}`}>
-                    {normalizePokemonName(pokemon.name)}
-                  </Link>
-                </Tooltip>
+                <Link className="text-bold" href={`/pokedex/${pokemon.name}`}>
+                  {normalizePokemonName(pokemon.name)}
+                </Link>
               </td>}
               {(showShowColumn || showColumn[2]) && <td className={`
                 px-4

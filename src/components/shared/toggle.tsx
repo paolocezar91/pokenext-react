@@ -65,12 +65,12 @@ export default function Toggle({
       aria-label={
         (typeof childrenRight === 'string' ? childrenRight : typeof childrenLeft === 'string' ? childrenLeft : 'Toggle')}
     />
-    {childrenLeft && <span className="ms-3 mr-2 text-xs font-medium text-foreground"> {childrenLeft} </span>}
+    {childrenLeft && <span className="ms-3 mr-2 text-xs text-foreground"> {childrenLeft} </span>}
     <div className={`
       ${baseClass}
       ${height}
     `}></div>
-    {childrenRight && <span className="ms-3 ml-2 text-xs font-medium text-foreground"> {childrenRight} </span>}
+    {childrenRight && <span className="ms-3 ml-2 text-xs text-foreground"> {childrenRight} </span>}
   </label>
   ;
 }

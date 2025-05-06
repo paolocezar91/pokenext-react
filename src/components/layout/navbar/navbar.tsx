@@ -4,24 +4,17 @@ import { Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MobileMenu } from "./mobile-menu";
 import { NavLink } from "./nav-link";
+import NavSearch from "./nav-search";
 
 export default function Navbar({ title }: { title: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useTranslation('common');
   const router = useRouter();
 
-  const goTo = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const input = event.currentTarget.elements.namedItem('pokemon-search') as HTMLInputElement;
-    const idx = input?.value?.toLowerCase()?.trim();
-    if(idx) {
-      router.push(`/pokedex/${idx}`);
-    }
-  };
   const items = <>
     <li className="mt-2">
       <NavLink href="/pokedex/" isActive={router.pathname === '/pokedex'}>{t('menu.home')}</NavLink>
@@ -31,50 +24,7 @@ export default function Navbar({ title }: { title: string }) {
     </li>
     <li className="mt-2">
       <div className="go-to rounded">
-        <form onSubmit={goTo} data-testid="form-go-to w-inherit">
-          <div className="h-10 flex">
-            <input
-              name="pokemon-search"
-              placeholder={t('actions.go.placeholder')}
-              type="text"
-              className="
-                  w-50
-                  h-full
-                  bg-white
-                  text-xs
-                  text-black
-                  rounded-l
-                  px-2
-                  py-1
-                  placeholder-gray-500
-                  border-solid
-                  border-r-0
-                  border-2
-                  border-black
-                  hover:border-white
-                " />
-            <button
-              type="submit"
-              className="
-                  h-full
-                  bg-(--pokedex-blue)
-                  text-sm
-                  text-white
-                  rounded-r
-                  px-2
-                  py-1
-                  border-l-2
-                  border-solid
-                  border-2
-                  border-black
-                  hover:bg-gray-700
-                  hover:border-white
-                "
-            >
-              { t("actions.go.button") }!
-            </button>
-          </div>
-        </form>
+        <NavSearch />
       </div>
     </li>
   </>;
