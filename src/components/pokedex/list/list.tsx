@@ -75,7 +75,7 @@ export default function PokemonList({
 
               return <div key={i}>
                 {thumbLabel == 'tooltip' &&
-                <Tooltip content={`${normalizePokemonName(pokemon.name)} - ${getNumber(pokemon.id)}`}>
+                <Tooltip content={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
                   { linkThumb }
                 </Tooltip>}
                 {(thumbLabel == 'thumbnail' || thumbLabel == 'none') && linkThumb}

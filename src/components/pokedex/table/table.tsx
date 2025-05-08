@@ -140,7 +140,7 @@ export default function PokemonTable({
                 ${!isLast ? 'border-solid border-b-2 border-foreground text-center': ''} 
                 ${!showThumb ? 'py-4': 'py-2'} 
               `}>
-                <Link href={`/pokedex/${pokemon.name}`}>
+                <Link className="hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`}>
                   {getNumber(pokemon.id)}
                 </Link>
               </td>}
@@ -150,7 +150,7 @@ export default function PokemonTable({
                 ${!isLast ? 'border-solid border-b-2 border-foreground': ''} 
                 ${!showThumb ? 'py-4': 'py-2'} 
               `}>
-                <Link className="text-bold" href={`/pokedex/${pokemon.name}`}>
+                <Link className="text-bold hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`}>
                   {normalizePokemonName(pokemon.name)}
                 </Link>
               </td>}
@@ -189,7 +189,7 @@ export default function PokemonTable({
         </tbody>
         <tfoot className="bg-background">
           <tr>
-            <td className="py-2" colSpan={showThumb ? 11 : 10}>{ children }</td>
+            <td className="py-2" colSpan={11}>{ children }</td>
           </tr>
         </tfoot>
       </table>

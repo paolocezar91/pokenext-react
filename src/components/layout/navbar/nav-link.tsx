@@ -9,12 +9,12 @@ interface NavLinkProps {
   className?: string;
 }
 
-export const NavLink = ({
+export default function NavLink({
   href,
   children,
   isActive = false,
   className = "",
-}: NavLinkProps) => {
+}: NavLinkProps) {
   const baseClasses =
     "block px-3 py-2 text-sm rounded hover:shadow-md hover:bg-(--pokedex-red-dark)";
 

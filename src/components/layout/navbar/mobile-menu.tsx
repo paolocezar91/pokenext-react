@@ -7,7 +7,7 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-export const MobileMenu = ({ children, isOpen }: MobileMenuProps) => {
+export default function MobileMenu({ children, isOpen }: MobileMenuProps) {
   return (
     <div
       className={`${isOpen ? "block" : "hidden"} w-full md:hidden`}

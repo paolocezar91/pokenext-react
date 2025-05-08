@@ -6,9 +6,9 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { MobileMenu } from "./mobile-menu";
-import { NavLink } from "./nav-link";
-import NavSearch from "./nav-search";
+import MobileMenu from "./mobile-menu";
+import NavLink from "./nav-link";
+import NavSearch from "./navbar-search";
 
 export default function Navbar({ title }: { title: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -74,7 +74,7 @@ export default function Navbar({ title }: { title: string }) {
           <span className="sr-only">Open main menu</span>
           <Bars3Icon />
         </button>
-        <div className="hidden w-full md:block md:w-auto">
+        <div className="hidden w-full md:block md:w-auto" >
           <ul className="
             flex
             flex-col

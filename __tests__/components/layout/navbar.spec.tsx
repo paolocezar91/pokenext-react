@@ -1,97 +1,86 @@
 import Navbar from '@/components/layout/navbar/navbar';
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
-import mockRouter from 'next-router-mock';
-import { act } from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { useRouter } from 'next/router';
 
-jest.mock('next/router', () => jest.requireActual('next-router-mock'));
+// Mock next/router
+jest.mock('next/router', () => ({
+  useRouter: jest.fn(),
+}));
+
+// Mock react-i18next
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+// Mock the MobileMenu and other child components to simplify testing
+jest.mock('@/components/layout/navbar/mobile-menu', () => jest.fn(({ children }) => <div>{children}</div>));
+jest.mock('@/components/layout/navbar/nav-link', () => jest.fn(({ href, children }) => <a href={href}>{children}</a>));
+jest.mock('@/components/layout/navbar/nav-search', () => jest.fn(() => <div>NavSearch</div>));
 
-describe('Header', () => {
+describe('Navbar Component', () => {
+  const mockRouter = {
+    pathname: '/',
+    push: jest.fn(),
+  };
+
   beforeEach(() => {
-    // Reset the router before each test
-    mockRouter.setCurrentUrl('/');
+    (useRouter as jest.Mock).mockReturnValue(mockRouter);
   });
 
-  it('should render title', () => {
-    const title = 'title';
-    render(<Navbar title={title} />);
-    expect(screen.queryByRole('heading', {level: 1})).toBeInTheDocument();
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should sent to home page', () => {
-    const title = 'title';
-    render(<Navbar title={title} />);
-    const homePageLink = screen.getByTestId("home-page-link");
-    fireEvent.click(homePageLink);
-
-    expect(mockRouter.asPath).toBe('/pokedex');
+  it('renders correctly with title', () => {
+    render(<Navbar title="Pokedex App" />);
+    expect(screen.getByText('Pokedex App')).toBeInTheDocument();
   });
 
-  it('should update input value and submit form', () => {
-    const title = 'title';
-    render(<Navbar title={title} />);
-
-    // Get form elements
-    const form = screen.getByTestId('form-go-to');
-    const input = screen.getByPlaceholderText('actions.go.placeholder');
-
-    // Simulate user typing
-    // Simulate user typing
-    fireEvent.change(input, { target: { value: 'bulbasaur' } });
-    expect(input).toHaveValue('bulbasaur');
-
-    // This will work because testing-library's fireEvent creates proper event structure
-    fireEvent.submit(form);
-
-    // Verify router navigation
-    expect(mockRouter.asPath).toBe('/pokedex/bulbasaur');
+  it('contains a link to home page on the logo', () => {
+    render(<Navbar title="Pokedex App" />);
+    const logoLink = screen.getByRole('link', { name: /pokedex app/i });
+    expect(logoLink).toBeInTheDocument();
+    expect(logoLink).toHaveAttribute('href', '/pokedex');
   });
 
-  it('should not navigate with empty input', () => {
-    const title = 'title';
-    render(<Navbar title={title} />);
-
-    const form = screen.getByTestId('form-go-to');
-    fireEvent.submit(form);
-
-    // Router should not change
-    expect(mockRouter.asPath).toBe('/');
+  it('renders home link correctly', () => {
+    render(<Navbar title="Pokedex App" />);
+    const homeLink = screen.getAllByRole('link', { name: "menu.home" });
+    expect(homeLink[0]).toBeInTheDocument();
+    expect(homeLink[0]).toHaveAttribute('href', '/pokedex/');
+    expect(homeLink[1]).toBeInTheDocument();
+    expect(homeLink[1]).toHaveAttribute('href', '/pokedex/');
   });
 
-  it('should handle different pokemon names', () => {
-    const title = 'title';
-    render(<Navbar title={title} />);
-
-    const testCases = [
-      { input: '25', expected: '/pokedex/25' },
-      { input: 'pikachu', expected: '/pokedex/pikachu' },
-      { input: 'CHARIZARD', expected: '/pokedex/charizard' }, // test case insensitivity
-      { input: ' eevee ', expected: '/pokedex/eevee' }, // test whitespace
-    ];
-
-    testCases.forEach(({ input, expected }) => {
-      const form = screen.getByTestId('form-go-to');
-      const inputField = screen.getByPlaceholderText('actions.go.placeholder');
-
-      fireEvent.change(inputField, { target: { value: input } });
-      fireEvent.submit(form);
-
-      expect(mockRouter.asPath).toBe(expected);
-
-      // Reset router for next test case
-      act(() => {
-        mockRouter.setCurrentUrl('/');
-      });
-    });
+  it('renders settings link correctly', () => {
+    render(<Navbar title="Pokedex App" />);
+    const settingsLink = screen.getAllByRole('link', { name: /settings/i });
+    expect(settingsLink[0]).toBeInTheDocument();
+    expect(settingsLink[0]).toHaveAttribute('href', '/settings/');
+    expect(settingsLink[1]).toBeInTheDocument();
+    expect(settingsLink[1]).toHaveAttribute('href', '/settings/');
   });
 
-  it('should match snapshot', () => {
-    const title = 'title';
-    const { asFragment } = render(<Navbar title={title} />);
-    expect(asFragment()).toMatchSnapshot();
+  it('toggles mobile menu when button is clicked', () => {
+    render(<Navbar title="Pokedex App" />);
+    const menuButton = screen.getByRole('button', { name: /open main menu/i });
+
+    // Initial state should be closed
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+
+    // Click to open
+    fireEvent.click(menuButton);
+    expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+
+    // Click to close
+    fireEvent.click(menuButton);
+    expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('renders NavSearch component', () => {
+    render(<Navbar title="Pokedex App" />);
+    expect(screen.getAllByText('NavSearch')[0]).toBeInTheDocument();
+    expect(screen.getAllByText('NavSearch')[1]).toBeInTheDocument();
   });
 });

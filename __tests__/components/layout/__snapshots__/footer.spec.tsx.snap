@@ -36,34 +36,6 @@ exports[`Footer should match snapshot with no valid description 1`] = `
         .
       </p>
     </div>
-    <div
-      class="next flex-1 text-right"
-    >
-      <div
-        class="tooltip-container"
-      >
-        <div
-          class="tooltip-trigger"
-        >
-          <select
-            class="border-solid border-2 border-black text-black bg-white py-2 rounded text-xs"
-            data-testid="lang"
-            id="lang"
-          >
-            <option
-              value="en-US"
-            >
-              en-US
-            </option>
-            <option
-              value="pt-BR"
-            >
-              pt-BR
-            </option>
-          </select>
-        </div>
-      </div>
-    </div>
   </div>
 </DocumentFragment>
 `;

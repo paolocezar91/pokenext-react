@@ -12,7 +12,7 @@ export default function PokemonMisc({
     return capitilize(kebabToSpace(text));
   };
 
-  const captureRate = species.capture_rate / 3;
+  // const captureRate = species.capture_rate / 3;
   return <div className="pokemon-misc mt-2">
     <div className="flex flex-wrap gap-4">
       {
@@ -22,7 +22,7 @@ export default function PokemonMisc({
           [t('pokedex.details.misc.legendary'), species.is_legendary ? t('pokedex.details.misc.yes') : t('pokedex.details.misc.no')],
           [t('pokedex.details.misc.mythical'), species.is_mythical ? t('pokedex.details.misc.yes'): t('pokedex.details.misc.no')],
           [t('pokedex.details.misc.growthRate'), normalize(species.growth_rate.name) ],
-          [t('pokedex.details.misc.captureRate'), `${species.capture_rate} (${captureRate.toFixed(2)}%)`],
+          // [t('pokedex.details.misc.captureRate'), `${species.capture_rate} (${captureRate.toFixed(2)}%)`],
           [t('pokedex.details.misc.hatchCounter'), species.hatch_counter]
         ].map(([key, value]) => {
           return <div className="" key={key}>

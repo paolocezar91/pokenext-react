@@ -163,7 +163,7 @@ export default function PokemonDetails({
   return (
     <RootLayout title={
       pokemon ?
-        `${normalizePokemonName(pokemon.name)} - ${getNumber(pokemon.id)}` :
+        `${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}` :
         `${t('pokedex.loading')}...`
     }>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto relative">

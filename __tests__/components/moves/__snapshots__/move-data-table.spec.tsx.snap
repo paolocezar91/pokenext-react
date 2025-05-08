@@ -51,13 +51,19 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
                 <div
                   class="tooltip-trigger"
                 >
-                  <img
-                    alt="special"
-                    height="35"
-                    loading="lazy"
-                    src="/move-special.png"
-                    width="35"
-                  />
+                  <span
+                    class="flex items-center"
+                  >
+                    <img
+                      alt="special"
+                      class="mr-2"
+                      height="35"
+                      loading="lazy"
+                      src="/move-special.png"
+                      width="35"
+                    />
+                    Special
+                  </span>
                 </div>
               </div>
             </span>
@@ -156,13 +162,19 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
                 <div
                   class="tooltip-trigger"
                 >
-                  <img
-                    alt="special"
-                    height="35"
-                    loading="lazy"
-                    src="/move-special.png"
-                    width="35"
-                  />
+                  <span
+                    class="flex items-center"
+                  >
+                    <img
+                      alt="special"
+                      class="mr-2"
+                      height="35"
+                      loading="lazy"
+                      src="/move-special.png"
+                      width="35"
+                    />
+                    Special
+                  </span>
                 </div>
               </div>
             </span>

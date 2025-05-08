@@ -53,7 +53,7 @@ export default function NavSearch() {
     return (
       <>
         {beforeMatch}
-        <strong>{match}</strong>
+        <strong class="match">{match}</strong>
         {afterMatch}
       </>
     );

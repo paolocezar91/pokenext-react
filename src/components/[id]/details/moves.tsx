@@ -103,7 +103,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
 
   return <div className="moves col-span-6 mt-2">
     <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.moves.title') }</h3>
-    <div className="flex my-2">
+    <div className="flex flex-col sm:flex-row my-2">
       {!!moves && <div className="version-picker">
         <label className=" text-xs flex flex-col">{t('pokedex.details.moves.chooseVersion')}:
           <Select onChange={(event) => setVersionGroupActive(event.target.value)}>
@@ -136,7 +136,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
       </div>}
     </div>
 
-    <div className="tables mb-6">
+    <div className="tables overflow-x-auto mb-6">
       {versionGroupActive && movesetActive && !showTable && <div className="p-4 flex items-center justify-center">
         <Spinner />
       </div>}
@@ -179,21 +179,21 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
             .map((move, idx, arr) => {
               const isLast = idx === arr.length - 1;
               return move.details && <tr className={`${!isLast ? 'border-solid border-b-1 border-foreground' : ''} align-middle`} key={idx}>
-                {movesetActive === 'level-up' && <td className="py-2 pr-2 text-right">{move.level_learned_at}</td>}
-                {movesetActive === 'machine' && <td className="py-2 pr-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
-                <td className="py-2">
+                {movesetActive === 'level-up' && <td className="p-2 text-right">{move.level_learned_at}</td>}
+                {movesetActive === 'machine' && <td className="p-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
+                <td className="p-2">
                   <Link href={`/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
                     {capitilize(kebabToSpace(move.move))}
                   </Link>
                 </td>
-                <td className="py-2">
+                <td className="p-2">
                   <Image
                     width="100"
                     height="20"
                     alt={capitilize(move.details.type.name)}
                     src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), typeArtworkUrl)} />
                 </td>
-                <td className="py-2">
+                <td className="p-2">
                   <span className="flex">
                     <Tooltip content={capitilize(move.details.damage_class.name)}>
                       <Image
@@ -204,8 +204,8 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
                     </Tooltip>
                   </span>
                 </td>
-                <td className="py-2">{ move.details.power ?? '-' }</td>
-                <td className="py-2">{ move.details.accuracy ?? '-' }</td>
+                <td className="p-2">{ move.details.power ?? '-' }</td>
+                <td className="p-2">{ move.details.accuracy ?? '-' }</td>
               </tr>;
             })}
         </tbody>

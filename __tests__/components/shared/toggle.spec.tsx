@@ -26,12 +26,12 @@ describe('Toggle Component', () => {
   });
 
   it('should display children text when provided', () => {
-    render(<Toggle id="test" value={false} onChange={mockOnChange}>Test Label</Toggle>);
+    render(<Toggle id="test" value={false} onChange={mockOnChange} childrenLeft="Test Label"></Toggle>);
     expect(screen.getByText('Test Label')).toBeInTheDocument();
   });
 
   it('should display className when provided', () => {
-    render(<Toggle id="test" className="test-class" value={false} onChange={mockOnChange}>Test Label</Toggle>);
+    render(<Toggle id="test" className="test-class" value={false} onChange={mockOnChange} childrenLeft="Test Label"></Toggle>);
     expect(screen.getByTestId('toggle-label')).toHaveClass('test-class');
   });
 
@@ -56,7 +56,7 @@ describe('Toggle Component', () => {
   });
 
   it('should toggle when clicking on the label text', () => {
-    render(<Toggle id="test" value={false} onChange={mockOnChange}>Toggle Me</Toggle>);
+    render(<Toggle id="test" value={false} onChange={mockOnChange} childrenLeft="Toggle Me"></Toggle>);
 
     const labelText = screen.getByText('Toggle Me');
     fireEvent.click(labelText);
@@ -66,7 +66,7 @@ describe('Toggle Component', () => {
   });
 
   it('should have proper accessibility attributes', () => {
-    render(<Toggle id="test" value={false} onChange={mockOnChange}>Accessible Toggle</Toggle>);
+    render(<Toggle id="test" value={false} onChange={mockOnChange} childrenLeft="Accessible Toggle"></Toggle>);
 
     const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toHaveAttribute('type', 'checkbox');
@@ -84,7 +84,7 @@ describe('Toggle Component', () => {
   });
 
   it('should match snapshot with children', () => {
-    const { asFragment } = render(<Toggle id="test" value={false} onChange={mockOnChange}>Label</Toggle>);
+    const { asFragment } = render(<Toggle id="test" value={false} onChange={mockOnChange} childrenLeft="Label"></Toggle>);
     expect(asFragment()).toMatchSnapshot();
   });
 });
