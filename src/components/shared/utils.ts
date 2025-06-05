@@ -11,6 +11,18 @@ export const capitilize = (str = '') => {
   return splitStr.join(' ');
 };
 
+export const normalizeGeneration = (text: string) => {
+  text = text.replace("generation-viii", "Gen VIII");
+  text = text.replace("generation-vii", "Gen VII");
+  text = text.replace("generation-vi", "Gen VI");
+  text = text.replace("generation-v", "Gen V");
+  text = text.replace("generation-iv", "Gen IV");
+  text = text.replace("generation-iii", "Gen III");
+  text = text.replace("generation-ii", "Gen II");
+  text = text.replace("generation-i", "Gen I");
+  return text;
+};
+
 export const normalizeVersionGroup = (text: string) => {
   text = text.replace("red-blue", "Red/Blue");
   text = text.replace("yellow", "Yellow");

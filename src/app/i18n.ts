@@ -3,6 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import Backend from "i18next-http-backend";
 import enUS from "../../public/locales/en-US/common.json";
 import ptBR from "../../public/locales/pt-BR/common.json";
+import LanguageDetector from "i18next-browser-languagedetector";
 
 const resources = {
   'en-US': {
@@ -17,6 +18,7 @@ function initI18nProd() {
   if(!i18n.isInitialized)
     i18n
       .use(Backend)
+      // .use(LanguageDetector) // Use the language detector
       .use(initReactI18next)
       .init({
         fallbackLng: 'en-US',

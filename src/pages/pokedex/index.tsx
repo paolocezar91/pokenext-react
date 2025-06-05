@@ -20,7 +20,7 @@ const STARTING_POKEMON = 0;
 
 export const metadata: Metadata = {
   title: `Pokédex -- Next.js Demo`,
-  description: 'A Next.js Demo for a 151 Pokemon Pokedex'
+  description: 'By Paolo Pestalozzi with PokeAPI and Next.js.'
 };
 
 export async function getPokemonPage(

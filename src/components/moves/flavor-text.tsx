@@ -44,7 +44,7 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
                 <ChevronRightIcon className="w-5" />
               </Button>
             </div>
-            <div className="absolute bottom-0 right-0">
+            <div className="absolute bottom-[-8px] right-0 border-t-1 border-t-white text-sm">
               <small className="mr-2">({normalizeVersionGroup(getFlavors()[flavorIdx].version_group.name)})</small>
               {flavorIdx + 1} / {getFlavors().length}
             </div>

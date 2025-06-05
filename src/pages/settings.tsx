@@ -6,7 +6,7 @@ import TypeArtworkSelect from "@/components/layout/typeArtworkSelect";
 import { useTranslation } from "react-i18next";
 
 export default function SettingsPage() {
-  const { t } = useTranslation('common');
+  const { t, i18n } = useTranslation('common');
   const title = t('settings.title');
 
   return (
@@ -16,7 +16,7 @@ export default function SettingsPage() {
           <div>
             <h3>{t('settings.languageOptions.title')}</h3>
             <div className="my-4">
-              <LangSelect>
+              <LangSelect currentLanguage={i18n.language}>
                 {t('settings.languageOptions.language')}:
               </LangSelect>
               <DescriptionLangSelect>

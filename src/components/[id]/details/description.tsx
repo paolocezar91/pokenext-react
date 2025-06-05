@@ -29,7 +29,7 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
         { normalizePokemonName(species.name) } -- {species.genera.find(g => g.language.name === descriptionLang)?.genus}
       </span>
     </h2>
-    <div className="flex items-end relative justify-between items-start pb-6">
+    { getFlavorText(species).length > 0 && <div className="flex items-end relative justify-between items-start pb-6">
       <div>{getFlavorText(species)[flavorIdx].flavor_text}</div>
       <div className="flex">
         <Button
@@ -47,11 +47,11 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
           <ChevronRightIcon className="w-5" />
         </Button>
       </div>
-      <div className="absolute bottom-0 right-0">
+      <div className="absolute bottom-0 right-0 border-t-1 border-t-white text-xs">
         <small className="mr-2">({ capitilize(kebabToSpace(getFlavorText(species)[flavorIdx].version_group_name)) })</small>
         {flavorIdx + 1} / {getFlavorText(species).length}
       </div>
-    </div>
+    </div>}
     {species && <PokemonMisc species={species} />}
   </div>;
 }
