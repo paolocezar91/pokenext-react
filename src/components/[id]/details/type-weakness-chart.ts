@@ -1,4 +1,4 @@
-import { PokemonType } from "@/app/types";
+import { PokemonType } from "@/types/types";
 
 export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
   normal: {

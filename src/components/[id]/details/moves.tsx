@@ -1,4 +1,4 @@
-import { fetchURL } from "@/app/api";
+import { fetchURL } from "@/app/query";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup, useLocalStorage } from "@/components/shared/utils";
 import Image from "next/image";
 import Link from "next/link";

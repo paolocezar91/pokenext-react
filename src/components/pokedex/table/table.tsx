@@ -1,4 +1,4 @@
-import { IPkmn } from '@/app/types';
+import { IPkmn } from '@/types/types';
 import Select from '@/components/shared/select';
 import Toggle from '@/components/shared/toggle';
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName, useLocalStorage } from '@/components/shared/utils';

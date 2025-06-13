@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { getBackgroundStyleWithStrings } from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
 import { capitilize, normalizePokemonName } from "@/components/shared/utils";
-import { DefensiveMatchup, PokemonType } from "@/app/types";
+import { DefensiveMatchup, PokemonType } from "@/types/types";
 import { typeChart } from "./type-weakness-chart";
 
 

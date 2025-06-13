@@ -49,3 +49,21 @@ async function _fetchAndJson(url: string) {
     throw { error };
   }
 }
+
+export async function postUrl(url: string, body: any) {
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body,
+    });
+    if (!res.ok) {
+      throw new Error("Invalid credentials");
+    }
+    // Handle success (e.g., redirect)
+  } catch (err: any) {
+    throw err;
+  } finally {
+    return true;
+  }
+}

@@ -1,4 +1,4 @@
-import { fetchURL } from "@/app/api";
+import { fetchURL } from "@/app/query";
 import { normalizePokemonName } from "@/components/shared/utils";
 import Link from "next/link";
 import { IPokemon, IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";

@@ -1,7 +1,7 @@
-import { fetchPokemonDataList, fetchPokemonList } from '@/app/api';
+import { fetchPokemonDataList, fetchPokemonList } from '@/app/query';
 import '@/app/globals.css';
 import RootLayout from '@/app/layout';
-import { IPkmn } from '@/app/types';
+import { IPkmn } from '@/types/types';
 import PokemonFilter from '@/components/pokedex/list/filter';
 import PokemonList from '@/components/pokedex/list/list';
 import PokemonTable from '@/components/pokedex/table/table';

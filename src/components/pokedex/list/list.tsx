@@ -1,6 +1,6 @@
 'use client';
 
-import { IPkmn } from '@/app/types';
+import { IPkmn } from '@/types/types';
 import Select from '@/components/shared/select';
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName, useLocalStorage } from '@/components/shared/utils';

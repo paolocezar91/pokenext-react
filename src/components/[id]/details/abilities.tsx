@@ -1,4 +1,4 @@
-import { fetchURL } from "@/app/api";
+import { fetchURL } from "@/app/query";
 import { TypeLocale } from "@/components/layout/descriptionLang";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useLocalStorage } from "@/components/shared/utils";

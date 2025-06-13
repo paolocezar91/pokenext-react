@@ -1,4 +1,4 @@
-import { IPkmn } from '@/app/types';
+import { IPkmn } from '@/types/types';
 import { getIdFromUrlSubstring, normalizePokemonName, useLocalStorage } from '@/components/shared/utils';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';

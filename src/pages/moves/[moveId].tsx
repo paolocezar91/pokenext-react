@@ -1,4 +1,4 @@
-import { fetchMove, fetchURL } from "@/app/api";
+import { fetchMove, fetchURL } from "@/app/query";
 import RootLayout from "@/app/layout";
 import { GetStaticPropsContext } from "next";
 import { useEffect, useState } from "react";

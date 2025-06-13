@@ -1,4 +1,4 @@
-import { SpeciesChain } from "@/app/types";
+import { SpeciesChain } from "@/types/types";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";

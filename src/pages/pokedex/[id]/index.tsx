@@ -1,9 +1,9 @@
 'use client';
 
-import { fetchEvolutionChain, fetchPokemon, fetchPokemonList, fetchSpecies, fetchTypes } from '@/app/api';
+import { fetchEvolutionChain, fetchPokemon, fetchPokemonList, fetchSpecies, fetchTypes } from '@/app/query';
 import RootLayout from '@/app/layout';
 import All from '@/app/poke-array.json';
-import { SpeciesChain } from '@/app/types';
+import { SpeciesChain } from '@/types/types';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
 import PokemonCries from '@/components/[id]/details/cries';
