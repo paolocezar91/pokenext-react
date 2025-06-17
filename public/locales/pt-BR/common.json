@@ -54,7 +54,8 @@
     },
     "menu": {
         "home": "Início",
-        "settings": "Config."
+        "settings": "Config.",
+        "signIn": "Entrar"
     },
     "moves": {
         "title": "Golpe",

@@ -54,7 +54,9 @@
     },
     "menu": {
         "home": "Home",
-        "settings": "Settings"
+        "settings": "Settings",
+        "signIn": "Sign In"
+
     },
     "moves": {
         "title": "Move",
