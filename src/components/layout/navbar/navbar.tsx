@@ -1,6 +1,6 @@
 'use client';
 
-import { Bars3Icon, ChevronDownIcon, Cog6ToothIcon, HomeIcon, UserIcon } from "@heroicons/react/24/solid";
+import { Bars3Icon, HomeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,39 +10,13 @@ import MobileMenu from "./mobile-menu";
 import NavLink from "./nav-link";
 import NavSearch from "./navbar-search";
 import Tooltip from "@/components/shared/tooltip/tooltip";
-import SignIn from "./signin";
+import NavUserAuth from "./nav-user-auth";
+import { SessionProvider } from "next-auth/react";
 
 export default function Navbar({ title }: { title: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn] = useState(false);
-  const [showSignIn, setShowSignIn] = useState(false); // State to control SignIn visibility
-
   const { t } = useTranslation('common');
   const router = useRouter();
-
-  const signInLink =
-    <li
-      className="h-10 relative"
-      onClick={() => setShowSignIn((prev) => !prev)}
-      tabIndex={0}
-      style={{ outline: "none" }}
-    >
-      <NavLink className="h-10" href="#">
-        {t('menu.signIn')}
-      </NavLink>
-      {showSignIn &&
-        <div
-          className="absolute left-0 top-full z-50 mt-2"
-          style={{ minWidth: "200px" }}
-        >
-          <SignIn />
-        </div>
-      }
-    </li>;
-
-  const userMenu = <li className="h-10">
-    <UserIcon width={22}/> <ChevronDownIcon width={18}/>
-  </li>;
 
   const items = <>
     <li className="h-10">
@@ -58,17 +32,11 @@ export default function Navbar({ title }: { title: string }) {
       </Tooltip>
     </li>
     <li className="h-10">
-      <Tooltip content={t('menu.settings')}>
-        <NavLink className="h-10" href="/settings/" isActive={router.pathname === '/settings'}>
-          <Cog6ToothIcon width={22}/>
-        </NavLink>
-      </Tooltip>
+      <SessionProvider>
+        <NavUserAuth />
+      </SessionProvider>
     </li>
-    { !isLoggedIn ? signInLink : userMenu}
   </>;
-
-
-
 
   return (
     <nav className="bg-(--pokedex-red) border-white border-b-2 border-solid">
