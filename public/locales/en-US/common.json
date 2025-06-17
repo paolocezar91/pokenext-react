@@ -54,7 +54,9 @@
     },
     "menu": {
         "home": "Home",
-        "settings": "Settings"
+        "settings": "Settings",
+        "signInWithGithub": "Sign in with GitHub",
+        "signOut": "Sign out"
     },
     "moves": {
         "title": "Move",

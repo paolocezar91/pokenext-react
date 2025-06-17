@@ -1,6 +1,6 @@
 'use client';
 
-import { Bars3Icon } from "@heroicons/react/24/solid";
+import { Bars3Icon, HomeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,6 +9,9 @@ import { useTranslation } from "react-i18next";
 import MobileMenu from "./mobile-menu";
 import NavLink from "./nav-link";
 import NavSearch from "./navbar-search";
+import Tooltip from "@/components/shared/tooltip/tooltip";
+import NavUserAuth from "./nav-user-auth";
+import { SessionProvider } from "next-auth/react";
 
 export default function Navbar({ title }: { title: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -16,16 +19,22 @@ export default function Navbar({ title }: { title: string }) {
   const router = useRouter();
 
   const items = <>
-    <li className="mt-2">
-      <NavLink href="/pokedex/" isActive={router.pathname === '/pokedex'}>{t('menu.home')}</NavLink>
-    </li>
-    <li className="mt-2">
-      <NavLink href="/settings/" isActive={router.pathname === '/settings'}>{t('menu.settings')}</NavLink>
-    </li>
-    <li className="mt-2">
+    <li className="h-10">
       <div className="go-to rounded">
         <NavSearch />
       </div>
+    </li>
+    <li className="h-10">
+      <Tooltip content={t('menu.home')}>
+        <NavLink className="h-10" href="/pokedex/" isActive={router.pathname === '/pokedex'}>
+          <HomeIcon width={22}/>
+        </NavLink>
+      </Tooltip>
+    </li>
+    <li className="h-10">
+      <SessionProvider>
+        <NavUserAuth />
+      </SessionProvider>
     </li>
   </>;
 
@@ -86,7 +95,7 @@ export default function Navbar({ title }: { title: string }) {
             rounded
             rtl:space-x-reverse
             md:p-0
-            md:space-x-8
+            md:space-x-4
             md:flex-row
             md:mt-0
             md:border-0

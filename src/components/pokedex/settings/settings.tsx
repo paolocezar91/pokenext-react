@@ -23,7 +23,7 @@ export function Settings({ children }: { children: ReactNode }) {
 
   return <div
     ref={settingsRef}
-    className="settings absolute right-[3rem] top-[-3rem] z-15 text-xs"
+    className="settings absolute right-[3rem] top-[-3rem] z-1 text-xs"
   >
     <Button
       onClick={() => setShowSettings(!showSettings)}
