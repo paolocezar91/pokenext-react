@@ -3,7 +3,6 @@
 import { Bars3Icon, HomeIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import MobileMenu from "./mobile-menu";
@@ -12,11 +11,12 @@ import NavSearch from "./navbar-search";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import NavUserAuth from "./nav-user-auth";
 import { SessionProvider } from "next-auth/react";
+import { usePathname } from "next/navigation";
 
 export default function Navbar({ title }: { title: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { t } = useTranslation('common');
-  const router = useRouter();
+  const pathname = usePathname();
 
   const items = <>
     <li className="h-10">
@@ -26,7 +26,7 @@ export default function Navbar({ title }: { title: string }) {
     </li>
     <li className="h-10">
       <Tooltip content={t('menu.home')}>
-        <NavLink className="h-10" href="/pokedex/" isActive={router.pathname === '/pokedex'}>
+        <NavLink className="h-10" href="/" isActive={pathname === '/'}>
           <HomeIcon width={22}/>
         </NavLink>
       </Tooltip>
@@ -42,7 +42,7 @@ export default function Navbar({ title }: { title: string }) {
     <nav className="bg-(--pokedex-red) border-white border-b-2 border-solid">
       <div className="flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
-          href="/pokedex/"
+          href="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <Image

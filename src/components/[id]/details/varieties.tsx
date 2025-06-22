@@ -1,4 +1,4 @@
-import { fetchURL } from "@/app/query";
+import PokeApiQuery from "@/app/query";
 import { normalizePokemonName } from "@/components/shared/utils";
 import Link from "next/link";
 import { IPokemon, IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import PokemonThumb from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
+
+const pokeApiQuery = new PokeApiQuery();
 
 export default function PokemonVarieties({ name, species }: { name: string, species: IPokemonSpecies }) {
   const [varieties, setVarieties] = useState<IPokemon[]>([]);
@@ -18,13 +20,13 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
       const pokemonVarieties = await Promise.all(
         species.varieties
           .filter(({ pokemon }) => pokemon.name !== name)
-          .map(({ pokemon }) => fetchURL<IPokemon>(pokemon.url))
+          .map(({ pokemon }) => pokeApiQuery.fetchURL<IPokemon>(pokemon.url))
       );
       setVarieties(pokemonVarieties);
       setForms(await Promise.all(
         pokemonVarieties
           .filter(v => v.name !== name)
-          .map(v => fetchURL<IPokemonForm>(v.forms[0].url))));
+          .map(v => pokeApiQuery.fetchURL<IPokemonForm>(v.forms[0].url))));
     };
 
     getVarieties();

@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import Layout from '@/app/layout';
+import Layout from '@/pages/layout';
 
 jest.mock('next/router', () => jest.requireActual('next-router-mock'));
 jest.mock("react-i18next", () => ({

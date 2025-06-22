@@ -1,4 +1,4 @@
-import { Cog8ToothIcon } from "@heroicons/react/24/solid";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -40,7 +40,7 @@ export function Settings({ children }: { children: ReactNode }) {
         ${showSettings ? 'bg-foreground text-(--pokedex-red-dark)' : 'bg-(--pokedex-red-dark) text-foreground '}
       `}
     >
-      <Cog8ToothIcon className="w-6" />
+      <EllipsisHorizontalIcon className="w-6" />
     </Button>
     {showSettings && <SettingsContent title={t('settings.title')}>
       { children }
@@ -59,11 +59,12 @@ export function SettingsItem({ children, title, htmlFor, className }: { children
 
 export function SettingsContent({ children, title }: { children: ReactNode, title: string }) {
 
-  return <div className="settings-group bg-background rounded-l-lg border-4 border-(--pokedex-red-dark) shadow-lg p-2">
+  return <div className="settings-group bg-background rounded-l-lg border-4 border-(--pokedex-red-dark) shadow-lg p-4">
     <div className="settings-item">
-      <div className="text-sm border-b-1 pb-1 mb-2 border-solid border-white">
+      <div className="text-sm pb-1 mb-2">
         { title }
       </div>
+      <hr className="mb-2" />
       { children }
     </div>
   </div>;

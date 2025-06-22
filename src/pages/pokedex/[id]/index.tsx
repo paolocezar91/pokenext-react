@@ -1,7 +1,7 @@
 'use client';
 
-import { fetchEvolutionChain, fetchPokemon, fetchPokemonList, fetchSpecies, fetchTypes } from '@/app/query';
-import RootLayout from '@/app/layout';
+import PokeApiQuery from '@/app/query';
+import RootLayout from '@/pages/layout';
 import All from '@/app/poke-array.json';
 import { SpeciesChain } from '@/types/types';
 import Controls from '@/components/[id]/controls';
@@ -32,11 +32,13 @@ import {
 } from '../../../components/shared/utils';
 import './index.scss';
 
+const pokeApiQuery = new PokeApiQuery();
+
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
-    const pokemonData = await fetchPokemon(id);
-    const previousAndAfter = await fetchPokemonList(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
+    const pokemonData = await pokeApiQuery.fetchPokemon(id);
+    const previousAndAfter = await pokeApiQuery.fetchPokemonList(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
     return {
       props: {
         id: pokemonData.id,
@@ -94,8 +96,8 @@ export default function PokemonDetails({
 
       const getPokemonMetadata = async () => {
         const [speciesData, typesData] = await Promise.all([
-          fetchSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
-          fetchTypes(pokemonData.types),
+          pokeApiQuery.fetchSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
+          pokeApiQuery.fetchTypes(pokemonData.types),
         ]);
 
         if(pokemonData) {
@@ -106,23 +108,23 @@ export default function PokemonDetails({
         }
         if(speciesData) {
           setSpecies(speciesData);
-          const ec = await fetchEvolutionChain(speciesData) as IEvolutionChain;
+          const ec = await pokeApiQuery.fetchEvolutionChain(speciesData) as IEvolutionChain;
           setEvolutionChain(ec);
 
           const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
-          speciesChain.chain.first = [await fetchPokemon(evolve_to_id)];
+          speciesChain.chain.first = [await pokeApiQuery.fetchPokemon(evolve_to_id)];
           if(ec.chain?.evolves_to?.[0]) {
             speciesChain.chain.second = await Promise.all(
               ec.chain.evolves_to.map((evolves_to) => {
                 const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                return fetchPokemon(evolve_to_id);
+                return pokeApiQuery.fetchPokemon(evolve_to_id);
               })
             );
             if(ec.chain.evolves_to[0].evolves_to[0]) {
               speciesChain.chain.third = await Promise.all(
                 ec.chain.evolves_to[0].evolves_to.map((evolves_to) => {
                   const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                  return fetchPokemon(evolve_to_id);
+                  return pokeApiQuery.fetchPokemon(evolve_to_id);
                 })
               );
             } else {

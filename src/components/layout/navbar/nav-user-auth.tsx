@@ -3,16 +3,18 @@ import React, { useState, useRef, useEffect } from "react";
 import { ArrowLeftEndOnRectangleIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/solid";
 import NavLink from "./nav-link";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import { Image } from "react-bootstrap";
 import NavButton from "./nav-button";
+import { usePathname } from "next/navigation";
+import Spinner, { SpinnerIcon } from "@/components/shared/spinner";
 
 export default function NavUserAuth() {
   const { data: session, status } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation('common');
-  const router = useRouter();
+  const pathname = usePathname();
+
 
   const signInWithGithub = async () => {
     await signIn("github");
@@ -91,7 +93,7 @@ export default function NavUserAuth() {
               </span>
             </li>
             <li className="h-10">
-              <NavLink className="h-10 flex justify-between" href="/settings/" isActive={router.pathname === '/settings'}>
+              <NavLink className="h-10 flex justify-between" href="/settings/" isActive={pathname === '/settings'}>
                 <span>{t('menu.settings')}</span>
                 <Cog6ToothIcon width={22}/>
               </NavLink>
@@ -107,11 +109,10 @@ export default function NavUserAuth() {
           </ul>
         </div>
       }
-    </div>
-  ;
+    </div>;
 
   if (status === "loading") {
-    return null; // or a loading spinner
+    return <NavButton><SpinnerIcon className="h-6 w-6"/></NavButton>; // or a loading spinner
   }
 
   return session ? authMenu : signInButton;

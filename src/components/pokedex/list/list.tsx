@@ -5,7 +5,7 @@ import Select from '@/components/shared/select';
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName, useLocalStorage } from '@/components/shared/utils';
 import Link from 'next/link';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';
 import { Settings, SettingsItem } from '../settings/settings';
@@ -30,8 +30,53 @@ export default function PokemonList({
     setThumbLabel(e.target.value);
   };
 
+  const parentRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    function updateWidth() {
+      const parent = parentRef.current;
+      if (!parent) return;
+      const parentWidth = parent.offsetWidth;
+      const itemWidth = (() =>{
+        switch (thumbSize) {
+          case 'xs':
+            return 120;
+          case 'sm':
+            return 160;
+          case 'base':
+            return 200;
+          case 'lg':
+            return 320;
+        }
+        return 0;
+      })();
+
+      const gap = 16; // gap-4 = 1rem = 16px
+      // Calculate how many items fit
+      const itemsPerRow = Math.max(1, Math.floor((parentWidth - 2 * gap) / (itemWidth + gap)));
+      const totalWidth = itemsPerRow * itemWidth + (itemsPerRow - 1) * gap;
+      setContainerWidth(totalWidth);
+    }
+
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+
+    // Optional: Use ResizeObserver for more accurate resizing
+    let observer: ResizeObserver | undefined;
+    if (parentRef.current && 'ResizeObserver' in window) {
+      observer = new ResizeObserver(updateWidth);
+      observer.observe(parentRef.current);
+    }
+
+    return () => {
+      window.removeEventListener('resize', updateWidth);
+      if (observer && parentRef.current) observer.unobserve(parentRef.current);
+    };
+  }, [thumbSize]);
+
   return (
-    <div className="list-container p-4 bg-(--pokedex-red) relative">
+    <div className="list-container p-4 bg-(--pokedex-red) relative" ref={parentRef}>
       <Settings>
         <SettingsItem title={t('settings.size.title')} htmlFor="thumbSize">
           <Select className="w-full" value={thumbSize} id="thumbSize" onChange={handleThumbSizeChange}>
@@ -58,15 +103,17 @@ export default function PokemonList({
         rounded-b-lg
         p-4
       ">
-        <div className="
-        mx-auto
-        flex
-        gap-4
-        justify-center
-        content-start
-        flex-row
-        flex-wrap
-        ">
+        <div
+          className="
+            mx-auto
+            flex
+            gap-4
+            content-start
+            flex-row
+            flex-wrap
+          "
+          style={containerWidth ? { width: containerWidth } : undefined}
+        >
           {
             pokemons.map((pokemon, i) => {
               const linkThumb = <Link href={`/pokedex/${pokemon.name}`} className="link">

@@ -1,4 +1,4 @@
-import { fetchURL } from "@/app/query";
+import PokeApiQuery from "@/app/query";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup, useLocalStorage } from "@/components/shared/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +9,8 @@ import Spinner from "../../shared/spinner";
 import Tooltip from "../../shared/tooltip/tooltip";
 import { getTypeIconById, TypeUrl } from "./types";
 import Select from "@/components/shared/select";
+
+const pokeApiQuery = new PokeApiQuery();
 
 type Moveset = {
   move: string;
@@ -70,7 +72,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         const details = await Promise.all(
           moves[versionGroupActive].moveset[movesetActive]
             .map(async (move) => {
-              return await fetchURL<IMove>(move.url);
+              return await pokeApiQuery.fetchURL<IMove>(move.url);
             })
         );
 
@@ -83,7 +85,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
             moves[versionGroupActive].moveset[movesetActive]
               .map(async (move) => {
                 const machine = move.details?.machines.find(machine => machine.version_group.name === versionGroupActive);
-                return await fetchURL<IMachine>(machine?.machine.url ?? '');
+                return await pokeApiQuery.fetchURL<IMachine>(machine?.machine.url ?? '');
               })
           );
 

@@ -2,16 +2,6 @@ import nextI18nextConfig from './next-i18next.config.js';
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async redirects() {
-    return [
-      // Basic redirect
-      {
-        source: '/',
-        destination: '/pokedex',
-        permanent: true,
-      },
-    ];
-  },
   /* config options here */
   images: {
     remotePatterns: [
@@ -23,6 +13,9 @@ const nextConfig: NextConfig = {
         search: '',
       },
     ],
+  },
+  env: {
+    POKEAPI_URL: process.env.POKEAPI_URL
   },
   onDemandEntries: {
     // period (in ms) where the server will keep pages in the buffer

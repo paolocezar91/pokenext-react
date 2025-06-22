@@ -1,10 +1,8 @@
-'use client';
-
 import "@/app/globals.css";
 import Footer from "@/components/layout/footer";
-import Head from "next/head";
 import "./layout.scss";
 import Navbar from "@/components/layout/navbar/navbar";
+import Head from "next/head";
 
 export default function RootLayout({
   children,
@@ -19,7 +17,7 @@ export default function RootLayout({
   return (
     <>
       <Head>
-        <title>{ title }</title>
+        <title>{title}</title>
       </Head>
       <div className="container mx-auto">
         <Navbar title={title}/>

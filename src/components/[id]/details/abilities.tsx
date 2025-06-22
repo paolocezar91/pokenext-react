@@ -1,10 +1,12 @@
-import { fetchURL } from "@/app/query";
+import PokeApiQuery from "@/app/query";
 import { TypeLocale } from "@/components/layout/descriptionLang";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useLocalStorage } from "@/components/shared/utils";
 import { IAbility, IPokemon } from "pokeapi-typescript";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+
+const pokeApiQuery = new PokeApiQuery();
 
 export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
   const { t } = useTranslation('common');
@@ -14,7 +16,7 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
   useEffect(() => {
     const getAbility = async () => {
       const abilitiesData = await Promise.all(pokemon.abilities.map((ability) => {
-        return fetchURL<IAbility>(ability.ability.url);
+        return pokeApiQuery.fetchURL<IAbility>(ability.ability.url);
       }));
 
       setAbilityDetails(abilitiesData);

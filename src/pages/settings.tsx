@@ -1,4 +1,4 @@
-import RootLayout from "@/app/layout";
+import RootLayout from "@/pages/layout";
 import ArtworkSelect from "@/components/layout/artworkSelect";
 import DescriptionLangSelect from "@/components/layout/descriptionLang";
 import LangSelect from "@/components/layout/langSelect";

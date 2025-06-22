@@ -1,6 +1,6 @@
 import All from "@/app/poke-array.json";
 import { getNumber } from "@/components/shared/thumb/thumb";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState, ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 

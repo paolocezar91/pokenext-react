@@ -1,5 +1,5 @@
 import { fetchMove, fetchURL } from "@/app/query";
-import RootLayout from "@/app/layout";
+import RootLayout from "@/pages/layout";
 import { GetStaticPropsContext } from "next";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
