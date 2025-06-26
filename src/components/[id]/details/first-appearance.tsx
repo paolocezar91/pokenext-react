@@ -14,7 +14,7 @@ export default function PokemonFirstAppearance({ pokemon, species }: { pokemon: 
   }
 
   return pokemon.game_indices.length !== 0 && <div className="pokemon-first-appearance col-span-6 md:col-span-2">
-    <h3 className="text-lg font-semibold mb-2">{t('pokedex.details.firstSeen.title')}</h3>
+    <h3 className="w-fit text-lg font-semibold mb-2">{t('pokedex.details.firstSeen.title')}</h3>
     { group ?
       <p>{group} ({normalizeGeneration(species.generation.name)})</p> :
       <p>{normalize(versionA)} ({normalize(species.generation.name)})</p>

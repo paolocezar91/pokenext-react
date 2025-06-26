@@ -1,5 +1,7 @@
 import PokeApiQuery from "@/app/query";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup, useLocalStorage } from "@/components/shared/utils";
+import Select from "@/components/shared/select";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
+import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 import Link from "next/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";
@@ -7,8 +9,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Spinner from "../../shared/spinner";
 import Tooltip from "../../shared/tooltip/tooltip";
-import { getTypeIconById, TypeUrl } from "./types";
-import Select from "@/components/shared/select";
+import { getTypeIconById } from "./types";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -31,7 +32,8 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
   const [versionGroupActive, setVersionGroupActive] = useState<string>('');
   const [showTable, setShowTable] = useState<boolean>(false);
   const { t } = useTranslation('common');
-  const [typeArtworkUrl] = useLocalStorage<TypeUrl>('typeArtworkUrl', 'sword-shield');
+  const { settings } = useUser();
+
 
 
   useEffect(() => {
@@ -104,7 +106,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
   }, [versionGroupActive, movesetActive]);
 
   return <div className="moves col-span-6 mt-2">
-    <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.moves.title') }</h3>
+    <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.moves.title') }</h3>
     <div className="flex flex-col sm:flex-row my-2">
       {!!moves && <div className="version-picker">
         <label className=" text-xs flex flex-col">{t('pokedex.details.moves.chooseVersion')}:
@@ -193,7 +195,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
                     width="100"
                     height="20"
                     alt={capitilize(move.details.type.name)}
-                    src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), typeArtworkUrl)} />
+                    src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), settings?.typeArtworkUrl)} />
                 </td>
                 <td className="p-2">
                   <span className="flex">

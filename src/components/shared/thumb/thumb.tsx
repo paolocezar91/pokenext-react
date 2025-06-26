@@ -1,10 +1,11 @@
+import { getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
+import { useUser } from '@/context/UserContext';
 import { IPkmn } from '@/types/types';
-import { getIdFromUrlSubstring, normalizePokemonName, useLocalStorage } from '@/components/shared/utils';
+import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, Suspense, useEffect, useState } from 'react';
 import Spinner from '../spinner';
 import './thumb.scss';
-import Image from 'next/image';
 
 export function getArtwork(id: number, sprite: ArtUrl
 ) {
@@ -109,7 +110,7 @@ export default function PokemonThumb({
   const [pokemon, setPokemon] = useState<IPokemon | IPkmn | null>(null);
   const [pokemonSmall, setPokemonSmall] = useState<INamedApiResource<IPokemon> | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
-  const [artworkUrl] = useLocalStorage<ArtUrl>('artworkUrl', 'official-artwork');
+  const { settings } = useUser();
 
   useEffect(() => {
     if(pokemonData)
@@ -154,7 +155,7 @@ export default function PokemonThumb({
             className="artwork z-1"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pkmn.id, artworkUrl).normal[0]}
+            src={getArtwork(pkmn.id, settings?.artworkUrl as ArtUrl).normal[0]}
             alt={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
             priority
           />}
@@ -162,7 +163,7 @@ export default function PokemonThumb({
             className="artwork z-1"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pkmn.id, artworkUrl).shiny[0]}
+            src={getArtwork(pkmn.id, settings?.artworkUrl as ArtUrl).shiny[0]}
             alt={`Shiny ${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
             priority
           />}

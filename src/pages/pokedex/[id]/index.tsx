@@ -31,14 +31,15 @@ import {
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
+import PokemonMisc from '@/components/[id]/details/misc';
 
 const pokeApiQuery = new PokeApiQuery();
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
-    const pokemonData = await pokeApiQuery.fetchPokemon(id);
-    const previousAndAfter = await pokeApiQuery.fetchPokemonList(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
+    const pokemonData = await pokeApiQuery.getPokemon(id);
+    const previousAndAfter = await pokeApiQuery.getPokemonList(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
     return {
       props: {
         id: pokemonData.id,
@@ -96,8 +97,8 @@ export default function PokemonDetails({
 
       const getPokemonMetadata = async () => {
         const [speciesData, typesData] = await Promise.all([
-          pokeApiQuery.fetchSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
-          pokeApiQuery.fetchTypes(pokemonData.types),
+          pokeApiQuery.getSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
+          pokeApiQuery.getTypes(pokemonData.types),
         ]);
 
         if(pokemonData) {
@@ -108,23 +109,23 @@ export default function PokemonDetails({
         }
         if(speciesData) {
           setSpecies(speciesData);
-          const ec = await pokeApiQuery.fetchEvolutionChain(speciesData) as IEvolutionChain;
+          const ec = await pokeApiQuery.getEvolutionChain(speciesData) as IEvolutionChain;
           setEvolutionChain(ec);
 
           const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
-          speciesChain.chain.first = [await pokeApiQuery.fetchPokemon(evolve_to_id)];
+          speciesChain.chain.first = [await pokeApiQuery.getPokemon(evolve_to_id)];
           if(ec.chain?.evolves_to?.[0]) {
             speciesChain.chain.second = await Promise.all(
               ec.chain.evolves_to.map((evolves_to) => {
                 const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                return pokeApiQuery.fetchPokemon(evolve_to_id);
+                return pokeApiQuery.getPokemon(evolve_to_id);
               })
             );
             if(ec.chain.evolves_to[0].evolves_to[0]) {
               speciesChain.chain.third = await Promise.all(
                 ec.chain.evolves_to[0].evolves_to.map((evolves_to) => {
                   const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                  return pokeApiQuery.fetchPokemon(evolve_to_id);
+                  return pokeApiQuery.getPokemon(evolve_to_id);
                 })
               );
             } else {
@@ -149,7 +150,7 @@ export default function PokemonDetails({
   if(error)
     return <RootLayout title={`404 - ${t('pokedex.notFound')}`}>
       <div className="container p-4">
-        <h2 className="border-b-2 border-solid border-white text-lg inline">404 - { t('pokedex.notFound') }</h2>
+        <h2 className="w-fit border-b-2 border-solid border-white text-lg inline">404 - { t('pokedex.notFound') }</h2>
         <p className="pt-4 ml-4 flex align-center">
           <Link
             href='/pokedex/'
@@ -197,11 +198,12 @@ export default function PokemonDetails({
               sm:my-4
               sm:border-0
             ">
-              <div className="about grid grid-cols-1 md:grid-cols-6 gap-4">
+              <div className="about grid grid-cols-1 md:grid-cols-6 gap-2">
                 {species && <PokemonDescription species={species} />}
                 <PokemonFirstAppearance pokemon={pokemon} species={species as IPokemonSpecies} />
                 <PokemonSize pokemon={pokemon} />
                 <PokemonAbilities pokemon={pokemon} />
+                {species && <PokemonMisc species={species} />}
                 <PokemonStats pokemon={pokemon} />
                 <PokemonDefensiveChart name={capitilize(pokemon.name)} types={types.map(type => type.name)} />
                 { species && species.varieties.length > 1 &&

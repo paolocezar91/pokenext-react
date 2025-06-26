@@ -25,7 +25,7 @@ export default function PokemonEvolutionChart({
 
   if(!!speciesChain.chain.first?.length && !speciesChain.chain.second?.length) {
     return <div className="evolution-chain col-span-6 ">
-      <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.evolutionChart.title') }</h3>
+      <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.evolutionChart.title') }</h3>
       <p>{normalizePokemonName(speciesChain.chain.first[0].name)} does not evolve</p>
     </div>;
   }
@@ -78,7 +78,7 @@ export default function PokemonEvolutionChart({
     <div className="evolution-chain col-span-6 ">
       <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.evolutionChart.title') }</h3>
       {!!speciesChain.loaded &&
-        <ul className="flex items-start justify-start overflow-x-auto mt-4">
+        <ul className="w-fit flex items-start justify-start overflow-x-auto mt-4">
           {!!speciesChain.chain.second?.length && <>
             <li>{firstChainColumn}</li>
             <li>{chainColumn(speciesChain.chain.second, evolutionChain.chain.evolves_to)}</li>

@@ -1,12 +1,13 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import React, { useState, useRef, useEffect } from "react";
+import { SpinnerIcon } from "@/components/shared/spinner";
 import { ArrowLeftEndOnRectangleIcon, Cog6ToothIcon, UserIcon } from "@heroicons/react/24/solid";
-import NavLink from "./nav-link";
-import { useTranslation } from "react-i18next";
-import { Image } from "react-bootstrap";
-import NavButton from "./nav-button";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import Spinner, { SpinnerIcon } from "@/components/shared/spinner";
+import { useEffect, useRef, useState } from "react";
+import { Button, Image } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import NavButton from "./nav-button";
+import NavLink from "./nav-link";
+import GithubIcon from "./github-icon";
 
 export default function NavUserAuth() {
   const { data: session, status } = useSession();
@@ -39,19 +40,24 @@ export default function NavUserAuth() {
     };
   }, [menuOpen]);
 
-  const signInButton =
-    <NavButton
-      onClick={signInWithGithub}
-    >
-      <ArrowLeftEndOnRectangleIcon width={22}/>
-      <span className="ml-2">
-        {t('menu.signInWithGithub')}
-      </span>
-    </NavButton>
-  ;
+  if (status === "loading") {
+    return <NavButton><SpinnerIcon className="h-6 w-6"/></NavButton>; // or a loading spinner
+  }
 
-  const authMenu =
-    <div className="relative" ref={menuRef}>
+  return <div className="relative" ref={menuRef}>
+    {session?.user?.image ?
+      <Button
+        onClick={() => setMenuOpen((open) => !open)}
+        onMouseEnter={() => setMenuOpen(true)}
+      >
+        <Image
+          src={session.user.image}
+          alt="User avatar"
+          className="w-10 h-10 rounded-full border-2 border-gray-300 mb-2 object-cover opacity-90 hover:opacity-100"
+
+        />
+      </Button>
+      :
       <NavButton
         onClick={() => setMenuOpen((open) => !open)}
         onMouseEnter={() => setMenuOpen(true)}
@@ -59,7 +65,8 @@ export default function NavUserAuth() {
       >
         <UserIcon className="h-6 w-6 text-white" />
       </NavButton>
-      {menuOpen &&
+    }
+    {menuOpen &&
         <div
           onMouseLeave={() => setMenuOpen(false)}
           className="absolute
@@ -79,41 +86,41 @@ export default function NavUserAuth() {
             flex-col
             items-start"
         >
-          <ul>
-            <li className="flex items-center mb-2 border-b-2 border-white border-solid pb-2">
-              {session?.user?.image &&
-              <Image
-                src={session.user.image}
-                alt="User avatar"
-                className="w-12 h-12 rounded-full border-2 border-gray-300 mb-2 object-cover"
-              />
-              }
-              <span className="ml-2 text-xs text-white mb-2">
-                {session?.user?.name || session?.user?.email}
-              </span>
-            </li>
-            <li className="h-10">
-              <NavLink className="h-10 flex justify-between" href="/settings/" isActive={pathname === '/settings'}>
-                <span>{t('menu.settings')}</span>
-                <Cog6ToothIcon width={22}/>
-              </NavLink>
-            </li>
-            <li
-              className="h-10"
-            >
-              <NavButton className="flex justify-between w-full" onClick={handleSignOut}>
-                <span>{t('menu.signOut')}</span>
-                <ArrowLeftEndOnRectangleIcon width={22}/>
+          <ul className="w-full">
+            {!session ? <li>
+              <NavButton
+                className="h-10 flex justify-between w-full"
+                onClick={signInWithGithub}
+              >
+                <span className="ml-2">
+                  {t('menu.signIn')}
+                </span>
+                <GithubIcon />
               </NavButton>
-            </li>
+            </li> : <>
+              <li className="flex items-center mb-2 border-b-2 border-white border-solid pb-2">
+                <span className="ml-2 text-xs text-white mb-2">
+                  {session?.user?.name || session?.user?.email}
+                </span>
+              </li>
+              <li className="h-10">
+                <NavLink className="h-10 flex justify-between" href="/settings/" isActive={pathname === '/settings'}>
+                  <span>{t('menu.settings')}</span>
+                  <Cog6ToothIcon width={22}/>
+                </NavLink>
+              </li>
+              <li
+                className="h-10"
+              >
+                <NavButton className="flex justify-between w-full" onClick={handleSignOut}>
+                  <span>{t('menu.signOut')}</span>
+                  <ArrowLeftEndOnRectangleIcon width={22}/>
+                </NavButton>
+              </li>
+            </>
+            }
           </ul>
         </div>
-      }
-    </div>;
-
-  if (status === "loading") {
-    return <NavButton><SpinnerIcon className="h-6 w-6"/></NavButton>; // or a loading spinner
-  }
-
-  return session ? authMenu : signInButton;
+    }
+  </div>;
 }

@@ -17,7 +17,7 @@ export default function PokemonSize({ pokemon }: { pokemon: IPokemon }) {
   const { t } = useTranslation('common');
 
   return <div className="pokemon-size col-span-6 md:col-span-2">
-    <h3 className="text-lg font-semibold mb-2">{t('pokedex.details.size.title')}</h3>
+    <h3 className="w-fit text-lg font-semibold mb-2">{t('pokedex.details.size.title')}</h3>
     <p>
       <small>{t('pokedex.details.size.height')}:</small> {pokemon.height / 10}m <small>({metersToFeetInches(pokemon.height / 10)})</small>
     </p>

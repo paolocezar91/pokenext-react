@@ -1,6 +1,6 @@
 import { ChangeEvent, ReactNode } from "react";
-import nextI18nextConfig from "../../../next-i18next.config";
 import { useTranslation } from "react-i18next";
+import nextI18nextConfig from "../../../next-i18next.config";
 import Select from "../shared/select";
 
 export default function LangSelect({

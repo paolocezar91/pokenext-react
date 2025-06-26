@@ -32,9 +32,7 @@ export default function Navbar({ title }: { title: string }) {
       </Tooltip>
     </li>
     <li className="h-10">
-      <SessionProvider>
-        <NavUserAuth />
-      </SessionProvider>
+      <NavUserAuth />
     </li>
   </>;
 

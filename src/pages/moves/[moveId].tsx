@@ -1,4 +1,4 @@
-import { fetchMove, fetchURL } from "@/app/query";
+import PokeApiQuery from "@/app/query";
 import RootLayout from "@/pages/layout";
 import { GetStaticPropsContext } from "next";
 import { useEffect, useState } from "react";
@@ -11,10 +11,12 @@ import MoveEffect from "@/components/moves/move-effect";
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "../../components/shared/utils";
 
+const pokeApiQuery = new PokeApiQuery();
+
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
   try {
-    const moveData = await fetchMove(id) as IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
+    const moveData = await pokeApiQuery.getMove(id) as IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
     return {
       props: {
         moveData: {
@@ -48,7 +50,7 @@ export default function MoveDetails({
   useEffect(() => {
     const getTarget = async () => {
       if (moveData?.target) {
-        setTargetData(await fetchURL<IMoveTarget>(moveData.target.url));
+        setTargetData(await pokeApiQuery.fetchURL<IMoveTarget>(moveData.target.url));
       }
     };
     getTarget();
@@ -67,6 +69,7 @@ export default function MoveDetails({
   return (
     <RootLayout title={`${t('moves.title')}: ${capitilize(kebabToSpace(moveData.name))}`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
+        <h3 className="w-fit text-xl font-semibold mb-4">{capitilize(kebabToSpace(moveData.name))}</h3>
         <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">
           {/* Left Column */}
           <div className="sm:w-auto md:w-150 flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
@@ -76,7 +79,7 @@ export default function MoveDetails({
           </div>
 
           {/* Right Column */}
-          <div className="w-full h-[-webkit-fill-available] flex flex-col md:items-start mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
+          <div className="w-full h-[-webkit-fill-available] flex flex-col md:items-start pl-8 mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
             <MoveEffect moveData={moveData} />
             <LearnedByPokemon learnedByPokemon={moveData.learned_by_pokemon} />
           </div>

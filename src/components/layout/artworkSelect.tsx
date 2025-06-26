@@ -1,25 +1,28 @@
 import Image from "next/image";
 import { ChangeEvent, ReactNode } from "react";
 import { ArtUrl, getArtwork } from "../shared/thumb/thumb";
-import { capitilize, kebabToSpace, useLocalStorage } from "../shared/utils";
+import { capitilize, kebabToSpace } from "../shared/utils";
 import Select from "../shared/select";
+import { useUser } from "@/context/UserContext";
 
 const sprites: ArtUrl[] = ['dream-world', 'home', 'official-artwork', 'showdown'];
 
 export default function ArtworkSelect({ children }: { children?: ReactNode }) {
-  const [artworkUrl, setArtworkUrl] = useLocalStorage<ArtUrl>('artworkUrl', 'official-artwork');
+  const { settings, upsertSettings } = useUser();
+
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setArtworkUrl(e.target.value as ArtUrl);
+    upsertSettings({ artworkUrl: e.target.value });
+
   };
 
-  return <div className="flex flex-col sm:flex-row">
+  return !!settings?.artworkUrl && <div className="flex flex-col sm:flex-row">
     <label htmlFor="lang">
       <div className="flex flex-col">
         <span>{children}</span>
         <Select
           data-testid="lang"
           id="lang"
-          value={artworkUrl}
+          value={settings.artworkUrl}
           onChange={handleArtworkChange}
         >
           {
@@ -36,6 +39,6 @@ export default function ArtworkSelect({ children }: { children?: ReactNode }) {
       height="20"
       alt="Normal"
       className="md:mt-8 p-1 mt-4 md:my-0 my-4 md:ml-4 sm:ml-0 bg-white rounded"
-      src={ getArtwork(1, artworkUrl).normal[0] } />
+      src={ getArtwork(1, settings.artworkUrl as ArtUrl).normal[0] } />
   </div>;
 }
