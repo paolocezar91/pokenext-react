@@ -105,7 +105,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
     getMovesDetails();
   }, [versionGroupActive, movesetActive]);
 
-  return <div className="moves col-span-6 mt-2">
+  return settings && <div className="moves col-span-6 mt-2">
     <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.moves.title') }</h3>
     <div className="flex flex-col sm:flex-row my-2">
       {!!moves && <div className="version-picker">
@@ -195,7 +195,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
                     width="100"
                     height="20"
                     alt={capitilize(move.details.type.name)}
-                    src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), settings?.typeArtworkUrl)} />
+                    src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), settings.typeArtworkUrl)} />
                 </td>
                 <td className="p-2">
                   <span className="flex">

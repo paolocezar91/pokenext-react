@@ -10,8 +10,6 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
   const [flavorIdx, setFlavorIdx] = useState(0);
   const { settings } = useUser();
 
-
-
   const getFlavorText = (species: IPokemonSpecies) => {
     return species?.flavor_text_entries
       .filter((text) => text.language.name === settings?.descriptionLang)
@@ -23,10 +21,10 @@ export default function PokemonDescription({ species }: { species: IPokemonSpeci
       });
   };
 
-  return <div className="pokemon-description col-span-6 capitilize">
+  return settings && <div className="pokemon-description col-span-6 capitilize">
     <h2 className="w-fit text-xl font-semibold mb-4 bg-background z-10">
       <span>
-        { normalizePokemonName(species.name) } -- {species.genera.find(g => g.language.name === settings?.descriptionLang)?.genus}
+        { normalizePokemonName(species.name) } -- {species.genera.find(g => g.language.name === settings.descriptionLang)?.genus}
       </span>
     </h2>
     { getFlavorText(species).length > 0 && <div className="flex items-end relative justify-between items-start pb-6">

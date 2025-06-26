@@ -70,7 +70,7 @@ export default function NavUserAuth() {
         <div
           onMouseLeave={() => setMenuOpen(false)}
           className="absolute
-            w-50
+            w-60
             border-2
             border-white
             border-solid
@@ -87,17 +87,23 @@ export default function NavUserAuth() {
             items-start"
         >
           <ul className="w-full">
-            {!session ? <li>
-              <NavButton
-                className="h-10 flex justify-between w-full"
-                onClick={signInWithGithub}
-              >
-                <span className="ml-2">
+            {!session ? <>
+              <li className="h-10">
+                <NavLink className="h-10 flex justify-between" href="/settings/" isActive={pathname === '/settings'}>
+                  <span>{t('menu.settings')}</span>
+                  <Cog6ToothIcon width={22}/>
+                </NavLink>
+              </li>
+              <li>
+                <NavButton
+                  className="h-10 flex justify-between w-full"
+                  onClick={signInWithGithub}
+                >
                   {t('menu.signIn')}
-                </span>
-                <GithubIcon />
-              </NavButton>
-            </li> : <>
+                  <GithubIcon />
+                </NavButton>
+              </li>
+            </>:<>
               <li className="flex items-center mb-2 border-b-2 border-white border-solid pb-2">
                 <span className="ml-2 text-xs text-white mb-2">
                   {session?.user?.name || session?.user?.email}

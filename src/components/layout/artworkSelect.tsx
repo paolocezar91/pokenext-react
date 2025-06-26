@@ -15,7 +15,7 @@ export default function ArtworkSelect({ children }: { children?: ReactNode }) {
 
   };
 
-  return !!settings?.artworkUrl && <div className="flex flex-col sm:flex-row">
+  return settings && <div className="flex flex-col sm:flex-row">
     <label htmlFor="lang">
       <div className="flex flex-col">
         <span>{children}</span>

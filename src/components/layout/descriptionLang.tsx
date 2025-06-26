@@ -39,7 +39,7 @@ export default function DescriptionLangSelect({
     upsertSettings({ descriptionLang: e.target.value });
   };
 
-  return !!settings?.descriptionLang && <label htmlFor="description-lang">
+  return settings && <label htmlFor="description-lang">
     <div className="flex flex-col">
       <span>{children}</span>
       <Select

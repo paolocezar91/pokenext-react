@@ -15,7 +15,7 @@ export default function MoveDataTable({ moveData }: MoveDataTableProps) {
   const { settings } = useUser();
 
 
-  return <div className="move-data mt-2 w-full">
+  return settings && <div className="move-data mt-2 w-full">
     <h3 className="w-fit text-lg mb-4">{t('moves.moveData.title')}</h3>
     <table className="w-full" aria-label="Move data table">
       <tbody>
@@ -27,7 +27,7 @@ export default function MoveDataTable({ moveData }: MoveDataTableProps) {
               width="100"
               height="20"
               alt={moveData.type.name}
-              src={getTypeIconById(getIdFromUrlSubstring(moveData.type.url), settings?.typeArtworkUrl)}
+              src={getTypeIconById(getIdFromUrlSubstring(moveData.type.url), settings.typeArtworkUrl)}
             />
           </td>
         </tr>

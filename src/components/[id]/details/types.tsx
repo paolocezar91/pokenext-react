@@ -40,11 +40,11 @@ export default function PokemonTypes({ types }: { types: IType[] }) {
   const { settings } = useUser();
 
 
-  return <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
+  return settings && <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
     {types.map((type, i) =>
       <Image
         key={i}
-        src={getTypeIconById(type.id.toString(), settings?.typeArtworkUrl)}
+        src={getTypeIconById(type.id.toString(), settings.typeArtworkUrl)}
         width="100"
         height="20"
         alt={capitilize(type.name)}

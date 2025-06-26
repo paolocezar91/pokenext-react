@@ -137,7 +137,7 @@ export default function PokemonThumb({
     pkmn = pokemon;
   }
 
-  const loaded = pkmn &&
+  const loaded = pkmn && settings &&
     <div
       style={ pkmn ? getBackgroundStyle(pkmn?.types ?? []) : { 'background': '#CCCCC' }}
       className={`
@@ -155,7 +155,7 @@ export default function PokemonThumb({
             className="artwork z-1"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pkmn.id, settings?.artworkUrl as ArtUrl).normal[0]}
+            src={getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).normal[0]}
             alt={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
             priority
           />}
@@ -163,7 +163,7 @@ export default function PokemonThumb({
             className="artwork z-1"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            src={getArtwork(pkmn.id, settings?.artworkUrl as ArtUrl).shiny[0]}
+            src={getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).shiny[0]}
             alt={`Shiny ${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
             priority
           />}

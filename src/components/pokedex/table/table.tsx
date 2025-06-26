@@ -22,14 +22,14 @@ export default function PokemonTable({
 
   const handleShowShowColumnChange = (value: boolean) => {
     if(user)
-      upsertSettings(user?.id, { showShowColumn: value });
+      upsertSettings({ showShowColumn: value }, user?.id);
   };
 
   const handleShowColumnChange = (value: boolean, idx: number) => {
-    const _showColumn = [...settings.showColumn];
+    const _showColumn = (settings && [...settings?.showColumn]) ?? [];
     _showColumn[idx] = value;
     if(user)
-      upsertSettings(user?.id, { showColumn: _showColumn });
+      upsertSettings({ showColumn: _showColumn }, user?.id);
   };
 
   // const handleThumbSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -39,7 +39,7 @@ export default function PokemonTable({
 
   const handleShowThumb = (showThumbTable: boolean) => {
     if(user)
-      upsertSettings(user?.id, { showThumbTable });
+      upsertSettings({ showThumbTable }, user?.id);
   };
 
   return settings && <div className="table-container p-4 bg-(--pokedex-red) relative">

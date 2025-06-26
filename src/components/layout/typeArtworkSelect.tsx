@@ -23,7 +23,7 @@ export default function TypeArtworkSelect({ children }: { children?: ReactNode }
     upsertSettings({ typeArtworkUrl: e.target.value });
   };
 
-  return !!settings?.typeArtworkUrl && <div className="flex flex-col sm:flex-row">
+  return settings && <div className="flex flex-col sm:flex-row">
     <label htmlFor="lang">
       <div className="flex flex-col">
         <span>{children}</span>

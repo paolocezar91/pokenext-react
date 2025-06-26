@@ -76,7 +76,7 @@ export default function PokemonList({
   }, [settings?.thumbSizeList]);
 
   return (
-    <div className="list-container p-4 bg-(--pokedex-red) relative" ref={parentRef}>
+    settings && <div className="list-container p-4 bg-(--pokedex-red) relative" ref={parentRef}>
       <Settings>
         <SettingsItem title={t('settings.size.title')} htmlFor="thumbSize">
           <Select className="w-full" value={settings?.thumbSizeList} id="thumbSize" onChange={handleThumbSizeChange}>
@@ -117,15 +117,18 @@ export default function PokemonList({
           {
             pokemons.map((pokemon, i) => {
               const linkThumb = <Link href={`/pokedex/${pokemon.name}`} className="link">
-                <PokemonThumb showName={settings?.thumbLabelList === 'thumbnail'} pokemonData={pokemon} size={isMobile ? 'xs': settings?.thumbSizeList} />
+                <PokemonThumb
+                  showName={settings.thumbLabelList === 'thumbnail'}
+                  pokemonData={pokemon}
+                  size={isMobile ? 'xs': settings.thumbSizeList} />
               </Link>;
 
               return <div key={i}>
-                {settings?.thumbLabelList == 'tooltip' &&
+                {settings.thumbLabelList == 'tooltip' &&
                 <Tooltip content={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
                   { linkThumb }
                 </Tooltip>}
-                {(settings?.thumbLabelList == 'thumbnail' || settings?.thumbLabelList == 'none') && linkThumb}
+                {(settings.thumbLabelList == 'thumbnail' || settings.thumbLabelList == 'none') && linkThumb}
               </div>;
             })
           }

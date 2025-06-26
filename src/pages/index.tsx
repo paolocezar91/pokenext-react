@@ -89,10 +89,9 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   if (!pokemons) return null;
 
   const refElement = !inView && !filtered && <div className="ref" ref={ref}></div>;
-
   return (
     <RootLayout title="Pokémon List">
-      {pokemons &&
+      {pokemons && settings &&
         <div className="wrapper h-[inherit] p-4 bg-background">
           <div className="flex items-center">
             <div className="flex items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
@@ -104,7 +103,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
                     <Toggle
                       className="mx-2"
                       id="list-table"
-                      value={settings?.listTable}
+                      value={settings.listTable}
                       onChange={(value: boolean) => upsertSettings({ listTable: value })}
                     />
                     <TableCellsIcon className="w-7" />
@@ -114,7 +113,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
             </div>
           </div>
           {
-            !settings?.listTable ?
+            !settings.listTable ?
               <PokemonList pokemons={pokemons}>{refElement}</PokemonList> :
               <PokemonTable pokemons={pokemons}>{refElement}</PokemonTable>
           }
