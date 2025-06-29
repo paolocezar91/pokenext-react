@@ -1,8 +1,8 @@
 import RootLayout from "@/pages/layout";
-import ArtworkSelect from "@/components/layout/artworkSelect";
-import DescriptionLangSelect from "@/components/layout/descriptionLang";
-import LangSelect from "@/components/layout/langSelect";
-import TypeArtworkSelect from "@/components/layout/typeArtworkSelect";
+import ArtworkSelect from "@/components/settings/artwork-select";
+import DescriptionLangSelect from "@/components/settings/description-lang";
+import LangSelect from "@/components/settings/lang-select";
+import TypeArtworkSelect from "@/components/settings/type-artwork-select";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@/context/UserContext";
 import Spinner from "@/components/shared/spinner";

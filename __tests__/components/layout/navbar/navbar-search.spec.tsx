@@ -1,15 +1,21 @@
-import NavSearch from '@/components/layout/navbar/navbar-search';
+import Search from '@/components/layout/navbar/search';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 // Mock dependencies
-jest.mock('next/router', () => ({
+jest.mock('next/navigation', () => ({
   useRouter: jest.fn(),
 }));
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
+}));
+
+jest.mock('@/context/UserContext', () => ({
+  useUser: () => ({
+    settings: { }
+  })
 }));
 
 describe('NavSearch Component', () => {
@@ -24,20 +30,20 @@ describe('NavSearch Component', () => {
   });
 
   it('renders correctly with placeholder', () => {
-    render(<NavSearch />);
+    render(<Search />);
     expect(screen.getByPlaceholderText('actions.go.placeholder')).toBeInTheDocument();
     expect(screen.getByTestId('form-go-to')).toBeInTheDocument();
   });
 
   it('updates input value on change', () => {
-    render(<NavSearch />);
+    render(<Search />);
     const input = screen.getByPlaceholderText('actions.go.placeholder');
     fireEvent.change(input, { target: { value: 'pikachu' }});
     expect(input).toHaveValue('pikachu');
   });
 
   it('shows suggestions when typing', async () => {
-    render(<NavSearch />);
+    render(<Search />);
     const input = screen.getByPlaceholderText('actions.go.placeholder');
 
     fireEvent.change(input, { target: { value: 'metapod' }});
@@ -48,7 +54,7 @@ describe('NavSearch Component', () => {
   });
 
   it('filters suggestions correctly', async () => {
-    render(<NavSearch />);
+    render(<Search />);
     const input = screen.getByPlaceholderText('actions.go.placeholder');
 
     fireEvent.change(input, { target: { value: 'metapod' }});
@@ -61,7 +67,7 @@ describe('NavSearch Component', () => {
   });
 
   it('navigates to pokemon page when suggestion is clicked', async () => {
-    render(<NavSearch />);
+    render(<Search />);
     const input = screen.getByPlaceholderText('actions.go.placeholder');
 
     fireEvent.change(input, { target: { value: 'metapod' }});
@@ -77,7 +83,7 @@ describe('NavSearch Component', () => {
   });
 
   it('navigates to pokemon page when form is submitted', async () => {
-    render(<NavSearch />);
+    render(<Search />);
     const input = screen.getByPlaceholderText('actions.go.placeholder');
     const form = screen.getByTestId('form-go-to');
 
@@ -90,7 +96,7 @@ describe('NavSearch Component', () => {
   });
 
   it('clears suggestions when input is empty', async () => {
-    render(<NavSearch />);
+    render(<Search />);
     const input = screen.getByPlaceholderText('actions.go.placeholder');
 
     // Type something to show suggestions

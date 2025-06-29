@@ -1,19 +1,21 @@
+import RootLayout from '@/pages/layout';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
-import Layout from '@/pages/layout';
 
+jest.mock('@/components/layout/navbar/navbar', () => jest.fn(({ children }) => <div>{children}</div>));
 jest.mock('next/router', () => jest.requireActual('next-router-mock'));
 jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key, i18n: { language: 'en-US' } }),
+  useTranslation: () => ({ t: (key: string) => key, i18n: { language: 'en-US' }}),
 }));
+
 
 describe('Layout', () => {
   it('Renders children', () => {
     const childrenTestId = 'testId';
 
-    render(<Layout title="test">
+    render(<RootLayout title="test">
       <span data-testid={childrenTestId}></span>
-    </Layout>);
+    </RootLayout>);
 
     expect(screen.queryByTestId(childrenTestId)).toBeInTheDocument();
   });

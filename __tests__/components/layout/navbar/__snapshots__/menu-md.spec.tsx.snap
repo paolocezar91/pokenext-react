@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MenuMd matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="hidden w-full md:block md:w-auto"
+  >
+    <ul
+      class="   flex   flex-col   items-center   p-4   mt-4   border   border-gray-700   rounded   rtl:space-x-reverse   md:p-0   md:space-x-4   md:flex-row   md:mt-0   md:border-0   md:bg-(--pokedex-red)   "
+    >
+      <li
+        class="h-10"
+      >
+        <div
+          class="go-to rounded"
+        >
+          <div>
+            Search
+          </div>
+        </div>
+      </li>
+      <li
+        class="h-10"
+      >
+        <div>
+          nav-user-auth
+        </div>
+      </li>
+    </ul>
+  </div>
+</DocumentFragment>
+`;

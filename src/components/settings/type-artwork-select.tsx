@@ -1,9 +1,9 @@
-import { ChangeEvent, ReactNode } from "react";
-import { normalizeVersionGroup } from "../shared/utils";
-import { getTypeIconById, TypeUrl } from "../[id]/details/types";
-import Image from "next/image";
-import Select from "../shared/select";
 import { useUser } from "@/context/UserContext";
+import Image from "next/image";
+import { ChangeEvent, ReactNode } from "react";
+import { getTypeIconById } from "../[id]/details/types";
+import Select from "../shared/select";
+import { normalizeVersionGroup } from "../shared/utils";
 
 const sprites = [
   'omega-ruby-alpha-sapphire',

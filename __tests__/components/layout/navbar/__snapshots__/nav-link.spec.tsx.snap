@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Nav Link Component should match snapshot 1`] = `
+<DocumentFragment>
+  <a
+    class="block px-3 py-2 text-sm rounded hover:shadow-md hover:bg-(--pokedex-red-dark) bg-transparent "
+    href="/pokedex/bulbasaur"
+  >
+    Bulbasaur
+  </a>
+</DocumentFragment>
+`;

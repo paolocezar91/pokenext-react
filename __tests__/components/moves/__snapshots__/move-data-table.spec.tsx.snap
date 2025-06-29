@@ -6,7 +6,7 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
     class="move-data mt-2 w-full"
   >
     <h3
-      class="text-lg mb-4"
+      class="w-fit text-lg mb-4"
     >
       moves.moveData.title
     </h3>
@@ -117,7 +117,7 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
     class="move-data mt-2 w-full"
   >
     <h3
-      class="text-lg mb-4"
+      class="w-fit text-lg mb-4"
     >
       moves.moveData.title
     </h3>

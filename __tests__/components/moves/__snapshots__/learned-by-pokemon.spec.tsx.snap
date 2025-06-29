@@ -1,0 +1,79 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LearnedByPokemon Component should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2"
+  >
+    <h3
+      class="w-fit text-lg mb-4"
+    >
+      moves.learnedBy.title
+    </h3>
+    <div
+      class="sm:overflow-initial md:overflow-auto flex-1 pr-4"
+    >
+      <table
+        class="w-full text-xs"
+      >
+        <thead>
+          <tr
+            class="sticky top-0 bg-background z-1"
+          >
+            <th
+              class="w-[0%] text-white text-center px-2 py-2"
+            >
+              #
+            </th>
+            <th
+              class="w-[5%] text-white text-left px-2 py-2"
+            >
+              table.name
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="border-solid border-foreground  border-b-2"
+          >
+            <td
+              class="p-2"
+            >
+              #0132
+            </td>
+            <td
+              class="p-2"
+            >
+              <a
+                class="hover:bg-(--pokedex-red-dark) p-1"
+                href="/pokedex/ditto"
+              >
+                Ditto
+              </a>
+            </td>
+          </tr>
+          <tr
+            class=""
+          >
+            <td
+              class="p-2"
+            >
+              #0151
+            </td>
+            <td
+              class="p-2"
+            >
+              <a
+                class="hover:bg-(--pokedex-red-dark) p-1"
+                href="/pokedex/mew"
+              >
+                Mew
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</DocumentFragment>
+`;

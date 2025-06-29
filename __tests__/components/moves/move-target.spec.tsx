@@ -7,6 +7,12 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+jest.mock('@/context/UserContext', () => ({
+  useUser: () => ({
+    settings: { descriptionLang: 'en' }
+  })
+}));
+
 describe('MoveTarget Component', () => {
   const mockTargetData: IMoveTarget = {
     name: 'specific-move',

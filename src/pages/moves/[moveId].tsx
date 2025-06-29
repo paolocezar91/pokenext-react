@@ -65,6 +65,7 @@ export default function MoveDetails({
       </RootLayout>
     );
   }
+  console.log(moveData.learned_by_pokemon);
 
   return (
     <RootLayout title={`${t('moves.title')}: ${capitilize(kebabToSpace(moveData.name))}`}>

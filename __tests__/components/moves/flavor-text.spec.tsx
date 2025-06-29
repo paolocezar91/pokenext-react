@@ -12,6 +12,12 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
+jest.mock('@/context/UserContext', () => ({
+  useUser: () => ({
+    settings: { descriptionLang: 'en' }
+  })
+}));
+
 describe('FlavorText Component', () => {
   const mockMoveData = {
     name: 'fire-blast',
@@ -47,7 +53,7 @@ describe('FlavorText Component', () => {
     render(<FlavorText moveData={mockMoveData} />);
 
     // Test title transformation
-    expect(screen.getByRole('heading')).toHaveTextContent('Fire Blast');
+    expect(screen.getByRole('heading')).toHaveTextContent('moves.flavorText.title');
 
     // Test initial flavor text
     expect(screen.getByText('First flavor text')).toBeInTheDocument();

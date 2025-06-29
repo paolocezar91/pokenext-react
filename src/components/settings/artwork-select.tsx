@@ -12,7 +12,6 @@ export default function ArtworkSelect({ children }: { children?: ReactNode }) {
 
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ artworkUrl: e.target.value });
-
   };
 
   return settings && <div className="flex flex-col sm:flex-row">
