@@ -1,6 +1,6 @@
 import Navbar from '@/components/layout/navbar/navbar';
 import '@testing-library/jest-dom';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useSession } from 'next-auth/react';
 import { usePathname } from "next/navigation";
 
