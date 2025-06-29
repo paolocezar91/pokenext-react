@@ -7,9 +7,11 @@ import Head from "next/head";
 export default function RootLayout({
   children,
   title,
+  homeButton
 }: Readonly<{
   children: React.ReactNode;
-  title: string
+  title: string;
+  homeButton?: boolean;
 }>) {
 
   title = 'Pokédex -- ' + title;
@@ -20,7 +22,7 @@ export default function RootLayout({
         <title>{title}</title>
       </Head>
       <div className="container mx-auto">
-        <Navbar title={title}/>
+        <Navbar title={title} homeButton={homeButton}/>
         <main className="sm:w-min md:w-[initial]">
           {children}
         </main>

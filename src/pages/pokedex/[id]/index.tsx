@@ -148,12 +148,12 @@ export default function PokemonDetails({
   }, [currentId]);
 
   if(error)
-    return <RootLayout title={`404 - ${t('pokedex.notFound')}`}>
+    return <RootLayout title={`404 - ${t('pokedex.notFound')}`} homeButton={true}>
       <div className="container p-4">
         <h2 className="w-fit border-b-2 border-solid border-white text-lg inline">404 - { t('pokedex.notFound') }</h2>
         <p className="pt-4 ml-4 flex align-center">
           <Link
-            href='/pokedex/'
+            href='/'
             className="text-xs"
           >
             Return to list
@@ -168,7 +168,7 @@ export default function PokemonDetails({
       pokemon ?
         `${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}` :
         `${t('pokedex.loading')}...`
-    }>
+    } homeButton={true}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto relative">
         {!loaded && <Spinner />}
         <Suspense>

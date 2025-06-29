@@ -1,7 +1,7 @@
 import { getTypeIconById } from "@/components/[id]/details/types";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import { IMove } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";

@@ -72,10 +72,8 @@ export default function Search({ className }: { className?: string }) {
     );
   };
 
-
-
   return (
-    <form onSubmit={goTo} data-testid="form-go-to" className={`${className} w-inherit relative`}>
+    <form onSubmit={goTo} data-testid="form-go-to" className={`${className} relative`}>
       <div className="h-10 flex">
         <input
           name="pokemon-search"
@@ -84,8 +82,8 @@ export default function Search({ className }: { className?: string }) {
           value={inputValue}
           onChange={handleInputChange}
           className="
-            w-60
             h-full
+            w-full
             bg-white
             text-xs
             text-black

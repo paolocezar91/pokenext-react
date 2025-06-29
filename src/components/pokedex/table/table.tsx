@@ -1,6 +1,6 @@
 import Toggle from '@/components/shared/toggle';
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import Image from 'next/image';
 import Link from 'next/link';

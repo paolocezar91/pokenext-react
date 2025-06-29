@@ -50,7 +50,7 @@ export default function Controls({
   const goList = () => <div className="flex-1 text-center">
     <Tooltip content={t('actions.backToList')}>
       <Link
-        href='/pokedex/'
+        href="/"
         className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red-dark)"
       >
         <ArrowUturnLeftIcon className="w-7" />

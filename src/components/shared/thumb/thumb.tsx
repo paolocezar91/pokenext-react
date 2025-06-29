@@ -1,5 +1,5 @@
 import { getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';

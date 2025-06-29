@@ -1,8 +1,9 @@
 // components/MobileMenu.tsx
+import React, { ReactNode } from "react";
 import NavUserAuth from "./nav-user-auth/nav-user-auth";
 import Search from "./search";
 
-export default function MenuMd() {
+export default function MenuMd({ children }: { children: ReactNode }) {
   return (
     <div className="hidden w-full md:block md:w-auto" >
       <ul className="
@@ -24,11 +25,14 @@ export default function MenuMd() {
         ">
         <li className="h-10">
           <div className="go-to rounded">
-            <Search />
+            <Search className="w-full"/>
           </div>
         </li>
         <li className="h-10">
           <NavUserAuth />
+        </li>
+        <li>
+          {children}
         </li>
       </ul>
     </div>

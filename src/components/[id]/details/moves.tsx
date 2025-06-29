@@ -1,7 +1,7 @@
 import PokeApiQuery from "@/app/query";
 import Select from "@/components/shared/select";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import Link from "next/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";

@@ -2,7 +2,7 @@ import { TypeUrl } from "@/components/[id]/details/types";
 import { useLocalStorage } from "@/components/shared/utils";
 import { useSession } from "next-auth/react";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { createUser, getSettings, getUser, Settings, upsertSettings, User } from "./userApi";
+import { createUser, getSettings, getUser, Settings, upsertSettings, User } from "./user-api";
 
 interface IUserContext {
   user: User;

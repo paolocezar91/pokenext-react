@@ -103,12 +103,16 @@
             "language": "Language",
             "languageTooltip": "Changes the app language",
             "descriptionLanguage": "Description Language",
-            "descriptionLanguageTooltip": "Changes the data description language"
+            "descriptionLanguageTooltip": "Changes the data description language",
+            "languageUpdate": "Language updated."        
         },
         "artworkOptions": {
             "title": "Artwork Options",
-            "thumbnail": "Thumbnail",
-            "typeIcon": "Type Icon"
+            "thumbnailArtwork": "Thumbnail art",
+            "thumbnailArtworkUpdated": "Thumbnail artwork updated.",
+            "typeArtworkIcon": "Pokemon type icon",
+            "typeArtworkUpdated": "Type artwork updated.",
+            "typeArtworkTooltip": "Changes the artwork source for the type icons"
         },
         "showThumb": "Show thumbnail",
         "showShowColumns": "Hide/Show columns"

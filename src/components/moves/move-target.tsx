@@ -1,4 +1,4 @@
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import { IMoveTarget } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 

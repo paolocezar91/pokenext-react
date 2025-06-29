@@ -6,7 +6,7 @@ import PokemonTable from '@/components/pokedex/table/table';
 import Spinner from '@/components/shared/spinner';
 import Toggle from '@/components/shared/toggle';
 import Tooltip from '@/components/shared/tooltip/tooltip';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';

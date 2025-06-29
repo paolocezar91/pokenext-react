@@ -1,5 +1,5 @@
 import { capitilize, kebabToSpace, normalizePokemonName } from "@/components/shared/utils";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { IPokemonSpecies } from "pokeapi-typescript";
 import { useState } from "react";

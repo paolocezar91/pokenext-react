@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { capitilize } from "@/components/shared/utils";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import { IType } from "pokeapi-typescript";
 

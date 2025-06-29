@@ -1,6 +1,6 @@
 import PokeApiQuery from "@/app/query";
 import Tooltip from "@/components/shared/tooltip/tooltip";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import { IAbility, IPokemon } from "pokeapi-typescript";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

@@ -1,23 +1,28 @@
+import { useSnackbar } from "@/context/snackbar";
+import { useUser } from "@/context/user-context";
 import Image from "next/image";
-import { ChangeEvent, ReactNode } from "react";
+import { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
+import Select from "../shared/select";
 import { ArtUrl, getArtwork } from "../shared/thumb/thumb";
 import { capitilize, kebabToSpace } from "../shared/utils";
-import Select from "../shared/select";
-import { useUser } from "@/context/UserContext";
 
 const sprites: ArtUrl[] = ['dream-world', 'home', 'official-artwork', 'showdown'];
 
-export default function ArtworkSelect({ children }: { children?: ReactNode }) {
+export default function ThumbnailArtworkSelect() {
   const { settings, upsertSettings } = useUser();
+  const { t } = useTranslation('common');
+  const { showSnackbar } = useSnackbar();
 
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ artworkUrl: e.target.value });
+    showSnackbar(t('settings.artworkOptions.artworkUpdated'));
   };
 
   return settings && <div className="flex flex-col sm:flex-row">
     <label htmlFor="lang">
       <div className="flex flex-col">
-        <span>{children}</span>
+        <span>{t('settings.artworkOptions.thumbnail')}</span>
         <Select
           data-testid="lang"
           id="lang"

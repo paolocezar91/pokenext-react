@@ -3,7 +3,7 @@
 import Select from '@/components/shared/select';
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName } from '@/components/shared/utils';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';

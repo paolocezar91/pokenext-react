@@ -1,7 +1,8 @@
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import { ChangeEvent, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import Select from "../shared/select";
+import { useSnackbar } from "@/context/snackbar";
 
 const locales = [
   "en",
@@ -27,21 +28,19 @@ export type TypeLocale = "en" |
     "zh-Hant" |
     "zh-Hans";
 
-export default function DescriptionLangSelect({
-  children,
-}: {
-  children?: ReactNode,
-}) {
+export default function DescriptionLangSelect() {
   const { t } = useTranslation('common');
   const { settings, upsertSettings } = useUser();
+  const { showSnackbar } = useSnackbar();
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ descriptionLang: e.target.value });
+    showSnackbar(t('settings.languageOptions.languageUpdate'));
   };
 
   return settings && <label htmlFor="description-lang">
     <div className="flex flex-col">
-      <span>{children}</span>
+      <span>{t('settings.languageOptions.descriptionLanguage')}:</span>
       <Select
         data-testid="description-lang"
         id="description-lang"
