@@ -55,11 +55,13 @@
     "menu": {
         "home": "Início",
         "settings": "Config.",
-        "signIn": "Entrar"
+        "signIn": "Entrar",
+        "signOut": "Sair"
     },
     "moves": {
         "title": "Golpe",
         "flavorText": {
+            "title": "Descrição",
             "empty": "Texto não disponível"
         },
         "learnedBy": {
@@ -108,7 +110,8 @@
             "thumbnail": "Miniatura",
             "typeIcon": "Tipo (ícones)"
         },
-        "showThumb": "Mostrar miniatura"
+        "showThumb": "Mostrar miniatura",
+        "showShowColumns": "Esconder/Mostrar colunas"
     },
     "actions": {
         "next": "Próximo",

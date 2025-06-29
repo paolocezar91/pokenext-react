@@ -1,7 +1,7 @@
+import { useUser } from "@/context/UserContext";
 import { ChangeEvent, ReactNode } from "react";
-import { useLocalStorage } from "../shared/utils";
-import Select from "../shared/select";
 import { useTranslation } from "react-i18next";
+import Select from "../shared/select";
 
 const locales = [
   "en",
@@ -29,25 +29,23 @@ export type TypeLocale = "en" |
 
 export default function DescriptionLangSelect({
   children,
-  currentLanguage = 'en',
 }: {
   children?: ReactNode,
-  currentLanguage?: TypeLocale,
 }) {
-  const [descriptionLang, setDescriptionLang] = useLocalStorage<TypeLocale>('descriptionLang', currentLanguage);
   const { t } = useTranslation('common');
+  const { settings, upsertSettings } = useUser();
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setDescriptionLang(e.target.value as TypeLocale);
+    upsertSettings({ descriptionLang: e.target.value });
   };
 
-  return <label htmlFor="description-lang">
+  return settings && <label htmlFor="description-lang">
     <div className="flex flex-col">
       <span>{children}</span>
       <Select
         data-testid="description-lang"
         id="description-lang"
-        value={descriptionLang}
+        value={settings.descriptionLang}
         onChange={handleLangChange}>
         {
           locales.map((lang: string) => {

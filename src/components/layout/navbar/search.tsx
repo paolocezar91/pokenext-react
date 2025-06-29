@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { FormEvent, useState, ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function NavSearch() {
+export default function Search({ className }: { className?: string }) {
   const router = useRouter();
   const { t } = useTranslation('common');
 
@@ -73,8 +73,9 @@ export default function NavSearch() {
   };
 
 
+
   return (
-    <form onSubmit={goTo} data-testid="form-go-to" className="w-inherit relative">
+    <form onSubmit={goTo} data-testid="form-go-to" className={`${className} w-inherit relative`}>
       <div className="h-10 flex">
         <input
           name="pokemon-search"

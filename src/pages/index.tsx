@@ -1,13 +1,13 @@
-import PokeApiQuery from '@/app/query';
 import '@/app/globals.css';
-import { IPkmn } from '@/types/types';
+import PokeApiQuery from '@/app/query';
 import PokemonFilter from '@/components/pokedex/list/filter';
 import PokemonList from '@/components/pokedex/list/list';
 import PokemonTable from '@/components/pokedex/table/table';
 import Spinner from '@/components/shared/spinner';
 import Toggle from '@/components/shared/toggle';
 import Tooltip from '@/components/shared/tooltip/tooltip';
-import { useLocalStorage } from '@/components/shared/utils';
+import { useUser } from '@/context/UserContext';
+import { IPkmn } from '@/types/types';
 import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 import { useEffect, useState } from 'react';
@@ -29,7 +29,7 @@ export async function getPokemonPage(
   limit: number
 ): Promise<IPkmn[]> {
   try {
-    return await pokeApiQuery.fetchPokemonDataList(await pokeApiQuery.fetchPokemonList(limit, offset));
+    return await pokeApiQuery.getPokemonDataList(await pokeApiQuery.getPokemonList(limit, offset));
   } catch (error) {
     console.error(error);
     return [];
@@ -49,9 +49,9 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
   const [pokemonsBackup, setPokemonsBackup] = useState<IPkmn[]>(pokemonsData);
   const [loading, setLoading] = useState<boolean>(false);
-  const [listTableToggle, setListTableToggle] = useLocalStorage('listTable', false);
   const [filtered, setFiltered] = useState<boolean>(false);
   const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
+  const { settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
 
   useEffect(() => {
@@ -89,10 +89,9 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   if (!pokemons) return null;
 
   const refElement = !inView && !filtered && <div className="ref" ref={ref}></div>;
-
   return (
     <RootLayout title="Pokémon List">
-      {pokemons &&
+      {pokemons && settings &&
         <div className="wrapper h-[inherit] p-4 bg-background">
           <div className="flex items-center">
             <div className="flex items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
@@ -101,7 +100,12 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
                 <Tooltip content={t('settings.toggleView')}>
                   <label className="ml-4 flex">
                     <Squares2X2Icon className="w-7" />
-                    <Toggle className="mx-2" id="list-table" value={listTableToggle} onChange={(value: boolean) => setListTableToggle(value)} />
+                    <Toggle
+                      className="mx-2"
+                      id="list-table"
+                      value={settings.listTable}
+                      onChange={(value: boolean) => upsertSettings({ listTable: value })}
+                    />
                     <TableCellsIcon className="w-7" />
                   </label>
                 </Tooltip>
@@ -109,7 +113,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
             </div>
           </div>
           {
-            !listTableToggle ?
+            !settings.listTable ?
               <PokemonList pokemons={pokemons}>{refElement}</PokemonList> :
               <PokemonTable pokemons={pokemons}>{refElement}</PokemonTable>
           }

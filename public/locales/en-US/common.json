@@ -55,12 +55,13 @@
     "menu": {
         "home": "Home",
         "settings": "Settings",
-        "signInWithGithub": "Sign in with GitHub",
+        "signIn": "Sign In",
         "signOut": "Sign out"
     },
     "moves": {
         "title": "Move",
         "flavorText": {
+            "title": "Flavor Text",
             "empty": "No flavor text available"
         },
         "learnedBy": {
@@ -109,7 +110,8 @@
             "thumbnail": "Thumbnail",
             "typeIcon": "Type Icon"
         },
-        "showThumb": "Show thumbnail"
+        "showThumb": "Show thumbnail",
+        "showShowColumns": "Hide/Show columns"
     },
     "actions": {
         "next": "Next",

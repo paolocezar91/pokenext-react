@@ -1,8 +1,9 @@
+import { getTypeIconById } from "@/components/[id]/details/types";
+import Tooltip from "@/components/shared/tooltip/tooltip";
+import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
+import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 import { IMove } from "pokeapi-typescript";
-import { getTypeIconById, TypeUrl } from "@/components/[id]/details/types";
-import { capitilize, getIdFromUrlSubstring, useLocalStorage } from "@/components/shared/utils";
-import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useTranslation } from "react-i18next";
 
 interface MoveDataTableProps {
@@ -11,11 +12,11 @@ interface MoveDataTableProps {
 
 export default function MoveDataTable({ moveData }: MoveDataTableProps) {
   const { t } = useTranslation('common');
-  const [typeArtworkUrl] = useLocalStorage<TypeUrl>('typeArtworkUrl', 'sword-shield');
+  const { settings } = useUser();
 
 
-  return <div className="move-data mt-2 w-full">
-    <h3 className="text-lg mb-4">{t('moves.moveData.title')}</h3>
+  return settings && <div className="move-data mt-2 w-full">
+    <h3 className="w-fit text-lg mb-4">{t('moves.moveData.title')}</h3>
     <table className="w-full" aria-label="Move data table">
       <tbody>
         <tr>
@@ -26,7 +27,7 @@ export default function MoveDataTable({ moveData }: MoveDataTableProps) {
               width="100"
               height="20"
               alt={moveData.type.name}
-              src={getTypeIconById(getIdFromUrlSubstring(moveData.type.url), typeArtworkUrl)}
+              src={getTypeIconById(getIdFromUrlSubstring(moveData.type.url), settings.typeArtworkUrl)}
             />
           </td>
         </tr>

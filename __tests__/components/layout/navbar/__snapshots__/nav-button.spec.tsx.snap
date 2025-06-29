@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavButton Component should match snapshot 1`] = `
+<DocumentFragment>
+  <button
+    class="flex px-3 py-2 text-sm rounded hover:shadow-md hover:bg-(--pokedex-red-dark) cursor-pointer bg-transparent  btn btn-primary"
+    type="button"
+  >
+    Bulbasaur
+  </button>
+</DocumentFragment>
+`;

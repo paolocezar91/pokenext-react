@@ -1,14 +1,20 @@
 import MoveDataTable from '@/components/moves/move-data-table';
+import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { IMove } from 'pokeapi-typescript';
-import '@testing-library/jest-dom';
 
 // Mock dependencies
 jest.mock('next/image', () => ({
   __esModule: true,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   default: (props: any) => <img {...props} />, // Simplified Image mock
 }));
 
+jest.mock('@/context/UserContext', () => ({
+  useUser: () => ({
+    settings: { typeArtworkUrl: 'sword-shield' }
+  })
+}));
 
 // jest.mock('@/components/[id]/details/types', () => ({
 //   getTypeIconById: jest.fn((id) => `/type-${id}.png`),
@@ -69,7 +75,9 @@ describe('MoveDataTable Component', () => {
 
     // Verify type image
     const typeImage = screen.getByAltText('electric');
-    expect(typeImage).toHaveAttribute('src', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png');
+    expect(typeImage).toHaveAttribute(
+      'src', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png'
+    );
 
     // Verify damage class tooltip and image
     const classImage = screen.getByAltText('special');

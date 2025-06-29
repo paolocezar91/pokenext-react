@@ -33,7 +33,7 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
   }, [name, species.varieties]);
 
   return <div className="pokemon-varieties col-span-6 mt-2">
-    <h3 className="text-lg font-semibold mb-2">{t('pokedex.details.varieties.title')}</h3>
+    <h3 className="w-fit text-lg font-semibold mb-2">{t('pokedex.details.varieties.title')}</h3>
     <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
       {!!forms.length && varieties.map((pkmn, i) =>
         <Tooltip key={i} content={normalizePokemonName(pkmn.name)}>

@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix",
     "test": "jest",
     "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
     "test:snapshot": "jest --updateSnapshot"
   },
   "dependencies": {
@@ -28,8 +29,7 @@
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-i18next": "^15.4.1",
-    "react-intersection-observer": "^9.16.0",
-    "zod": "^3.25.67"
+    "react-intersection-observer": "^9.16.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

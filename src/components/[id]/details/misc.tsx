@@ -13,7 +13,7 @@ export default function PokemonMisc({
   };
 
   // const captureRate = species.capture_rate / 3;
-  return <div className="pokemon-misc mt-2">
+  return <div className="pokemon-misc col-span-6 mt-2">
     <div className="flex flex-wrap gap-4">
       {
         [

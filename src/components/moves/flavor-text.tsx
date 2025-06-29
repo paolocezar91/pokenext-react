@@ -1,24 +1,24 @@
-import { capitilize, kebabToSpace, normalizeVersionGroup, useLocalStorage } from "@/components/shared/utils";
+import { normalizeVersionGroup } from "@/components/shared/utils";
+import { useUser } from "@/context/UserContext";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { IMove } from "pokeapi-typescript";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { TypeLocale } from "../layout/descriptionLang";
 
 export default function FlavorText({ moveData }: { moveData: IMove }) {
   const [flavorIdx, setFlavorIdx] = useState(0);
   const { t } = useTranslation('common');
-  const [descriptionLang] = useLocalStorage<TypeLocale>('descriptionLang', 'en');
+  const { settings } = useUser();
 
 
   const getFlavors = () => {
-    return moveData.flavor_text_entries.filter(entry => entry.language.name === descriptionLang);
+    return moveData.flavor_text_entries.filter(entry => entry.language.name === settings?.descriptionLang);
   };
 
   return (
     <div className="flavor w-full">
-      <h3 className="text-xl font-semibold mb-4">{capitilize(kebabToSpace(moveData.name))}</h3>
+      <h3 className="w-fit text-lg mb-4">{t('moves.flavorText.title')}</h3>
       <div className="flex items-end relative items-start justify-between pb-6">
         {getFlavors().length === 0 ?
           <p> {t('moves.flavorText.empty')} </p>

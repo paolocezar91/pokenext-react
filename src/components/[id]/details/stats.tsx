@@ -42,7 +42,7 @@ export default function PokemonStats({ pokemon }: { pokemon: IPokemon }) {
 
 
   return <div className="stats col-span-6 md:col-span-3">
-    <h3 className="text-lg font-semibold mb-2">{ t('pokedex.details.stats.title') }</h3>
+    <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.stats.title') }</h3>
     <table className="w-full">
       <tbody>
         {pokemon.stats.map((stat, i) => {

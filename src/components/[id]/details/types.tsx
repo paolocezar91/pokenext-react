@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
-import { capitilize, useLocalStorage } from "@/components/shared/utils";
+import { capitilize } from "@/components/shared/utils";
+import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 import { IType } from "pokeapi-typescript";
 
@@ -36,14 +37,14 @@ export const getTypeIconById = (typeId: string, sprite: TypeUrl): string => {
 };
 
 export default function PokemonTypes({ types }: { types: IType[] }) {
-  const [typeArtworkUrl] = useLocalStorage<TypeUrl>('typeArtworkUrl', 'sword-shield');
+  const { settings } = useUser();
 
 
-  return <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
+  return settings && <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
     {types.map((type, i) =>
       <Image
         key={i}
-        src={getTypeIconById(type.id.toString(), typeArtworkUrl)}
+        src={getTypeIconById(type.id.toString(), settings.typeArtworkUrl)}
         width="100"
         height="20"
         alt={capitilize(type.name)}
