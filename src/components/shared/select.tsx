@@ -25,7 +25,6 @@ export default function Select({
       border-solid
       border-2
       border-foreground
-      mr-2
       rounded
       hover:border-(--pokedex-red-dark)
       ${className}

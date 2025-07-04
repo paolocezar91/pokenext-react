@@ -26,7 +26,7 @@ export const upsertSettings = async (body: Partial<Settings>, id?: number,) => {
 export type User = { id: number; email: string } | null;
 
 export type Settings = {
-  artworkUrl: TypeUrl,
+  artworkUrl: string,
   descriptionLang: string,
   listTable: boolean,
   showColumn: boolean[],

@@ -14,9 +14,10 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import RootLayout from './layout';
+import { useSnackbar } from '@/context/snackbar';
 
 const pokeApiQuery = new PokeApiQuery();
-const NUMBERS_OF_POKEMON = 50;
+const NUMBERS_OF_POKEMON = 150;
 const STARTING_POKEMON = 0;
 
 export const metadata: Metadata = {
@@ -28,8 +29,15 @@ export async function getPokemonPage(
   offset: number,
   limit: number
 ): Promise<IPkmn[]> {
+  // try {
+  //   return await pokeApiQuery.getPokemonDataList(await pokeApiQuery.getPokemonList(limit, offset));
+  // } catch (error) {
+  //   console.error(error);
+  //   return [];
+  // }
+
   try {
-    return await pokeApiQuery.getPokemonDataList(await pokeApiQuery.getPokemonList(limit, offset));
+    return (await pokeApiQuery.getPokemonList(limit, offset)).results;
   } catch (error) {
     console.error(error);
     return [];
@@ -37,9 +45,10 @@ export async function getPokemonPage(
 }
 
 export async function getStaticProps() {
+  const pokemonsData = await getPokemonPage(STARTING_POKEMON, NUMBERS_OF_POKEMON);
   return {
     props: {
-      pokemonsData: await getPokemonPage(STARTING_POKEMON, NUMBERS_OF_POKEMON),
+      pokemonsData
     },
   };
 }
@@ -53,9 +62,11 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
   const { settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
+  const { showSnackbar, hideSnackbar } = useSnackbar();
 
   useEffect(() => {
     async function loadMorePkmn() {
+      showSnackbar('Loading...');
       const morePkmn = await getPokemonPage(offset, NUMBERS_OF_POKEMON);
       if (morePkmn.length > 0){
         setPokemons(pkmn => [...pkmn, ...morePkmn]);
@@ -63,6 +74,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
         setOffset(offset => offset + NUMBERS_OF_POKEMON);
         setTimeout(() => setLoading(false), 0);
       }
+      hideSnackbar();
     }
 
     if (inView && !loading) {
@@ -90,7 +102,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   const refElement = !inView && !filtered && <div className="ref" ref={ref}></div>;
   return (
-    <RootLayout title="Pokémon List">
+    <RootLayout title="Home">
       {pokemons && settings &&
         <div className="wrapper h-[inherit] p-4 bg-background">
           <div className="flex items-center">

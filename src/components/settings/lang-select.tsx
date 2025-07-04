@@ -15,7 +15,7 @@ export default function LangSelect({
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     i18n.changeLanguage(e.target.value);
-    showSnackbar(t('settings.languageOptions.languageUpdate'));
+    showSnackbar(t('settings.languageOptions.languageUpdate'), 5);
   };
   return <label htmlFor="lang">
     <div className="flex flex-col mb-4">

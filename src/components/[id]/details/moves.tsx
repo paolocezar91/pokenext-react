@@ -186,7 +186,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
                 {movesetActive === 'level-up' && <td className="p-2 text-right">{move.level_learned_at}</td>}
                 {movesetActive === 'machine' && <td className="p-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
                 <td className="p-2">
-                  <Link href={`/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
+                  <Link href={`/pokedex/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
                     {capitilize(kebabToSpace(move.move))}
                   </Link>
                 </td>

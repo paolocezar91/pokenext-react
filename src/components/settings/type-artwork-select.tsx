@@ -25,13 +25,13 @@ export default function TypeArtworkSelect() {
 
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ typeArtworkUrl: e.target.value });
-    showSnackbar(t('settings.artworkOptions.typeArtworkUpdated'));
+    showSnackbar(t('settings.artworkOptions.typeArtworkUpdated'), 5);
   };
 
   return settings && <div className="flex flex-col sm:flex-row">
-    <label htmlFor="lang">
+    <label htmlFor="lang" className="w-full grow">
       <div className="flex flex-col">
-        <span>{t('settings.artworkOptions.typeArtworkIcon')}</span>
+        <span>{t('settings.artworkOptions.typeArtworkIcon')}:</span>
         <Select
           data-testid="lang"
           id="lang"
@@ -45,7 +45,7 @@ export default function TypeArtworkSelect() {
           }
         </Select>
       </div>
-      <div className="text-xs hover:text-(--pokedex-red) w-75">
+      <div className="text-xs hover:text-(--pokedex-red)">
         {t('settings.artworkOptions.typeArtworkTooltip')}
       </div>
     </label>

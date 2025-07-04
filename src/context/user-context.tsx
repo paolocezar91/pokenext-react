@@ -23,7 +23,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { data: session, status } = useSession();
   // Use localStorage for guest user/settings
   const guestDefaultSettings: Settings = {
-    artworkUrl: "home" as TypeUrl,
+    artworkUrl: "official-artwork",
     descriptionLang: "en",
     listTable: false,
     showColumn: [true, true, true, true, true, true, true, true, true],
@@ -65,7 +65,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const settings = await getSettings(user_id);
     if(settings)
       setSettings(settings);
-    return user;
+    return settings;
   };
 
   // Guest upsertSettings (always returns full Settings)
@@ -80,8 +80,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const fetchUser = async () => {
         const email = session?.user?.email;
         if (email) {
-          const user = await handleGetUser(email);
-          if(!user) {
+          if(!await handleGetUser(email)) {
             const createdUser = await handleCreateUser(email);
             if(createdUser){
               await handleUpsertSettings(guestSettings as Record<string, unknown>, createdUser.id);
@@ -101,7 +100,9 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     if (status === "authenticated" && user && !settings) {
       const fetchSettings = async (userId: number) => {
-        await handleGetSettings(userId);
+        if(!await handleGetSettings(userId)){
+          await handleUpsertSettings(guestSettings as Record<string, unknown>, userId);
+        }
         setLoading(false);
       };
       fetchSettings(user.id);

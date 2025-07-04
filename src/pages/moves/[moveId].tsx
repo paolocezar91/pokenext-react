@@ -58,17 +58,16 @@ export default function MoveDetails({
 
   if (!moveData) {
     return (
-      <RootLayout title={`${t('pokedex.loading')}...`} homeButton={true}>
+      <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
           <p>{t('pokedex.loading')}...</p>
         </div>
       </RootLayout>
     );
   }
-  console.log(moveData.learned_by_pokemon);
 
   return (
-    <RootLayout title={`${t('moves.title')}: ${capitilize(kebabToSpace(moveData.name))}`} homeButton={true}>
+    <RootLayout title={`${t('moves.title')}: ${capitilize(kebabToSpace(moveData.name))}`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
         <h3 className="w-fit text-xl font-semibold mb-4">{capitilize(kebabToSpace(moveData.name))}</h3>
         <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">

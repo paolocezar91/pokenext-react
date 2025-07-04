@@ -100,15 +100,19 @@
         },
         "languageOptions":{
             "title": "Opções de Línguas",
-            "language": "Línguas",
-            "languageTooltip": "Troca a língua da App",
-            "descriptionLanguage": "Línguas (descrição)",
-            "descriptionLanguageTooltip": "Troca a língua das descrições"
+            "language": "Língua",
+            "languageTooltip": "Altera o idioma do aplicativo",
+            "descriptionLanguage": "Idioma das descrições",
+            "descriptionLanguageTooltip": "Altera o idioma das descrições dos dados",
+            "languageUpdate": "Idioma atualizado."
         },
         "artworkOptions": {
             "title": "Opções de Artes",
-            "thumbnail": "Miniatura",
-            "typeIcon": "Tipo (ícones)"
+            "thumbnailArtwork": "Arte da miniatura",
+            "thumbnailArtworkUpdated": "Arte da miniatura atualizada.",
+            "typeArtworkIcon": "Ícone do tipo Pokémon",
+            "typeArtworkUpdated": "Arte do tipo atualizada.",
+            "typeArtworkTooltip": "Altera a fonte da arte dos ícones de tipo"
         },
         "showThumb": "Mostrar miniatura",
         "showShowColumns": "Esconder/Mostrar colunas"

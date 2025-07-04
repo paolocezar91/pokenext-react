@@ -110,7 +110,7 @@
             "title": "Artwork Options",
             "thumbnailArtwork": "Thumbnail art",
             "thumbnailArtworkUpdated": "Thumbnail artwork updated.",
-            "typeArtworkIcon": "Pokemon type icon",
+            "typeArtworkIcon": "Pokémon type icon",
             "typeArtworkUpdated": "Type artwork updated.",
             "typeArtworkTooltip": "Changes the artwork source for the type icons"
         },

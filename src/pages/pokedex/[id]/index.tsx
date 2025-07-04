@@ -32,6 +32,7 @@ import {
 } from '../../../components/shared/utils';
 import './index.scss';
 import PokemonMisc from '@/components/[id]/details/misc';
+import { useSnackbar } from '@/context/snackbar';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -39,6 +40,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
     const pokemonData = await pokeApiQuery.getPokemon(id);
+    console.log(pokemonData);
     const previousAndAfter = await pokeApiQuery.getPokemonList(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
     return {
       props: {
@@ -85,6 +87,7 @@ export default function PokemonDetails({
   const { t } = useTranslation('common');
   const params = useParams();
   const currentId = !error ? id || params?.id : undefined;
+  const { showSnackbar, hideSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!currentId) return;
@@ -96,6 +99,7 @@ export default function PokemonDetails({
       speciesChain.chain = {};
 
       const getPokemonMetadata = async () => {
+        showSnackbar('Loading...');
         const [speciesData, typesData] = await Promise.all([
           pokeApiQuery.getSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
           pokeApiQuery.getTypes(pokemonData.types),
@@ -141,14 +145,16 @@ export default function PokemonDetails({
         }
       };
 
+      showSnackbar('Loading...');
       getPokemonMetadata();
+      hideSnackbar();
     };
 
     setPokemonData();
   }, [currentId]);
 
   if(error)
-    return <RootLayout title={`404 - ${t('pokedex.notFound')}`} homeButton={true}>
+    return <RootLayout title={`404 - ${t('pokedex.notFound')}`}>
       <div className="container p-4">
         <h2 className="w-fit border-b-2 border-solid border-white text-lg inline">404 - { t('pokedex.notFound') }</h2>
         <p className="pt-4 ml-4 flex align-center">
@@ -168,7 +174,7 @@ export default function PokemonDetails({
       pokemon ?
         `${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}` :
         `${t('pokedex.loading')}...`
-    } homeButton={true}>
+    }>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto relative">
         {!loaded && <Spinner />}
         <Suspense>

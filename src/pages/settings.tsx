@@ -12,7 +12,7 @@ export default function SettingsPage() {
   const title = t('settings.title');
   const { settings } = useUser();
 
-  return <RootLayout title={title} homeButton={true}>
+  return <RootLayout title={title}>
     {settings ? <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
       <div className="p-4 bg-background rounded shadow-md h-[-webkit-fill-available] grid grid-cols-1 md:grid-cols-2">
         <div>

@@ -1,8 +1,8 @@
+import { useSnackbar } from "@/context/snackbar";
 import { useUser } from "@/context/user-context";
-import { ChangeEvent, ReactNode } from "react";
+import { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import Select from "../shared/select";
-import { useSnackbar } from "@/context/snackbar";
 
 const locales = [
   "en",
@@ -35,7 +35,7 @@ export default function DescriptionLangSelect() {
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ descriptionLang: e.target.value });
-    showSnackbar(t('settings.languageOptions.languageUpdate'));
+    showSnackbar(t('settings.languageOptions.languageUpdate'), 5);
   };
 
   return settings && <label htmlFor="description-lang">
@@ -53,7 +53,7 @@ export default function DescriptionLangSelect() {
         }
       </Select>
     </div>
-    <div className="text-xs hover:text-(--pokedex-red) w-75">
+    <div className="text-xs hover:text-(--pokedex-red)">
       { t('settings.languageOptions.descriptionLanguageTooltip') }
     </div>
   </label>;

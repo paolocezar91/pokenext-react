@@ -16,13 +16,13 @@ export default function ThumbnailArtworkSelect() {
 
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ artworkUrl: e.target.value });
-    showSnackbar(t('settings.artworkOptions.artworkUpdated'));
+    showSnackbar(t('settings.artworkOptions.thumbnailArtworkUpdated'), 5);
   };
 
   return settings && <div className="flex flex-col sm:flex-row">
-    <label htmlFor="lang">
+    <label htmlFor="lang" className="w-full grow">
       <div className="flex flex-col">
-        <span>{t('settings.artworkOptions.thumbnail')}</span>
+        <span>{t('settings.artworkOptions.thumbnailArtwork')}:</span>
         <Select
           data-testid="lang"
           id="lang"
@@ -36,7 +36,7 @@ export default function ThumbnailArtworkSelect() {
           }
         </Select>
       </div>
-      <div className="text-xs hover:text-(--pokedex-red) w-75">Changes the artwork source for the thumbnail art</div>
+      <div className="text-xs hover:text-(--pokedex-red)">Changes the artwork source for the thumbnail art</div>
     </label>
     <Image
       width="100"

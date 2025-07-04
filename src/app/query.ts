@@ -1,3 +1,4 @@
+import { IPkmn } from "@/types/types";
 import { IEvolutionChain, IMove, INamedApiResourceList, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
 export default class PokeApiQuery {
   private apiUrl: string;
@@ -6,8 +7,12 @@ export default class PokeApiQuery {
     this.apiUrl = api;
   }
 
-  getPokemonList = async (limit:number , offset: number) =>
-    (await this._fetchAndJson(`${this.apiUrl}/api/v2/pokemon/?limit=${limit}&offset=${offset}`)) as INamedApiResourceList<IPokemon>;
+  // getPokemonList = async (limit:number , offset: number) =>
+  //   (await this._fetchAndJson(`${this.apiUrl}/api/v2/pokemon/?limit=${limit}&offset=${offset}`)) as INamedApiResourceList<IPokemon>;
+
+  getPokemonList = async (limit:number , offset: number) => {
+    return (await this._fetchAndJson(`${this.apiUrl}/api/pokemon/?limit=${limit}&offset=${offset}`)) as { results: IPkmn[], count: number };
+  };
 
   getPokemonDataList = async (pkmnList: INamedApiResourceList<IPokemon>) => await Promise.all(
     pkmnList.results.map(async (pkmn) => {
@@ -20,8 +25,12 @@ export default class PokeApiQuery {
     return await this._fetchAndJson(`${this.apiUrl}/api/v2/move/${id}`) as IMove;
   };
 
-  getPokemon = async (id: string): Promise<IPokemon> => {
+  getPokemon_ = async (id: string): Promise<IPokemon> => {
     return await this._fetchAndJson(`${this.apiUrl}/api/v2/pokemon/${id}`) as IPokemon;
+  };
+
+  getPokemon = async (id: string): Promise<IPokemon> => {
+    return await this._fetchAndJson(`${this.apiUrl}/api/pokemon/${id}`) as IPokemon;
   };
 
   getSpecies = async (id: string): Promise<IPokemonSpecies> => {
@@ -35,14 +44,6 @@ export default class PokeApiQuery {
 
   getEvolutionChain = async (species: IPokemonSpecies): Promise<IEvolutionChain> => {
     return await this.fetchURL<IEvolutionChain>(`${species.evolution_chain.url}`);
-  };
-
-  getUser = async (user_id: number) => {
-    return await this.fetchURL(`${this.apiUrl}/api/v2/user/${user_id}`);
-  };
-
-  getSettings = async (user_id: number) => {
-    return await this.fetchURL(`${this.apiUrl}/api/v2/user/${user_id}/settings`);
   };
 
   fetchURL = async <T>(url: string) => {
