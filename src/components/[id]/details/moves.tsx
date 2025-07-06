@@ -123,7 +123,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         </label>
       </div>}
       {versionGroupActive && <div className="moveset-picker">
-        <label className=" text-xs flex flex-col">{t('pokedex.details.moves.learntBy')}:
+        <label className="ml-2 text-xs flex flex-col">{t('pokedex.details.moves.learntBy')}:
           <Select
             onChange={(event) => setMovesetActive(event.target.value)}
           >

@@ -31,7 +31,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     showThumbTable: true,
     thumbLabelList: "tooltip",
     thumbSizeList: "sm",
-    typeArtworkUrl: "sword-shield" as TypeUrl
+    typeArtworkUrl: "sword-shield" as TypeUrl,
+    filter: { name: '', types: '' }
   };
   const [guestUser] = useLocalStorage<User>("guest_user", { id: 0, email: "guest@local" });
   const [guestSettings, setGuestSettings] = useLocalStorage<Settings>("guest_settings", guestDefaultSettings);

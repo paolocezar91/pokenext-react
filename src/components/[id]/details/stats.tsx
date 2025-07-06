@@ -46,27 +46,27 @@ export default function PokemonStats({ pokemon }: { pokemon: IPokemon }) {
     <table className="w-full">
       <tbody>
         {pokemon.stats.map((stat, i) => {
-          return <tr key={i}>
-            <th className={`w-[20%] text-left ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
+          return <tr key={i} className="pb-1 pt-1">
+            <th className={`w-[18%] text-left ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
               { statName(stat.stat.name) }
             </th>
-            <td className={`w-[18%] text-center px-4 ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
-              {stat.base_stat}
-            </td>
-            <td className={`${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
+            <td className={`pr-4 ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
               {progressBar(stat.base_stat, 255)}
+            </td>
+            <td className={`w-[5%] text-left pr-4 ${i === pokemon.stats.length - 1 ? 'pb-1' : ''}`}>
+              {stat.base_stat}
             </td>
           </tr>;
         })}
-        <tr>
-          <th className="w-[20%] text-left border-t-1 border-solid border-foreground">
+        <tr className="pb-1 pt-1">
+          <th className="w-[18%] text-left border-t-1 border-solid border-foreground">
             Total
           </th>
-          <td className="w-[18%] text-center border-t-1 border-solid border-foreground px-4">
-            {total}
-          </td>
-          <td className="border-t-1 border-solid border-foreground">
+          <td className="pr-4 border-t-1 border-solid border-foreground">
             {progressBar(total, 255*6)}
+          </td>
+          <td className="w-[5%] text-left border-t-1 border-solid border-foreground pr-4">
+            {total}
           </td>
         </tr>
       </tbody>

@@ -4,6 +4,7 @@ import NavLink from "../nav-link";
 import GithubIcon from "../github-icon";
 import { useTranslation } from "react-i18next";
 import { User } from "next-auth";
+import Tooltip from "@/components/shared/tooltip/tooltip";
 
 export interface Session {
   user?: User
@@ -24,7 +25,6 @@ export default function UserMenuContent({ session, pathname, onSignIn, onSignOut
   </NavButton>;
 
   const settingsButton = <NavLink className="flex justify-between" href="/settings/" isActive={pathname === '/settings'}>
-    <span>{t('menu.settings')}</span>
     <Cog6ToothIcon width={22}/>
   </NavLink>;
 
@@ -33,30 +33,21 @@ export default function UserMenuContent({ session, pathname, onSignIn, onSignOut
     <ArrowLeftEndOnRectangleIcon width={22}/>
   </NavButton>;
 
-  const userNameOrEmail = <span className="ml-2 text-sm text-white mb-2">
+  const userNameOrEmail = session ? <span className="ml-2 text-sm text-white mb-2 font-bold">
     {session?.user?.name || session?.user?.email}
-  </span>;
+  </span> : 'Guest';
 
   return (
     <ul className="w-full">
-      {!session ? <>
-        <li className="h-10">
-          {signInButton}
-        </li>
-        <li className="h-10">
+      <li className="flex justify-between items-center mb-2 border-b-2 border-white border-solid px-2 py-4">
+        <span className="text-xs">{userNameOrEmail}</span>
+        <Tooltip content={t('menu.settings')}>
           {settingsButton}
-        </li>
-      </> : <>
-        <li className="flex items-center mb-2 border-b-2 border-white border-solid px-2 py-4">
-          {userNameOrEmail}
-        </li>
-        <li className="h-10">
-          {settingsButton}
-        </li>
-        <li className="h-10">
-          {signOutButton}
-        </li>
-      </>}
+        </Tooltip>
+      </li>
+      <li className="h-10">
+        {session ? signOutButton : signInButton}
+      </li>
     </ul>
   );
 }

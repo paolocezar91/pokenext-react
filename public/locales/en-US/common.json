@@ -127,9 +127,12 @@
             "tooltip": "Try \"1\" or \"Bulbasaur\"...",
             "button": "Go"
         },
-        "filter": {
-            "placeholder": "Filter by name or type...",
-            "tooltip": "Try \"Bulbasaur\" or \"grass\""
+        "filterName": {
+            "placeholder": "Filter by name...",
+            "tooltip": "Try \"Bulbasaur\""
+        },
+        "filterTypes": {
+            "placeholder": "Filter by up to 2 types..."
         }
     }
 }

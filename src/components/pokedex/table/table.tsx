@@ -44,19 +44,20 @@ export default function PokemonTable({
 
   return settings && <div className="table-container p-4 bg-(--pokedex-red) relative">
     <Settings>
-      <SettingsItem>
-        <label htmlFor="showThumb">
-          <Toggle value={settings.showThumbTable} id="showThumb" onChange={handleShowThumb} childrenRight={t('settings.showThumb')} />
-        </label>
+      <SettingsItem htmlFor="showThumb">
+        <Toggle
+          value={settings.showThumbTable}
+          id="showThumb"
+          onChange={handleShowThumb}
+          childrenRight={t('settings.showThumb')}
+        />
       </SettingsItem>
-      <SettingsItem className="mt-2">
-        <label htmlFor="showThumb">
-          <Toggle
-            value={settings.showShowColumn}
-            id="showShowColumns"
-            onChange={handleShowShowColumnChange}
-            childrenRight={t('settings.showShowColumns')} />
-        </label>
+      <SettingsItem className="mt-2" htmlFor="showThumb">
+        <Toggle
+          value={settings.showShowColumn}
+          id="showShowColumns"
+          onChange={handleShowShowColumnChange}
+          childrenRight={t('settings.showShowColumns')} />
       </SettingsItem>
       {/* <div className="settings-item">
         <SettingsItem title={t('settings.size.title')}>
@@ -119,7 +120,7 @@ export default function PokemonTable({
                 ${!settings.showThumbTable ? 'py-4': 'py-2'}
               `}>
                 {settings.showThumbTable && <Link href={`/pokedex/${pokemon.name}`}>
-                  <PokemonThumb pokemonData={pokemon} size={settings.thumbSizeTable} />
+                  <PokemonThumb pokemonData={pokemon} size="xs" />
                 </Link>}
               </td>
               {(settings.showShowColumn || settings.showColumn[0]) && <td className={`

@@ -40,7 +40,6 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
     const pokemonData = await pokeApiQuery.getPokemon(id);
-    console.log(pokemonData);
     const previousAndAfter = await pokeApiQuery.getPokemonList(3, pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0);
     return {
       props: {

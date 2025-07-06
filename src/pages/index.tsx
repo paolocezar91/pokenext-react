@@ -6,6 +6,7 @@ import PokemonTable from '@/components/pokedex/table/table';
 import Spinner from '@/components/shared/spinner';
 import Toggle from '@/components/shared/toggle';
 import Tooltip from '@/components/shared/tooltip/tooltip';
+import { useSnackbar } from '@/context/snackbar';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
@@ -14,42 +15,21 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInView } from 'react-intersection-observer';
 import RootLayout from './layout';
-import { useSnackbar } from '@/context/snackbar';
 
 const pokeApiQuery = new PokeApiQuery();
-const NUMBERS_OF_POKEMON = 150;
+const NUMBERS_OF_POKEMON = 250;
 const STARTING_POKEMON = 0;
+const TOTAL_POKEMON = 1025;
 
 export const metadata: Metadata = {
   title: `Pokédex -- Next.js Demo`,
   description: 'By Paolo Pestalozzi with PokeAPI and Next.js.'
 };
 
-export async function getPokemonPage(
-  offset: number,
-  limit: number
-): Promise<IPkmn[]> {
-  // try {
-  //   return await pokeApiQuery.getPokemonDataList(await pokeApiQuery.getPokemonList(limit, offset));
-  // } catch (error) {
-  //   console.error(error);
-  //   return [];
-  // }
-
-  try {
-    return (await pokeApiQuery.getPokemonList(limit, offset)).results;
-  } catch (error) {
-    console.error(error);
-    return [];
-  }
-}
-
 export async function getStaticProps() {
-  const pokemonsData = await getPokemonPage(STARTING_POKEMON, NUMBERS_OF_POKEMON);
+  const pokemonsData = (await pokeApiQuery.getPokemonList(STARTING_POKEMON, NUMBERS_OF_POKEMON)).results;
   return {
-    props: {
-      pokemonsData
-    },
+    props: { pokemonsData },
   };
 }
 
@@ -66,8 +46,9 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   useEffect(() => {
     async function loadMorePkmn() {
+      setLoading(true);
       showSnackbar('Loading...');
-      const morePkmn = await getPokemonPage(offset, NUMBERS_OF_POKEMON);
+      const morePkmn = (await pokeApiQuery.getPokemonList(offset, NUMBERS_OF_POKEMON)).results;
       if (morePkmn.length > 0){
         setPokemons(pkmn => [...pkmn, ...morePkmn]);
         setPokemonsBackup(pokemons);
@@ -78,22 +59,38 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
     }
 
     if (inView && !loading) {
-      setLoading(true);
       loadMorePkmn();
     }
-  }, [pokemonsData, pokemons, inView, offset, loading]);
+  }, [inView]);
 
-  const filter = (filterText: string) => {
-    setFiltered(!!filterText);
-    if(filterText) {
-      setPokemons(pokemonsBackup.filter(pkmn => {
-        const value = filterText.toLowerCase();
+  // detect filter changes and query for pokemon
+  useEffect(() => {
+    if(settings && (settings.filter.name || settings.filter.types) && !loading) {
+      setFiltered(true);
+      setLoading(true);
+      pokeApiQuery.getPokemonList(0, TOTAL_POKEMON, settings.filter).then(({ results }) => {
+        setPokemons(results);
+      }).finally(() => {
+        setTimeout(() => {
+          setLoading(false);
+          hideSnackbar();
+        }, 0);
+      });
+    }
+  }, [settings?.filter]);
 
-        return pkmn.name.toLowerCase().includes(filterText.toLowerCase()) ||
-          pkmn.types[0].type.name === value ||
-          pkmn.types[1]?.type?.name === value;
-      }));
-    } else {
+  const filterName = (name: string) => {
+    setFiltered(!!name);
+    upsertSettings({ filter: { name, types: settings?.filter?.types ?? '' }});
+    if(!name) {
+      setPokemons(pokemonsBackup);
+    }
+  };
+
+  const filterTypes = (types: string[]) => {
+    setFiltered(!!types.length);
+    upsertSettings({ filter: { name: settings?.filter?.name ?? '', types: types.join(",") }});
+    if(!types.length) {
       setPokemons(pokemonsBackup);
     }
   };
@@ -104,10 +101,16 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   return (
     <RootLayout title="Home">
       {pokemons && settings &&
-        <div className="wrapper h-[inherit] p-4 bg-background">
+        <div className="wrapper h-[inherit] p-4 bg-background relative">
           <div className="flex items-center">
             <div className="flex items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
-              <PokemonFilter className="flex" onFilter={filter} />
+              <PokemonFilter
+                className="flex"
+                name={settings.filter.name}
+                types={settings.filter.types ? settings.filter.types.split(",") : []}
+                onFilterName={filterName}
+                onFilterTypes={filterTypes}
+              />
               <div className="flex-1">
                 <Tooltip content={t('settings.toggleView')}>
                   <label className="ml-4 flex">
@@ -130,6 +133,9 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
               <PokemonTable pokemons={pokemons}>{refElement}</PokemonTable>
           }
           {loading && <Spinner /> }
+          <div className="ml-4 text-xs text-right">
+            Displaying {pokemons.length} of {TOTAL_POKEMON} Pokémon
+          </div>
         </div>
       }
     </RootLayout>

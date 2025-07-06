@@ -28,17 +28,12 @@ const spritesUrl = (id: string): Record<TypeUrl, string> => {
 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const getTypeIcon = (type: any): string => {
-  return type['sprites']['generation-viii']['sword-shield'].name_icon;
-};
+export const getTypeIcon = (type: any): string => type['sprites']['generation-viii']['sword-shield'].name_icon;
 
-export const getTypeIconById = (typeId: string, sprite: TypeUrl): string => {
-  return spritesUrl(typeId)[sprite];
-};
+export const getTypeIconById = (typeId: string, sprite: TypeUrl): string => spritesUrl(typeId)[sprite];
 
 export default function PokemonTypes({ types }: { types: IType[] }) {
   const { settings } = useUser();
-
 
   return settings && <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
     {types.map((type, i) =>

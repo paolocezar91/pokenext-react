@@ -1,23 +1,38 @@
-import All from "@/app/poke-array.json";
+import PokeApiQuery from "@/app/query";
 import { getNumber } from "@/components/shared/thumb/thumb";
+import { kebabToSpace, normalizePokemonName } from "@/components/shared/utils";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState, ChangeEvent } from "react";
+import { FormEvent, useState, ChangeEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+const pokeApiQuery = new PokeApiQuery();
 
 export default function Search({ className }: { className?: string }) {
+  // Store the fetched pokemon list in state
+  const [pokemonList, setPokemonList] = useState<{ name: string, displayName: string, id: number }[]>([]);
   const router = useRouter();
   const { t } = useTranslation('common');
 
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<{ name: string, displayName: string, id: number | string }[]>([]);
 
+  // Fetch pokemon data from API on mount
+  useEffect(() => {
+    let isMounted = true;
+    pokeApiQuery.getPokemonList(0, 1025).then((data: { results: any[] }) => {
+      if (isMounted && data && data.results) {
+        setPokemonList(data.results.map(p => ({ id: p.id, name: p.name, displayName: normalizePokemonName(p.name) })));
+      }
+    });
+    return () => { isMounted = false; };
+  }, []);
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.toLowerCase().trim();
     setInputValue(value);
 
     if (value) {
-      // Filter suggestions based on the input value
-      const filtered = All.filter((pokemon: { name: string, displayName: string, id: number }) =>
+      // Filter suggestions based on the input value using the fetched API data
+      const filtered = pokemonList.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(value)
       );
       setSuggestions(filtered.slice(0, 10)); // Limit to 10 suggestions

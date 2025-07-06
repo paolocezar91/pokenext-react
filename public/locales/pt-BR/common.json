@@ -124,12 +124,15 @@
         "backToList": "Voltar a lista",
         "go": {
             "placeholder": "Buscar...",
-            "tooltip": "Tente \"1\" ou \"Bulbasaur\"...",
+            "tooltip": "Tente escrever \"1\" ou \"Bulbasaur\"...",
             "button": "Vai"
         },
-        "filter": {
-            "placeholder": "Filtrar por nome ou tipo...",
-            "tooltip": "Tente \"Bulbasaur\" ou \"grass\""
+        "filterName": {
+            "placeholder": "Filtrar por nome...",
+            "tooltip": "Tente escrever \"Bulbasaur\""
+        },
+        "filterTypes": {
+            "placeholder": "Filtrar por até 2 tipos..."
         }
     }
 }

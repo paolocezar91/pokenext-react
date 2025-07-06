@@ -5,12 +5,14 @@ export default function Select({
   value,
   className,
   id,
+  multiple,
   onChange
 }: {
   children: ReactNode,
   value?: string | number | readonly string[] | undefined,
   className?: string,
   id?: string,
+  multiple?: boolean,
   onChange: (_: ChangeEvent<HTMLSelectElement>) => void
 }) {
   return <select
@@ -18,10 +20,8 @@ export default function Select({
       bg-white
       text-black
       text-xs
-      my-2
       px-2
       py-1
-      mb-2
       border-solid
       border-2
       border-foreground
@@ -32,6 +32,7 @@ export default function Select({
     onChange={onChange}
     value={value}
     id={id}
+    multiple={multiple}
   >
     {children}
   </select>;

@@ -34,5 +34,6 @@ export type Settings = {
   showThumbTable: boolean,
   thumbLabelList: string,
   thumbSizeList: string,
-  typeArtworkUrl: TypeUrl
+  typeArtworkUrl: TypeUrl,
+  filter: { name: string, types: string }
 } | null;
