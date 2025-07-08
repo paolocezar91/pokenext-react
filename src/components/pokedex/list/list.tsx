@@ -3,7 +3,7 @@
 import Select from '@/components/shared/select';
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName } from '@/components/shared/utils';
-import { useUser } from '@/context/UserContext';
+import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import Link from 'next/link';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -79,14 +79,14 @@ export default function PokemonList({
     settings && <div className="list-container p-4 bg-(--pokedex-red) relative" ref={parentRef}>
       <Settings>
         <SettingsItem title={t('settings.size.title')} htmlFor="thumbSize">
-          <Select className="w-full" value={settings?.thumbSizeList} id="thumbSize" onChange={handleThumbSizeChange}>
+          <Select className="w-full mt-1" value={settings?.thumbSizeList} id="thumbSize" onChange={handleThumbSizeChange}>
             <option value="xs">{t('settings.size.xs')}</option>
             <option value="sm">{t('settings.size.sm')}</option>
             <option value="base">{t('settings.size.base')}</option>
           </Select>
         </SettingsItem>
-        <SettingsItem title={t('settings.label.title')} htmlFor="thumbLabel">
-          <Select className="w-full" value={settings?.thumbLabelList} id="thumbLabel" onChange={handleThumbLabelChange}>
+        <SettingsItem className="mt-2" title={t('settings.label.title')} htmlFor="thumbLabel">
+          <Select className="w-full mt-1" value={settings?.thumbLabelList} id="thumbLabel" onChange={handleThumbLabelChange}>
             <option value="tooltip">{t('settings.label.tooltip')}</option>
             <option value="thumbnail">{t('settings.label.thumbnail')}</option>
             <option value="none">{t('settings.label.none')}</option>

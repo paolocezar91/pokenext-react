@@ -32,6 +32,7 @@ import {
 } from '../../../components/shared/utils';
 import './index.scss';
 import PokemonMisc from '@/components/[id]/details/misc';
+import { useSnackbar } from '@/context/snackbar';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -85,6 +86,7 @@ export default function PokemonDetails({
   const { t } = useTranslation('common');
   const params = useParams();
   const currentId = !error ? id || params?.id : undefined;
+  const { showSnackbar, hideSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!currentId) return;
@@ -96,6 +98,7 @@ export default function PokemonDetails({
       speciesChain.chain = {};
 
       const getPokemonMetadata = async () => {
+        showSnackbar('Loading...');
         const [speciesData, typesData] = await Promise.all([
           pokeApiQuery.getSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
           pokeApiQuery.getTypes(pokemonData.types),
@@ -141,7 +144,9 @@ export default function PokemonDetails({
         }
       };
 
+      showSnackbar('Loading...');
       getPokemonMetadata();
+      hideSnackbar();
     };
 
     setPokemonData();
@@ -153,7 +158,7 @@ export default function PokemonDetails({
         <h2 className="w-fit border-b-2 border-solid border-white text-lg inline">404 - { t('pokedex.notFound') }</h2>
         <p className="pt-4 ml-4 flex align-center">
           <Link
-            href='/pokedex/'
+            href='/'
             className="text-xs"
           >
             Return to list

@@ -9,7 +9,7 @@ export default function UserMenu({ open, onClose, children }: {
     <div
       onMouseLeave={onClose}
       className="absolute
-        w-60
+        w-80
         border-2
         border-white
         border-solid
@@ -20,7 +20,7 @@ export default function UserMenu({ open, onClose, children }: {
         rounded
         shadow-lg
         z-10
-        p-4
+        p-0
         flex
         flex-col
         items-start"

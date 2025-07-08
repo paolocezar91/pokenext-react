@@ -1,5 +1,6 @@
-import { useUser } from "@/context/UserContext";
-import { ChangeEvent, ReactNode } from "react";
+import { useSnackbar } from "@/context/snackbar";
+import { useUser } from "@/context/user-context";
+import { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
 import Select from "../shared/select";
 
@@ -27,21 +28,19 @@ export type TypeLocale = "en" |
     "zh-Hant" |
     "zh-Hans";
 
-export default function DescriptionLangSelect({
-  children,
-}: {
-  children?: ReactNode,
-}) {
+export default function DescriptionLangSelect() {
   const { t } = useTranslation('common');
   const { settings, upsertSettings } = useUser();
+  const { showSnackbar } = useSnackbar();
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ descriptionLang: e.target.value });
+    showSnackbar(t('settings.languageOptions.languageUpdate'), 5);
   };
 
   return settings && <label htmlFor="description-lang">
     <div className="flex flex-col">
-      <span>{children}</span>
+      <span>{t('settings.languageOptions.descriptionLanguage')}:</span>
       <Select
         data-testid="description-lang"
         id="description-lang"
@@ -54,7 +53,7 @@ export default function DescriptionLangSelect({
         }
       </Select>
     </div>
-    <div className="text-xs hover:text-(--pokedex-red) w-75">
+    <div className="text-xs hover:text-(--pokedex-red)">
       { t('settings.languageOptions.descriptionLanguageTooltip') }
     </div>
   </label>;

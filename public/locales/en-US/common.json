@@ -103,12 +103,16 @@
             "language": "Language",
             "languageTooltip": "Changes the app language",
             "descriptionLanguage": "Description Language",
-            "descriptionLanguageTooltip": "Changes the data description language"
+            "descriptionLanguageTooltip": "Changes the data description language",
+            "languageUpdate": "Language updated."        
         },
         "artworkOptions": {
             "title": "Artwork Options",
-            "thumbnail": "Thumbnail",
-            "typeIcon": "Type Icon"
+            "thumbnailArtwork": "Thumbnail art",
+            "thumbnailArtworkUpdated": "Thumbnail artwork updated.",
+            "typeArtworkIcon": "Pokémon type icon",
+            "typeArtworkUpdated": "Type artwork updated.",
+            "typeArtworkTooltip": "Changes the artwork source for the type icons"
         },
         "showThumb": "Show thumbnail",
         "showShowColumns": "Hide/Show columns"
@@ -123,9 +127,12 @@
             "tooltip": "Try \"1\" or \"Bulbasaur\"...",
             "button": "Go"
         },
-        "filter": {
-            "placeholder": "Filter by name or type...",
-            "tooltip": "Try \"Bulbasaur\" or \"grass\""
+        "filterName": {
+            "placeholder": "Filter by name...",
+            "tooltip": "Try \"Bulbasaur\""
+        },
+        "filterTypes": {
+            "placeholder": "Filter by up to 2 types..."
         }
     }
 }

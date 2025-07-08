@@ -1,7 +1,7 @@
 import PokeApiQuery from "@/app/query";
 import Select from "@/components/shared/select";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import Link from "next/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";
@@ -123,7 +123,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         </label>
       </div>}
       {versionGroupActive && <div className="moveset-picker">
-        <label className=" text-xs flex flex-col">{t('pokedex.details.moves.learntBy')}:
+        <label className="ml-2 text-xs flex flex-col">{t('pokedex.details.moves.learntBy')}:
           <Select
             onChange={(event) => setMovesetActive(event.target.value)}
           >
@@ -186,7 +186,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
                 {movesetActive === 'level-up' && <td className="p-2 text-right">{move.level_learned_at}</td>}
                 {movesetActive === 'machine' && <td className="p-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
                 <td className="p-2">
-                  <Link href={`/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
+                  <Link href={`/pokedex/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
                     {capitilize(kebabToSpace(move.move))}
                   </Link>
                 </td>

@@ -9,7 +9,7 @@ export default function RootLayout({
   title,
 }: Readonly<{
   children: React.ReactNode;
-  title: string
+  title: string;
 }>) {
 
   title = 'Pokédex -- ' + title;

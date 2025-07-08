@@ -51,7 +51,7 @@ export function Settings({ children }: { children: ReactNode }) {
 export function SettingsItem({ children, title, htmlFor, className }: { children: ReactNode, title?: string, htmlFor?: string, className?: string }) {
   return <div className={`settings-item ${className}`}>
     <label className="text-xs" htmlFor={htmlFor}>
-      {title}
+      <span className="mb-2">{title}</span>
       {children}
     </label>
   </div>;

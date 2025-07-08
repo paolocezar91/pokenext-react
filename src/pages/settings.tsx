@@ -1,10 +1,10 @@
 import RootLayout from "@/pages/layout";
-import ArtworkSelect from "@/components/settings/artwork-select";
+import ThumbnailArtworkSelect from "@/components/settings/thumbnail-artwork-select";
 import DescriptionLangSelect from "@/components/settings/description-lang";
 import LangSelect from "@/components/settings/lang-select";
 import TypeArtworkSelect from "@/components/settings/type-artwork-select";
 import { useTranslation } from "react-i18next";
-import { useUser } from "@/context/UserContext";
+import { useUser } from "@/context/user-context";
 import Spinner from "@/components/shared/spinner";
 
 export default function SettingsPage() {
@@ -18,21 +18,13 @@ export default function SettingsPage() {
         <div>
           <h3 className="w-fit">{t('settings.languageOptions.title')}</h3>
           <div className="my-4">
-            <LangSelect currentLanguage={i18n.language}>
-              {t('settings.languageOptions.language')}:
-            </LangSelect>
-            <DescriptionLangSelect>
-              {t('settings.languageOptions.descriptionLanguage')}:
-            </DescriptionLangSelect>
+            <LangSelect currentLanguage={i18n.language} />
+            <DescriptionLangSelect/>
           </div>
           <h3 className="w-fit">{t('settings.artworkOptions.title')}</h3>
           <div className="my-4">
-            <ArtworkSelect>
-              {t('settings.artworkOptions.thumbnail')}
-            </ArtworkSelect>
-            <TypeArtworkSelect>
-              {t('settings.artworkOptions.typeIcon')}
-            </TypeArtworkSelect>
+            <ThumbnailArtworkSelect/>
+            <TypeArtworkSelect/>
           </div>
         </div>
       </div>
