@@ -51,7 +51,7 @@ export default function PokemonFilter({
             value={filterName}
             name="filter"
             className={`w-30
-              md:w-100
+              md:w-75
               text-xs
               bg-white
               rounded-lg

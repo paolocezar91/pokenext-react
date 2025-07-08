@@ -7,7 +7,7 @@ import { SpeciesChain } from '@/types/types';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
 import PokemonCries from '@/components/[id]/details/cries';
-import PokemonDefensiveChart from '@/components/[id]/details/defensive-chart';
+import PokemonDefensiveChart from '@/components/shared/defensive-chart';
 import PokemonDescription from '@/components/[id]/details/description';
 import PokemonEvolutionChart from '@/components/[id]/details/evolution-chart/evolution-chart';
 import PokemonFirstAppearance from '@/components/[id]/details/first-appearance';

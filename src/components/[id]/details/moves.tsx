@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import Spinner from "../../shared/spinner";
 import Tooltip from "../../shared/tooltip/tooltip";
 import { getTypeIconById } from "./types";
+import Table from "@/components/shared/table";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -103,13 +104,85 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
 
     setShowTable(false);
     getMovesDetails();
+
   }, [versionGroupActive, movesetActive]);
+
+  const headers = <>
+    {movesetActive === 'level-up' && <th className="w-[5%] pr-2 border-solid border-b-2 border-foreground align-bottom">
+      Lv.
+    </th>}
+    {movesetActive === 'machine' && <th className="w-[5%] pr-2 border-solid border-b-2 border-foreground align-bottom">
+      TM/HM
+    </th>}
+    <th className="text-left border-solid border-b-2 border-foreground align-bottom">
+      {t('pokedex.details.moves.name')}
+    </th>
+    <th className="text-left border-solid border-b-2 border-foreground align-bottom">
+      {t('pokedex.details.moves.type')}
+    </th>
+    <th className="text-left border-solid border-b-2 border-foreground align-bottom">
+      {t('pokedex.details.moves.class')}
+    </th>
+    <th className="text-left border-solid border-b-2 border-foreground align-bottom">
+      {t('pokedex.details.moves.power')}
+    </th>
+    <th className="text-left border-solid border-b-2 border-foreground align-bottom">
+      {t('pokedex.details.moves.accuracy')}
+    </th>
+  </>;
+
+  const body = settings && moves?.[versionGroupActive]?.moveset?.[movesetActive]
+    ?.sort((a, b) => {
+      if(movesetActive === 'level-up') {
+        return a.level_learned_at - b.level_learned_at;
+      } else if(movesetActive === 'machine' && a.tmDetails && b.tmDetails) {
+        return a.tmDetails.id - b.tmDetails.id;
+      }
+      return 0;
+    })
+    .map((move, idx, arr) => {
+      const isLast = idx === arr.length - 1;
+      return move.details && <tr className={`${!isLast ? 'border-solid border-b-1 border-foreground' : ''} align-middle`} key={idx}>
+        {movesetActive === 'level-up' && <td className="p-2 text-right">{move.level_learned_at}</td>}
+        {movesetActive === 'machine' && <td className="p-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
+        <td className="p-2">
+          <Link href={`/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
+            {capitilize(kebabToSpace(move.move))}
+          </Link>
+        </td>
+        <td className="p-2">
+          <Link href={`/type/${move.details.type.name}`}>
+            <Image
+              width="100"
+              height="20"
+              alt={capitilize(move.details.type.name)}
+              src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), settings.typeArtworkUrl)} />
+          </Link>
+        </td>
+        <td className="p-2">
+          <span className="flex">
+            <Tooltip content={capitilize(move.details.damage_class.name)}>
+              <Image
+                width="35"
+                height="35"
+                alt={move.details.damage_class.name}
+                src={`/move-${move.details.damage_class.name}.png`} />
+            </Tooltip>
+          </span>
+        </td>
+        <td className="p-2">{ move.details.power ?? '-' }</td>
+        <td className="p-2">{ move.details.accuracy ?? '-' }</td>
+      </tr>;
+    });
 
   return settings && <div className="moves col-span-6 mt-2">
     <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.moves.title') }</h3>
     <div className="flex flex-col sm:flex-row my-2">
       {!!moves && <div className="version-picker">
-        <label className=" text-xs flex flex-col">{t('pokedex.details.moves.chooseVersion')}:
+        <label className=" text-xs flex flex-col">
+          <span className="mb-1">
+            {t('pokedex.details.moves.chooseVersion')}:
+          </span>
           <Select onChange={(event) => setVersionGroupActive(event.target.value)}>
             <option className="bg-gray-300 text-white" value="" disabled selected>Select</option>
             {Object.entries(moves)
@@ -123,7 +196,10 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         </label>
       </div>}
       {versionGroupActive && <div className="moveset-picker">
-        <label className="ml-2 text-xs flex flex-col">{t('pokedex.details.moves.learntBy')}:
+        <label className="ml-2 text-xs flex flex-col">
+          <span className="mb-1">
+            {t('pokedex.details.moves.learntBy')}:
+          </span>
           <Select
             onChange={(event) => setMovesetActive(event.target.value)}
           >
@@ -144,76 +220,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
       {versionGroupActive && movesetActive && !showTable && <div className="p-4 flex items-center justify-center">
         <Spinner />
       </div>}
-      {showTable && <table className="w-full text-xs">
-        <thead>
-          <tr className="text-left">
-            {movesetActive === 'level-up' && <th className="w-[5%] pr-2 text-right border-solid border-b-2 border-foreground align-bottom">
-              Lv.
-            </th>}
-            {movesetActive === 'machine' && <th className="w-[5%] pr-2 border-solid border-b-2 border-foreground align-bottom">
-              TM/HM
-            </th>}
-            <th className="border-solid border-b-2 border-foreground align-bottom">
-              {t('pokedex.details.moves.name')}
-            </th>
-            <th className="border-solid border-b-2 border-foreground align-bottom">
-              {t('pokedex.details.moves.type')}
-            </th>
-            <th className="border-solid border-b-2 border-foreground align-bottom">
-              {t('pokedex.details.moves.class')}
-            </th>
-            <th className="border-solid border-b-2 border-foreground align-bottom">
-              {t('pokedex.details.moves.power')}
-            </th>
-            <th className="border-solid border-b-2 border-foreground align-bottom">
-              {t('pokedex.details.moves.accuracy')}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {moves?.[versionGroupActive]?.moveset?.[movesetActive]
-            .sort((a, b) => {
-              if(movesetActive === 'level-up') {
-                return a.level_learned_at - b.level_learned_at;
-              } else if(movesetActive === 'machine' && a.tmDetails && b.tmDetails) {
-                return a.tmDetails.id - b.tmDetails.id;
-              }
-              return 0;
-            })
-            .map((move, idx, arr) => {
-              const isLast = idx === arr.length - 1;
-              return move.details && <tr className={`${!isLast ? 'border-solid border-b-1 border-foreground' : ''} align-middle`} key={idx}>
-                {movesetActive === 'level-up' && <td className="p-2 text-right">{move.level_learned_at}</td>}
-                {movesetActive === 'machine' && <td className="p-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
-                <td className="p-2">
-                  <Link href={`/pokedex/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
-                    {capitilize(kebabToSpace(move.move))}
-                  </Link>
-                </td>
-                <td className="p-2">
-                  <Image
-                    width="100"
-                    height="20"
-                    alt={capitilize(move.details.type.name)}
-                    src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), settings.typeArtworkUrl)} />
-                </td>
-                <td className="p-2">
-                  <span className="flex">
-                    <Tooltip content={capitilize(move.details.damage_class.name)}>
-                      <Image
-                        width="35"
-                        height="35"
-                        alt={move.details.damage_class.name}
-                        src={`/move-${move.details.damage_class.name}.png`} />
-                    </Tooltip>
-                  </span>
-                </td>
-                <td className="p-2">{ move.details.power ?? '-' }</td>
-                <td className="p-2">{ move.details.accuracy ?? '-' }</td>
-              </tr>;
-            })}
-        </tbody>
-      </table>}
+      {showTable && <Table headers={headers}>{body}</Table>}
     </div>
   </div>;
 }

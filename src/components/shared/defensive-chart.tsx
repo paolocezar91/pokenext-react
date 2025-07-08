@@ -1,9 +1,9 @@
 import { useTranslation } from "react-i18next";
-import { getBackgroundStyleWithStrings } from "../../shared/thumb/thumb";
-import Tooltip from "../../shared/tooltip/tooltip";
+import { getBackgroundStyleWithStrings } from "./thumb/thumb";
+import Tooltip from "./tooltip/tooltip";
 import { capitilize, normalizePokemonName } from "@/components/shared/utils";
 import { DefensiveMatchup, PokemonType } from "@/types/types";
-import { typeChart } from "./type-weakness-chart";
+import { typeChart } from "../[id]/details/type-weakness-chart";
 
 
 
@@ -95,7 +95,8 @@ export default function PokemonDefensiveChart({ types, name }: { types: string[]
           }
 
           return <Tooltip content={tooltipContent} key={idx}>
-            <span
+            <a
+              href={`/type/${type}`}
               style={getBackgroundStyleWithStrings([type])}
               className="text-xs text-center flex flex-col rounded-sm py-1 m-1 w-14"
             >
@@ -105,7 +106,7 @@ export default function PokemonDefensiveChart({ types, name }: { types: string[]
               <span>
                 {tooltipChild}
               </span>
-            </span>
+            </a>
           </Tooltip>;
         })
       }

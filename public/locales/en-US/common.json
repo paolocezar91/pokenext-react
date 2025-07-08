@@ -79,6 +79,15 @@
             "empty": "No description available"
         }
     },
+    "type": {
+        "title": "Type", 
+        "pokemon": {
+            "title": "Total of {{ length }} pokemons"
+        },
+        "moves": {
+            "title": "Total of {{ length }} moves"
+        }
+    },
     "table": {
         "name": "Name",
         "types": "Type(s)"
