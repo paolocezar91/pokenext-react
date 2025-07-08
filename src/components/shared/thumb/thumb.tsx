@@ -157,7 +157,7 @@ export default function PokemonThumb({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).normal[0]}
             alt={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
-            priority
+            loading="lazy"
           />}
           {shiny && <Image
             className="artwork z-1"
@@ -165,7 +165,7 @@ export default function PokemonThumb({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src={getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).shiny[0]}
             alt={`Shiny ${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
-            priority
+            loading="lazy"
           />}
           {isMega && <Image
             className="artwork opacity-40 z-2"
@@ -173,7 +173,7 @@ export default function PokemonThumb({
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             src="/mega-evo.png"
             alt={normalizePokemonName(pkmn.name)}
-            priority
+            loading="lazy"
           />}
         </div>
       </div>

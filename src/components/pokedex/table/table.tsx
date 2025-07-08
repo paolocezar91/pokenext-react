@@ -150,13 +150,14 @@ export default function PokemonTable({
                 ${isFirst ? 'pt-4' : ''}
               `}>
                 {pokemon.types.map((t, idx) =>
-                  <Image
-                    key={idx}
-                    width="100"
-                    height="20"
-                    className="inline m-1"
-                    alt={capitilize(t.type.name)}
-                    src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings.typeArtworkUrl)} />
+                  <Link href={`/type/${t.type.name}`} key={idx}>
+                    <Image
+                      width="100"
+                      height="20"
+                      className="inline m-1"
+                      alt={capitilize(t.type.name)}
+                      src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings.typeArtworkUrl)} />
+                  </Link>
                 )}
               </td>}
               { pokemon.stats.map((stat, idx) => {

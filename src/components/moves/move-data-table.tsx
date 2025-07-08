@@ -3,6 +3,7 @@ import Tooltip from "@/components/shared/tooltip/tooltip";
 import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
+import Link from "next/link";
 import { IMove } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 
@@ -22,13 +23,15 @@ export default function MoveDataTable({ moveData }: MoveDataTableProps) {
         <tr>
           <th className="text-left">{t('pokedex.details.moves.type')}</th>
           <td className="py-1">
-            <Image
-              loading="lazy"
-              width="100"
-              height="20"
-              alt={moveData.type.name}
-              src={getTypeIconById(getIdFromUrlSubstring(moveData.type.url), settings.typeArtworkUrl)}
-            />
+            <Link href={`/type/${moveData.type.name}`}>
+              <Image
+                loading="lazy"
+                width="100"
+                height="20"
+                alt={moveData.type.name}
+                src={getTypeIconById(getIdFromUrlSubstring(moveData.type.url), settings.typeArtworkUrl)}
+              />
+            </Link>
           </td>
         </tr>
         <tr>

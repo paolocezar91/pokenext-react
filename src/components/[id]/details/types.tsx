@@ -2,6 +2,7 @@
 import { capitilize } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
+import Link from "next/link";
 import { IType } from "pokeapi-typescript";
 
 export type TypeUrl = 'omega-ruby-alpha-sapphire'|
@@ -37,13 +38,14 @@ export default function PokemonTypes({ types }: { types: IType[] }) {
 
   return settings && <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
     {types.map((type, i) =>
-      <Image
-        key={i}
-        src={getTypeIconById(type.id.toString(), settings.typeArtworkUrl)}
-        width="100"
-        height="20"
-        alt={capitilize(type.name)}
-      />
+      <Link href={`/type/${type.name}`} key={i}>
+        <Image
+          src={getTypeIconById(type.id.toString(), settings.typeArtworkUrl)}
+          width="100"
+          height="20"
+          alt={capitilize(type.name)}
+        />
+      </Link>
     )}
   </div>;
 }

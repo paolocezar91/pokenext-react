@@ -79,6 +79,15 @@
             "empty": "Alvo não disponível"
         }
     },
+    "type": {
+        "title": "Tipo", 
+        "pokemon": {
+            "title": "Total de {{ length }} pokemons"
+        },
+        "moves": {
+            "title": "Total de {{ length }} moves"
+        }
+    },
     "table": {
         "name": "Nome",
         "types": "Tipo(s)"
