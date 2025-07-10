@@ -12,7 +12,7 @@ import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';
 import { PokedexSettings, SettingsItem } from '../settings/pokedex-settings';
 import { useInView } from 'react-intersection-observer';
 import { Settings as UserSettings } from '@/context/user-api';
-import "./list.scss";
+import "./pokedex-list.scss";
 
 function LazyThumb({
   pokemon,

@@ -9,7 +9,7 @@ import Tooltip from '../../shared/tooltip/tooltip';
 const pokeApiQuery = new PokeApiQuery();
 
 
-export default function PokemonFilter({
+export default function PokedexFilter({
   className,
   name,
   types,

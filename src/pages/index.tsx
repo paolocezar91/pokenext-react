@@ -1,8 +1,8 @@
 import '@/app/globals.css';
 import PokeApiQuery from '@/app/query';
-import PokemonFilter from '@/components/pokedex/list/filter';
-import PokemonList from '@/components/pokedex/list/list';
-import PokemonTable from '@/components/pokedex/table/table';
+import PokedexFilter from '@/components/pokedex/pokedex-list/pokedex-filter';
+import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
+import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
 import Spinner from '@/components/shared/spinner';
 import Toggle from '@/components/shared/toggle';
 import Tooltip from '@/components/shared/tooltip/tooltip';
@@ -17,7 +17,7 @@ import { useInView } from 'react-intersection-observer';
 import RootLayout from './layout';
 
 const pokeApiQuery = new PokeApiQuery();
-const NUMBERS_OF_POKEMON = 250;
+const NUMBERS_OF_POKEMON = 1025;
 const STARTING_POKEMON = 0;
 const TOTAL_POKEMON = 1025;
 
@@ -35,6 +35,12 @@ export async function getStaticProps() {
 
 export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   const { ref, inView } = useInView({ threshold: 1 });
+  const [showRef, setShowRef] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowRef(true), 0);
+    return () => clearTimeout(timer);
+  }, []);
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
   const [pokemonsBackup, setPokemonsBackup] = useState<IPkmn[]>(pokemonsData);
   const [loading, setLoading] = useState<boolean>(false);
@@ -47,7 +53,7 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
   useEffect(() => {
     async function loadMorePkmn() {
       setLoading(true);
-      showSnackbar('Loading...');
+      showSnackbar(`${t('pokedex.loading')}...`);
       const morePkmn = (await pokeApiQuery.getPokemonList(offset, NUMBERS_OF_POKEMON)).results;
       if (morePkmn.length > 0){
         setPokemons(pkmn => [...pkmn, ...morePkmn]);
@@ -97,14 +103,15 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
 
   if (!pokemons) return null;
 
-  const refElement = !inView && !filtered && <div className="ref" ref={ref}></div>;
+  const refElement = showRef && !inView && !filtered && <div className="ref" ref={ref}></div>;
+
   return (
     <RootLayout title="Home">
-      {pokemons && settings &&
+      {settings &&
         <div className="wrapper h-[inherit] p-4 bg-background relative">
           <div className="flex items-center">
             <div className="flex items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
-              <PokemonFilter
+              <PokedexFilter
                 className="flex"
                 name={settings.filter.name}
                 types={settings.filter.types ? settings.filter.types.split(",") : []}
@@ -129,8 +136,8 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
           </div>
           {
             !settings.listTable ?
-              <PokemonList pokemons={pokemons}>{refElement}</PokemonList> :
-              <PokemonTable pokemons={pokemons}>{refElement}</PokemonTable>
+              <PokedexList pokemons={pokemons}>{refElement}</PokedexList> :
+              <PokedexTable pokemons={pokemons}>{refElement}</PokedexTable>
           }
           {loading && <Spinner /> }
           <div className="ml-4 text-xs text-right">
