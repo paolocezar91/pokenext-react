@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-export function Settings({ children }: { children: ReactNode }) {
+export function PokedexSettings({ children }: { children: ReactNode }) {
   const [showSettings, setShowSettings] = useState(false);
   const { t } = useTranslation('common');
   const settingsRef = useRef<HTMLDivElement>(null);

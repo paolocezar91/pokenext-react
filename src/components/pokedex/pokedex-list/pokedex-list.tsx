@@ -9,10 +9,37 @@ import Link from 'next/link';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';
-import { Settings, SettingsItem } from '../settings/settings';
-import './list.scss';
+import { PokedexSettings, SettingsItem } from '../settings/pokedex-settings';
+import { useInView } from 'react-intersection-observer';
+import { Settings as UserSettings } from '@/context/user-api';
+import "./list.scss";
 
-export default function PokemonList({
+function LazyThumb({
+  pokemon,
+  settings,
+  isMobile
+}: {
+  pokemon: IPkmn,
+  settings: UserSettings,
+  isMobile: boolean
+}) {
+  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: '200px' });
+  return (
+    <div ref={ref} style={{ minHeight: 120, minWidth: 120 }}>
+      {inView ?
+        <Link href={`/pokedex/${pokemon.name}`} className="link">
+          <PokemonThumb
+            showName={settings!.thumbLabelList === 'thumbnail'}
+            pokemonData={pokemon}
+            size={isMobile ? 'xs': settings!.thumbSizeList}
+          />
+        </Link>
+        : null}
+    </div>
+  );
+}
+
+export default function PokedexList({
   pokemons,
   children
 }: Readonly<{
@@ -77,7 +104,7 @@ export default function PokemonList({
 
   return (
     settings && <div className="list-container p-4 bg-(--pokedex-red) relative" ref={parentRef}>
-      <Settings>
+      <PokedexSettings>
         <SettingsItem title={t('settings.size.title')} htmlFor="thumbSize">
           <Select className="w-full mt-1" value={settings?.thumbSizeList} id="thumbSize" onChange={handleThumbSizeChange}>
             <option value="xs">{t('settings.size.xs')}</option>
@@ -92,7 +119,7 @@ export default function PokemonList({
             <option value="none">{t('settings.label.none')}</option>
           </Select>
         </SettingsItem>
-      </Settings>
+      </PokedexSettings>
       <div className="
         list
         relative
@@ -116,19 +143,13 @@ export default function PokemonList({
         >
           {
             pokemons.map((pokemon, i) => {
-              const linkThumb = <Link href={`/pokedex/${pokemon.name}`} className="link">
-                <PokemonThumb
-                  showName={settings.thumbLabelList === 'thumbnail'}
-                  pokemonData={pokemon}
-                  size={isMobile ? 'xs': settings.thumbSizeList} />
-              </Link>;
-
+              const lazyThumb = <LazyThumb pokemon={pokemon} settings={settings} isMobile={isMobile} />;
               return <div key={i}>
                 {settings.thumbLabelList == 'tooltip' &&
                 <Tooltip content={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
-                  { linkThumb }
+                  { lazyThumb }
                 </Tooltip>}
-                {(settings.thumbLabelList == 'thumbnail' || settings.thumbLabelList == 'none') && linkThumb}
+                {(settings.thumbLabelList == 'thumbnail' || settings.thumbLabelList == 'none') && lazyThumb}
               </div>;
             })
           }

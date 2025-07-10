@@ -45,7 +45,7 @@ export default function PokemonByType({ pokemonList }: { pokemonList: INamedApiR
 
   return (
     <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-      <h3 className="w-fit text-lg mb-4">{t('type.pokemon.title', { length: pokemonList?.length })}</h3>
+      <h3 className="w-fit text-lg mb-4"> {t('type.pokemon.title', { length: pokemonList?.length })}</h3>
       {!!pokemonList?.length &&
       <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
         <Table headers={headers}>{body}</Table>
