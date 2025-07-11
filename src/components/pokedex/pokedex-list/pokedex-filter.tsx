@@ -63,16 +63,13 @@ export default function PokedexFilter({
     </Button>
   </Tooltip>;
 
-  const filterForm =
-  <>
-    {toggleFilterForm}
-    <div className="flex">
-      <div className="name-filter">
-        <Tooltip content={t("actions.filterName.tooltip")}>
-          <input
-            value={filterName}
-            name="filter"
-            className={`w-30
+  const filterForm =<div className="flex">
+    <div className="name-filter">
+      <Tooltip content={t("actions.filterName.tooltip")}>
+        <input
+          value={filterName}
+          name="filter"
+          className={`w-30
               md:w-75
               text-xs
               bg-white
@@ -84,28 +81,28 @@ export default function PokedexFilter({
               min-h-[2.5rem]
               hover:border-(--pokedex-red)
               ${className}`}
-            type="text"
-            placeholder={t("actions.filterName.placeholder")}
-            onChange={(event) => setFilterName(event.target.value)} />
-        </Tooltip>
-      </div>
-      <div className="type-filter mx-2">
-        <MultiSelect
-          placeholder={t("actions.filterTypes.placeholder")}
-          onChange={handleTypeFilter}
-          value={filterType}
-          options={
-            typeOptions.map(
-              ({ name }: { name: string }) =>
-                ({ label: capitilize(name), value: name })
-            )
-          }
-        />
-      </div>
+          type="text"
+          placeholder={t("actions.filterName.placeholder")}
+          onChange={(event) => setFilterName(event.target.value)} />
+      </Tooltip>
     </div>
-  </>;
+    <div className="type-filter mx-2">
+      <MultiSelect
+        placeholder={t("actions.filterTypes.placeholder")}
+        onChange={handleTypeFilter}
+        value={filterType}
+        options={
+          typeOptions.map(
+            ({ name }: { name: string }) =>
+              ({ label: capitilize(name), value: name })
+          )
+        }
+      />
+    </div>
+  </div>;
 
-  return (
-    open ? filterForm : toggleFilterForm
-  );
+  return <>
+    {toggleFilterForm}
+    {open && filterForm}
+  </>;
 }

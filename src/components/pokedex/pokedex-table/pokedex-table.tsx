@@ -11,6 +11,7 @@ import { statName } from '../../[id]/details/stats';
 import { PokedexSettings, SettingsItem } from '../settings/pokedex-settings';
 import LazyRow from './lazy-row';
 import { shouldShowColumn, sortPokemon } from './utils';
+import { SortKey } from '@/context/user-api';
 
 export default function PokedexTable({
   pokemons,
@@ -19,7 +20,7 @@ export default function PokedexTable({
 }>) {
   const { user, settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
-  const [sort, setSort] = useState<Record<string, string>>({});
+  const [sorting, setSorting] = useState<Array<{ key: SortKey, dir: '+' | '-' }>>([]);
 
   const handleShowShowColumnChange = (value: boolean) => {
     if(user)
@@ -38,40 +39,36 @@ export default function PokedexTable({
       upsertSettings({ showThumbTable }, user?.id);
   };
 
-  const SortComponent = ({ children, attr, disabled }: { children: React.ReactNode, attr: string, disabled?: boolean }) => {
+  const toggleSort = (key: SortKey) => {
+    setSorting(prev => {
+      const idx = prev.findIndex(s => s.key === key);
+      let updated: Array<{ key: SortKey, dir: '+' | '-' }> = [];
+      if (idx === -1) { // if it's not there add as asc
+        updated = [...prev, { key, dir: '+' }];
+      } else if (prev[idx].dir === '+') { // if it's there change it to desc
+        updated = [...prev];
+        updated[idx].dir = '-';
+      } else { // then remove it on third click
+        updated = prev.filter((_, i) => i !== idx);
+      }
+      upsertSettings({ sorting: updated });
+      return updated;
+    });
+  };
+
+  const SortComponent = ({ children, attr, disabled }: { children: React.ReactNode, attr: SortKey, disabled?: boolean }) => {
+    const sortEntry = sorting.find(s => s.key === attr);
     let tooltipContent = "";
     let icon: React.ReactNode;
-    const handleSort = (stat: string) => {
-      let value: string;
-
-      switch(sort[stat]) {
-        case "+":
-          value = "-";
-          break;
-        case "-":
-          value = '';
-          break;
-        default:
-          value = '+';
-          break;
-      }
-
-      setSort(s => {
-        const updatedSort = { ...s, [stat]: value };
-        upsertSettings({ sorting: updatedSort });
-        return updatedSort;
-      });
-    };
-
-    if(!sort[attr]) {
+    if(!sortEntry) {
       tooltipContent=`Sort ${kebabToSpace(attr)} ascending`;
       icon = <ArrowsUpDownIcon className="w-5" />;
     }
-    if(sort[attr] === '+'){
+    if(sortEntry?.dir === '+'){
       tooltipContent = `Sort ${kebabToSpace(attr)} descending`;
       icon = <ArrowLongUpIcon className="w-5" />;
     }
-    if(sort[attr] === '-'){
+    if(sortEntry?.dir === '-'){
       tooltipContent = `Unsort ${kebabToSpace(attr)}`;
       icon = <ArrowLongDownIcon className="w-5" />;
     }
@@ -80,18 +77,19 @@ export default function PokedexTable({
       <Button
         disabled={disabled}
         className={`
-        flex 
-        items-start
-        ml-1
-        px-2
-        py-1
-        cursor-pointer
-        rounded
-        bg-(--pokedex-red-dark)
-        hover:bg-(--pokedex-red-darker)
-        ${sort[attr] && 'bg-white text-(--pokedex-red-dark) hover:text-white'}
-      `}
-        onClick={() => handleSort(attr)}>
+          flex 
+          items-start
+          ml-1
+          px-2
+          py-1
+          cursor-pointer
+          rounded
+          bg-(--pokedex-red-dark)
+          hover:bg-(--pokedex-red-darker)
+          ${sortEntry ? 'bg-white text-(--pokedex-red-dark) hover:text-white' : ''}
+        `}
+        onClick={() => toggleSort(attr)}
+      >
         <span className="mr-1">{children}</span>
         {icon}
       </Button>
@@ -100,26 +98,26 @@ export default function PokedexTable({
 
   const ResetSortComponent = () => {
     const resetSort = () => {
-      setSort({});
-      upsertSettings({ sorting: {}});
+      setSorting([]);
+      upsertSettings({ sorting: [] });
     };
 
     return <Tooltip content="Reset sorting">
       <Button
-        disabled={Object.values(sort).every(v => !v)}
+        disabled={sorting.length === 0}
         className={`
-        ml-1
-        p-1
-        cursor-pointer
-        rounded
-        text-(--pokedex-red-darker)
-        bg-white
-        hover:bg-(--pokedex-red-darker)
-        hover:text-white
-        disabled:bg-(--pokedex-red)
-        disabled:text-white
-        disabled:opacity-50
-                `}
+          ml-1
+          p-1
+          cursor-pointer
+          rounded
+          text-(--pokedex-red-darker)
+          bg-white
+          hover:bg-(--pokedex-red-darker)
+          hover:text-white
+          disabled:bg-(--pokedex-red)
+          disabled:text-white
+          disabled:opacity-50
+        `}
         onClick={() => resetSort()}>
         <XMarkIcon className="w-5" />
       </Button>
@@ -127,11 +125,15 @@ export default function PokedexTable({
   };
 
   useEffect(() => {
-    if(settings){
-      setSort(settings?.sorting);
+    if(settings && Array.isArray(settings.sorting)){
+      setSorting(settings.sorting);
+    } else {
+      setSorting([]);
     }
   }, [settings?.sorting]);
 
+  const sortedPokemon = pokemons
+    .sort(sortPokemon(sorting));
 
   return settings && <div className="table-container p-4 bg-(--pokedex-red) relative">
     <PokedexSettings>
@@ -180,7 +182,7 @@ export default function PokedexTable({
                 className="text-white text-center px-2 py-2"
               >
                 { !settings.showShowColumn ?
-                  <SortComponent attr={stat.stat.name}>{statName(stat.stat.name)}</SortComponent> :
+                  <SortComponent attr={stat.stat.name as SortKey}>{statName(stat.stat.name)}</SortComponent> :
                   <Toggle
                     size="sm"
                     childrenLeft={statName(stat.stat.name)}
@@ -196,8 +198,7 @@ export default function PokedexTable({
         </thead>
         <tbody className="bg-background">
           {
-            pokemons
-              .sort(sortPokemon(sort))
+            sortedPokemon
               .map((pokemon, i) => {
                 const isFirst = i === 0;
                 const isLast = i === pokemons.length - 1;

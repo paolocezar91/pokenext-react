@@ -19,6 +19,14 @@ const UserContext = createContext<IUserContext>({
   upsertSettings,
 });
 
+const setSettingsCookies = async (updatedSettings: unknown) => {
+  await fetch('/api/settings', {
+    method: 'POST',
+    body: JSON.stringify(updatedSettings),
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
+
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { data: session, status } = useSession();
   // Use localStorage for guest user/settings
@@ -33,16 +41,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     thumbSizeList: "sm",
     typeArtworkUrl: "sword-shield" as TypeUrl,
     filter: { name: "", types: "" },
-    sorting: {
-      id: "",
-      name: "",
-      hp: "",
-      attack: "",
-      defense: "",
-      'special-attack': "",
-      'special-defense': "",
-      speed: ""
-    }
+    sorting: []
   };
   const [guestUser] = useLocalStorage<User>("guest_user", { id: 0, email: "guest@local" });
   const [guestSettings, setGuestSettings] = useLocalStorage<Settings>("guest_settings", guestDefaultSettings);
@@ -68,20 +67,18 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const handleUpsertSettings = async (body: Record<string, unknown>, id?: number) => {
     const updatedSettings = await upsertSettings(body, id ?? user?.id);
     if(updatedSettings) {
-      setSettings(prev => ({ ...prev, ...updatedSettings, sorting: { ...prev?.sorting, ...updatedSettings.sorting }}));
-      await fetch('/api/settings', {
-        method: 'POST',
-        body: JSON.stringify(updatedSettings),
-        headers: { 'Content-Type': 'application/json' },
-      });
+      setSettings(updatedSettings);
+      setSettingsCookies(updatedSettings);
     }
     return updatedSettings;
   };
 
   const handleGetSettings = async (user_id: number) => {
     const settings = await getSettings(user_id);
-    if(settings)
+    if(settings){
       setSettings(settings);
+      setSettingsCookies(settings);
+    }
     return settings;
   };
 

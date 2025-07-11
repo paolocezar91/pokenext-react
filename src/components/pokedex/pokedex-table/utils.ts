@@ -1,10 +1,9 @@
-import { IPkmn, UserSettings } from "@/types/types";
+import { Settings, SortKey } from "@/context/user-api";
+import { IPkmn } from "@/types/types";
 
-export const shouldShowColumn = (settings: UserSettings, i: number) => settings?.showShowColumn || settings?.showColumn[i];
+export const shouldShowColumn = (settings: Settings, i: number) => settings?.showShowColumn || settings?.showColumn[i];
 
-type SortKey = 'id' | 'name' | 'hp' | 'types' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';
-
-export const sortPokemon = (sort: Record<SortKey, string>) => (a: IPkmn, b: IPkmn) => {
+export const sortPokemon = (sorting: Array<{ key: SortKey, dir: '+' | '-' }>) => (a: IPkmn, b: IPkmn) => {
   const sortMapping: Record<SortKey, [number | string, number | string]> = {
     'types': [a.types.map(t => t.type.name).join(","), b.types.map(t => t.type.name).join(",")],
     'id': [Number(a.id), Number(b.id)],
@@ -17,10 +16,7 @@ export const sortPokemon = (sort: Record<SortKey, string>) => (a: IPkmn, b: IPkm
     'speed': [a.stats[5].base_stat, b.stats[5].base_stat],
   };
 
-  // Get active sort keys in the order they were set
-  const activeSortKeys = Object.keys(sort).filter((key) => sort[key]) as SortKey[];
-
-  for (const key of activeSortKeys) {
+  for (const { key, dir } of sorting) {
     const [aVal, bVal] = sortMapping[key];
     if (aVal === undefined || bVal === undefined) continue;
 
@@ -32,7 +28,7 @@ export const sortPokemon = (sort: Record<SortKey, string>) => (a: IPkmn, b: IPkm
     }
 
     if (cmp !== 0) {
-      return sort[key] === '+' ? cmp : -cmp;
+      return dir === '+' ? cmp : -cmp;
     }
   }
   return sortMapping.id[0] as number - (sortMapping.id[1] as number);
