@@ -36,4 +36,14 @@ export type Settings = {
   thumbSizeList: string,
   typeArtworkUrl: TypeUrl,
   filter: { name: string, types: string }
+  sorting: {
+    id: string,
+    name: string,
+    hp: string,
+    attack: string,
+    defense: string,
+    'special-attack': string,
+    'special-defense': string,
+    speed: string
+  }
 } | null;

@@ -32,7 +32,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     thumbLabelList: "tooltip",
     thumbSizeList: "sm",
     typeArtworkUrl: "sword-shield" as TypeUrl,
-    filter: { name: '', types: '' }
+    filter: { name: "", types: "" },
+    sorting: {
+      id: "",
+      name: "",
+      hp: "",
+      attack: "",
+      defense: "",
+      'special-attack': "",
+      'special-defense': "",
+      speed: ""
+    }
   };
   const [guestUser] = useLocalStorage<User>("guest_user", { id: 0, email: "guest@local" });
   const [guestSettings, setGuestSettings] = useLocalStorage<Settings>("guest_settings", guestDefaultSettings);
@@ -57,8 +67,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Wrapper to update settings state after upsert
   const handleUpsertSettings = async (body: Record<string, unknown>, id?: number) => {
     const updatedSettings = await upsertSettings(body, id ?? user?.id);
-    if(updatedSettings)
-      setSettings(prev => ({ ...prev, ...updatedSettings }));
+    if(updatedSettings) {
+      setSettings(prev => ({ ...prev, ...updatedSettings, sorting: { ...prev?.sorting, ...updatedSettings.sorting }}));
+      await fetch('/api/settings', {
+        method: 'POST',
+        body: JSON.stringify(updatedSettings),
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
     return updatedSettings;
   };
 

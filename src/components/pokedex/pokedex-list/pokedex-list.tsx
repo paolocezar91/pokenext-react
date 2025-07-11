@@ -41,10 +41,8 @@ function LazyThumb({
 
 export default function PokedexList({
   pokemons,
-  children
 }: Readonly<{
   pokemons: IPkmn[],
-  children: React.ReactNode;
 }>) {
   const { settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
@@ -153,7 +151,6 @@ export default function PokedexList({
               </div>;
             })
           }
-          { children }
         </div>
       </div>
     </div>

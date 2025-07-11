@@ -37,7 +37,6 @@ const spritesUrl = (id: number) => {
       home:
         `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${id}.png`,
       'official-artwork':
-
         `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/${id}.png`,
       showdown:
         `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/shiny/${id}.gif`,
@@ -133,7 +132,7 @@ export default function PokemonThumb({
   const shinyArtworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).shiny[0];
 
   const loaded = <div
-    style={ pkmn['types'] ? getBackgroundStyle(pkmn.types) : { 'background': '#CCCCC' }}
+    style={ pkmn.types ? getBackgroundStyle(pkmn.types) : { 'background': '#CCCCC' }}
     className={`
         pokemon flex flex-col mx-auto justify-center items-center
         ${className ? className : ''}
@@ -150,7 +149,7 @@ export default function PokemonThumb({
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src={artworkUrl}
-          alt={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
+          alt={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}`}
           loading="lazy"
         />}
         {shiny && <Image

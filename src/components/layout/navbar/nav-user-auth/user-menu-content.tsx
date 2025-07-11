@@ -33,9 +33,9 @@ export default function UserMenuContent({ session, pathname, onSignIn, onSignOut
     <ArrowLeftEndOnRectangleIcon width={22}/>
   </NavButton>;
 
-  const userNameOrEmail = session ? <span className="ml-2 text-sm text-white mb-2 font-bold">
-    {session?.user?.name || session?.user?.email}
-  </span> : 'Guest';
+  const userNameOrEmail = <span className="ml-2 text-sm text-white mb-2 font-bold">
+    {session ? session?.user?.name || session?.user?.email: 'Guest'}
+  </span>;
 
   return (
     <ul className="w-full">

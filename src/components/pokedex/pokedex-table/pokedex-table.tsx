@@ -1,96 +1,25 @@
 import Toggle from '@/components/shared/toggle';
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
+import Tooltip from '@/components/shared/tooltip/tooltip';
+import { kebabToSpace } from '@/components/shared/utils';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
-import Image from 'next/image';
-import Link from 'next/link';
+import { ArrowLongDownIcon, ArrowLongUpIcon, ArrowsUpDownIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 import { statName } from '../../[id]/details/stats';
-import { getTypeIconById } from '../../[id]/details/types';
-import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';
 import { PokedexSettings, SettingsItem } from '../settings/pokedex-settings';
-import { Settings as UserSettings } from '@/context/user-api';
-
-const shouldShowColumn = (settings: UserSettings, i: number) => settings?.showShowColumn || settings?.showColumn[i];
-
-function LazyRow(
-  { settings, isFirst, isLast, pokemon }:
-  { settings: UserSettings, isFirst: boolean, isLast: boolean, pokemon: IPkmn }
-) {
-  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: '200px' });
-  return <tr ref={ref} className="bg-background">
-    {inView ? settings && <>
-      <td className={`
-        px-4
-        ${isFirst ? 'pt-4' : ''}
-        ${!settings.showThumbTable ? 'py-4': 'py-2'}
-      `}>
-        {settings.showThumbTable && <Link href={`/pokedex/${pokemon.name}`}>
-          <PokemonThumb pokemonData={pokemon} size="xs" />
-        </Link>}
-      </td>
-      {(settings.showShowColumn || settings.showColumn[0]) && <td className={`
-        px-4
-        ${isFirst ? 'pt-4' : ''}
-        ${!isLast ? 'border-solid border-b-2 border-foreground text-center': ''} 
-        ${!settings.showThumbTable ? 'py-4': 'py-2'} 
-      `}>
-        <Link className="hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`}>
-          {getNumber(pokemon.id)}
-        </Link>
-      </td>}
-      {shouldShowColumn(settings, 1) && <td className={`
-        px-4 
-        ${isFirst ? 'pt-4' : ''}
-        ${!isLast ? 'border-solid border-b-2 border-foreground': ''} 
-        ${!settings.showThumbTable ? 'py-4': 'py-2'} 
-      `}>
-        <Link className="text-bold hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`}>
-          {normalizePokemonName(pokemon.name)}
-        </Link>
-      </td>}
-      {(settings.showShowColumn || settings.showColumn[2]) && <td className={`
-        px-4
-        ${!isLast ? 'border-solid border-b-2 border-foreground': ''}
-        ${!settings.showThumbTable ? 'py-4': 'py-2'}
-        ${isFirst ? 'pt-4' : ''}
-      `}>
-        {pokemon.types.map((t, idx) =>
-          <Link href={`/type/${t.type.name}`} key={idx}>
-            <Image
-              width="100"
-              height="20"
-              className="inline m-1"
-              alt={capitilize(t.type.name)}
-              src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings.typeArtworkUrl)} />
-          </Link>
-        )}
-      </td>}
-      { pokemon.stats.map((stat, idx) => {
-        return (settings.showShowColumn || settings.showColumn[3 + idx]) && <td key={idx} className={`
-          px-4
-          ${isFirst ? 'pt-4' : ''}
-          ${!isLast ? 'border-solid border-b-2 border-foreground': ''} 
-          ${!settings.showThumbTable ? 'py-4': 'py-2'}
-        `}>
-          { stat.base_stat }
-        </td>;
-      }) }
-      <td></td>
-    </> : null}
-  </tr>;
-}
+import LazyRow from './lazy-row';
+import { shouldShowColumn, sortPokemon } from './utils';
 
 export default function PokedexTable({
   pokemons,
-  children
 }: Readonly<{
   pokemons: IPkmn[],
-  children: React.ReactNode;
 }>) {
   const { user, settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
+  const [sort, setSort] = useState<Record<string, string>>({});
 
   const handleShowShowColumnChange = (value: boolean) => {
     if(user)
@@ -108,6 +37,100 @@ export default function PokedexTable({
     if(user)
       upsertSettings({ showThumbTable }, user?.id);
   };
+
+  const SortComponent = ({ children, attr, disabled }: { children: React.ReactNode, attr: string, disabled?: boolean }) => {
+    let tooltipContent = "";
+    let icon: React.ReactNode;
+    const handleSort = (stat: string) => {
+      let value: string;
+
+      switch(sort[stat]) {
+        case "+":
+          value = "-";
+          break;
+        case "-":
+          value = '';
+          break;
+        default:
+          value = '+';
+          break;
+      }
+
+      setSort(s => {
+        const updatedSort = { ...s, [stat]: value };
+        upsertSettings({ sorting: updatedSort });
+        return updatedSort;
+      });
+    };
+
+    if(!sort[attr]) {
+      tooltipContent=`Sort ${kebabToSpace(attr)} ascending`;
+      icon = <ArrowsUpDownIcon className="w-5" />;
+    }
+    if(sort[attr] === '+'){
+      tooltipContent = `Sort ${kebabToSpace(attr)} descending`;
+      icon = <ArrowLongUpIcon className="w-5" />;
+    }
+    if(sort[attr] === '-'){
+      tooltipContent = `Unsort ${kebabToSpace(attr)}`;
+      icon = <ArrowLongDownIcon className="w-5" />;
+    }
+
+    return <Tooltip content={tooltipContent}>
+      <Button
+        disabled={disabled}
+        className={`
+        flex 
+        items-start
+        ml-1
+        px-2
+        py-1
+        cursor-pointer
+        rounded
+        bg-(--pokedex-red-dark)
+        hover:bg-(--pokedex-red-darker)
+        ${sort[attr] && 'bg-white text-(--pokedex-red-dark) hover:text-white'}
+      `}
+        onClick={() => handleSort(attr)}>
+        <span className="mr-1">{children}</span>
+        {icon}
+      </Button>
+    </Tooltip>;
+  };
+
+  const ResetSortComponent = () => {
+    const resetSort = () => {
+      setSort({});
+      upsertSettings({ sorting: {}});
+    };
+
+    return <Tooltip content="Reset sorting">
+      <Button
+        disabled={Object.values(sort).every(v => !v)}
+        className={`
+        ml-1
+        p-1
+        cursor-pointer
+        rounded
+        text-(--pokedex-red-darker)
+        bg-white
+        hover:bg-(--pokedex-red-darker)
+        hover:text-white
+        disabled:bg-(--pokedex-red)
+        disabled:text-white
+        disabled:opacity-50
+                `}
+        onClick={() => resetSort()}>
+        <XMarkIcon className="w-5" />
+      </Button>
+    </Tooltip>;
+  };
+
+  useEffect(() => {
+    if(settings){
+      setSort(settings?.sorting);
+    }
+  }, [settings?.sorting]);
 
 
   return settings && <div className="table-container p-4 bg-(--pokedex-red) relative">
@@ -128,33 +151,36 @@ export default function PokedexTable({
           childrenRight={t('settings.showShowColumns')} />
       </SettingsItem>
     </PokedexSettings>
-    <div className="overflow-auto h-[72vh] relative rounded">
-      <table className="w-full text-xs">
-        <thead className="bg-(--pokedex-red)">
-          <tr className="sticky top-0 bg-(--pokedex-red) z-1">
-            <th className="w-[1%] text-white text-center px-2 py-2"></th>
+    <div className="overflow-auto h-[72vh] relative rounded shadow-md">
+      <table className="w-full text-xs rounded">
+        <thead>
+          <tr className="sticky top-0 bg-(--pokedex-red-dark) z-1">
+            <th className="w-[1%] text-white text-center px-2 py-2">
+              <ResetSortComponent />
+            </th>
             {settings && <th className="w-0 text-white text-center px-2 py-2">
-              #
+              <SortComponent attr="id">#</SortComponent>
             </th>}
             {shouldShowColumn(settings, 1) && <th className="w-[18%] text-white text-left px-2 py-2">
-              {t('table.name')}
+              <SortComponent attr="name">{t('table.name')}</SortComponent>
             </th>}
             {shouldShowColumn(settings, 2) && <th className="text-white text-left px-2 py-2">
-              { !settings.showShowColumn ? t('table.types') :
+              {!settings.showShowColumn ?
+                <SortComponent attr="types">{t('table.types')}</SortComponent> :
                 <Toggle
                   size="sm"
                   childrenLeft={t('table.types')}
                   id={t('table.types')}
                   value={settings.showColumn[2]}
-                  onChange={(e) => handleShowColumnChange(e, 2)} />
-              }
-            </th> }
+                  onChange={(e) => handleShowColumnChange(e, 2)} />}
+            </th>}
             { !!pokemons.length && pokemons[0].stats.map((stat, idx) => {
               return shouldShowColumn(settings, 3 + idx) && <th
                 key={idx}
-                className="text-white text-left px-2 py-2"
+                className="text-white text-center px-2 py-2"
               >
-                { !settings.showShowColumn ? statName(stat.stat.name) :
+                { !settings.showShowColumn ?
+                  <SortComponent attr={stat.stat.name}>{statName(stat.stat.name)}</SortComponent> :
                   <Toggle
                     size="sm"
                     childrenLeft={statName(stat.stat.name)}
@@ -170,18 +196,15 @@ export default function PokedexTable({
         </thead>
         <tbody className="bg-background">
           {
-            pokemons.map((pokemon, i) => {
-              const isFirst = i === 0;
-              const isLast = i === pokemons.length - 1;
-              return settings && <LazyRow key={i} isFirst={isFirst} isLast={isLast} pokemon={pokemon} settings={settings}></LazyRow>;
-            })
+            pokemons
+              .sort(sortPokemon(sort))
+              .map((pokemon, i) => {
+                const isFirst = i === 0;
+                const isLast = i === pokemons.length - 1;
+                return settings && <LazyRow key={i} isFirst={isFirst} isLast={isLast} pokemon={pokemon} />;
+              })
           }
         </tbody>
-        <tfoot className="bg-background">
-          <tr>
-            <td className="py-2" colSpan={11}>{ children }</td>
-          </tr>
-        </tfoot>
       </table>
     </div>
   </div>;

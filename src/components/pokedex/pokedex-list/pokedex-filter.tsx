@@ -1,8 +1,10 @@
 import PokeApiQuery from '@/app/query';
 import MultiSelect from '@/components/shared/multi-select';
 import { capitilize } from '@/components/shared/utils';
+import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { IType } from 'pokeapi-typescript';
 import { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Tooltip from '../../shared/tooltip/tooltip';
 
@@ -26,6 +28,7 @@ export default function PokedexFilter({
   const [filterName, setFilterName] = useState(name);
   const [filterType, setFilterType] = useState<string[]>(types ?? []);
   const [typeOptions, setTypeOptions] = useState<IType[]>([]);
+  const [open, setOpen] = useState<boolean>(!!name || !!types?.length);
 
   useEffect(() => {
     pokeApiQuery.getAllTypes().then(options => setTypeOptions(options));
@@ -43,7 +46,26 @@ export default function PokedexFilter({
     onFilterTypes(t);
   };
 
-  return (
+  const toggleFilterForm = <Tooltip content={!open ? "Open filters" : "Close filters"}>
+    <Button className={`
+        cursor-pointer
+        flex
+        p-2
+        rounded
+        mr-2
+        ${open ? `
+        bg-(--pokedex-red-darker)
+        hover:text-(--pokedex-red-darker)
+        hover:bg-white` : `
+        hover:bg-(--pokedex-red-darker)
+        `}`} onClick={() => setOpen(!open)}>
+      { open ? <ChevronLeftIcon className="w-6" />: <MagnifyingGlassIcon className="w-6" />}
+    </Button>
+  </Tooltip>;
+
+  const filterForm =
+  <>
+    {toggleFilterForm}
     <div className="flex">
       <div className="name-filter">
         <Tooltip content={t("actions.filterName.tooltip")}>
@@ -67,7 +89,7 @@ export default function PokedexFilter({
             onChange={(event) => setFilterName(event.target.value)} />
         </Tooltip>
       </div>
-      <div className="type-filter ml-4">
+      <div className="type-filter mx-2">
         <MultiSelect
           placeholder={t("actions.filterTypes.placeholder")}
           onChange={handleTypeFilter}
@@ -81,5 +103,9 @@ export default function PokedexFilter({
         />
       </div>
     </div>
+  </>;
+
+  return (
+    open ? filterForm : toggleFilterForm
   );
 }

@@ -1,8 +1,9 @@
 import PokeApiQuery from "@/app/query";
 import { getNumber } from "@/components/shared/thumb/thumb";
-import { kebabToSpace, normalizePokemonName } from "@/components/shared/utils";
+import { normalizePokemonName } from "@/components/shared/utils";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
-import { FormEvent, useState, ChangeEvent, useEffect } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 const pokeApiQuery = new PokeApiQuery();
 
@@ -89,7 +90,21 @@ export default function Search({ className }: { className?: string }) {
 
   return (
     <form onSubmit={goTo} data-testid="form-go-to" className={`${className} relative`}>
-      <div className="h-10 flex">
+      <div className="
+        h-10
+        flex
+        bg-white
+        text-xs
+        text-black
+        rounded-lg
+        px-2
+        py-1
+        placeholder-gray-500
+        border-solid
+        border-2
+        border-black
+        hover:border-gray-700
+      ">
         <input
           name="pokemon-search"
           placeholder={t('actions.go.placeholder')}
@@ -99,19 +114,9 @@ export default function Search({ className }: { className?: string }) {
           className="
             h-full
             w-full
-            bg-white
-            text-xs
-            text-black
-            rounded
-            px-2
-            py-1
-            placeholder-gray-500
-            border-solid
-            border-2
-            border-black
-            hover:border-gray-700
           "
         />
+        <MagnifyingGlassIcon className="w-6" />
       </div>
       {suggestions.length > 0 &&
         <ul className="absolute bg-white border border-foreground text-black text-xs rounded shadow-lg mt-1 max-h-40 overflow-y-auto w-60 z-10">
