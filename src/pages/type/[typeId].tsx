@@ -56,7 +56,7 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
     );
   }
 
-  return <RootLayout title={`${t('type.title')}: ${capitilize(typeData.name)}`}>
+  return <RootLayout title={`${t('type.title')} "${capitilize(typeData.name)}"`}>
     <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
       <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available]">
         <div className="flex items-center">

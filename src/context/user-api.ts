@@ -25,6 +25,8 @@ export const upsertSettings = async (body: Partial<Settings>, id?: number,) => {
 
 export type User = { id: number; email: string } | null;
 
+export type SortKey = 'id' | 'name' | 'hp' | 'types' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';
+
 export type Settings = {
   artworkUrl: string,
   descriptionLang: string,
@@ -35,5 +37,6 @@ export type Settings = {
   thumbLabelList: string,
   thumbSizeList: string,
   typeArtworkUrl: TypeUrl,
-  filter: { name: string, types: string }
+  filter: { name: string, types: string },
+  sorting: Array<{ key: SortKey, dir: '+' | '-' }>
 } | null;

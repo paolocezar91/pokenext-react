@@ -1,8 +1,8 @@
 import '@/app/globals.css';
 import PokeApiQuery from '@/app/query';
-import PokemonFilter from '@/components/pokedex/list/filter';
-import PokemonList from '@/components/pokedex/list/list';
-import PokemonTable from '@/components/pokedex/table/table';
+import PokedexFilter from '@/components/pokedex/pokedex-list/pokedex-filter';
+import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
+import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
 import Spinner from '@/components/shared/spinner';
 import Toggle from '@/components/shared/toggle';
 import Tooltip from '@/components/shared/tooltip/tooltip';
@@ -10,14 +10,14 @@ import { useSnackbar } from '@/context/snackbar';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
-import { Metadata } from 'next';
+import { Metadata, NextPageContext } from 'next';
+import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useInView } from 'react-intersection-observer';
 import RootLayout from './layout';
 
 const pokeApiQuery = new PokeApiQuery();
-const NUMBERS_OF_POKEMON = 250;
+const NUMBERS_OF_POKEMON = 1025;
 const STARTING_POKEMON = 0;
 const TOTAL_POKEMON = 1025;
 
@@ -26,94 +26,78 @@ export const metadata: Metadata = {
   description: 'By Paolo Pestalozzi with PokeAPI and Next.js.'
 };
 
-export async function getStaticProps() {
-  const pokemonsData = (await pokeApiQuery.getPokemonList(STARTING_POKEMON, NUMBERS_OF_POKEMON)).results;
-  return {
-    props: { pokemonsData },
-  };
+export async function getServerSideProps(context: NextPageContext) {
+  const cookies = parseCookies(context);
+  const settings = cookies.user_settings ? JSON.parse(cookies.user_settings) : {};
+  // Use settings to filter
+  const pokemonsData = (await pokeApiQuery.getPokemonList(STARTING_POKEMON, NUMBERS_OF_POKEMON, settings.filter)).results;
+  return { props: { pokemonsData, filterApplied: settings?.filter ?? { name: '', types: '' }}};
 }
 
-export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
-  const { ref, inView } = useInView({ threshold: 1 });
+export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData: IPkmn[], filterApplied: { name: string, types: string }}) {
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
-  const [pokemonsBackup, setPokemonsBackup] = useState<IPkmn[]>(pokemonsData);
   const [loading, setLoading] = useState<boolean>(false);
-  const [filtered, setFiltered] = useState<boolean>(false);
-  const [offset, setOffset] = useState(STARTING_POKEMON + NUMBERS_OF_POKEMON);
+  const [filtered, setFiltered] = useState<{ name: string, types: string }>(filterApplied);
   const { settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
   const { showSnackbar, hideSnackbar } = useSnackbar();
 
+  // detect filter changes to query for pokemon
   useEffect(() => {
-    async function loadMorePkmn() {
+    if(
+      !loading &&
+      settings &&
+      (
+        settings.filter.name !== filtered.name ||
+        settings.filter.types !== filtered.types
+      )
+    ) {
       setLoading(true);
-      showSnackbar('Loading...');
-      const morePkmn = (await pokeApiQuery.getPokemonList(offset, NUMBERS_OF_POKEMON)).results;
-      if (morePkmn.length > 0){
-        setPokemons(pkmn => [...pkmn, ...morePkmn]);
-        setPokemonsBackup(pokemons);
-        setOffset(offset => offset + NUMBERS_OF_POKEMON);
-        setTimeout(() => setLoading(false), 0);
-      }
-      hideSnackbar();
-    }
-
-    if (inView && !loading) {
-      loadMorePkmn();
-    }
-  }, [inView]);
-
-  // detect filter changes and query for pokemon
-  useEffect(() => {
-    if(settings && (settings.filter.name || settings.filter.types) && !loading) {
-      setFiltered(true);
-      setLoading(true);
-      pokeApiQuery.getPokemonList(0, TOTAL_POKEMON, settings.filter).then(({ results }) => {
-        setPokemons(results);
-      }).finally(() => {
-        setTimeout(() => {
-          setLoading(false);
-          hideSnackbar();
-        }, 0);
-      });
+      showSnackbar(`${t('pokedex.loading')}...`);
+      setFiltered(settings.filter);
+      pokeApiQuery.getPokemonList(0, TOTAL_POKEMON, settings.filter)
+        .then(({ results }) => {
+          setPokemons(results);
+          setTimeout(() => {
+            setLoading(false);
+            hideSnackbar();
+          }, 0);
+        });
     }
   }, [settings?.filter]);
 
   const filterName = (name: string) => {
-    setFiltered(!!name);
-    upsertSettings({ filter: { name, types: settings?.filter?.types ?? '' }});
-    if(!name) {
-      setPokemons(pokemonsBackup);
+    if(name !== settings?.filter.name) {
+      const filter = { name, types: settings?.filter?.types ?? '' };
+      upsertSettings({ filter });
     }
   };
 
   const filterTypes = (types: string[]) => {
-    setFiltered(!!types.length);
-    upsertSettings({ filter: { name: settings?.filter?.name ?? '', types: types.join(",") }});
-    if(!types.length) {
-      setPokemons(pokemonsBackup);
+    if(types.join(',') !== settings?.filter.types) {
+      const filter = { name: settings?.filter?.name ?? '', types: types.join(",") };
+      upsertSettings({ filter });
     }
   };
 
   if (!pokemons) return null;
 
-  const refElement = !inView && !filtered && <div className="ref" ref={ref}></div>;
   return (
     <RootLayout title="Home">
-      {pokemons && settings &&
+      {settings &&
         <div className="wrapper h-[inherit] p-4 bg-background relative">
           <div className="flex items-center">
             <div className="flex items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
-              <PokemonFilter
+              <PokedexFilter
                 className="flex"
                 name={settings.filter.name}
                 types={settings.filter.types ? settings.filter.types.split(",") : []}
                 onFilterName={filterName}
                 onFilterTypes={filterTypes}
               />
-              <div className="flex-1">
+              <div className="flex-1 pl-2 border-l-2 border-white">
                 <Tooltip content={t('settings.toggleView')}>
-                  <label className="ml-4 flex">
+                  <label className="flex hover:bg-(--pokedex-red-darker) p-2 rounded">
                     <Squares2X2Icon className="w-7" />
                     <Toggle
                       className="mx-2"
@@ -129,8 +113,8 @@ export default function Pokedex({ pokemonsData }: { pokemonsData: IPkmn[] }) {
           </div>
           {
             !settings.listTable ?
-              <PokemonList pokemons={pokemons}>{refElement}</PokemonList> :
-              <PokemonTable pokemons={pokemons}>{refElement}</PokemonTable>
+              <PokedexList pokemons={pokemons}></PokedexList> :
+              <PokedexTable pokemons={pokemons}></PokedexTable>
           }
           {loading && <Spinner /> }
           <div className="ml-4 text-xs text-right">

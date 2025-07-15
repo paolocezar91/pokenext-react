@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-export function Settings({ children }: { children: ReactNode }) {
+export function PokedexSettings({ children }: { children: ReactNode }) {
   const [showSettings, setShowSettings] = useState(false);
   const { t } = useTranslation('common');
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -36,8 +36,9 @@ export function Settings({ children }: { children: ReactNode }) {
         border-2
         border-solid
         border-transparent
-        hover:border-white
-        ${showSettings ? 'bg-foreground text-(--pokedex-red-dark)' : 'bg-(--pokedex-red-dark) text-foreground '}
+        ${showSettings ?
+          'bg-white text-(--pokedex-red) hover:text-(--pokedex-red-dark)' :
+          'bg-(--pokedex-red) text-foreground hover:bg-(--pokedex-red-dark)'}
       `}
     >
       <EllipsisHorizontalIcon className="w-6" />

@@ -60,7 +60,6 @@ export default function Controls({
 
   const goNext = (name: string, id: number) => <div className="next flex-1 text-right">
     <Tooltip
-
       content={`${normalizePokemonName(name)} ${getNumber(id)}`}
       disabled={!isLast()}
     >
@@ -82,12 +81,12 @@ export default function Controls({
   </div>;
 
   return <div className="controls my-2 px-8 w-full flex justify-between">
-    {!!previousAndAfter.results[0]?.name && goPrev(previousAndAfter.results[0].name, pokemon.id - 1)}
+    {!!previousAndAfter.results[0]?.name && goPrev(previousAndAfter.results[0].name, Number(pokemon.id) - 1)}
     { goList() }
     {
       pokemon.id > 1 ?
-        !!previousAndAfter.results[2]?.name && goNext(previousAndAfter.results[2].name, pokemon.id + 1) :
-        !!previousAndAfter.results[1]?.name && goNext(previousAndAfter.results[1].name, pokemon.id + 1)
+        !!previousAndAfter.results[2]?.name && goNext(previousAndAfter.results[2].name, Number(pokemon.id) + 1) :
+        !!previousAndAfter.results[1]?.name && goNext(previousAndAfter.results[1].name, Number(pokemon.id) + 1)
     }
   </div>;
 }
