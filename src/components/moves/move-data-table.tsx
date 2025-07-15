@@ -7,11 +7,8 @@ import Link from "next/link";
 import { IMove } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 
-interface MoveDataTableProps {
-  moveData: IMove;
-}
 
-export default function MoveDataTable({ moveData }: MoveDataTableProps) {
+export default function MoveDataTable({ moveData }: { moveData: IMove }) {
   const { t } = useTranslation('common');
   const { settings } = useUser();
 

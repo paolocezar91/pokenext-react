@@ -97,7 +97,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
               />
               <div className="flex-1 pl-2 border-l-2 border-white">
                 <Tooltip content={t('settings.toggleView')}>
-                  <label className="flex hover:bg-(--pokedex-red-darker) p-2 rounded">
+                  <label className="flex transition-colors hover:bg-(--pokedex-red-darker) p-2 rounded">
                     <Squares2X2Icon className="w-7" />
                     <Toggle
                       className="mx-2"

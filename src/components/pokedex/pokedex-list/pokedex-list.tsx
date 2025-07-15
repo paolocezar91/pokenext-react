@@ -5,39 +5,14 @@ import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName } from '@/components/shared/utils';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
-import Link from 'next/link';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import PokemonThumb, { getNumber } from '../../shared/thumb/thumb';
+import { getNumber } from '../../shared/thumb/thumb';
 import { PokedexSettings, SettingsItem } from '../settings/pokedex-settings';
-import { useInView } from 'react-intersection-observer';
-import { Settings as UserSettings } from '@/context/user-api';
+import LazyThumb from './lazy-thumb';
 import "./pokedex-list.scss";
 
-function LazyThumb({
-  pokemon,
-  settings,
-  isMobile
-}: {
-  pokemon: IPkmn,
-  settings: UserSettings,
-  isMobile: boolean
-}) {
-  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: '200px' });
-  return (
-    <div ref={ref} style={{ minHeight: 120, minWidth: 120 }}>
-      {inView ?
-        <Link href={`/pokedex/${pokemon.name}`} className="link">
-          <PokemonThumb
-            showName={settings!.thumbLabelList === 'thumbnail'}
-            pokemonData={pokemon}
-            size={isMobile ? 'xs': settings!.thumbSizeList}
-          />
-        </Link>
-        : null}
-    </div>
-  );
-}
+
 
 export default function PokedexList({
   pokemons,
@@ -142,11 +117,12 @@ export default function PokedexList({
           {
             pokemons.map((pokemon, i) => {
               const lazyThumb = <LazyThumb pokemon={pokemon} settings={settings} isMobile={isMobile} />;
+
               return <div key={i}>
                 {settings.thumbLabelList == 'tooltip' &&
-                <Tooltip content={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
-                  { lazyThumb }
-                </Tooltip>}
+                    <Tooltip content={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
+                      { lazyThumb }
+                    </Tooltip>}
                 {(settings.thumbLabelList == 'thumbnail' || settings.thumbLabelList == 'none') && lazyThumb}
               </div>;
             })

@@ -2,6 +2,7 @@ import PokeApiQuery from "@/app/query";
 import { getNumber } from "@/components/shared/thumb/thumb";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -12,7 +13,6 @@ export default function Search({ className }: { className?: string }) {
   const [pokemonList, setPokemonList] = useState<{ name: string, displayName: string, id: number }[]>([]);
   const router = useRouter();
   const { t } = useTranslation('common');
-
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<{ name: string, displayName: string, id: number | string }[]>([]);
 
@@ -91,20 +91,20 @@ export default function Search({ className }: { className?: string }) {
   return (
     <form onSubmit={goTo} data-testid="form-go-to" className={`${className} relative`}>
       <div className="
-        h-10
-        flex
-        bg-white
-        text-xs
-        text-black
-        rounded-lg
-        px-2
-        py-1
-        placeholder-gray-500
-        border-solid
-        border-2
-        border-black
-        hover:border-gray-700
-      ">
+          h-10
+          flex
+          bg-white
+          text-xs
+          text-black
+          rounded-lg
+          px-2
+          py-1
+          placeholder-gray-500
+          border-solid
+          border-2
+          border-black
+          hover:border-gray-700
+        ">
         <input
           name="pokemon-search"
           placeholder={t('actions.go.placeholder')}
@@ -112,25 +112,32 @@ export default function Search({ className }: { className?: string }) {
           value={inputValue}
           onChange={handleInputChange}
           className="
-            h-full
-            w-full
-          "
+              h-full
+              w-full
+            "
         />
         <MagnifyingGlassIcon className="w-6" />
       </div>
-      {suggestions.length > 0 &&
-        <ul className="absolute bg-white border border-foreground text-black text-xs rounded shadow-lg mt-1 max-h-40 overflow-y-auto w-60 z-10">
-          {suggestions.map((suggestion) =>
-            <li
+      <AnimatePresence>
+        {suggestions.length > 0 && <motion.div
+          layout
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ width: '100%' }}
+        >
+          <ul className="absolute bg-white border border-foreground text-black text-xs rounded shadow-lg mt-1 max-h-40 overflow-y-auto w-60 z-10">
+            {suggestions.map((suggestion) => <li
               key={suggestion.name}
               onClick={() => handleSuggestionClick(suggestion)}
-              className="px-2 py-1 cursor-pointer hover:bg-gray-200"
+              className="px-2 py-1 cursor-pointer hover:bg-gray-200 transition-colors"
             >
               {getSuggestion(suggestion)}
-            </li>
-          )}
-        </ul>
-      }
+            </li>)}
+          </ul>
+        </motion.div>}
+      </AnimatePresence>
     </form>
   );
 }

@@ -50,7 +50,7 @@ export default function MoveDetails({
   useEffect(() => {
     const getTarget = async () => {
       if (moveData?.target) {
-        setTargetData(await pokeApiQuery.fetchURL<IMoveTarget>(moveData.target.url));
+        setTargetData(await pokeApiQuery.getURL<IMoveTarget>(moveData.target.url));
       }
     };
     getTarget();
@@ -67,7 +67,7 @@ export default function MoveDetails({
   }
 
   return (
-    <RootLayout title={`${t('moves.title')}: ${capitilize(kebabToSpace(moveData.name))}`}>
+    <RootLayout title={`${t('moves.title')} - ${capitilize(kebabToSpace(moveData.name))}`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
         <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">
           {/* Left Column */}

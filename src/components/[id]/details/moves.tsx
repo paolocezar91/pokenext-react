@@ -75,7 +75,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         const details = await Promise.all(
           moves[versionGroupActive].moveset[movesetActive]
             .map(async (move) => {
-              return await pokeApiQuery.fetchURL<IMove>(move.url);
+              return await pokeApiQuery.getURL<IMove>(move.url);
             })
         );
 
@@ -88,7 +88,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
             moves[versionGroupActive].moveset[movesetActive]
               .map(async (move) => {
                 const machine = move.details?.machines.find(machine => machine.version_group.name === versionGroupActive);
-                return await pokeApiQuery.fetchURL<IMachine>(machine?.machine.url ?? '');
+                return await pokeApiQuery.getURL<IMachine>(machine?.machine.url ?? '');
               })
           );
 
@@ -146,7 +146,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         {movesetActive === 'level-up' && <td className="p-2 text-right">{move.level_learned_at}</td>}
         {movesetActive === 'machine' && <td className="p-2 text-center uppercase">{(move.tmDetails?.item.name)}</td>}
         <td className="p-2">
-          <Link href={`/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1">
+          <Link href={`/moves/${move.move}`} className="hover:bg-(--pokedex-red-dark) p-1 transition-colors">
             {capitilize(kebabToSpace(move.move))}
           </Link>
         </td>
@@ -184,7 +184,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
             {t('pokedex.details.moves.chooseVersion')}:
           </span>
           <Select onChange={(event) => setVersionGroupActive(event.target.value)}>
-            <option className="bg-gray-300 text-white" value="" disabled selected>Select</option>
+            <option className="bg-gray-300 text-white" value="" disabled selected>{t('actions.select')}</option>
             {Object.entries(moves)
               .sort((a, b) => a[1].id - b[1].id)
               .map(([name], idx) => {
@@ -203,7 +203,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
           <Select
             onChange={(event) => setMovesetActive(event.target.value)}
           >
-            <option className="bg-gray-300 text-white" value="" disabled selected>Select</option>
+            <option className="bg-gray-300 text-white" value="" disabled selected>{t('actions.select')}</option>
             {Object.keys(moves[versionGroupActive].moveset).map((moveset, idx) => {
               return !!moves[versionGroupActive].moveset[moveset].length && <option
                 key={idx}

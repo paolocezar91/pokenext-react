@@ -1,7 +1,7 @@
 import PokeApiQuery from '@/app/query';
 import MultiSelect from '@/components/shared/multi-select';
 import { capitilize } from '@/components/shared/utils';
-import { ChevronLeftIcon, ChevronRightIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { ChevronLeftIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { IType } from 'pokeapi-typescript';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
@@ -46,49 +46,55 @@ export default function PokedexFilter({
     onFilterTypes(t);
   };
 
-  const toggleFilterForm = <Tooltip content={!open ? "Open filters" : "Close filters"}>
-    <Button className={`
-        cursor-pointer
-        flex
-        p-2
-        rounded
-        mr-2
-        ${open ? `
-        bg-(--pokedex-red-darker)
-        hover:text-(--pokedex-red-darker)
-        hover:bg-white` : `
-        hover:bg-(--pokedex-red-darker)
-        `}`} onClick={() => setOpen(!open)}>
-      { open ? <ChevronLeftIcon className="w-6" />: <MagnifyingGlassIcon className="w-6" />}
-    </Button>
-  </Tooltip>;
+  const toggleFilterForm =
+    <Tooltip content={
+      !open ?
+        t("filters.openFilters") :
+        t("filters.closeFilters")
+    }>
+      <Button className={`
+      cursor-pointer
+      flex
+      p-2
+      rounded
+      mr-2
+      transition-colors
+      ${open ?
+        "bg-(--pokedex-red-darker) hover:text-(--pokedex-red-darker) hover:bg-white" :
+        "hover:bg-(--pokedex-red-darker)"}
+    `}
+      onClick={() => setOpen(!open)}
+      >
+        { open ? <ChevronLeftIcon className="w-6" />: <MagnifyingGlassIcon className="w-6" />}
+      </Button>
+    </Tooltip>;
 
   const filterForm =<div className="flex">
     <div className="name-filter">
-      <Tooltip content={t("actions.filterName.tooltip")}>
+      <Tooltip content={t("filters.filterName.tooltip")}>
         <input
           value={filterName}
           name="filter"
           className={`w-30
-              md:w-75
-              text-xs
-              bg-white
-              rounded-lg
-              border-2
-              border-[#212529]
-              text-[#212529]
-              p-2
-              min-h-[2.5rem]
-              hover:border-(--pokedex-red)
-              ${className}`}
+            md:w-75
+            text-xs
+            bg-white
+            rounded-lg
+            border-2
+            border-[#212529]
+            text-[#212529]
+            p-2
+            min-h-[2.5rem]
+            hover:border-(--pokedex-red)
+            ${className}`}
           type="text"
-          placeholder={t("actions.filterName.placeholder")}
+          placeholder={t("filters.filterName.placeholder")}
           onChange={(event) => setFilterName(event.target.value)} />
       </Tooltip>
     </div>
     <div className="type-filter mx-2">
       <MultiSelect
-        placeholder={t("actions.filterTypes.placeholder")}
+        placeholder={t("filters.filterTypes.placeholder")}
         onChange={handleTypeFilter}
         value={filterType}
         options={
@@ -101,8 +107,10 @@ export default function PokedexFilter({
     </div>
   </div>;
 
-  return <>
-    {toggleFilterForm}
-    {open && filterForm}
-  </>;
+  return (
+    <>
+      {toggleFilterForm}
+      { open && filterForm }
+    </>
+  );
 }

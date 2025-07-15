@@ -5,6 +5,7 @@ import { handleSignOut, signInWithGithub } from "./auth-actions";
 import UserAvatarButton from "./user-avatar-button";
 import UserMenu from "./user-menu";
 import UserMenuContent from "./user-menu-content";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function NavUserAuth() {
   const { data: session, status } = useSession();
@@ -38,14 +39,24 @@ export default function NavUserAuth() {
         onClick={() => setMenuOpen((open) => !open)}
         onMouseEnter={() => setMenuOpen(true)}
       />
-      <UserMenu open={menuOpen} onClose={() => setMenuOpen(false)}>
-        <UserMenuContent
-          session={session}
-          pathname={pathname}
-          onSignIn={signInWithGithub}
-          onSignOut={handleSignOut}
-        />
-      </UserMenu>
+      <AnimatePresence>
+        <UserMenu open={menuOpen} onClose={() => setMenuOpen(false)}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ width: '100%' }}
+          >
+            <UserMenuContent
+              session={session}
+              pathname={pathname}
+              onSignIn={signInWithGithub}
+              onSignOut={handleSignOut}
+            />
+          </motion.div>
+        </UserMenu>
+      </AnimatePresence>
     </div>
   );
 }

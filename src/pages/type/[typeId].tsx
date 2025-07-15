@@ -1,18 +1,18 @@
 import PokeApiQuery from "@/app/query";
+import { getTypeIconById } from "@/components/[id]/details/types";
 import PokemonDefensiveChart from "@/components/shared/defensive-chart";
 import { PokemonOffensiveChart } from "@/components/shared/offensive-chart";
-import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
-import MoveByType from "@/components/type/move-by-type";
+import Select from "@/components/shared/select";
+import { capitilize } from "@/components/shared/utils";
+import MovesByType from "@/components/type/moves-by-type";
 import PokemonByType from "@/components/type/pokemon-by-type";
+import { useUser } from "@/context/user-context";
 import { GetStaticPropsContext } from "next";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { IType } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import RootLayout from "../layout";
-import Image from "next/image";
-import { getTypeIconById } from "@/components/[id]/details/types";
-import { useUser } from "@/context/user-context";
-import Select from "@/components/shared/select";
-import { useRouter } from "next/router";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -56,7 +56,7 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
     );
   }
 
-  return <RootLayout title={`${t('type.title')} "${capitilize(typeData.name)}"`}>
+  return <RootLayout title={`${t('type.title')} - ${capitilize(typeData.name)}`}>
     <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
       <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available]">
         <div className="flex items-center">
@@ -81,7 +81,7 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
         <div className="flex flex-col md:flex-row">
           <div className="
             sm:w-auto
-            md:w-1/3
+            md:w-2/5
             flex
             flex-col
             md:items-start
@@ -92,11 +92,11 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
             mt-4
             md:mt-0"
           >
-            <MoveByType movesList={typeData.moves}></MoveByType>
+            <MovesByType movesList={typeData.moves} type={typeData.name}></MovesByType>
           </div>
           <div className="
             sm:w-auto
-            md:w-2/3
+            md:w-3/5
             flex
             flex-col
             md:items-start
@@ -105,7 +105,7 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
             self-center
             md:self-start
           ">
-            <PokemonByType pokemonList={typeData.pokemon.map(p => p.pokemon)}></PokemonByType>
+            <PokemonByType pokemonList={typeData.pokemon.map(p => p.pokemon)} type={typeData.name}></PokemonByType>
           </div>
         </div>
       </div>

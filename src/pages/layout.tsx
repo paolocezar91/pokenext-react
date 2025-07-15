@@ -12,7 +12,7 @@ export default function RootLayout({
   title: string;
 }>) {
 
-  title = 'Pokédex -- ' + title;
+  title = 'PokéNext -- ' + title;
 
   return (
     <>

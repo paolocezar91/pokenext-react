@@ -17,7 +17,7 @@ export default function Controls({
   const { t } = useTranslation('common');
 
   const isLast = () => {
-    return pokemon ? pokemon.id + 1 <= 1025: false;
+    return pokemon ? Number(pokemon.id) + 1 <= 1025: false;
   };
 
   const isFirst = () => {
@@ -39,7 +39,7 @@ export default function Controls({
           bg-transparent
           border-transparent
           rounded
-          ${!isFirst() ? 'disable-click' : 'hover:bg-(--pokedex-red-dark)'}
+          ${!isFirst() ? 'disable-click' : 'hover:bg-(--pokedex-red-dark) transition-colors'}
         `}
       >
         <ChevronDoubleLeftIcon className="w-7" />
@@ -51,24 +51,25 @@ export default function Controls({
     <Tooltip content={t('actions.backToList')}>
       <Link
         href="/"
-        className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red-dark)"
+        className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red-dark) transition-colors"
       >
         <ArrowUturnLeftIcon className="w-7" />
       </Link>
     </Tooltip>
   </div>;
 
-  const goNext = (name: string, id: number) => <div className="next flex-1 text-right">
+  const goNext = (name = "", id: number) => <div className="next flex-1 text-right">
     <Tooltip
       content={`${normalizePokemonName(name)} ${getNumber(id)}`}
       disabled={!isLast()}
     >
       <Link
-        href={`/pokedex/${pokemon.id > 1 ? previousAndAfter.results[2].name : previousAndAfter.results[1].name}`}
+        href={`/pokedex/${name}`}
         className={`
           flex
           px-2
           py-2
+          transition-colors
           bg-transparent
           border-transparent
           rounded
@@ -84,9 +85,9 @@ export default function Controls({
     {!!previousAndAfter.results[0]?.name && goPrev(previousAndAfter.results[0].name, Number(pokemon.id) - 1)}
     { goList() }
     {
-      pokemon.id > 1 ?
-        !!previousAndAfter.results[2]?.name && goNext(previousAndAfter.results[2].name, Number(pokemon.id) + 1) :
-        !!previousAndAfter.results[1]?.name && goNext(previousAndAfter.results[1].name, Number(pokemon.id) + 1)
+      Number(pokemon.id) > 1 ?
+        goNext(previousAndAfter.results?.[2]?.name, Number(pokemon.id) + 1) :
+        goNext(previousAndAfter.results?.[1]?.name, Number(pokemon.id) + 1)
     }
   </div>;
 }

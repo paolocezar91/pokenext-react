@@ -13,50 +13,58 @@ export default class PokeApiQuery {
       filters = this.cleanParams(filters);
       url += `&${new URLSearchParams(filters)}`;
     }
-    return await this._fetchAndJson(url);
+    return await this._getUrl(url);
   };
 
   getPokemonDataList = async (pkmnList: INamedApiResourceList<IPokemon>) => await Promise.all(
     pkmnList.results.map(async (pkmn) => {
-      const pokemon = await this._fetchAndJson(`${this.apiUrl}/api/v2/pokemon/${pkmn.name}/`);
+      const pokemon = await this._getUrl(`${this.apiUrl}/api/v2/pokemon/${pkmn.name}/`);
       return { name: pokemon.name, types: pokemon.types, id: pokemon.id, sprites: pokemon.sprites, stats: pokemon.stats };
     })
   );
 
   getMove = async (id: string): Promise<IMove> => {
-    return await this._fetchAndJson(`${this.apiUrl}/api/v2/move/${id}`);
+    return await this._getUrl(`${this.apiUrl}/api/moves/${id}`);
+  };
+
+  getManyMoves = async (ids: number[]): Promise<IPkmn[]> => {
+    return await this._getUrl(`${this.apiUrl}/api/moves-many?ids=${ids}`);
   };
 
   getPokemon = async (id: string): Promise<IPokemon> => {
-    return await this._fetchAndJson(`${this.apiUrl}/api/pokemon/${id}`);
+    return await this._getUrl(`${this.apiUrl}/api/pokemon/${id}`);
   };
 
   getSpecies = async (id: string): Promise<IPokemonSpecies> => {
-    return await this._fetchAndJson(`${this.apiUrl}/api/pokemon-species/${id}`);
+    return await this._getUrl(`${this.apiUrl}/api/pokemon-species/${id}`);
   };
 
   getTypes = async (types: IPokemonType[]): Promise<IType[]> => {
-    const fetchType = async (id: string) => await this._fetchAndJson(`${this.apiUrl}/api/type/${id}`);
+    const fetchType = async (id: string) => await this._getUrl(`${this.apiUrl}/api/type/${id}`);
     return Promise.all(types.map(type => fetchType(type.type.name)));
   };
 
   getType = async (id: string): Promise<IType> => {
-    return await this._fetchAndJson(`${this.apiUrl}/api/type/${id}`);
+    return await this._getUrl(`${this.apiUrl}/api/type/${id}`);
   };
 
   getAllTypes = async (): Promise<IType[]> => {
-    return await this._fetchAndJson(`${this.apiUrl}/api/types`);
+    return await this._getUrl(`${this.apiUrl}/api/types`);
   };
 
   getEvolutionChain = async (species: IPokemonSpecies): Promise<IEvolutionChain> => {
-    return await this.fetchURL<IEvolutionChain>(`${species.evolution_chain.url}`);
+    return await this.getURL<IEvolutionChain>(`${species.evolution_chain.url}`);
   };
 
-  fetchURL = async <T>(url: string) => {
-    return await this._fetchAndJson(`${this.apiUrl}${url}`) as T;
+  getURL = async <T>(url: string) => {
+    return await this._getUrl(`${this.apiUrl}${url}`) as T;
   };
 
-  private _fetchAndJson = async (url: string) => {
+  postURL = async <T>(url: string, body: Record<string, unknown>) => {
+    return await this._postUrl(`${this.apiUrl}${url}`, body) as T;
+  };
+
+  private _getUrl = async (url: string) => {
     try {
       const data = await fetch(url, {
         cache: 'force-cache'
@@ -73,9 +81,9 @@ export default class PokeApiQuery {
     }
   };
 
-  postUrl = async <T>(url: string, body: Record<string, unknown>) => {
+  private _postUrl = async <T>(url: string, body: Record<string, unknown>) => {
     try {
-      const data = await fetch(`${this.apiUrl}${url}`, {
+      const data = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

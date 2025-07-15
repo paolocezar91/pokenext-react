@@ -22,7 +22,7 @@ export default function MultiSelect({
   onChange,
   className = "",
   id,
-  placeholder = "Select...",
+  placeholder,
   maxSelected = 2,
 }: MultiSelectProps) {
   const [open, setOpen] = useState(false);
@@ -125,6 +125,7 @@ export default function MultiSelect({
               py-2
               cursor-pointer
               hover:bg-gray-100
+              transition-colors
               text-xs
               flex
               items-center

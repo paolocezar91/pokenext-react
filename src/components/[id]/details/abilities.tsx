@@ -15,7 +15,7 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
   useEffect(() => {
     const getAbility = async () => {
       const abilitiesData = await Promise.all(pokemon.abilities.map((ability) => {
-        return pokeApiQuery.fetchURL<IAbility>(ability.ability.url);
+        return pokeApiQuery.getURL<IAbility>(ability.ability.url);
       }));
 
       setAbilityDetails(abilitiesData);

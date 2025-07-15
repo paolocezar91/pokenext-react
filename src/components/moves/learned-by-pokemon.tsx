@@ -1,39 +1,68 @@
 import Link from "next/link";
 import { INamedApiResource, IPokemon } from "pokeapi-typescript";
-import { getNumber } from "@/components/shared/thumb/thumb";
-import { getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
+import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
 import { useTranslation } from "react-i18next";
 import Table from "@/components/shared/table";
+import Image from "next/image";
+import { IPkmn } from "@/types/types";
+import { getTypeIconById } from "../[id]/details/types";
+import { useUser } from "@/context/user-context";
+import { useEffect, useState } from "react";
+import PokeApiQuery from "@/app/query";
+const pokeApiQuery = new PokeApiQuery();
 
 export default function LearnedByPokemon({ learnedByPokemon }: { learnedByPokemon: INamedApiResource<IPokemon>[] }) {
   const { t } = useTranslation('common');
+  const [pokemonMany, setPokemonMany] = useState<IPkmn[]>([]);
+  const { settings } = useUser();
 
-  const headers = ["#", t('table.name')].map((header, idx) =>
-    <th
-      key={idx}
-      className={
-        idx === 0
-          ? "w-[0%] text-white text-center px-2 py-2"
-          : "w-[5%] text-white text-left px-2 py-2"
-      }
-    >
-      {header}
-    </th>
-  );
-  const body = learnedByPokemon
-    .filter((pokemon) => Number(getIdFromUrlSubstring(pokemon.url)) < 1025)
+  useEffect(() => {
+    const ids = learnedByPokemon.map(p => Number(getIdFromUrlSubstring(p.url)));
+    pokeApiQuery.getURL<IPkmn[]>(`/api/pokemon-many?ids=${ids}`).then((res) => {
+      setPokemonMany(res);
+    });
+  }, [learnedByPokemon]);
+
+  const tableHeaders = <>
+    <th className="w-[5%]"></th>
+    <th className="w-[1%] text-white text-center px-2 py-2">#</th>
+    <th className="w-[50%] text-white text-left px-2 py-2">{t('table.name')}</th>
+    <th className="w-[5%]text-white text-left px-2 py-2">{t('table.types')}</th>
+  </>;
+
+  const typesCell = (pokemon: IPkmn) => <td className="p-2">
+    {pokemon.types.map((t, idx) =>
+      <Link href={`/type/${t.type.name}`} key={idx}>
+        <Image
+          width="100"
+          height="20"
+          className="inline m-1"
+          alt={capitilize(t.type.name)}
+          src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
+      </Link>
+    )}
+  </td>;
+
+  const tableBody = pokemonMany
     .map((pokemon, idx) => {
-      const isLast = idx === learnedByPokemon.length - 1;
+      const isLast = idx === pokemonMany.length - 1;
       return (
         <tr key={idx} className={`${!isLast ? 'border-solid border-foreground  border-b-2' : ''}`}>
           <td className="p-2">
-            {getNumber(Number(getIdFromUrlSubstring(pokemon.url)))}
+            <Link href={`/pokedex/${pokemon.name}`} >
+              <PokemonThumb pokemonData={pokemon} size="xs" />
+            </Link>
+          </td>
+          <td className="p-2 text-center">
+            {getNumber(Number(pokemon.id))}
           </td>
           <td className="p-2">
-            <Link className="hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`} >
+            <Link className="transition-colors hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`} >
               {normalizePokemonName(pokemon.name)}
             </Link>
           </td>
+          {typesCell(pokemon)}
         </tr>
       );
     });
@@ -43,7 +72,7 @@ export default function LearnedByPokemon({ learnedByPokemon }: { learnedByPokemo
       <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedByPokemon?.length })}</h3>
       {!!learnedByPokemon?.length &&
       <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
-        <Table headers={headers}>{body}</Table>
+        <Table headers={tableHeaders}>{tableBody}</Table>
       </div>
       }
     </div>

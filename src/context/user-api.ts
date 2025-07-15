@@ -4,7 +4,7 @@ import { TypeUrl } from "@/components/[id]/details/types";
 const pokeApiQuery = new PokeApiQuery();
 
 export const getUser = async (email: string) => {
-  const user = await pokeApiQuery.fetchURL<User>(`/api/user/${email}`);
+  const user = await pokeApiQuery.getURL<User>(`/api/user/${email}`);
   return user;
 };
 
@@ -14,7 +14,7 @@ export const createUser = async (email: string) => {
 };
 
 export const getSettings = async (user_id: number) => {
-  const settings = await pokeApiQuery.fetchURL<Settings>(`/api/user/${user_id}/settings`);
+  const settings = await pokeApiQuery.getURL<Settings>(`/api/user/${user_id}/settings`);
   return settings;
 };
 

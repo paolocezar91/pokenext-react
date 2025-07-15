@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
 import { shouldShowColumn } from "./utils";
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function LazyRow(
   { isFirst, isLast, pokemon }:
@@ -20,9 +21,17 @@ export default function LazyRow(
         ${isFirst ? 'pt-4' : ''}
         ${!settings!.showThumbTable ? 'py-4': 'py-2'}
       `}>
-    {settings!.showThumbTable && <Link href={`/pokedex/${pokemon.name}`}>
-      <PokemonThumb pokemonData={pokemon} size="xs" />
-    </Link>}
+    {settings!.showThumbTable && <motion.div
+      layout
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0, opacity: 0 }}
+      transition={{ duration: 0.1 }}
+    >
+      <Link href={`/pokedex/${pokemon.name}`}>
+        <PokemonThumb pokemonData={pokemon} size="xs" />
+      </Link>
+    </motion.div>}
   </td>;
 
   const numberCell = (settings!.showShowColumn || settings!.showColumn[0]) && <td className={`
@@ -31,7 +40,7 @@ export default function LazyRow(
         ${!isLast ? 'border-solid border-b-2 border-foreground text-center': ''} 
         ${!settings!.showThumbTable ? 'py-4': 'py-2'} 
       `}>
-    <Link className="hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`}>
+    <Link className="hover:bg-(--pokedex-red-dark) transition-colors p-1" href={`/pokedex/${pokemon.name}`}>
       {getNumber(pokemon.id)}
     </Link>
   </td>;
@@ -42,7 +51,7 @@ export default function LazyRow(
         ${!isLast ? 'border-solid border-b-2 border-foreground': ''} 
         ${!settings!.showThumbTable ? 'py-4': 'py-2'} 
       `}>
-    <Link className="text-bold hover:bg-(--pokedex-red-dark) p-1" href={`/pokedex/${pokemon.name}`}>
+    <Link className="text-bold hover:bg-(--pokedex-red-dark) transition-colors p-1" href={`/pokedex/${pokemon.name}`}>
       {normalizePokemonName(pokemon.name)}
     </Link>
   </td>;
@@ -80,13 +89,15 @@ export default function LazyRow(
     });
 
   return <tr ref={ref} className="bg-background">
-    {inView ? settings && <>
-      {thumbCell}
-      {numberCell}
-      {nameCell}
-      {typesCell}
-      {statsCells}
-      <td></td>
-    </> : <td className="p-1" colSpan={11}></td>}
+    <AnimatePresence>
+      {inView ? settings && <>
+        {thumbCell}
+        {numberCell}
+        {nameCell}
+        {typesCell}
+        {statsCells}
+        <td></td>
+      </> : <td className="p-1" colSpan={11}></td>}
+    </AnimatePresence>
   </tr>;
 }
