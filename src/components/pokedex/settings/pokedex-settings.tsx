@@ -36,6 +36,7 @@ export function PokedexSettings({ children }: { children: ReactNode }) {
         border-2
         border-solid
         border-transparent
+        transition-colors
         ${showSettings ?
           'bg-white text-(--pokedex-red) hover:text-(--pokedex-red-dark)' :
           'bg-(--pokedex-red) text-foreground hover:bg-(--pokedex-red-dark)'}

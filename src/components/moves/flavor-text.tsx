@@ -30,7 +30,7 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
                 aria-label={`${t('actions.previous')} flavor text`}
                 onClick={() => setFlavorIdx(flavorIdx => flavorIdx - 1)}
                 disabled={flavorIdx === 0}
-                className="text-xs mr-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
+                className="text-xs mr-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600 transition-colors"
               >
                 <ChevronLeftIcon className="w-5" />
               </Button>
@@ -39,7 +39,7 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
                 aria-label={`${t('actions.next')} flavor text`}
                 onClick={() => setFlavorIdx(flavorIdx => flavorIdx + 1)}
                 disabled={getFlavors().length - 1 === flavorIdx}
-                className="text-xs ml-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600"
+                className="text-xs ml-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600 transition-colors"
               >
                 <ChevronRightIcon className="w-5" />
               </Button>

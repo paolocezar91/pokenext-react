@@ -1,5 +1,5 @@
 import '@/app/globals.css';
-import PokeApiQuery from '@/app/query';
+import PokeApiQuery from '@/app/poke-api-query';
 import PokedexFilter from '@/components/pokedex/pokedex-list/pokedex-filter';
 import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
 import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
@@ -30,7 +30,7 @@ export async function getServerSideProps(context: NextPageContext) {
   const cookies = parseCookies(context);
   const settings = cookies.user_settings ? JSON.parse(cookies.user_settings) : {};
   // Use settings to filter
-  const pokemonsData = (await pokeApiQuery.getPokemonList(STARTING_POKEMON, NUMBERS_OF_POKEMON, settings.filter)).results;
+  const pokemonsData = (await pokeApiQuery.getPokemons(STARTING_POKEMON, NUMBERS_OF_POKEMON, settings.filter)).results;
   return { props: { pokemonsData, filterApplied: settings?.filter ?? { name: '', types: '' }}};
 }
 
@@ -55,7 +55,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
       setLoading(true);
       showSnackbar(`${t('pokedex.loading')}...`);
       setFiltered(settings.filter);
-      pokeApiQuery.getPokemonList(0, TOTAL_POKEMON, settings.filter)
+      pokeApiQuery.getPokemons(0, TOTAL_POKEMON, settings.filter)
         .then(({ results }) => {
           setPokemons(results);
           setTimeout(() => {
@@ -97,7 +97,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
               />
               <div className="flex-1 pl-2 border-l-2 border-white">
                 <Tooltip content={t('settings.toggleView')}>
-                  <label className="flex hover:bg-(--pokedex-red-darker) p-2 rounded">
+                  <label className="flex transition-colors hover:bg-(--pokedex-red-darker) p-2 rounded">
                     <Squares2X2Icon className="w-7" />
                     <Toggle
                       className="mx-2"

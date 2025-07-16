@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import { normalizePokemonName } from "@/components/shared/utils";
 import Link from "next/link";
 import { IPokemon, IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
@@ -20,13 +20,13 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
       const pokemonVarieties = await Promise.all(
         species.varieties
           .filter(({ pokemon }) => pokemon.name !== name)
-          .map(({ pokemon }) => pokeApiQuery.fetchURL<IPokemon>(pokemon.url))
+          .map(({ pokemon }) => pokeApiQuery.getURL<IPokemon>(pokemon.url))
       );
       setVarieties(pokemonVarieties);
       setForms(await Promise.all(
         pokemonVarieties
           .filter(v => v.name !== name)
-          .map(v => pokeApiQuery.fetchURL<IPokemonForm>(v.forms[0].url))));
+          .map(v => pokeApiQuery.getURL<IPokemonForm>(v.forms[0].url))));
     };
 
     getVarieties();

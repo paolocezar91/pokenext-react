@@ -28,6 +28,9 @@
             "defensiveChart": {
                 "title": "Defensive Chart"
             },
+            "offensiveChart": {
+                "title": "Offensive Chart"
+            },
             "misc": {
                 "eggGroups": "Egg Groups",
                 "baby": "Baby",
@@ -82,15 +85,26 @@
     "type": {
         "title": "Type", 
         "pokemon": {
-            "title": "Total of {{ length }} pokemons"
+            "title": "{{type}} Pokémon ({{ length }})"
         },
         "moves": {
-            "title": "Total of {{ length }} moves"
+            "title": "{{type}} moves ({{ length }})"
         }
     },
     "table": {
         "name": "Name",
         "types": "Type(s)"
+    },
+    "filters": {
+        "openFilters": "Open filter options",
+        "closeFilters": "Close filter options",
+        "filterName": {
+            "placeholder": "Filter by name...",
+            "tooltip": "Try \"Bulbasaur\""
+        },
+        "filterTypes": {
+            "placeholder": "Filter by up to 2 types..."
+        }
     },
     "settings": {
         "toggleView": "Thumbnail or Table view",
@@ -131,17 +145,11 @@
         "prev": "Prev",
         "back": "Back",
         "backToList": "Back to List",
+        "select": "Select...",
         "go": {
             "placeholder": "Search...",
             "tooltip": "Try \"1\" or \"Bulbasaur\"...",
             "button": "Go"
-        },
-        "filterName": {
-            "placeholder": "Filter by name...",
-            "tooltip": "Try \"Bulbasaur\""
-        },
-        "filterTypes": {
-            "placeholder": "Filter by up to 2 types..."
         }
     }
 }

@@ -14,7 +14,7 @@
                 "title": "Habilidades"
             },
             "firstSeen": {
-                "title": "Estreiou em"
+                "title": "Primeiro jogo"
             },
             "evolutionChart": {
                 "title": "Cadeia de Evoluçao"
@@ -26,7 +26,10 @@
                 "title": "Variedades"
             },
             "defensiveChart": {
-                "title": "Carta Defensiva"
+                "title": "Tabela Defensiva"
+            },
+            "offensiveChart": {
+                "title": "Tabela Ofensiva"
             },
             "misc": {
                 "eggGroups": "Grupos de Ovo",
@@ -47,7 +50,7 @@
                 "type": "Tipo",
                 "class": "Classe",
                 "power": "Poder",
-                "accuracy": "Exatidão",
+                "accuracy": "Eficácia",
                 "pp": "PP"
             }
         }
@@ -65,7 +68,7 @@
             "empty": "Texto não disponível"
         },
         "learnedBy": {
-            "title": "Aprendido por {{length}} pokémon"
+            "title": "Aprendido por {{length}} Pokémon"
         },
         "moveData": {
             "title": "Informação do golpe"
@@ -82,15 +85,26 @@
     "type": {
         "title": "Tipo", 
         "pokemon": {
-            "title": "Total de {{ length }} pokemons"
+            "title": "{{ length }} Pokémons de {{ type }}"
         },
         "moves": {
-            "title": "Total de {{ length }} moves"
+            "title": "{{ length }} golpes de {{ type }}"
         }
     },
     "table": {
         "name": "Nome",
         "types": "Tipo(s)"
+    },
+    "filters": {
+        "openFilters": "Abrir filtros",
+        "closeFilters": "Fechar filtros",
+        "filterName": {
+            "placeholder": "Filtrar por nome...",
+            "tooltip": "Tente escrever \"Bulbasaur\""
+        },
+        "filterTypes": {
+            "placeholder": "Filtrar por até 2 tipos..."
+        }
     },
     "settings": {
         "toggleView": "Miniatura ou Tabela",
@@ -131,17 +145,11 @@
         "prev": "Anterior",
         "back": "Voltar",
         "backToList": "Voltar a lista",
+        "select": "Selecionar...",
         "go": {
             "placeholder": "Buscar...",
             "tooltip": "Tente escrever \"1\" ou \"Bulbasaur\"...",
             "button": "Vai"
-        },
-        "filterName": {
-            "placeholder": "Filtrar por nome...",
-            "tooltip": "Tente escrever \"Bulbasaur\""
-        },
-        "filterTypes": {
-            "placeholder": "Filtrar por até 2 tipos..."
         }
     }
 }

@@ -2,7 +2,8 @@ import { TypeUrl } from "@/components/[id]/details/types";
 import { useLocalStorage } from "@/components/shared/utils";
 import { useSession } from "next-auth/react";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { createUser, getSettings, getUser, Settings, upsertSettings, User } from "./user-api";
+import UserApi, { Settings, User } from "./user-api";
+const userApi = new UserApi();
 
 interface IUserContext {
   user: User;
@@ -16,7 +17,7 @@ const UserContext = createContext<IUserContext>({
   loading: true,
   user: null,
   settings: null,
-  upsertSettings,
+  upsertSettings: userApi.upsertSettings,
 });
 
 const setSettingsCookies = async (updatedSettings: unknown) => {
@@ -50,14 +51,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState(true);
 
   const handleGetUser = async (email: string) => {
-    const user = await getUser(email);
+    const user = await userApi.getUser(email);
     if(user)
       setUser(user);
     return user;
   };
 
   const handleCreateUser = async (email: string) => {
-    const createdUser = await createUser(email);
+    const createdUser = await userApi.createUser(email);
     if(createdUser)
       setUser(createdUser);
     return createdUser;
@@ -65,7 +66,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Wrapper to update settings state after upsert
   const handleUpsertSettings = async (body: Record<string, unknown>, id?: number) => {
-    const updatedSettings = await upsertSettings(body, id ?? user?.id);
+    const updatedSettings = await userApi.upsertSettings(body, id ?? user?.id);
     if(updatedSettings) {
       setSettings(updatedSettings);
       setSettingsCookies(updatedSettings);
@@ -74,7 +75,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const handleGetSettings = async (user_id: number) => {
-    const settings = await getSettings(user_id);
+    const settings = await userApi.getSettings(user_id);
     if(settings){
       setSettings(settings);
       setSettingsCookies(settings);

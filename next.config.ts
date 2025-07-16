@@ -15,7 +15,8 @@ const nextConfig: NextConfig = {
     ],
   },
   env: {
-    POKEAPI_URL: process.env.POKEAPI_URL
+    POKEAPI_URL: process.env.POKEAPI_URL,
+    GRAPHQL_URL: process.env.GRAPHQL_URL
   },
   onDemandEntries: {
     // period (in ms) where the server will keep pages in the buffer

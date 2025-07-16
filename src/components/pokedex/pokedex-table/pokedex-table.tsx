@@ -86,6 +86,7 @@ export default function PokedexTable({
           rounded
           bg-(--pokedex-red-dark)
           hover:bg-(--pokedex-red-darker)
+          transition-colors
           ${sortEntry ? 'bg-white text-(--pokedex-red-dark) hover:text-white' : ''}
         `}
         onClick={() => toggleSort(attr)}
@@ -112,6 +113,7 @@ export default function PokedexTable({
           rounded
           text-(--pokedex-red-darker)
           bg-white
+          transition-colors
           hover:bg-(--pokedex-red-darker)
           hover:text-white
           disabled:bg-(--pokedex-red)
@@ -193,7 +195,8 @@ export default function PokedexTable({
                 }
               </th>;
             }) }
-            <th className="w-[1%]"></th>
+            <th className="w-[1%]">
+            </th>
           </tr>
         </thead>
         <tbody className="bg-background">

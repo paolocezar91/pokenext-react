@@ -1,27 +1,5 @@
-import PokeApiQuery from "@/app/query";
+import BaseQuery from "@/app/base-query";
 import { TypeUrl } from "@/components/[id]/details/types";
-
-const pokeApiQuery = new PokeApiQuery();
-
-export const getUser = async (email: string) => {
-  const user = await pokeApiQuery.fetchURL<User>(`/api/user/${email}`);
-  return user;
-};
-
-export const createUser = async (email: string) => {
-  const user = await pokeApiQuery.postUrl<User>(`/api/user`, { email });
-  return user;
-};
-
-export const getSettings = async (user_id: number) => {
-  const settings = await pokeApiQuery.fetchURL<Settings>(`/api/user/${user_id}/settings`);
-  return settings;
-};
-
-export const upsertSettings = async (body: Partial<Settings>, id?: number,) => {
-  const user = await pokeApiQuery.postUrl<Settings>(`/api/user/${id}/settings`, body as Record<string, unknown>);
-  return user;
-};
 
 export type User = { id: number; email: string } | null;
 
@@ -40,3 +18,32 @@ export type Settings = {
   filter: { name: string, types: string },
   sorting: Array<{ key: SortKey, dir: '+' | '-' }>
 } | null;
+
+export default class UserApiQuery extends BaseQuery {
+  constructor() {
+    super();
+  }
+
+  getUser = async (email: string) => {
+    const user = await this.getURL<User>(`/api/user/${email}`);
+    return user;
+  };
+
+  createUser = async (email: string) => {
+    const user = await this.postURL<User>(`/api/user`, { email });
+    return user;
+  };
+
+  getSettings = async (user_id: number) => {
+    const settings = await this.getURL<Settings>(`/api/settings/${user_id}`);
+    return settings;
+  };
+
+  upsertSettings = async (body: Partial<Settings>, id?: number,) => {
+    const user = await this.postURL<Settings>(`/api/settings/${id}`, body as Record<string, unknown>);
+    return user;
+  };
+
+}
+
+

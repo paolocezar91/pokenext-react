@@ -13,7 +13,7 @@ export default function NavLink({
   className?: string;
 }) {
   const baseClasses =
-    "block px-3 py-2 text-sm rounded hover:shadow-md hover:bg-(--pokedex-red-dark)";
+    "block px-3 py-2 text-sm rounded transition-colors hover:shadow-md hover:bg-(--pokedex-red-dark) transition-colors";
 
   const activeClasses = isActive
     ? "bg-(--pokedex-red-darker) text-white border-transparent"
