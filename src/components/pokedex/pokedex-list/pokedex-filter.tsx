@@ -1,4 +1,4 @@
-import PokeApiQuery from '@/app/query';
+import PokeApiQuery from '@/app/poke-api-query';
 import MultiSelect from '@/components/shared/multi-select';
 import { capitilize } from '@/components/shared/utils';
 import { ChevronLeftIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import Tooltip from '../../shared/tooltip/tooltip';
 
 const pokeApiQuery = new PokeApiQuery();
-
 
 export default function PokedexFilter({
   className,

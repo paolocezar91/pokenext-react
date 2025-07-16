@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "@/components/shared/utils";
 import Image from "next/image";
@@ -16,7 +16,7 @@ export default function MovesByType(
 
   useEffect(() => {
     const ids = movesList.map(p => Number(getIdFromUrlSubstring(p.url)));
-    pokeApiQuery.getManyMoves(ids).then((res) => {
+    pokeApiQuery.getMovesByIds(ids).then((res) => {
       setMovesMany(res);
     });
   }, [movesList]);

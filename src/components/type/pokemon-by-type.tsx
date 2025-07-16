@@ -5,7 +5,7 @@ import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/compo
 import { useTranslation } from "react-i18next";
 import Table from "@/components/shared/table";
 import { useEffect, useState } from "react";
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import { IPkmn } from "@/types/types";
 import Image from "next/image";
 import { getTypeIconById } from "../[id]/details/types";
@@ -14,14 +14,13 @@ const pokeApiQuery = new PokeApiQuery();
 
 export default function PokemonByType({ pokemonList, type }: { pokemonList: INamedApiResource<IPokemon>[], type: string }) {
   const { t } = useTranslation('common');
-  const [pokemonMany, setPokemonMany] = useState<IPkmn[]>([]);
+  const [pokemonByType, setPokemonByType] = useState<IPkmn[]>([]);
   const { settings } = useUser();
 
   useEffect(() => {
     const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url)));
-    pokeApiQuery.getURL<IPkmn[]>(`/api/pokemon-many?ids=${ids}`).then((res) => {
-      setPokemonMany(res);
-    });
+    pokeApiQuery.getPokemonByIds(ids)
+      .then((res) => setPokemonByType(res.results));
   }, [pokemonList]);
 
   const tableHeaders = <>
@@ -45,7 +44,7 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: INam
   </td>;
 
 
-  const tableBody = pokemonMany
+  const tableBody = pokemonByType
     .map((pokemon, idx) => {
       const isLast = idx === pokemonList.length - 1;
       return (

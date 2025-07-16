@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import RootLayout from "@/pages/layout";
 import { GetStaticPropsContext } from "next";
 import { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import MoveTarget from "@/components/moves/move-target";
 import MoveEffect from "@/components/moves/move-effect";
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "../../components/shared/utils";
+import Spinner from "@/components/shared/spinner";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -60,7 +61,9 @@ export default function MoveDetails({
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
-          <p>{t('pokedex.loading')}...</p>
+          <Spinner>
+            <p>{t('pokedex.loading')}...</p>
+          </Spinner>
         </div>
       </RootLayout>
     );
@@ -80,7 +83,7 @@ export default function MoveDetails({
           {/* Right Column */}
           <div className="w-full h-[-webkit-fill-available] flex flex-col md:items-start pl-8 mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
             <MoveEffect moveData={moveData} />
-            <LearnedByPokemon learnedByPokemon={moveData.learned_by_pokemon} />
+            <LearnedByPokemon pokemonList={moveData.learned_by_pokemon} />
           </div>
         </div>
       </div>

@@ -1,7 +1,10 @@
-export default function Spinner() {
+export default function Spinner({ children }: { children?: React.ReactNode }) {
   return (
     <div role="status" className="absolute z-2 -translate-x-1/2 -translate-y-1/2 top-2/4 left-1/2">
-      <div className="bg-black opacity-80 rounded p-4">
+      <div className="bg-black opacity-80 rounded p-4 flex flex-col items-center">
+        <div className="mb-4">
+          {children}
+        </div>
         <SpinnerIcon className="w-8 h-8 dark:text-gray-600"></SpinnerIcon>
       </div>
     </div>

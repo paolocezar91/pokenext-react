@@ -195,7 +195,8 @@ export default function PokedexTable({
                 }
               </th>;
             }) }
-            <th className="w-[1%]"></th>
+            <th className="w-[1%]">
+            </th>
           </tr>
         </thead>
         <tbody className="bg-background">

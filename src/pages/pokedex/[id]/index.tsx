@@ -1,6 +1,6 @@
 'use client';
 
-import PokeApiQuery from '@/app/query';
+import PokeApiQuery from '@/app/poke-api-query';
 import RootLayout from '@/pages/layout';
 import All from '@/app/poke-array.json';
 import { SpeciesChain } from '@/types/types';
@@ -39,8 +39,8 @@ const pokeApiQuery = new PokeApiQuery();
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
   try {
-    const pokemonData = await pokeApiQuery.getPokemon(id);
-    const previousAndAfter = await pokeApiQuery.getPokemonList(pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0, 3);
+    const pokemonData = await pokeApiQuery.getPokemonById(id);
+    const previousAndAfter = await pokeApiQuery.getPokemons(pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0, 3);
     return {
       props: {
         id: pokemonData.id,
@@ -116,19 +116,19 @@ export default function PokemonDetails({
           setEvolutionChain(ec);
 
           const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
-          speciesChain.chain.first = [await pokeApiQuery.getPokemon(evolve_to_id)];
+          speciesChain.chain.first = [await pokeApiQuery.getPokemonById(evolve_to_id)];
           if(ec.chain?.evolves_to?.[0]) {
             speciesChain.chain.second = await Promise.all(
               ec.chain.evolves_to.map((evolves_to) => {
                 const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                return pokeApiQuery.getPokemon(evolve_to_id);
+                return pokeApiQuery.getPokemonById(evolve_to_id);
               })
             );
             if(ec.chain.evolves_to[0].evolves_to[0]) {
               speciesChain.chain.third = await Promise.all(
                 ec.chain.evolves_to[0].evolves_to.map((evolves_to) => {
                   const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                  return pokeApiQuery.getPokemon(evolve_to_id);
+                  return pokeApiQuery.getPokemonById(evolve_to_id);
                 })
               );
             } else {
@@ -168,26 +168,35 @@ export default function PokemonDetails({
       </div>
     </RootLayout>;
 
+  if (!pokemon) {
+    return (
+      <RootLayout title={`${t('pokedex.loading')}...`}>
+        <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
+          <Spinner>
+            <p>{t('pokedex.loading')}...</p>
+          </Spinner>
+        </div>
+      </RootLayout>
+    );
+  }
+
   return (
-    <RootLayout title={
-      pokemon ?
-        `${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}` :
-        `${t('pokedex.loading')}...`
-    }>
+    <RootLayout title={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto relative">
-        {!loaded && <Spinner />}
-        <Suspense>
-          {loaded && <div className=" wrapper flex flex-col md:flex-row mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
-            <div className=" thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start"
-            >
-              <PokemonThumb pokemonData={pokemon} size="lg" showShinyCheckbox showName />
-              <hr className="border-solid border-2 border-white mt-2 w-full" />
-              <PokemonTypes types={types} />
-              <PokemonCries pokemon={pokemon} />
-              <div className="flex-1"></div>
-              <Controls pokemon={pokemon} previousAndAfter={previousAndAfter} />
-            </div>
-            <div className="
+        {!loaded && <Spinner>
+          <p>{t('pokedex.loading')}...</p>
+        </Spinner>}
+        {loaded && <div className=" wrapper flex flex-col md:flex-row mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
+          <div className=" thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start"
+          >
+            <PokemonThumb pokemonData={pokemon} size="lg" showShinyCheckbox showName />
+            <hr className="border-solid border-2 border-white mt-2 w-full" />
+            <PokemonTypes types={types} />
+            <PokemonCries pokemon={pokemon} />
+            <div className="flex-1"></div>
+            <Controls pokemon={pokemon} previousAndAfter={previousAndAfter} />
+          </div>
+          <div className="
               pokemon-details
               border-solid
               border-l-foreground
@@ -203,23 +212,24 @@ export default function PokemonDetails({
               sm:my-4
               sm:border-0
             ">
-              <div className="about grid grid-cols-1 md:grid-cols-6 gap-2">
-                {species && <PokemonDescription species={species} />}
+            <div className="about grid grid-cols-1 md:grid-cols-6 gap-2">
+              {species && <PokemonDescription species={species} />}
+              <div className="col-span-6 flex flex-wrap gap-4">
                 <PokemonFirstAppearance pokemon={pokemon} species={species as IPokemonSpecies} />
                 <PokemonSize pokemon={pokemon} />
                 <PokemonAbilities pokemon={pokemon} />
                 {species && <PokemonMisc species={species} />}
-                <PokemonStats pokemon={pokemon} />
-                <PokemonDefensiveChart name={capitilize(pokemon.name)} types={types.map(type => type.name)} />
-                { species && species.varieties.length > 1 &&
-                  <PokemonVarieties name={pokemon.name} species={species} />}
-                { evolutionChain &&
-                  <PokemonEvolutionChart pokemon={pokemon} speciesChain={speciesChain} evolutionChain={evolutionChain} />}
-                <PokemonMoves pokemon={pokemon} />
               </div>
+              <PokemonStats pokemon={pokemon} />
+              <PokemonDefensiveChart name={capitilize(pokemon.name)} types={types.map(type => type.name)} />
+              { species && species.varieties.length > 1 &&
+                  <PokemonVarieties name={pokemon.name} species={species} />}
+              { evolutionChain &&
+                  <PokemonEvolutionChart pokemon={pokemon} speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+              <PokemonMoves pokemon={pokemon} />
             </div>
-          </div>}
-        </Suspense>
+          </div>
+        </div>}
       </div>
     </RootLayout>
   );

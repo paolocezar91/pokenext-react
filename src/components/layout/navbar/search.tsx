@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import { getNumber } from "@/components/shared/thumb/thumb";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
@@ -19,7 +19,7 @@ export default function Search({ className }: { className?: string }) {
   // Fetch pokemon data from API on mount
   useEffect(() => {
     let isMounted = true;
-    pokeApiQuery.getPokemonList(0, 1025).then((data: { results: any[] }) => {
+    pokeApiQuery.getPokemons(0, 1025).then((data: { results: any[] }) => {
       if (isMounted && data && data.results) {
         setPokemonList(data.results.map(p => ({ id: p.id, name: p.name, displayName: normalizePokemonName(p.name) })));
       }

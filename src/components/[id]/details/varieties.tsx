@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import { normalizePokemonName } from "@/components/shared/utils";
 import Link from "next/link";
 import { IPokemon, IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";

@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useUser } from "@/context/user-context";
 import { IAbility, IPokemon } from "pokeapi-typescript";
@@ -24,7 +24,7 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
     getAbility();
   }, [pokemon.abilities]);
 
-  return abilityDetails && settings && <div className="pokemon-abilities col-span-6 md:col-span-2">
+  return abilityDetails && settings && <div className="pokemon-abilities">
     <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.abilities.title') }</h3>
     <ul className="list-disc pl-5">
       {pokemon.abilities.map((ability, i) =>

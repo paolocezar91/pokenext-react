@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import Select from "@/components/shared/select";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";

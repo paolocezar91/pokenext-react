@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/query";
+import PokeApiQuery from "@/app/poke-api-query";
 import { getTypeIconById } from "@/components/[id]/details/types";
 import PokemonDefensiveChart from "@/components/shared/defensive-chart";
 import { PokemonOffensiveChart } from "@/components/shared/offensive-chart";
@@ -13,6 +13,7 @@ import { useRouter } from "next/router";
 import { IType } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import RootLayout from "../layout";
+import Spinner from "@/components/shared/spinner";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -50,7 +51,9 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
-          <p>{t('pokedex.loading')}...</p>
+          <Spinner>
+            <p>{t('pokedex.loading')}...</p>
+          </Spinner>
         </div>
       </RootLayout>
     );
