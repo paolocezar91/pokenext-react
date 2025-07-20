@@ -1,27 +1,32 @@
-import Link from "next/link";
-import { INamedApiResource, IPokemon } from "pokeapi-typescript";
-import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
-import { useTranslation } from "react-i18next";
-import Table from "@/components/shared/table";
-import { useEffect, useState } from "react";
 import PokeApiQuery from "@/app/poke-api-query";
+import Table from "@/components/shared/table";
+import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
+import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import Image from "next/image";
+import Link from "next/link";
+import { ITypePokemon } from "pokeapi-typescript";
+import { useTranslation } from "react-i18next";
 import { getTypeIconById } from "../[id]/details/types";
-import { useUser } from "@/context/user-context";
+import { SpinnerIcon } from "../shared/spinner";
 const pokeApiQuery = new PokeApiQuery();
 
-export default function PokemonByType({ pokemonList, type }: { pokemonList: INamedApiResource<IPokemon>[], type: string }) {
+export default function PokemonByType({ pokemonList, type }: { pokemonList: ITypePokemon[], type: string }) {
   const { t } = useTranslation('common');
-  const [pokemonByType, setPokemonByType] = useState<IPkmn[]>([]);
   const { settings } = useUser();
+  const ids = pokemonList
+    .map(p => Number(getIdFromUrlSubstring(p.pokemon.url)))
+    .filter(id => id <= 1025);
 
-  useEffect(() => {
-    const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url)));
-    pokeApiQuery.getPokemonByIds(ids)
-      .then((res) => setPokemonByType(res.results));
-  }, [pokemonList]);
+  const { data: pokemonByType } = useAsyncQuery(
+    () => pokeApiQuery.getPokemonByIds(ids),
+    [pokemonList]
+  );
+
+  if(!pokemonByType?.results.length) {
+    return <SpinnerIcon />;
+  }
 
   const tableHeaders = <>
     <th className="w-[5%]"></th>
@@ -43,10 +48,9 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: INam
     )}
   </td>;
 
-
-  const tableBody = pokemonByType
-    .map((pokemon, idx) => {
-      const isLast = idx === pokemonList.length - 1;
+  const tableBody = pokemonByType.results
+    .map((pokemon, idx, self) => {
+      const isLast = idx === self.length - 1;
       return (
         <tr key={idx} className={`${!isLast ? 'border-solid border-foreground  border-b-2' : ''}`}>
           <td className="p-2">
@@ -69,8 +73,8 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: INam
 
   return (
     <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-      <h3 className="w-fit text-lg mb-4">{t('type.pokemon.title', { type: capitilize(type), length: pokemonList?.length })}</h3>
-      {!!pokemonList?.length &&
+      <h3 className="w-fit text-lg mb-4">{t('type.pokemon.title', { type: capitilize(type), length: pokemonByType.results.length })}</h3>
+      {!!pokemonByType.results.length &&
       <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
         <Table headers={tableHeaders}>{tableBody}</Table>
       </div>

@@ -3,7 +3,7 @@ import PokeApiQuery from '@/app/poke-api-query';
 import PokedexFilter from '@/components/pokedex/pokedex-list/pokedex-filter';
 import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
 import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
-import Spinner from '@/components/shared/spinner';
+import Spinner, { SpinnerIcon } from '@/components/shared/spinner';
 import Toggle from '@/components/shared/toggle';
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { useSnackbar } from '@/context/snackbar';
@@ -118,7 +118,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
           }
           {loading && <Spinner /> }
           <div className="ml-4 text-xs text-right">
-            Displaying {pokemons.length} of {TOTAL_POKEMON} Pokémon
+            {t('pokedex.displayingXofYPokemon', { x: pokemons.length, y: TOTAL_POKEMON })}
           </div>
         </div>
       }

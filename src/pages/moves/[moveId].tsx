@@ -9,7 +9,7 @@ import MoveDataTable from "@/components/moves/move-data-table";
 import MoveTarget from "@/components/moves/move-target";
 import MoveEffect from "@/components/moves/move-effect";
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "../../components/shared/utils";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
 import Spinner from "@/components/shared/spinner";
 
 const pokeApiQuery = new PokeApiQuery();
@@ -18,6 +18,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
   try {
     const moveData = await pokeApiQuery.getMove(id) as IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
+    console.log(moveData);
     return {
       props: {
         moveData: {
@@ -45,17 +46,12 @@ export default function MoveDetails({
 }: {
   moveData: IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] }
 }) {
-  const [targetData, setTargetData] = useState<IMoveTarget | null>(null);
   const { t } = useTranslation('common');
 
-  useEffect(() => {
-    const getTarget = async () => {
-      if (moveData?.target) {
-        setTargetData(await pokeApiQuery.getURL<IMoveTarget>(moveData.target.url));
-      }
-    };
-    getTarget();
-  }, [moveData]);
+  const { data: targetData } = useAsyncQuery(
+    () => pokeApiQuery.getURL<IMoveTarget>(moveData.target.url),
+    [moveData]
+  );
 
   if (!moveData) {
     return (

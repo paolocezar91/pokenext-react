@@ -1,12 +1,12 @@
 import PokeApiQuery from '@/app/poke-api-query';
 import MultiSelect from '@/components/shared/multi-select';
-import { capitilize } from '@/components/shared/utils';
+import { capitilize, useAsyncQuery } from '@/components/shared/utils';
 import { ChevronLeftIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import { IType } from 'pokeapi-typescript';
 import { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Tooltip from '../../shared/tooltip/tooltip';
+import Spinner from '@/components/shared/spinner';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -26,12 +26,9 @@ export default function PokedexFilter({
   const { t } = useTranslation('common');
   const [filterName, setFilterName] = useState(name);
   const [filterType, setFilterType] = useState<string[]>(types ?? []);
-  const [typeOptions, setTypeOptions] = useState<IType[]>([]);
   const [open, setOpen] = useState<boolean>(!!name || !!types?.length);
 
-  useEffect(() => {
-    pokeApiQuery.getAllTypes().then(options => setTypeOptions(options));
-  }, []);
+  const { data: typeOptions } = useAsyncQuery(() => pokeApiQuery.getAllTypes(), []);
 
   useEffect(() => {
     if(filterName !== undefined && (filterName?.length === 0 || filterName?.length > 2)){
@@ -52,23 +49,23 @@ export default function PokedexFilter({
         t("filters.closeFilters")
     }>
       <Button className={`
-      cursor-pointer
-      flex
-      p-2
-      rounded
-      mr-2
-      transition-colors
-      ${open ?
-        "bg-(--pokedex-red-darker) hover:text-(--pokedex-red-darker) hover:bg-white" :
-        "hover:bg-(--pokedex-red-darker)"}
-    `}
+        cursor-pointer
+        flex
+        p-2
+        rounded
+        mr-2
+        transition-colors
+        ${open ?
+          "bg-(--pokedex-red-darker) hover:text-(--pokedex-red-darker) hover:bg-white" :
+          "hover:bg-(--pokedex-red-darker)"}
+      `}
       onClick={() => setOpen(!open)}
       >
         { open ? <ChevronLeftIcon className="w-6" />: <MagnifyingGlassIcon className="w-6" />}
       </Button>
     </Tooltip>;
 
-  const filterForm =<div className="flex">
+  const filterForm = typeOptions && <div className="flex">
     <div className="name-filter">
       <Tooltip content={t("filters.filterName.tooltip")}>
         <input
@@ -105,6 +102,10 @@ export default function PokedexFilter({
       />
     </div>
   </div>;
+
+  if(!typeOptions) {
+    return <Spinner />;
+  }
 
   return (
     <>

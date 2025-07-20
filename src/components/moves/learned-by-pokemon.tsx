@@ -1,27 +1,25 @@
+import PokeApiQuery from "@/app/poke-api-query";
+import Table from "@/components/shared/table";
+import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
+import { useUser } from "@/context/user-context";
+import { IPkmn } from "@/types/types";
+import Image from "next/image";
 import Link from "next/link";
 import { INamedApiResource, IPokemon } from "pokeapi-typescript";
-import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
 import { useTranslation } from "react-i18next";
-import Table from "@/components/shared/table";
-import Image from "next/image";
-import { IPkmn } from "@/types/types";
 import { getTypeIconById } from "../[id]/details/types";
-import { useUser } from "@/context/user-context";
-import { useEffect, useState } from "react";
-import PokeApiQuery from "@/app/poke-api-query";
 const pokeApiQuery = new PokeApiQuery();
 
 export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedApiResource<IPokemon>[] }) {
   const { t } = useTranslation('common');
-  const [learnedBy, setLearnedBy] = useState<IPkmn[]>([]);
   const { settings } = useUser();
+  const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url)));
 
-  useEffect(() => {
-    const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url)));
-    pokeApiQuery.getPokemonByIds(ids)
-      .then((res) => setLearnedBy(res.results));
-  }, [pokemonList]);
+  const { data: learnedBy } = useAsyncQuery(
+    () => pokeApiQuery.getPokemonByIds(ids),
+    [pokemonList],
+  );
 
   const tableHeaders = <>
     <th className="w-[5%]"></th>
@@ -43,9 +41,9 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     )}
   </td>;
 
-  const tableBody = learnedBy
-    .map((pokemon, idx) => {
-      const isLast = idx === learnedBy.length - 1;
+  const tableBody = (learnedBy?.results ?? [])
+    .map((pokemon, idx, self) => {
+      const isLast = idx === self.length - 1;
       return (
         <tr key={idx} className={`${!isLast ? 'border-solid border-foreground  border-b-2' : ''}`}>
           <td className="p-2">
@@ -68,8 +66,8 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
 
   return (
     <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: pokemonList?.length })}</h3>
-      {!!pokemonList?.length &&
+      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.results.length })}</h3>
+      {!!learnedBy?.results.length &&
       <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
         <Table headers={tableHeaders}>{tableBody}</Table>
       </div>

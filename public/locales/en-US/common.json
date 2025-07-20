@@ -53,7 +53,9 @@
                 "accuracy": "Accuracy",
                 "pp": "PP"
             }
-        }
+        },
+        "displayingXofYPokemon": "Displaying {{ x }} of {{ y }} Pokémon",
+        "displayingAllPokemon": "Displaying all Pokémon"
     },
     "menu": {
         "home": "Home",

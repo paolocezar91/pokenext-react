@@ -108,7 +108,7 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
             self-center
             md:self-start
           ">
-            <PokemonByType pokemonList={typeData.pokemon.map(p => p.pokemon)} type={typeData.name}></PokemonByType>
+            <PokemonByType pokemonList={typeData.pokemon} type={typeData.name}></PokemonByType>
           </div>
         </div>
       </div>

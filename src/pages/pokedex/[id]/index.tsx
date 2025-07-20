@@ -1,29 +1,31 @@
 'use client';
 
 import PokeApiQuery from '@/app/poke-api-query';
-import RootLayout from '@/pages/layout';
 import All from '@/app/poke-array.json';
-import { SpeciesChain } from '@/types/types';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
 import PokemonCries from '@/components/[id]/details/cries';
-import PokemonDefensiveChart from '@/components/shared/defensive-chart';
 import PokemonDescription from '@/components/[id]/details/description';
 import PokemonEvolutionChart from '@/components/[id]/details/evolution-chart/evolution-chart';
 import PokemonFirstAppearance from '@/components/[id]/details/first-appearance';
+import PokemonMisc from '@/components/[id]/details/misc';
 import PokemonMoves from '@/components/[id]/details/moves';
 import PokemonSize from '@/components/[id]/details/size';
 import PokemonStats from '@/components/[id]/details/stats';
 import PokemonTypes from '@/components/[id]/details/types';
 import PokemonVarieties from '@/components/[id]/details/varieties';
+import PokemonDefensiveChart from '@/components/shared/defensive-chart';
 import Spinner from '@/components/shared/spinner';
 import PokemonThumb, { getNumber } from '@/components/shared/thumb/thumb';
+import { useSnackbar } from '@/context/snackbar';
+import RootLayout from '@/pages/layout';
+import { SpeciesChain } from '@/types/types';
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 import { GetStaticPropsContext } from 'next';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   capitilize,
@@ -31,8 +33,6 @@ import {
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
-import PokemonMisc from '@/components/[id]/details/misc';
-import { useSnackbar } from '@/context/snackbar';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -112,7 +112,7 @@ export default function PokemonDetails({
         }
         if(speciesData) {
           setSpecies(speciesData);
-          const ec = await pokeApiQuery.getEvolutionChain(speciesData) as IEvolutionChain;
+          const ec = await pokeApiQuery.getEvolutionChain(getIdFromUrlSubstring(speciesData.evolution_chain.url)) as IEvolutionChain;
           setEvolutionChain(ec);
 
           const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
@@ -225,7 +225,10 @@ export default function PokemonDetails({
               { species && species.varieties.length > 1 &&
                   <PokemonVarieties name={pokemon.name} species={species} />}
               { evolutionChain &&
-                  <PokemonEvolutionChart pokemon={pokemon} speciesChain={speciesChain} evolutionChain={evolutionChain} />}
+                  <PokemonEvolutionChart
+                    pokemon={pokemon}
+                    speciesChain={speciesChain}
+                    evolutionChain={evolutionChain} />}
               <PokemonMoves pokemon={pokemon} />
             </div>
           </div>

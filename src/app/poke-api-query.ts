@@ -16,7 +16,7 @@ export default class PokeApiQuery extends BaseQuery {
     return await this.getURL(url);
   };
 
-  getPokemonByIds = async (ids: number[]): Promise<{ results: IPkmn[] }> => {
+  getPokemonByIds = async (ids: number[]): Promise<{ results: IPkmn[], count: number }> => {
     return await this.getURL(`/api/pokemon?ids=${ids}`);
   };
 
@@ -28,7 +28,7 @@ export default class PokeApiQuery extends BaseQuery {
     return await this.getURL(`/api/moves/${id}`);
   };
 
-  getMovesByIds = async (ids: number[]): Promise<IPkmn[]> => {
+  getMovesByIds = async (ids: number[]): Promise<{ results: IMove[], count: number }> => {
     return await this.getURL(`/api/moves?ids=${ids}`);
   };
 
@@ -49,7 +49,7 @@ export default class PokeApiQuery extends BaseQuery {
     return await this.getURL(`/api/types`);
   };
 
-  getEvolutionChain = async (species: IPokemonSpecies): Promise<IEvolutionChain> => {
-    return await this.getURL<IEvolutionChain>(`${species.evolution_chain.url}`);
+  getEvolutionChain = async (id: string): Promise<IEvolutionChain> => {
+    return await this.getURL<IEvolutionChain>(`/api/evolution-chain/${id}`);
   };
 }

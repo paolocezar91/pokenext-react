@@ -127,11 +127,8 @@ export default function PokedexTable({
   };
 
   useEffect(() => {
-    if(settings && Array.isArray(settings.sorting)){
-      setSorting(settings.sorting);
-    } else {
-      setSorting([]);
-    }
+    const sortingValues = settings && Array.isArray(settings.sorting) ? settings.sorting : [];
+    setSorting(sortingValues);
   }, [settings?.sorting]);
 
   const sortedPokemon = pokemons

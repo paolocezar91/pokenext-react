@@ -53,7 +53,8 @@
                 "accuracy": "Eficácia",
                 "pp": "PP"
             }
-        }
+        },
+        "displayingXofYPokemon": "Mostrando {{ x }} de {{ y }} Pokémon"
     },
     "menu": {
         "home": "Início",

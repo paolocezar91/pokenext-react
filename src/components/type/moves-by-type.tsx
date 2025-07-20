@@ -1,25 +1,25 @@
 import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "@/components/shared/utils";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "@/components/shared/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { IMove, INamedApiResource } from "pokeapi-typescript";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { SpinnerIcon } from "../shared/spinner";
 import Tooltip from "../shared/tooltip/tooltip";
 const pokeApiQuery = new PokeApiQuery();
 
-export default function MovesByType(
-  { movesList, type }: { movesList: INamedApiResource<IMove>[], type: string }) {
+export default function MovesByType({ movesList, type }: { movesList: INamedApiResource<IMove>[], type: string }) {
   const { t } = useTranslation('common');
-  const [movesMany, setMovesMany] = useState<any[]>([]);
 
-  useEffect(() => {
-    const ids = movesList.map(p => Number(getIdFromUrlSubstring(p.url)));
-    pokeApiQuery.getMovesByIds(ids).then((res) => {
-      setMovesMany(res);
-    });
-  }, [movesList]);
+  const { data: movesByType } = useAsyncQuery(
+    () => pokeApiQuery.getMovesByIds(movesList.map(p => Number(getIdFromUrlSubstring(p.url)))),
+    [movesList]
+  );
+
+  if(!movesByType?.results?.length) {
+    return <SpinnerIcon />;
+  }
 
   const tableHeaders = <>
     <th className="w-[50%] text-white text-left px-2 py-2">{t('table.name')}</th>
@@ -29,10 +29,10 @@ export default function MovesByType(
     <th className="w-[5%]text-white text-center px-2 py-2">{t('pokedex.details.moves.accuracy')}</th>
   </>;
 
-  const tableBody = movesMany
+  const tableBody = movesByType.results
     .filter((_, idx) => idx < 100)
     .map((move, idx) => {
-      const isLast = idx === movesMany.length - 1;
+      const isLast = idx === movesByType!.results.length - 1;
       return (
         <tr key={idx} className={`${!isLast ? 'border-solid border-foreground  border-b-2' : ''}`}>
           <td className="p-1">
@@ -67,14 +67,11 @@ export default function MovesByType(
       );
     });
 
-  return (
-    <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-      <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: movesMany?.length })}</h3>
-      {!!movesMany?.length &&
-      <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
-        <Table headers={tableHeaders}>{tableBody}</Table>
-      </div>
-      }
+  return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
+    <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: movesByType.results.length })}</h3>
+    <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
+      <Table headers={tableHeaders}>{tableBody}</Table>
     </div>
-  );
+  </div>
+  ;
 }

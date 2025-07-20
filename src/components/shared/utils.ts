@@ -122,6 +122,28 @@ export const kebabToSlash = (name: string) => {
 
 export const getIdFromUrlSubstring = (url = '') => url.split("/")[url.split("/").length - 2];
 
+export function useAsyncQuery<T>(queryFn: () => Promise<T>, deps: any[] = [], initialData: any = null) {
+  const [data, setData] = useState<T | null>(initialData);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let ignore = false;
+    setLoading(true);
+
+    queryFn().then(result => {
+      if (!ignore) {
+        setData(result);
+        setLoading(false);
+      }
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, deps);
+
+  return { data, loading };
+}
 
 export const useLocalStorage = <T>(
   key: string,
