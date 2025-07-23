@@ -5,7 +5,7 @@ import LangSelect from "@/components/settings/lang-select";
 import TypeArtworkSelect from "@/components/settings/type-artwork-select";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@/context/user-context";
-import Spinner from "@/components/shared/spinner";
+import LoadingSpinner from "@/components/shared/spinner";
 
 export default function SettingsPage() {
   const { t, i18n } = useTranslation('common');
@@ -28,6 +28,6 @@ export default function SettingsPage() {
           </div>
         </div>
       </div>
-    </div>: <Spinner />}
+    </div>: <LoadingSpinner />}
   </RootLayout>;
 }

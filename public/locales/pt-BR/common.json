@@ -31,6 +31,12 @@
             "offensiveChart": {
                 "title": "Tabela Ofensiva"
             },
+            "gender": {
+                "title": "Gênero",
+                "femaleRate": "{{name}} selvagem é {{rate}}% fêmea",
+                "maleRate": "{{name}} selvagem é {{rate}}% macho",
+                "genderless": "{{name}} não tem gênero"
+            },
             "misc": {
                 "eggGroups": "Grupos de Ovo",
                 "baby": "Bebê",

@@ -1,13 +1,13 @@
 'use client';
 
 import PokeApiQuery from '@/app/poke-api-query';
-import All from '@/app/poke-array.json';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
 import PokemonCries from '@/components/[id]/details/cries';
 import PokemonDescription from '@/components/[id]/details/description';
 import PokemonEvolutionChart from '@/components/[id]/details/evolution-chart/evolution-chart';
 import PokemonFirstAppearance from '@/components/[id]/details/first-appearance';
+import PokemonGender from '@/components/[id]/details/gender';
 import PokemonMisc from '@/components/[id]/details/misc';
 import PokemonMoves from '@/components/[id]/details/moves';
 import PokemonSize from '@/components/[id]/details/size';
@@ -15,7 +15,7 @@ import PokemonStats from '@/components/[id]/details/stats';
 import PokemonTypes from '@/components/[id]/details/types';
 import PokemonVarieties from '@/components/[id]/details/varieties';
 import PokemonDefensiveChart from '@/components/shared/defensive-chart';
-import Spinner from '@/components/shared/spinner';
+import LoadingSpinner from '@/components/shared/spinner';
 import PokemonThumb, { getNumber } from '@/components/shared/thumb/thumb';
 import { useSnackbar } from '@/context/snackbar';
 import RootLayout from '@/pages/layout';
@@ -53,12 +53,14 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   }
 }
 
-export function getStaticPaths() {
-  const ids = Array.from({ length: 1025 }, (_, i) => String(i + 1));
-  const all = All.map((pokemon) => pokemon.name);
+export async function getStaticPaths() {
+  const pkmns = await pokeApiQuery.getPokemons(0, 1025);
+  const ids = pkmns.results.reduce((acc, pkmn) => {
+    return [...acc, String(pkmn.id), pkmn.name];
+  }, [] as string[]);
 
   return {
-    paths: [...all, ...ids].map(id => ({ params: { id }})),
+    paths: ids.map(id => ({ params: { id }})),
     fallback: true
   };
 }
@@ -172,9 +174,7 @@ export default function PokemonDetails({
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
-          <Spinner>
-            <p>{t('pokedex.loading')}...</p>
-          </Spinner>
+          <LoadingSpinner />
         </div>
       </RootLayout>
     );
@@ -183,9 +183,7 @@ export default function PokemonDetails({
   return (
     <RootLayout title={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto relative">
-        {!loaded && <Spinner>
-          <p>{t('pokedex.loading')}...</p>
-        </Spinner>}
+        {!loaded && <LoadingSpinner />}
         {loaded && <div className=" wrapper flex flex-col md:flex-row mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
           <div className=" thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start"
           >
@@ -217,6 +215,7 @@ export default function PokemonDetails({
               <div className="col-span-6 flex flex-wrap gap-4">
                 <PokemonFirstAppearance pokemon={pokemon} species={species as IPokemonSpecies} />
                 <PokemonSize pokemon={pokemon} />
+                {species && <PokemonGender species={species} />}
                 <PokemonAbilities pokemon={pokemon} />
                 {species && <PokemonMisc species={species} />}
               </div>

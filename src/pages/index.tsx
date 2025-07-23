@@ -3,16 +3,15 @@ import PokeApiQuery from '@/app/poke-api-query';
 import PokedexFilter from '@/components/pokedex/pokedex-list/pokedex-filter';
 import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
 import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
-import Spinner, { SpinnerIcon } from '@/components/shared/spinner';
-import Toggle from '@/components/shared/toggle';
+import LoadingSpinner from '@/components/shared/spinner';
 import Tooltip from '@/components/shared/tooltip/tooltip';
-import { useSnackbar } from '@/context/snackbar';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
 import { Metadata, NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import RootLayout from './layout';
 
@@ -40,27 +39,19 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
   const [filtered, setFiltered] = useState<{ name: string, types: string }>(filterApplied);
   const { settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
-  const { showSnackbar, hideSnackbar } = useSnackbar();
+
+  const detectFilterChange = () => settings && (settings.filter.name !== filtered.name || settings.filter.types !== filtered.types);
 
   // detect filter changes to query for pokemon
   useEffect(() => {
-    if(
-      !loading &&
-      settings &&
-      (
-        settings.filter.name !== filtered.name ||
-        settings.filter.types !== filtered.types
-      )
-    ) {
+    if(!loading && detectFilterChange()) {
       setLoading(true);
-      showSnackbar(`${t('pokedex.loading')}...`);
-      setFiltered(settings.filter);
-      pokeApiQuery.getPokemons(0, TOTAL_POKEMON, settings.filter)
+      setFiltered(settings!.filter);
+      pokeApiQuery.getPokemons(0, TOTAL_POKEMON, settings!.filter)
         .then(({ results }) => {
           setPokemons(results);
           setTimeout(() => {
             setLoading(false);
-            hideSnackbar();
           }, 0);
         });
     }
@@ -85,40 +76,45 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
   return (
     <RootLayout title="Home">
       {settings &&
-        <div className="wrapper h-[inherit] p-4 bg-background relative">
-          <div className="flex items-center">
-            <div className="flex items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-t-lg">
+        <div className="wrapper h-[inherit] pt-4 bg-background relative">
+          <div className="flex items-start">
+            <div className="flex flex-col items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-l-lg">
               <PokedexFilter
-                className="flex"
                 name={settings.filter.name}
                 types={settings.filter.types ? settings.filter.types.split(",") : []}
                 onFilterName={filterName}
                 onFilterTypes={filterTypes}
               />
-              <div className="flex-1 pl-2 border-l-2 border-white">
-                <Tooltip content={t('settings.toggleView')}>
-                  <label className="flex transition-colors hover:bg-(--pokedex-red-darker) p-2 rounded">
-                    <Squares2X2Icon className="w-7" />
-                    <Toggle
-                      className="mx-2"
-                      id="list-table"
-                      value={settings.listTable}
-                      onChange={(value: boolean) => upsertSettings({ listTable: value })}
-                    />
-                    <TableCellsIcon className="w-7" />
-                  </label>
-                </Tooltip>
-              </div>
+              <Tooltip className="mt-1" content={t('settings.toggleView')}>
+                <Button
+                  onClick={() => upsertSettings({ listTable: !settings.listTable })}
+                  className="
+                    cursor-pointer
+                    flex
+                    p-2
+                    rounded
+                    transition-colors
+                    hover:bg-(--pokedex-red-darker)
+                  ">
+                  {settings.listTable ?
+                    <Squares2X2Icon className="w-6" /> :
+                    <TableCellsIcon className="w-6" />}
+                </Button>
+              </Tooltip>
             </div>
-          </div>
-          {
-            !settings.listTable ?
-              <PokedexList pokemons={pokemons}></PokedexList> :
-              <PokedexTable pokemons={pokemons}></PokedexTable>
-          }
-          {loading && <Spinner /> }
-          <div className="ml-4 text-xs text-right">
-            {t('pokedex.displayingXofYPokemon', { x: pokemons.length, y: TOTAL_POKEMON })}
+            {settings.listTable ?
+              <PokedexTable pokemons={pokemons}></PokedexTable>:
+              <PokedexList pokemons={pokemons}>
+                <div className="p-2 bg-background text-xs text-right sticky right-0 bottom-0">
+                  {
+                    pokemons.length === 1025 ?
+                      t('pokedex.displayingAllPokemon') :
+                      t('pokedex.displayingXofYPokemon', { x: pokemons.length, y: TOTAL_POKEMON })
+                  }
+                </div>
+              </PokedexList>
+            }
+            {loading && <LoadingSpinner /> }
           </div>
         </div>
       }

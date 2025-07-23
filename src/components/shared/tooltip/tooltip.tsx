@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './tooltip.scss';
 
-type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
+type TooltipPosition = "top" | "bottom" | "left" | "right";
 
 export default function Tooltip({
   children,
   content,
-  position = 'top',
+  position = "top",
   delay = 0,
   disabled = false,
-  className
+  className = ""
 }: {
   children: React.ReactNode;
   content: React.ReactNode;

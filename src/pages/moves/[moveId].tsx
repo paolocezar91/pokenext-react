@@ -1,30 +1,28 @@
+'use client';
+
 import PokeApiQuery from "@/app/poke-api-query";
+import FlavorText from "@/components/moves/flavor-text";
+import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
+import MoveDataTable from "@/components/moves/move-data-table";
+import MoveEffect from "@/components/moves/move-effect";
+import MoveTarget from "@/components/moves/move-target";
+import LoadingSpinner from "@/components/shared/spinner";
 import RootLayout from "@/pages/layout";
 import { GetStaticPropsContext } from "next";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { IMove, IMoveTarget, INamedApiResource, IPokemon } from "pokeapi-typescript";
-import FlavorText from "@/components/moves/flavor-text";
-import MoveDataTable from "@/components/moves/move-data-table";
-import MoveTarget from "@/components/moves/move-target";
-import MoveEffect from "@/components/moves/move-effect";
-import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
-import Spinner from "@/components/shared/spinner";
+import { useTranslation } from "react-i18next";
+import { capitilize, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
 
 const pokeApiQuery = new PokeApiQuery();
+type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon> };
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
   try {
-    const moveData = await pokeApiQuery.getMove(id) as IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
-    console.log(moveData);
+    const moveData = await pokeApiQuery.getMove(id) as MoveData;
     return {
       props: {
-        moveData: {
-          ...moveData,
-          learned_by_pokemon: moveData.learned_by_pokemon.filter((pkmn) => Number(getIdFromUrlSubstring(pkmn.url)) <= 1025)
-        },
+        moveData
       }
     };
   } catch (error) {
@@ -32,8 +30,11 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   }
 }
 
-export function getStaticPaths() {
-  const ids = Array.from({ length: 1025 }, (_, i) => String(i + 1));
+export async function getStaticPaths() {
+  const moves = await pokeApiQuery.getMoves();
+  const ids = moves.results.reduce((acc, move) => {
+    return [...acc, String(move.id), move.name];
+  }, [] as string[]);
 
   return {
     paths: ids.map(moveId => ({ params: { moveId }})),
@@ -41,25 +42,18 @@ export function getStaticPaths() {
   };
 }
 
-export default function MoveDetails({
-  moveData
-}: {
-  moveData: IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] }
-}) {
+export default function MoveDetails({ moveData }: { moveData: MoveData }) {
   const { t } = useTranslation('common');
-
   const { data: targetData } = useAsyncQuery(
     () => pokeApiQuery.getURL<IMoveTarget>(moveData.target.url),
-    [moveData]
+    [moveData.target.url]
   );
 
   if (!moveData) {
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
-          <Spinner>
-            <p>{t('pokedex.loading')}...</p>
-          </Spinner>
+          <LoadingSpinner />
         </div>
       </RootLayout>
     );
@@ -77,7 +71,7 @@ export default function MoveDetails({
           </div>
 
           {/* Right Column */}
-          <div className="w-full h-[-webkit-fill-available] flex flex-col md:items-start pl-8 mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
+          <div className="w-full h-[-webkit-fill-available] flex flex-col md:items-start md:pl-8 mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
             <MoveEffect moveData={moveData} />
             <LearnedByPokemon pokemonList={moveData.learned_by_pokemon} />
           </div>

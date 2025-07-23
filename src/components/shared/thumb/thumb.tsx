@@ -4,7 +4,7 @@ import { IPkmn } from '@/types/types';
 import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, useState } from 'react';
-import Spinner from '../spinner';
+import LoadingSpinner from '../spinner';
 import './thumb.scss';
 
 export function getArtwork(id: number, sprite: ArtUrl
@@ -94,7 +94,7 @@ export default function PokemonThumb({
   pokemonDataSmall,
   showShinyCheckbox,
   size = 'base',
-  className,
+  className = "",
   showName,
   isMega,
 }: Readonly<{
@@ -113,7 +113,7 @@ export default function PokemonThumb({
   const isBase = size === 'base' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
   const isLG = ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
   const classes = isXS || isSM || isBase || isLG;
-  const loading = <span className={`loading text-xs my-auto ${classes[0]}`}><Spinner /></span>;
+  const loading = <span className={`loading text-xs my-auto ${classes[0]}`}><LoadingSpinner /></span>;
   const pkmn = (() => {
     if (pokemonDataSmall) {
       return {
@@ -145,7 +145,7 @@ export default function PokemonThumb({
     <div className="img-hover-zoom w-full h-full">
       <div className={`relative w-full ${classes[1]}`}>
         {!shiny && <Image
-          className="artwork z-1"
+          className={`artwork z-1 ${settings.artworkUrl}`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src={artworkUrl}
@@ -153,7 +153,7 @@ export default function PokemonThumb({
           loading="lazy"
         />}
         {shiny && <Image
-          className="artwork z-1"
+          className={`artwork z-1 ${settings.artworkUrl}`}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src={shinyArtworkUrl}

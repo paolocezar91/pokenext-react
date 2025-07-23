@@ -6,15 +6,6 @@ type Option = {
   label: string;
 };
 
-interface MultiSelectProps {
-  options: Option[];
-  value: string[];
-  onChange: (selected: string[]) => void;
-  className?: string;
-  id?: string;
-  placeholder?: string;
-  maxSelected?: number;
-}
 
 export default function MultiSelect({
   options,
@@ -24,7 +15,15 @@ export default function MultiSelect({
   id,
   placeholder,
   maxSelected = 2,
-}: MultiSelectProps) {
+}: {
+  options: Option[];
+  value: string[];
+  onChange: (selected: string[]) => void;
+  className?: string;
+  id?: string;
+  placeholder?: string;
+  maxSelected?: number;
+}) {
   const [open, setOpen] = useState(false);
 
   const handleSelect = (optionValue: string) => {

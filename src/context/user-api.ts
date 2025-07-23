@@ -1,9 +1,8 @@
 import BaseQuery from "@/app/base-query";
 import { TypeUrl } from "@/components/[id]/details/types";
+import { SortKey as PokedexSortKey } from "@/components/pokedex/pokedex-table/pokedex-table";
 
 export type User = { id: number; email: string } | null;
-
-export type SortKey = 'id' | 'name' | 'hp' | 'types' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';
 
 export type Settings = {
   artworkUrl: string,
@@ -16,7 +15,7 @@ export type Settings = {
   thumbSizeList: string,
   typeArtworkUrl: TypeUrl,
   filter: { name: string, types: string },
-  sorting: Array<{ key: SortKey, dir: '+' | '-' }>
+  sorting: Array<{ key: PokedexSortKey, dir: '+' | '-' }>
 } | null;
 
 export default class UserApiQuery extends BaseQuery {

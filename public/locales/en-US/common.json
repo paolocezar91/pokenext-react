@@ -31,6 +31,12 @@
             "offensiveChart": {
                 "title": "Offensive Chart"
             },
+            "gender": {
+                "title": "Gender",
+                "femaleRate": "{{rate}}% of wild {{name}} are female",
+                "maleRate": "{{rate}}% of wild {{name}} are male",
+                "genderless": "{{name}} is genderless"
+            },
             "misc": {
                 "eggGroups": "Egg Groups",
                 "baby": "Baby",
@@ -50,7 +56,8 @@
                 "type": "Type",
                 "class": "Class",
                 "power": "Power",
-                "accuracy": "Accuracy",
+                "accuracy": "Acc.",
+                "accuracyTooltip": "Accuracy",
                 "pp": "PP"
             }
         },

@@ -36,7 +36,7 @@ const guestDefaultSettings: Settings = {
   showShowColumn: false,
   showThumbTable: true,
   thumbLabelList: "tooltip",
-  thumbSizeList: "sm",
+  thumbSizeList: "xs",
   typeArtworkUrl: "sword-shield" as TypeUrl,
   filter: { name: "", types: "" },
   sorting: []

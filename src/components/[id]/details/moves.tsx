@@ -7,10 +7,10 @@ import Link from "next/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Spinner from "../../shared/spinner";
+import LoadingSpinner from "../../shared/spinner";
 import Tooltip from "../../shared/tooltip/tooltip";
 import { getTypeIconById } from "./types";
-import Table from "@/components/shared/table";
+import Table from "@/components/shared/table/table";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -129,7 +129,9 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
       {t('pokedex.details.moves.pp')}
     </th>
     <th className="text-left border-solid border-b-2 border-foreground align-bottom pb-2">
-      {t('pokedex.details.moves.accuracy')}
+      <Tooltip content={t('pokedex.details.moves.accuracyTooltip')}>
+        {t('pokedex.details.moves.accuracy')}
+      </Tooltip>
     </th>
   </>;
 
@@ -155,8 +157,8 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         <td className="p-2">
           <Link href={`/type/${move.details.type.name}`}>
             <Image
-              width="100"
-              height="20"
+              width="200"
+              height="44"
               alt={capitilize(move.details.type.name)}
               src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), settings.typeArtworkUrl)} />
           </Link>
@@ -199,7 +201,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         </label>
       </div>}
       {versionGroupActive && <div className="moveset-picker">
-        <label className="ml-2 text-xs flex flex-col">
+        <label className="mt-2 md:mt-0 md:ml-2 text-xs flex flex-col">
           <span className="mb-1">
             {t('pokedex.details.moves.learntBy')}:
           </span>
@@ -221,7 +223,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
 
     <div className="tables overflow-x-auto mb-6">
       {versionGroupActive && movesetActive && !showTable && <div className="p-4 flex items-center justify-center">
-        <Spinner />
+        <LoadingSpinner />
       </div>}
       {showTable && <Table headers={headers}>{body}</Table>}
     </div>

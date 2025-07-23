@@ -2,12 +2,13 @@ import { IPkmn } from "@/types/types";
 import { IEvolutionChain, IMove, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
 import BaseQuery from "./base-query";
 
+interface CountResults<T> { results: T[], count: number }
 export default class PokeApiQuery extends BaseQuery {
   constructor() {
     super();
   }
 
-  getPokemons = async (offset: number, limit: number, filters?: Record<string, string>): Promise<{ results: IPkmn[], count: number }> => {
+  getPokemons = async (offset: number, limit: number, filters?: Record<string, string>): Promise<CountResults<IPkmn>> => {
     let url = `/api/pokemon?limit=${limit}&offset=${offset}`;
     if(filters) {
       filters = this.cleanParams(filters);
@@ -16,7 +17,7 @@ export default class PokeApiQuery extends BaseQuery {
     return await this.getURL(url);
   };
 
-  getPokemonByIds = async (ids: number[]): Promise<{ results: IPkmn[], count: number }> => {
+  getPokemonByIds = async (ids: number[]): Promise<CountResults<IPkmn>> => {
     return await this.getURL(`/api/pokemon?ids=${ids}`);
   };
 
@@ -28,7 +29,11 @@ export default class PokeApiQuery extends BaseQuery {
     return await this.getURL(`/api/moves/${id}`);
   };
 
-  getMovesByIds = async (ids: number[]): Promise<{ results: IMove[], count: number }> => {
+  getMoves = async (): Promise<CountResults<IMove>> => {
+    return await this.getURL(`/api/moves`);
+  };
+
+  getMovesByIds = async (ids: number[]): Promise<CountResults<IMove>> => {
     return await this.getURL(`/api/moves?ids=${ids}`);
   };
 
