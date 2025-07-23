@@ -50,7 +50,10 @@ export function PokedexSettings({ children }: { children: ReactNode }) {
   </div>;
 }
 
-export function SettingsItem({ children, title, htmlFor, className }: { children: ReactNode, title?: string, htmlFor?: string, className?: string }) {
+export function SettingsItem(
+  { children, title, htmlFor, className = "" }:
+  { children: ReactNode, title?: string, htmlFor?: string, className?: string }
+) {
   return <div className={`settings-item ${className}`}>
     <label className="text-xs" htmlFor={htmlFor}>
       <span className="mb-2">{title}</span>
