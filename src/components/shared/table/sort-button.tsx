@@ -1,6 +1,6 @@
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { kebabToSpace } from "@/components/shared/utils";
-import { ArrowLongDownIcon, ArrowLongUpIcon, ArrowsUpDownIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { ArrowLongDownIcon, ArrowLongUpIcon, ArrowsUpDownIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import { Button } from "react-bootstrap";
 import { SortingDir } from "./sorting";
@@ -48,30 +48,6 @@ export default function SortButton<T>({ children, attr, disabled, sorting, onCli
     >
       <span className="mr-1">{children}</span>
       {icon}
-    </Button>
-  </Tooltip>;
-};
-
-export function ResetSortButton({ disabled, onClick }: { disabled: boolean, onClick: () => void }) {
-  return <Tooltip content="Reset sorting">
-    <Button
-      disabled={disabled}
-      className={`
-          ml-1
-          p-1
-          cursor-pointer
-          rounded
-          text-(--pokedex-red-darker)
-          bg-white
-          transition-colors
-          hover:bg-(--pokedex-red-darker)
-          hover:text-white
-          disabled:bg-(--pokedex-red)
-          disabled:text-white
-          disabled:opacity-50
-        `}
-      onClick={() => onClick()}>
-      <XMarkIcon className="w-5" />
     </Button>
   </Tooltip>;
 };

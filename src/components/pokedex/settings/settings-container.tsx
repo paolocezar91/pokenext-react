@@ -44,9 +44,11 @@ export function SettingsContainer({ children, className = "" }: { children: Reac
           p-2
           rounded
           transition-colors
+          active:bg-white
+          active:text-(--pokedex-red-dark)
           ${showSettings ?
-            "bg-(--pokedex-red-darker) hover:text-(--pokedex-red-darker) hover:bg-white" :
-            "hover:bg-(--pokedex-red-darker)"}
+            "bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
+            "hover:bg-(--pokedex-red-dark)"}
         `}
           onClick={() => setShowSettings(!showSettings)}
         >
@@ -57,7 +59,7 @@ export function SettingsContainer({ children, className = "" }: { children: Reac
         initial={{ left: '2rem', opacity: 0 }}
         animate={{ left: '2.5rem', opacity: 1 }}
         exit={{ left: "2rem", opacity: 0 }}
-        style={{ position: 'absolute', zIndex: '2', top: '-0.5rem' }}
+        style={{ position: 'absolute', zIndex: '2', top: 0 }}
         transition={{ duration: 0.3 }}
       >
         <SettingsContent title={t('menu.settings')}>

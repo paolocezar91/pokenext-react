@@ -106,7 +106,7 @@ export default function MovesByType({ movesList, type }: { movesList: INamedApiR
 
   return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2 h-[-webkit-fill-available]">
     <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: movesByType.results.length })}</h3>
-    <div className="sm:overflow-initial md:overflow-auto h-[-webkit-fill-available]">
+    <div className="h-[-webkit-fill-available]">
       <Table headers={tableHeaders}>{tableBody}</Table>
     </div>
   </div>

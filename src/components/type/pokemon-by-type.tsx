@@ -108,7 +108,7 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
       <h3 className="w-fit text-lg mb-4">{t('type.pokemon.title', { type: capitilize(type), length: pokemonByType.results.length })}</h3>
       {!!pokemonByType.results.length &&
-      <div className="h-[-webkit-fill-available] sm:overflow-initial md:overflow-auto">
+      <div className="h-[-webkit-fill-available]">
         <Table headers={tableHeaders}>{tableBody}</Table>
       </div>
       }

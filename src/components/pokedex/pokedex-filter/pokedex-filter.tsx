@@ -2,14 +2,14 @@
 import PokeApiQuery from '@/app/poke-api-query';
 import MultiSelect from '@/components/shared/multi-select';
 import { capitilize, useAsyncQuery } from '@/components/shared/utils';
-import { ChevronLeftIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { ChevronLeftIcon, FunnelIcon } from '@heroicons/react/24/solid';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Tooltip from '../../shared/tooltip/tooltip';
-import { AnimatePresence, motion } from 'framer-motion';
-import { SettingsItem } from '../settings/settings-item';
 import { SettingsContent } from '../settings/settings-content';
+import { SettingsItem } from '../settings/settings-item';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -62,11 +62,7 @@ export default function PokedexFilter({
 
   const toggleFilterForm =
     <Tooltip
-      content={
-        !open ?
-          t("filters.openFilters") :
-          t("filters.closeFilters")
-      }>
+      content={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
       <Button
         className={`
           cursor-pointer
@@ -74,17 +70,19 @@ export default function PokedexFilter({
           p-2
           rounded
           transition-colors
+          active:bg-white
+          active:text-(--pokedex-red-dark)
           ${open ?
-            "bg-(--pokedex-red-darker) hover:text-(--pokedex-red-darker) hover:bg-white" :
-            "hover:bg-(--pokedex-red-darker)"}
+            "bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
+            "hover:bg-(--pokedex-red-dark)"}
         `}
         onClick={() => setOpen(!open)}
       >
         { open ?
           <ChevronLeftIcon className="w-6" />:
-          <MagnifyingGlassIcon className="w-6" />
+          <FunnelIcon className="w-6" />
         }
-        {isFiltered && <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2"></span>}
+        {isFiltered && <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2" />}
       </Button>
     </Tooltip>;
 
@@ -133,10 +131,10 @@ export default function PokedexFilter({
         initial={{ left: '2rem', opacity: 0 }}
         animate={{ left: '2.5rem', opacity: 1 }}
         exit={{ left: "2rem", opacity: 0 }}
-        style={{ position: 'absolute', zIndex: '2', top: '-0.5rem' }}
+        style={{ position: 'absolute', zIndex: '2', top: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <SettingsContent title={t('filters.title')}>
+        <SettingsContent title={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
           {filterForm}
         </SettingsContent>
       </motion.div>}
