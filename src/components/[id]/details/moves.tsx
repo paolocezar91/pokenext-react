@@ -107,28 +107,32 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
   }, [versionGroupActive, movesetActive]);
 
   const headers = <>
-    {movesetActive === 'level-up' && <th className="w-[5%] pr-2 border-solid border-b-2 border-foreground align-bottom">
-      Lv.
-    </th>}
-    {movesetActive === 'machine' && <th className="w-[5%] pr-2 border-solid border-b-2 border-foreground align-bottom">
-      TM/HM
-    </th>}
-    <th className="text-left border-solid border-b-2 border-foreground align-bottom pb-2">
+    {movesetActive === 'level-up' &&
+      <th className="w-[5%] bg-(--pokedex-red-dark) text-left p-2">
+        Lv.
+      </th>
+    }
+    {movesetActive === 'machine' &&
+      <th className="w-[5%] bg-(--pokedex-red-dark) text-left p-2">
+        TM/HM
+      </th>
+    }
+    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
       {t('pokedex.details.moves.name')}
     </th>
-    <th className="text-left border-solid border-b-2 border-foreground align-bottom pb-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
       {t('pokedex.details.moves.type')}
     </th>
-    <th className="text-left border-solid border-b-2 border-foreground align-bottom pb-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
       {t('pokedex.details.moves.class')}
     </th>
-    <th className="text-left border-solid border-b-2 border-foreground align-bottom pb-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
       {t('pokedex.details.moves.power')}
     </th>
-    <th className="text-left border-solid border-b-2 border-foreground align-bottom pb-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
       {t('pokedex.details.moves.pp')}
     </th>
-    <th className="text-left border-solid border-b-2 border-foreground align-bottom pb-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
       <Tooltip content={t('pokedex.details.moves.accuracyTooltip')}>
         {t('pokedex.details.moves.accuracy')}
       </Tooltip>
@@ -157,8 +161,8 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         <td className="p-2">
           <Link href={`/type/${move.details.type.name}`}>
             <Image
-              width="200"
-              height="44"
+              width="100"
+              height="22"
               alt={capitilize(move.details.type.name)}
               src={getTypeIconById(getIdFromUrlSubstring(move.details.type.url), settings.typeArtworkUrl)} />
           </Link>

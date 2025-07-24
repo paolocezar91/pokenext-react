@@ -8,12 +8,13 @@ function LazyRow({ children }: { children: ReactNode }) {
   </tbody>;
 }
 
-export default function Table({ headers, children }: {
+export default function Table({ headers, children, className = "" }: {
   headers: ReactNode;
   children: ReactNode;
+  className?: string
 }) {
   return (
-    <table className="w-full text-xs">
+    <table className={`w-full text-xs ${className}`}>
       <thead>
         <tr className="sticky top-0 bg-background z-1">
           {headers}

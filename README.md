@@ -13,3 +13,8 @@ npm run dev
 ```
 
 In the future this and the back end service will all be dockerized to run smoothly.
+
+Here are some screenshots of the project:
+![alt text](https://github.com/paolocezar91/pokedex-react/blob/main/screen01.png?raw=true)
+
+![alt text](https://github.com/paolocezar91/pokedex-react/blob/main/screen02.png?raw=true)

@@ -2,18 +2,23 @@ import Select from "@/components/shared/select";
 import Toggle from "@/components/shared/toggle";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useUser } from "@/context/user-context";
-import { Squares2X2Icon, TableCellsIcon } from "@heroicons/react/24/solid";
-import { ChangeEvent } from "react";
+import { ArrowsUpDownIcon, Squares2X2Icon, TableCellsIcon } from "@heroicons/react/24/solid";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import PokedexFilter from "../pokedex-filter/pokedex-filter";
-import { SettingsItem } from "./settings-item";
 import { SettingsContainer } from "./settings-container";
+import { SettingsItem } from "./settings-item";
 
 export function PokedexSettings() {
-  const { user, settings, upsertSettings } = useUser();
+  const { settings, upsertSettings } = useUser();
+  const [sortingActive, setSortingActive] = useState(!!settings?.sorting.length);
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const { t } = useTranslation('common');
+
+  useEffect(() => {
+    setSortingActive(!!settings?.sorting.length);
+  }, [settings?.sorting]);
 
   const filterName = (name: string) => {
     if(name !== settings?.filter.name) {
@@ -29,14 +34,12 @@ export function PokedexSettings() {
     }
   };
 
-  const handleShowShowColumnChange = (value: boolean) => {
-    if(user)
-      upsertSettings({ showShowColumn: value }, user?.id);
+  const handleShowShowColumnChange = (showShowColumn: boolean) => {
+    upsertSettings({ showShowColumn });
   };
 
   const handleShowThumb = (showThumbTable: boolean) => {
-    if(user)
-      upsertSettings({ showThumbTable }, user?.id);
+    upsertSettings({ showThumbTable });
   };
 
   const handleThumbSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -48,14 +51,41 @@ export function PokedexSettings() {
   };
 
   return settings &&
-    <div className="flex flex-col items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-l-lg">
+    <div className="flex flex-col items-center bg-(--pokedex-red) p-2 md:w-max border-b-2 border-solid border-black rounded-l-lg">
       <PokedexFilter
         name={settings.filter.name}
         types={settings.filter.types ? settings.filter.types.split(",") : []}
         onFilterName={filterName}
         onFilterTypes={filterTypes}
       />
-      <SettingsContainer className="mt-2">
+      <Tooltip
+        content="Reset sorting options"
+      >
+        <Button
+          onClick={() => {
+            upsertSettings({ sorting: [] });
+            setSortingActive(!sortingActive);
+          }}
+          disabled={!sortingActive}
+          className={`
+            mt-1
+            cursor-pointer
+            flex
+            p-2
+            rounded
+            transition-colors
+            hover:bg-(--pokedex-red-dark)
+            hover:text-white
+            active:bg-white
+            active:text-(--pokedex-red-dark)
+            disabled:opacity-30
+            disabled:bg-(--pokedex-red-dark)
+            ${sortingActive ? 'bg-white text-(--pokedex-red-dark)' : ''}
+          `}>
+          <ArrowsUpDownIcon className="w-6" />
+        </Button>
+      </Tooltip>
+      <SettingsContainer className="mt-1">
         {settings.listTable ?
           <>
             <SettingsItem className="mb-2" htmlFor="showThumb">
@@ -111,7 +141,9 @@ export function PokedexSettings() {
             p-2
             rounded
             transition-colors
-            hover:bg-(--pokedex-red-darker)
+            hover:bg-(--pokedex-red-dark)
+            active:bg-white
+            active:text-(--pokedex-red-dark)
           ">
           {settings.listTable ?
             <Squares2X2Icon className="w-6" /> :
