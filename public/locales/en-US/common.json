@@ -105,19 +105,25 @@
         "types": "Type(s)"
     },
     "filters": {
+        "title": "Filters",
         "openFilters": "Open filter options",
         "closeFilters": "Close filter options",
         "filterName": {
+            "title": "Name",
             "placeholder": "Filter by name...",
             "tooltip": "Try \"Bulbasaur\""
         },
         "filterTypes": {
+            "title": "Types",
             "placeholder": "Filter by up to 2 types..."
         }
     },
     "settings": {
-        "toggleView": "Thumbnail or Table view",
         "title": "Settings",
+        "openSettings": "Open settings",
+        "closeSettings": "Close settings",
+        "thumbnailView": "Display as Thumbnail",
+        "tableView": "Display as Table",
         "size": {
             "title": "Thumb Size",
             "xs": "Small",

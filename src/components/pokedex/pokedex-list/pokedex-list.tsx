@@ -1,37 +1,25 @@
 'use client';
 
-import Select from '@/components/shared/select';
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName } from '@/components/shared/utils';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useRef, useState } from 'react';
 import { getNumber } from '../../shared/thumb/thumb';
-import { PokedexSettings, SettingsItem } from '../settings/pokedex-settings';
 import LazyThumb from './lazy-thumb';
 import "./pokedex-list.scss";
 
-
-
 export default function PokedexList({
   pokemons,
+  children
 }: Readonly<{
   pokemons: IPkmn[],
+  children: React.ReactNode
 }>) {
-  const { settings, upsertSettings } = useUser();
-  const { t } = useTranslation('common');
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  const handleThumbSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    upsertSettings({ thumbSizeList: e.target.value });
-  };
-
-  const handleThumbLabelChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    upsertSettings({ thumbLabelList: e.target.value });
-  };
-
+  const { settings } = useUser();
   const parentRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number | undefined>(undefined);
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   useEffect(() => {
     function updateWidth() {
@@ -71,47 +59,24 @@ export default function PokedexList({
 
     return () => {
       window.removeEventListener('resize', updateWidth);
-      if (observer && parentRef.current) observer.unobserve(parentRef.current);
+      if (observer && parentRef.current)
+        observer.unobserve(parentRef.current);
     };
   }, [settings?.thumbSizeList]);
 
   return (
-    settings && <div className="list-container p-4 bg-(--pokedex-red) relative" ref={parentRef}>
-      <PokedexSettings>
-        <SettingsItem title={t('settings.size.title')} htmlFor="thumbSize">
-          <Select className="w-full mt-1" value={settings?.thumbSizeList} id="thumbSize" onChange={handleThumbSizeChange}>
-            <option value="xs">{t('settings.size.xs')}</option>
-            <option value="sm">{t('settings.size.sm')}</option>
-            <option value="base">{t('settings.size.base')}</option>
-          </Select>
-        </SettingsItem>
-        <SettingsItem className="mt-2" title={t('settings.label.title')} htmlFor="thumbLabel">
-          <Select className="w-full mt-1" value={settings?.thumbLabelList} id="thumbLabel" onChange={handleThumbLabelChange}>
-            <option value="tooltip">{t('settings.label.tooltip')}</option>
-            <option value="thumbnail">{t('settings.label.thumbnail')}</option>
-            <option value="none">{t('settings.label.none')}</option>
-          </Select>
-        </SettingsItem>
-      </PokedexSettings>
+    settings && <div className="list-container w-full p-2 bg-(--pokedex-red) relative" ref={parentRef}>
       <div className="
         list
         relative
-        h-[-webkit-fill-available]
+        h-[82vh]
         overflow-auto
         rounded
         bg-background
         rounded-b-lg
-        p-4
       ">
         <div
-          className="
-            mx-auto
-            flex
-            gap-4
-            content-start
-            flex-row
-            flex-wrap
-          "
+          className="mx-auto my-4 flex gap-4 content-start flex-row flex-wrap"
           style={containerWidth ? { width: containerWidth } : undefined}
         >
           {
@@ -128,6 +93,7 @@ export default function PokedexList({
             })
           }
         </div>
+        {children}
       </div>
     </div>
   );

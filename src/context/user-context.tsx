@@ -95,15 +95,15 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Sync context state with fetched data
   useEffect(() => {
     if (status === "authenticated") {
-      setUser(fetchedUser);
-      setSettings(fetchedSettings);
+      if (!user) setUser(fetchedUser);
+      if (!settings) setSettings(fetchedSettings);
       setLoading(userLoading || settingsLoading);
     } else if (status === "unauthenticated") {
       setUser(guestUser);
       setSettings(guestSettings);
       setLoading(false);
     }
-  }, [status, fetchedUser, fetchedSettings, userLoading, settingsLoading, guestUser, guestSettings]);
+  }, [status, fetchedUser, fetchedSettings]);
 
   // Unified upsertSettings signature for context
   const upsertSettingsFn = async (body: Record<string, unknown>, id?: number) => {
@@ -113,6 +113,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return handleGuestUpsertSettings(body);
     }
   };
+
 
   const settingsFn = () => {
     return status === "authenticated" ? settings : status === "unauthenticated" ? guestSettings : null;

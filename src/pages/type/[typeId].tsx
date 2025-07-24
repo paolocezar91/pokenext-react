@@ -98,7 +98,6 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType, a
             flex-col
             md:items-start
             mr-0
-            md:mr-4
             self-center
             md:self-start
           ">

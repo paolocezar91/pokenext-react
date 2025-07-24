@@ -57,10 +57,12 @@
                 "class": "Classe",
                 "power": "Poder",
                 "accuracy": "Eficácia",
+                "accuracyTooltip": "Eficácia",
                 "pp": "PP"
             }
         },
-        "displayingXofYPokemon": "Mostrando {{ x }} de {{ y }} Pokémon"
+        "displayingXofYPokemon": "Mostrando {{ x }} de {{ y }} Pokémon",
+        "displayingAllPokemon": "Mostrando todos Pokémon"
     },
     "menu": {
         "home": "Início",
@@ -103,19 +105,25 @@
         "types": "Tipo(s)"
     },
     "filters": {
+        "title": "Filtros",
         "openFilters": "Abrir filtros",
         "closeFilters": "Fechar filtros",
         "filterName": {
+            "title": "Nome",
             "placeholder": "Filtrar por nome...",
             "tooltip": "Tente escrever \"Bulbasaur\""
         },
         "filterTypes": {
+            "title": "Tipos",
             "placeholder": "Filtrar por até 2 tipos..."
         }
     },
     "settings": {
-        "toggleView": "Miniatura ou Tabela",
         "title": "Configurações",
+        "openSettings": "Abrir configs.",
+        "closeSettings": "Fechar configs",
+        "thumbnailView": "Mostrar como miniaturas",
+        "tableView": "Mostrar como tabela",
         "size": {
             "title": "Tamanho Miniatura",
             "xs": "Pequeno",
@@ -156,7 +164,7 @@
         "go": {
             "placeholder": "Buscar...",
             "tooltip": "Tente escrever \"1\" ou \"Bulbasaur\"...",
-            "button": "Vai"
+            "button": "Ir"
         }
     }
 }

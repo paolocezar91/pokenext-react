@@ -1,6 +1,6 @@
 import '@/app/globals.css';
 import PokeApiQuery from '@/app/poke-api-query';
-import PokedexFilter from '@/components/pokedex/pokedex-list/pokedex-filter';
+import PokedexFilter from '@/components/pokedex/pokedex-filter/pokedex-filter';
 import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
 import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
 import LoadingSpinner from '@/components/shared/spinner';
@@ -10,10 +10,13 @@ import { IPkmn } from '@/types/types';
 import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
 import { Metadata, NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import RootLayout from './layout';
+import { PokedexSettings, SettingsContainer, SettingsItem } from '@/components/pokedex/settings/pokedex-settings';
+import Select from '@/components/shared/select';
+import Toggle from '@/components/shared/toggle';
 
 const pokeApiQuery = new PokeApiQuery();
 const NUMBERS_OF_POKEMON = 1025;
@@ -37,9 +40,8 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
   const [loading, setLoading] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<{ name: string, types: string }>(filterApplied);
-  const { settings, upsertSettings } = useUser();
+  const { settings } = useUser();
   const { t } = useTranslation('common');
-
   const detectFilterChange = () => settings && (settings.filter.name !== filtered.name || settings.filter.types !== filtered.types);
 
   // detect filter changes to query for pokemon
@@ -57,51 +59,14 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
     }
   }, [settings?.filter]);
 
-  const filterName = (name: string) => {
-    if(name !== settings?.filter.name) {
-      const filter = { name, types: settings?.filter?.types ?? '' };
-      upsertSettings({ filter });
-    }
-  };
-
-  const filterTypes = (types: string[]) => {
-    if(types.join(',') !== settings?.filter.types) {
-      const filter = { name: settings?.filter?.name ?? '', types: types.join(",") };
-      upsertSettings({ filter });
-    }
-  };
-
   if (!pokemons) return null;
 
   return (
     <RootLayout title="Home">
       {settings &&
-        <div className="wrapper h-[inherit] pt-4 bg-background relative">
+        <div className="wrapper h-[inherit] pt-4 bg-background">
           <div className="flex items-start">
-            <div className="flex flex-col items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-l-lg">
-              <PokedexFilter
-                name={settings.filter.name}
-                types={settings.filter.types ? settings.filter.types.split(",") : []}
-                onFilterName={filterName}
-                onFilterTypes={filterTypes}
-              />
-              <Tooltip className="mt-1" content={t('settings.toggleView')}>
-                <Button
-                  onClick={() => upsertSettings({ listTable: !settings.listTable })}
-                  className="
-                    cursor-pointer
-                    flex
-                    p-2
-                    rounded
-                    transition-colors
-                    hover:bg-(--pokedex-red-darker)
-                  ">
-                  {settings.listTable ?
-                    <Squares2X2Icon className="w-6" /> :
-                    <TableCellsIcon className="w-6" />}
-                </Button>
-              </Tooltip>
-            </div>
+            <PokedexSettings />
             {settings.listTable ?
               <PokedexTable pokemons={pokemons}></PokedexTable>:
               <PokedexList pokemons={pokemons}>

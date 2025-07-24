@@ -40,22 +40,28 @@ export default function NavUserAuth() {
         onMouseEnter={() => setMenuOpen(true)}
       />
       <AnimatePresence>
-        <UserMenu open={menuOpen} onClose={() => setMenuOpen(false)}>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            style={{ width: '100%' }}
-          >
+        {menuOpen && <motion.div
+          initial={{ opacity: 0, top: '1.5rem' }}
+          animate={{ opacity: 1, top: '2rem' }}
+          exit={{ opacity: 0, top: '1.5rem' }}
+          transition={{ duration: 0.3 }}
+          style={{
+            width: '100%',
+            zIndex: 2,
+            height: '100%',
+            right: '690%',
+            position: 'absolute'
+          }}
+        >
+          <UserMenu open={menuOpen} onClose={() => setMenuOpen(false)}>
             <UserMenuContent
               session={session}
               pathname={pathname}
               onSignIn={signInWithGithub}
               onSignOut={handleSignOut}
             />
-          </motion.div>
-        </UserMenu>
+          </UserMenu>
+        </motion.div>}
       </AnimatePresence>
     </div>
   );

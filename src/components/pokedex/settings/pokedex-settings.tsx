@@ -1,76 +1,127 @@
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/solid";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import Select from "@/components/shared/select";
+import Toggle from "@/components/shared/toggle";
+import Tooltip from "@/components/shared/tooltip/tooltip";
+import { useUser } from "@/context/user-context";
+import { Squares2X2Icon, TableCellsIcon } from "@heroicons/react/24/solid";
+import { ChangeEvent } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import PokedexFilter from "../pokedex-filter/pokedex-filter";
+import { SettingsItem } from "./settings-item";
+import { SettingsContainer } from "./settings-container";
 
-export function PokedexSettings({ children }: { children: ReactNode }) {
-  const [showSettings, setShowSettings] = useState(false);
+export function PokedexSettings() {
+  const { user, settings, upsertSettings } = useUser();
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const { t } = useTranslation('common');
-  const settingsRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
-        setShowSettings(false);
-      }
+  const filterName = (name: string) => {
+    if(name !== settings?.filter.name) {
+      const filter = { name, types: settings?.filter?.types ?? '' };
+      upsertSettings({ filter });
     }
+  };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const filterTypes = (types: string[]) => {
+    if(types.join(',') !== settings?.filter.types) {
+      const filter = { name: settings?.filter?.name ?? '', types: types.join(",") };
+      upsertSettings({ filter });
+    }
+  };
 
-  return <div
-    ref={settingsRef}
-    className="settings absolute right-[3rem] top-[-3rem] z-2 text-xs"
-  >
-    <Button
-      onClick={() => setShowSettings(!showSettings)}
-      className={`p-1
-        rounded
-        absolute
-        right-[-2.25rem]
-        top-0
-        shadow-lg
-        border-2
-        border-solid
-        border-transparent
-        transition-colors
-        ${showSettings ?
-          'bg-white text-(--pokedex-red) hover:text-(--pokedex-red-dark)' :
-          'bg-(--pokedex-red) text-foreground hover:bg-(--pokedex-red-dark)'}
-      `}
-    >
-      <EllipsisHorizontalIcon className="w-6" />
-    </Button>
-    {showSettings && <SettingsContent title={t('settings.title')}>
-      { children }
-    </SettingsContent>}
-  </div>;
+  const handleShowShowColumnChange = (value: boolean) => {
+    if(user)
+      upsertSettings({ showShowColumn: value }, user?.id);
+  };
+
+  const handleShowThumb = (showThumbTable: boolean) => {
+    if(user)
+      upsertSettings({ showThumbTable }, user?.id);
+  };
+
+  const handleThumbSizeChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    upsertSettings({ thumbSizeList: e.target.value });
+  };
+
+  const handleThumbLabelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    upsertSettings({ thumbLabelList: e.target.value });
+  };
+
+  return settings &&
+    <div className="flex flex-col items-center bg-(--pokedex-red-dark) p-2 md:w-max border-b-2 border-solid border-black rounded-l-lg">
+      <PokedexFilter
+        name={settings.filter.name}
+        types={settings.filter.types ? settings.filter.types.split(",") : []}
+        onFilterName={filterName}
+        onFilterTypes={filterTypes}
+      />
+      <SettingsContainer className="mt-2">
+        {settings.listTable ?
+          <>
+            <SettingsItem className="mb-2" htmlFor="showThumb">
+              <Toggle
+                className="w-60"
+                value={settings.showThumbTable}
+                id="showThumb"
+                onChange={handleShowThumb}
+                childrenRight={t('settings.showThumb')}
+              />
+            </SettingsItem>
+            <SettingsItem htmlFor="showShowColumns">
+              <Toggle
+                className="w-60"
+                value={settings.showShowColumn}
+                id="showShowColumns"
+                onChange={handleShowShowColumnChange}
+                childrenRight={t('settings.showShowColumns')} />
+            </SettingsItem>
+          </>:
+          <>
+            {!isMobile &&
+            <SettingsItem title={t('settings.size.title')} htmlFor="thumbSize">
+              <Select className="w-70" value={settings?.thumbSizeList} id="thumbSize" onChange={handleThumbSizeChange}>
+                <option value="xs">{t('settings.size.xs')}</option>
+                <option value="sm">{t('settings.size.sm')}</option>
+                <option value="base">{t('settings.size.base')}</option>
+              </Select>
+            </SettingsItem>}
+            <SettingsItem title={t('settings.label.title')} htmlFor="thumbLabel">
+              <Select className="w-70" value={settings?.thumbLabelList} id="thumbLabel" onChange={handleThumbLabelChange}>
+                <option value="tooltip">{t('settings.label.tooltip')}</option>
+                <option value="thumbnail">{t('settings.label.thumbnail')}</option>
+                <option value="none">{t('settings.label.none')}</option>
+              </Select>
+            </SettingsItem>
+          </>
+        }
+      </SettingsContainer>
+      <hr className="border-1 border-solid border-white my-2 w-full" />
+      <Tooltip className="mt-1"
+        content={
+          settings.listTable ?
+            t('settings.thumbnailView') :
+            t('settings.tableView')
+        }
+      >
+        <Button
+          onClick={() => upsertSettings({ listTable: !settings.listTable })}
+          className="
+            cursor-pointer
+            flex
+            p-2
+            rounded
+            transition-colors
+            hover:bg-(--pokedex-red-darker)
+          ">
+          {settings.listTable ?
+            <Squares2X2Icon className="w-6" /> :
+            <TableCellsIcon className="w-6" />}
+        </Button>
+      </Tooltip>
+    </div>;
 }
 
-export function SettingsItem(
-  { children, title, htmlFor, className = "" }:
-  { children: ReactNode, title?: string, htmlFor?: string, className?: string }
-) {
-  return <div className={`settings-item ${className}`}>
-    <label className="text-xs" htmlFor={htmlFor}>
-      <span className="mb-2">{title}</span>
-      {children}
-    </label>
-  </div>;
-}
 
-export function SettingsContent({ children, title }: { children: ReactNode, title: string }) {
 
-  return <div className="settings-group bg-background rounded-l-lg border-4 border-(--pokedex-red-dark) shadow-lg p-4">
-    <div className="settings-item">
-      <div className="text-sm pb-1 mb-2">
-        { title }
-      </div>
-      <hr className="mb-2" />
-      { children }
-    </div>
-  </div>;
-}
+
+

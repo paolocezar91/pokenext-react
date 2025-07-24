@@ -1,31 +1,19 @@
+import { sortResources, updateSortKeys } from '@/components/shared/table/sorting';
 import Toggle from '@/components/shared/toggle';
-import Tooltip from '@/components/shared/tooltip/tooltip';
-import { kebabToSpace } from '@/components/shared/utils';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
-import { ArrowLongDownIcon, ArrowLongUpIcon, ArrowsUpDownIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { statName } from '../../[id]/details/stats';
-import { PokedexSettings, SettingsItem } from '../settings/pokedex-settings';
+import SortButton, { ResetSortButton } from '../../shared/table/sort-button';
 import LazyRow from './lazy-row';
-import { shouldShowColumn, sortPokemon } from './utils';
-import { SortKey } from '@/context/user-api';
+import { shouldShowColumn } from './utils';
+export type SortKey = 'id' | 'name' | 'hp' | 'types' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';
 
-export default function PokedexTable({
-  pokemons,
-}: Readonly<{
-  pokemons: IPkmn[],
-}>) {
+export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
   const { user, settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
   const [sorting, setSorting] = useState<Array<{ key: SortKey, dir: '+' | '-' }>>([]);
-
-  const handleShowShowColumnChange = (value: boolean) => {
-    if(user)
-      upsertSettings({ showShowColumn: value }, user?.id);
-  };
 
   const handleShowColumnChange = (value: boolean, idx: number) => {
     const _showColumn = (settings && [...settings?.showColumn]) ?? [];
@@ -34,96 +22,12 @@ export default function PokedexTable({
       upsertSettings({ showColumn: _showColumn }, user?.id);
   };
 
-  const handleShowThumb = (showThumbTable: boolean) => {
-    if(user)
-      upsertSettings({ showThumbTable }, user?.id);
-  };
-
   const toggleSort = (key: SortKey) => {
     setSorting(prev => {
-      const idx = prev.findIndex(s => s.key === key);
-      let updated: Array<{ key: SortKey, dir: '+' | '-' }> = [];
-      if (idx === -1) { // if it's not there add as asc
-        updated = [...prev, { key, dir: '+' }];
-      } else if (prev[idx].dir === '+') { // if it's there change it to desc
-        updated = [...prev];
-        updated[idx].dir = '-';
-      } else { // then remove it on third click
-        updated = prev.filter((_, i) => i !== idx);
-      }
+      const updated = updateSortKeys(prev, key);
       upsertSettings({ sorting: updated });
       return updated;
     });
-  };
-
-  const SortComponent = ({ children, attr, disabled }: { children: React.ReactNode, attr: SortKey, disabled?: boolean }) => {
-    const sortEntry = sorting.find(s => s.key === attr);
-    let tooltipContent = "";
-    let icon: React.ReactNode;
-    if(!sortEntry) {
-      tooltipContent=`Sort ${kebabToSpace(attr)} ascending`;
-      icon = <ArrowsUpDownIcon className="w-5" />;
-    }
-    if(sortEntry?.dir === '+'){
-      tooltipContent = `Sort ${kebabToSpace(attr)} descending`;
-      icon = <ArrowLongUpIcon className="w-5" />;
-    }
-    if(sortEntry?.dir === '-'){
-      tooltipContent = `Unsort ${kebabToSpace(attr)}`;
-      icon = <ArrowLongDownIcon className="w-5" />;
-    }
-
-    return <Tooltip content={tooltipContent}>
-      <Button
-        disabled={disabled}
-        className={`
-          flex 
-          items-start
-          ml-1
-          px-2
-          py-1
-          cursor-pointer
-          rounded
-          bg-(--pokedex-red-dark)
-          hover:bg-(--pokedex-red-darker)
-          transition-colors
-          ${sortEntry ? 'bg-white text-(--pokedex-red-dark) hover:text-white' : ''}
-        `}
-        onClick={() => toggleSort(attr)}
-      >
-        <span className="mr-1">{children}</span>
-        {icon}
-      </Button>
-    </Tooltip>;
-  };
-
-  const ResetSortComponent = () => {
-    const resetSort = () => {
-      setSorting([]);
-      upsertSettings({ sorting: [] });
-    };
-
-    return <Tooltip content="Reset sorting">
-      <Button
-        disabled={sorting.length === 0}
-        className={`
-          ml-1
-          p-1
-          cursor-pointer
-          rounded
-          text-(--pokedex-red-darker)
-          bg-white
-          transition-colors
-          hover:bg-(--pokedex-red-darker)
-          hover:text-white
-          disabled:bg-(--pokedex-red)
-          disabled:text-white
-          disabled:opacity-50
-        `}
-        onClick={() => resetSort()}>
-        <XMarkIcon className="w-5" />
-      </Button>
-    </Tooltip>;
   };
 
   useEffect(() => {
@@ -131,43 +35,42 @@ export default function PokedexTable({
     setSorting(sortingValues);
   }, [settings?.sorting]);
 
-  const sortedPokemon = pokemons
-    .sort(sortPokemon(sorting));
+  // eslint-disable-next-line no-unused-vars
+  const sortMapping: (a: IPkmn, b: IPkmn) => Record<SortKey, [number | string, number | string]> = (a,b) => ({
+    'types': [a.types.map(t => t.type.name).join(","), b.types.map(t => t.type.name).join(",")],
+    'id': [Number(a.id), Number(b.id)],
+    'name': [a.name, b.name],
+    'hp': [a.stats[0].base_stat, b.stats[0].base_stat],
+    'attack': [a.stats[1].base_stat, b.stats[1].base_stat],
+    'defense': [a.stats[2].base_stat, b.stats[2].base_stat],
+    'special-attack': [a.stats[3].base_stat, b.stats[3].base_stat],
+    'special-defense': [a.stats[4].base_stat, b.stats[4].base_stat],
+    'speed': [a.stats[5].base_stat, b.stats[5].base_stat],
+  });
 
-  return settings && <div className="table-container p-4 bg-(--pokedex-red) relative">
-    <PokedexSettings>
-      <SettingsItem htmlFor="showThumb">
-        <Toggle
-          value={settings.showThumbTable}
-          id="showThumb"
-          onChange={handleShowThumb}
-          childrenRight={t('settings.showThumb')}
-        />
-      </SettingsItem>
-      <SettingsItem className="mt-2" htmlFor="showThumb">
-        <Toggle
-          value={settings.showShowColumn}
-          id="showShowColumns"
-          onChange={handleShowShowColumnChange}
-          childrenRight={t('settings.showShowColumns')} />
-      </SettingsItem>
-    </PokedexSettings>
-    <div className="overflow-auto h-[72vh] relative rounded shadow-md">
+  const sortedPokemon = pokemons
+    .sort(sortResources(sorting, sortMapping, 'id'));
+
+  return settings && <div className="table-container p-2 bg-(--pokedex-red) w-full">
+    <div className="overflow-auto h-[82vh] relative rounded shadow-md">
       <table className="w-full text-xs rounded">
         <thead>
           <tr className="sticky top-0 bg-(--pokedex-red-dark) z-1">
             <th className="w-[1%] text-white text-center px-2 py-2">
-              <ResetSortComponent />
+              <ResetSortButton disabled={sorting.length === 0} onClick={() => {
+                setSorting([]);
+                upsertSettings({ sorting: [] });
+              }} />
             </th>
             {settings && <th className="w-0 text-white text-center px-2 py-2">
-              <SortComponent attr="id">#</SortComponent>
+              <SortButton attr="id" onClick={() => toggleSort("id")} sorting={sorting}>#</SortButton>
             </th>}
             {shouldShowColumn(settings, 1) && <th className="w-[18%] text-white text-left px-2 py-2">
-              <SortComponent attr="name">{t('table.name')}</SortComponent>
+              <SortButton attr="name" onClick={() => toggleSort("name")} sorting={sorting}>{t('table.name')}</SortButton>
             </th>}
             {shouldShowColumn(settings, 2) && <th className="text-white text-left px-2 py-2">
               {!settings.showShowColumn ?
-                <SortComponent attr="types">{t('table.types')}</SortComponent> :
+                <SortButton onClick={() => toggleSort("types")} sorting={sorting} attr="types">{t('table.types')}</SortButton> :
                 <Toggle
                   size="sm"
                   childrenLeft={t('table.types')}
@@ -181,7 +84,13 @@ export default function PokedexTable({
                 className="text-white text-center px-2 py-2"
               >
                 { !settings.showShowColumn ?
-                  <SortComponent attr={stat.stat.name as SortKey}>{statName(stat.stat.name)}</SortComponent> :
+                  <SortButton
+                    onClick={() => toggleSort(stat.stat.name as SortKey)}
+                    sorting={sorting}
+                    attr={stat.stat.name as SortKey}
+                  >
+                    {statName(stat.stat.name)}
+                  </SortButton> :
                   <Toggle
                     size="sm"
                     childrenLeft={statName(stat.stat.name)}

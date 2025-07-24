@@ -43,7 +43,7 @@ export default function MultiSelect({
   const selectedOptions = options.filter((opt) => value.includes(opt.value));
 
   return (
-    <div className={`relative inline-block w-80 ${className}`} id={id}>
+    <div className={`relative inline-block w-75 ${className}`} id={id}>
       <div
         className="
           bg-white
