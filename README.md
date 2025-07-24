@@ -15,6 +15,6 @@ npm run dev
 I am also working currently in a fully dockerized Back End service for the PokeAPI along with this Front End project.
 
 Here are some screenshots of the project:
-![alt text](https://github.com/paolocezar91/pokedex-react/blob/main/screen01.png?raw=true)
+![alt text](https://github.com/paolocezar91/pokedex-react/blob/main/screen_01.png?raw=true)
 
-![alt text](https://github.com/paolocezar91/pokedex-react/blob/main/screen02.png?raw=true)
+![alt text](https://github.com/paolocezar91/pokedex-react/blob/main/screen_02.png?raw=true)
