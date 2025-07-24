@@ -1,38 +1,75 @@
 import PokeApiQuery from "@/app/poke-api-query";
-import Table from "@/components/shared/table";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "@/components/shared/utils";
+import Table from "@/components/shared/table/table";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "@/components/shared/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { IMove, INamedApiResource } from "pokeapi-typescript";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import LoadingSpinner from "../shared/spinner";
+import SortButton from "../shared/table/sort-button";
+import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
 import Tooltip from "../shared/tooltip/tooltip";
+import { useSnackbar } from "@/context/snackbar";
 const pokeApiQuery = new PokeApiQuery();
+export type SortKey = 'id' | 'name' | 'class' | 'power' | 'pp' | 'accuracy';
 
-export default function MovesByType(
-  { movesList, type }: { movesList: INamedApiResource<IMove>[], type: string }) {
+export default function MovesByType({ movesList, type }: { movesList: INamedApiResource<IMove>[], type: string }) {
   const { t } = useTranslation('common');
-  const [movesMany, setMovesMany] = useState<any[]>([]);
+  const [sorting, setSorting] = useState<SortingDir<SortKey>[]>([]);
+  const { showSnackbar } = useSnackbar();
+  const toggleSort = (key: SortKey) => {
+    setSorting(prev => updateSortKeys(prev, key));
+  };
 
-  useEffect(() => {
-    const ids = movesList.map(p => Number(getIdFromUrlSubstring(p.url)));
-    pokeApiQuery.getMovesByIds(ids).then((res) => {
-      setMovesMany(res);
-    });
-  }, [movesList]);
+  const { data: movesByType, error } = useAsyncQuery(
+    () => pokeApiQuery.getMovesByIds(movesList.map(p => Number(getIdFromUrlSubstring(p.url)))),
+    [movesList],
+    (e) => showSnackbar(e, 5)
+  );
+
+  if(!movesByType?.results?.length) {
+    if(error)
+      return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2 h-[-webkit-fill-available]">
+        <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: "ERROR" })}</h3>
+      </div>;
+    return <LoadingSpinner />;
+  }
 
   const tableHeaders = <>
-    <th className="w-[50%] text-white text-left px-2 py-2">{t('table.name')}</th>
-    <th className="w-[5%]text-white text-center px-2 py-2">{t('pokedex.details.moves.class')}</th>
-    <th className="w-[5%]text-white text-center px-2 py-2">{t('pokedex.details.moves.power')}</th>
-    <th className="w-[5%]text-white text-center px-2 py-2">{t('pokedex.details.moves.pp')}</th>
-    <th className="w-[5%]text-white text-center px-2 py-2">{t('pokedex.details.moves.accuracy')}</th>
+    <th className="bg-(--pokedex-red-dark) w-[50%] text-white text-left px-2 py-1">
+      <SortButton attr="name" onClick={() => toggleSort("name")} sorting={sorting}>{t('table.name')}</SortButton>
+    </th>
+    <th className="bg-(--pokedex-red-dark) w-[5%] px-2 py-1">
+      <SortButton attr="class" onClick={() => toggleSort("class")} sorting={sorting}>{t('pokedex.details.moves.class')}</SortButton>
+    </th>
+    <th className="bg-(--pokedex-red-dark) w-[5%] px-2 py-1">
+      <SortButton attr="power" onClick={() => toggleSort("power")} sorting={sorting}>{t('pokedex.details.moves.power')}</SortButton>
+    </th>
+    <th className="bg-(--pokedex-red-dark) w-[5%] px-2 py-1">
+      <SortButton attr="pp" onClick={() => toggleSort("pp")} sorting={sorting}>{t('pokedex.details.moves.pp')}</SortButton>
+    </th>
+    <th className="bg-(--pokedex-red-dark) w-[5%] px-2 py-1">
+      <SortButton attr="accuracy" onClick={() => toggleSort("accuracy")} sorting={sorting}>{t('pokedex.details.moves.accuracy')}</SortButton>
+    </th>
   </>;
 
-  const tableBody = movesMany
-    .filter((_, idx) => idx < 100)
+  // eslint-disable-next-line no-unused-vars
+  const sortMapping: (a: IMove, b: IMove) => Record<SortKey, [number | string, number | string]> = (a,b) => ({
+    'id': [a.id, b.id],
+    'name': [a.name, b.name],
+    'class': [a.damage_class.name, b.damage_class.name],
+    'power': [a.power, b.power],
+    'pp': [a.pp, b.pp],
+    'accuracy': [a.accuracy, b.accuracy],
+  });
+
+  const sortedMoves = movesByType.results
+    .sort(sortResources(sorting, sortMapping, 'id'));
+
+  const tableBody = sortedMoves
     .map((move, idx) => {
-      const isLast = idx === movesMany.length - 1;
+      const isLast = idx === movesByType!.results.length - 1;
       return (
         <tr key={idx} className={`${!isLast ? 'border-solid border-foreground  border-b-2' : ''}`}>
           <td className="p-1">
@@ -55,26 +92,23 @@ export default function MovesByType(
             </Tooltip>
           </td>
           <td className="p-1 text-center">
-            {(move.power)}
+            {(move.power ?? "-")}
           </td>
           <td className="p-1 text-center">
             {(move.pp)}
           </td>
           <td className="p-1 text-center">
-            {(move.accuracy)}
+            {(move.accuracy ?? "-")}
           </td>
         </tr>
       );
     });
 
-  return (
-    <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-      <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: movesMany?.length })}</h3>
-      {!!movesMany?.length &&
-      <div className="sm:overflow-initial md:overflow-auto flex-1 pr-4">
-        <Table headers={tableHeaders}>{tableBody}</Table>
-      </div>
-      }
+  return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2 h-[-webkit-fill-available]">
+    <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: movesByType.results.length })}</h3>
+    <div className="sm:overflow-initial md:overflow-auto h-[-webkit-fill-available]">
+      <Table headers={tableHeaders}>{tableBody}</Table>
     </div>
-  );
+  </div>
+  ;
 }

@@ -1,8 +1,7 @@
 import PokeApiQuery from "@/app/poke-api-query";
-import { normalizePokemonName } from "@/components/shared/utils";
+import { getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
 import Link from "next/link";
-import { IPokemon, IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
-import { useEffect, useState } from "react";
+import { IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import PokemonThumb from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
@@ -10,32 +9,28 @@ import Tooltip from "../../shared/tooltip/tooltip";
 const pokeApiQuery = new PokeApiQuery();
 
 export default function PokemonVarieties({ name, species }: { name: string, species: IPokemonSpecies }) {
-  const [varieties, setVarieties] = useState<IPokemon[]>([]);
-  const [forms, setForms] = useState<IPokemonForm[]>([]);
-
   const { t } = useTranslation('common');
+  const { data: varieties } = useAsyncQuery(
+    () => pokeApiQuery.getPokemonByIds(
+      species.varieties
+        .filter(({ pokemon }) => pokemon.name !== name)
+        .map(({ pokemon }) => Number(getIdFromUrlSubstring(pokemon.url)))
+    ),
+    [species.varieties],
+  );
 
-  useEffect(() => {
-    const getVarieties = async () => {
-      const pokemonVarieties = await Promise.all(
-        species.varieties
-          .filter(({ pokemon }) => pokemon.name !== name)
-          .map(({ pokemon }) => pokeApiQuery.getURL<IPokemon>(pokemon.url))
-      );
-      setVarieties(pokemonVarieties);
-      setForms(await Promise.all(
-        pokemonVarieties
-          .filter(v => v.name !== name)
-          .map(v => pokeApiQuery.getURL<IPokemonForm>(v.forms[0].url))));
-    };
+  const { data: forms = [] } = useAsyncQuery(
+    () => Promise.all(
+      (varieties?.results ?? [])
+        .filter(v => v.name !== name)
+        .map(v => pokeApiQuery.getURL<IPokemonForm>(v.forms[0].url))),
+    [varieties?.results, name]
+  );
 
-    getVarieties();
-  }, [name, species.varieties]);
-
-  return <div className="pokemon-varieties col-span-6 mt-2">
+  return varieties && forms && <div className="pokemon-varieties col-span-6 mt-2">
     <h3 className="w-fit text-lg font-semibold mb-2">{t('pokedex.details.varieties.title')}</h3>
     <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
-      {!!forms.length && varieties.map((pkmn, i) =>
+      {!!forms?.length && varieties?.results?.map((pkmn, i) =>
         <Tooltip key={i} content={normalizePokemonName(pkmn.name)}>
           <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
             <PokemonThumb

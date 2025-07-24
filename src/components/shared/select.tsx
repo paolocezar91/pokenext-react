@@ -3,9 +3,10 @@ import { ChangeEvent, ReactNode } from "react";
 export default function Select({
   children,
   value,
-  className,
+  className = "",
   id,
   multiple,
+  disabled,
   onChange
 }: {
   children: ReactNode,
@@ -13,6 +14,7 @@ export default function Select({
   className?: string,
   id?: string,
   multiple?: boolean,
+  disabled?: boolean,
   onChange: (_: ChangeEvent<HTMLSelectElement>) => void
 }) {
   return <select
@@ -27,8 +29,11 @@ export default function Select({
       border-foreground
       rounded
       hover:border-(--pokedex-red-dark)
+      disabled:bg-grey-300
+      disabled:opacity-70
       ${className}
     `}
+    disabled={disabled}
     onChange={onChange}
     value={value}
     id={id}

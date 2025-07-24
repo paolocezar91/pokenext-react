@@ -1,31 +1,26 @@
 import PokeApiQuery from "@/app/poke-api-query";
 import { getNumber } from "@/components/shared/thumb/thumb";
-import { normalizePokemonName } from "@/components/shared/utils";
+import { normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 const pokeApiQuery = new PokeApiQuery();
 
 export default function Search({ className }: { className?: string }) {
   // Store the fetched pokemon list in state
-  const [pokemonList, setPokemonList] = useState<{ name: string, displayName: string, id: number }[]>([]);
   const router = useRouter();
   const { t } = useTranslation('common');
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<{ name: string, displayName: string, id: number | string }[]>([]);
 
-  // Fetch pokemon data from API on mount
-  useEffect(() => {
-    let isMounted = true;
-    pokeApiQuery.getPokemons(0, 1025).then((data: { results: any[] }) => {
-      if (isMounted && data && data.results) {
-        setPokemonList(data.results.map(p => ({ id: p.id, name: p.name, displayName: normalizePokemonName(p.name) })));
-      }
-    });
-    return () => { isMounted = false; };
-  }, []);
+  const { data: pokemonList } = useAsyncQuery(() => {
+    return pokeApiQuery.getPokemons(0, 1025).then(({ results }) =>
+      results
+        .map(p => ({ id: p.id, name: p.name, displayName: `${getNumber(p.id)} ${normalizePokemonName(p.name)}` }))
+    );
+  });
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value.toLowerCase().trim();
@@ -33,7 +28,7 @@ export default function Search({ className }: { className?: string }) {
 
     if (value) {
       // Filter suggestions based on the input value using the fetched API data
-      const filtered = pokemonList.filter((pokemon) =>
+      const filtered = pokemonList!.filter((pokemon) =>
         pokemon.name.toLowerCase().includes(value)
       );
       setSuggestions(filtered.slice(0, 10)); // Limit to 10 suggestions

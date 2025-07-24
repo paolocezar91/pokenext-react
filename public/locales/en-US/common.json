@@ -31,6 +31,12 @@
             "offensiveChart": {
                 "title": "Offensive Chart"
             },
+            "gender": {
+                "title": "Gender",
+                "femaleRate": "{{rate}}% of wild {{name}} are female",
+                "maleRate": "{{rate}}% of wild {{name}} are male",
+                "genderless": "{{name}} is genderless"
+            },
             "misc": {
                 "eggGroups": "Egg Groups",
                 "baby": "Baby",
@@ -50,10 +56,13 @@
                 "type": "Type",
                 "class": "Class",
                 "power": "Power",
-                "accuracy": "Accuracy",
+                "accuracy": "Acc.",
+                "accuracyTooltip": "Accuracy",
                 "pp": "PP"
             }
-        }
+        },
+        "displayingXofYPokemon": "Displaying {{ x }} of {{ y }} Pokémon",
+        "displayingAllPokemon": "Displaying all Pokémon"
     },
     "menu": {
         "home": "Home",
@@ -96,19 +105,25 @@
         "types": "Type(s)"
     },
     "filters": {
+        "title": "Filters",
         "openFilters": "Open filter options",
         "closeFilters": "Close filter options",
         "filterName": {
+            "title": "Name",
             "placeholder": "Filter by name...",
             "tooltip": "Try \"Bulbasaur\""
         },
         "filterTypes": {
+            "title": "Types",
             "placeholder": "Filter by up to 2 types..."
         }
     },
     "settings": {
-        "toggleView": "Thumbnail or Table view",
         "title": "Settings",
+        "openSettings": "Open settings",
+        "closeSettings": "Close settings",
+        "thumbnailView": "Display as Thumbnail",
+        "tableView": "Display as Table",
         "size": {
             "title": "Thumb Size",
             "xs": "Small",

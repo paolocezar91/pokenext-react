@@ -6,15 +6,6 @@ type Option = {
   label: string;
 };
 
-interface MultiSelectProps {
-  options: Option[];
-  value: string[];
-  onChange: (selected: string[]) => void;
-  className?: string;
-  id?: string;
-  placeholder?: string;
-  maxSelected?: number;
-}
 
 export default function MultiSelect({
   options,
@@ -24,7 +15,15 @@ export default function MultiSelect({
   id,
   placeholder,
   maxSelected = 2,
-}: MultiSelectProps) {
+}: {
+  options: Option[];
+  value: string[];
+  onChange: (selected: string[]) => void;
+  className?: string;
+  id?: string;
+  placeholder?: string;
+  maxSelected?: number;
+}) {
   const [open, setOpen] = useState(false);
 
   const handleSelect = (optionValue: string) => {
@@ -44,7 +43,7 @@ export default function MultiSelect({
   const selectedOptions = options.filter((opt) => value.includes(opt.value));
 
   return (
-    <div className={`relative inline-block w-80 ${className}`} id={id}>
+    <div className={`relative inline-block w-75 ${className}`} id={id}>
       <div
         className="
           bg-white

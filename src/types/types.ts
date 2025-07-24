@@ -1,4 +1,4 @@
-import { IPokemon, IPokemonStat, IPokemonType } from "pokeapi-typescript";
+import { INamedApiResource, IPokemon, IPokemonForm, IPokemonStat, IPokemonType } from "pokeapi-typescript";
 
 export type IPkmn = {
   name: string;
@@ -6,6 +6,7 @@ export type IPkmn = {
   id: number;
   sprites: unknown;
   stats: IPokemonStat[]
+  forms: INamedApiResource<IPokemonForm>[]
 };
 
 export type SpeciesChain = {

@@ -1,28 +1,22 @@
 import PokeApiQuery from "@/app/poke-api-query";
 import Tooltip from "@/components/shared/tooltip/tooltip";
+import { useAsyncQuery } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { IAbility, IPokemon } from "pokeapi-typescript";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const pokeApiQuery = new PokeApiQuery();
 
 export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
   const { t } = useTranslation('common');
-  const [abilityDetails, setAbilityDetails] = useState<IAbility[] | null>(null);
   const { settings } = useUser();
 
-  useEffect(() => {
-    const getAbility = async () => {
-      const abilitiesData = await Promise.all(pokemon.abilities.map((ability) => {
-        return pokeApiQuery.getURL<IAbility>(ability.ability.url);
-      }));
-
-      setAbilityDetails(abilitiesData);
-    };
-
-    getAbility();
-  }, [pokemon.abilities]);
+  const { data: abilityDetails } = useAsyncQuery(
+    () => Promise.all(pokemon.abilities.map((ability) => {
+      return pokeApiQuery.getURL<IAbility>(ability.ability.url);
+    })),
+    [pokemon.abilities]
+  );
 
   return abilityDetails && settings && <div className="pokemon-abilities">
     <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.abilities.title') }</h3>

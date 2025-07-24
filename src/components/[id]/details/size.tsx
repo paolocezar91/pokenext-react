@@ -19,10 +19,10 @@ export default function PokemonSize({ pokemon }: { pokemon: IPokemon }) {
   return <div className="pokemon-size">
     <h3 className="w-fit text-lg font-semibold mb-2">{t('pokedex.details.size.title')}</h3>
     <p>
-      <small>{t('pokedex.details.size.height')}:</small> {pokemon.height / 10}m <small>({metersToFeetInches(pokemon.height / 10)})</small>
+      {t('pokedex.details.size.height')}: {pokemon.height / 10}m <small>({metersToFeetInches(pokemon.height / 10)})</small>
     </p>
     <p>
-      <small>{t('pokedex.details.size.weight')}:</small> {pokemon.weight / 10}kg <small>({kgToLbs(pokemon.weight / 10).toFixed(1)}lbs)</small>
+      {t('pokedex.details.size.weight')}: {pokemon.weight / 10}kg <small>({kgToLbs(pokemon.weight / 10).toFixed(1)}lbs)</small>
     </p>
   </div>;
 }

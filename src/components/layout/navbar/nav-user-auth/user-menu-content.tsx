@@ -45,7 +45,7 @@ export default function UserMenuContent({ session, pathname, onSignIn, onSignOut
           {settingsButton}
         </Tooltip>
       </li>
-      <li className="h-10">
+      <li className="h-10 m-1">
         {session ? signOutButton : signInButton}
       </li>
     </ul>

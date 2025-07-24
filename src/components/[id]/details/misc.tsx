@@ -26,7 +26,7 @@ export default function PokemonMisc({
       ].map(([key, value]) => {
         return <div className="pokemon-misc" key={key}>
           <h3 className="w-fit text-lg font-semibold mb-2">{key}</h3>
-          <small>{value}</small>
+          {value}
         </div>;
       })
     }

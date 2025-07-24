@@ -5,7 +5,7 @@ export default function Toggle({
   value,
   disabled,
   id,
-  className,
+  className = "",
   childrenLeft,
   childrenRight,
   size = 'base',

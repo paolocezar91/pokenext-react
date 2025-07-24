@@ -50,6 +50,12 @@
             transform: scale(0.7);
             margin-top: -1rem;
             transition: transform .5s ease;
+            &.showdown {
+                width: auto !important;
+                height: auto !important;
+                align-self: center;
+                justify-self: center;
+            }
         }
         
     }
@@ -60,6 +66,12 @@
         .img-hover-zoom {
             img {
                 margin-top: 0;
+                &.showdown {
+                width: auto !important;
+                height: auto !important;
+                align-self: center;
+                justify-self: center;
+            }
             }
             
         }
