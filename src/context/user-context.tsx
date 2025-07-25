@@ -113,6 +113,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSettings(guestSettings);
       setLoading(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, fetchedUser, fetchedSettings]);
 
   // Unified upsertSettings signature for context

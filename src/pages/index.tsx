@@ -1,22 +1,16 @@
 import '@/app/globals.css';
 import PokeApiQuery from '@/app/poke-api-query';
-import PokedexFilter from '@/components/pokedex/pokedex-filter/pokedex-filter';
 import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
 import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
+import { PokedexSettings } from '@/components/pokedex/settings/pokedex-settings';
 import LoadingSpinner from '@/components/shared/spinner';
-import Tooltip from '@/components/shared/tooltip/tooltip';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
-import { Squares2X2Icon, TableCellsIcon } from '@heroicons/react/24/solid';
 import { Metadata, NextPageContext } from 'next';
 import { parseCookies } from 'nookies';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Button } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RootLayout from './layout';
-import { PokedexSettings, SettingsContainer, SettingsItem } from '@/components/pokedex/settings/pokedex-settings';
-import Select from '@/components/shared/select';
-import Toggle from '@/components/shared/toggle';
 
 const pokeApiQuery = new PokeApiQuery();
 const NUMBERS_OF_POKEMON = 1025;
@@ -57,6 +51,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
           }, 0);
         });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings?.filter]);
 
   if (!pokemons) return null;

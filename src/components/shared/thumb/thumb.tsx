@@ -132,7 +132,7 @@ export default function PokemonThumb({
   const shinyArtworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).shiny[0];
 
   const loaded = <div
-    style={ pkmn.types ? getBackgroundStyle(pkmn.types) : { 'background': '#CCCCC' }}
+    style={ (pkmn as IPkmn).types ? getBackgroundStyle((pkmn as IPkmn).types) : { 'background': '#CCCCC' }}
     className={`
         pokemon flex flex-col mx-auto justify-center items-center
         ${className ? className : ''}

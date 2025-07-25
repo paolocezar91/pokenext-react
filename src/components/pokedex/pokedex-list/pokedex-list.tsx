@@ -22,8 +22,8 @@ export default function PokedexList({
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
   useEffect(() => {
+    const parent = parentRef.current;
     function updateWidth() {
-      const parent = parentRef.current;
       if (!parent) return;
       const parentWidth = parent.offsetWidth;
       const itemWidth = (() =>{
@@ -52,15 +52,15 @@ export default function PokedexList({
 
     // Optional: Use ResizeObserver for more accurate resizing
     let observer: ResizeObserver | undefined;
-    if (parentRef.current && 'ResizeObserver' in window) {
+    if (parent && 'ResizeObserver' in window) {
       observer = new ResizeObserver(updateWidth);
-      observer.observe(parentRef.current);
+      observer.observe(parent);
     }
 
     return () => {
       window.removeEventListener('resize', updateWidth);
-      if (observer && parentRef.current)
-        observer.unobserve(parentRef.current);
+      if (observer && parent)
+        observer.unobserve(parent);
     };
   }, [settings?.thumbSizeList]);
 

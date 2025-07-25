@@ -1,11 +1,11 @@
+import { useSnackbar } from "@/context/snackbar";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
-import { ChangeEvent, ReactNode } from "react";
+import { ChangeEvent } from "react";
+import { useTranslation } from "react-i18next";
 import { getTypeIconById } from "../[id]/details/types";
 import Select from "../shared/select";
 import { normalizeVersionGroup } from "../shared/utils";
-import { useTranslation } from "react-i18next";
-import { useSnackbar } from "@/context/snackbar";
 
 const sprites = [
   'omega-ruby-alpha-sapphire',

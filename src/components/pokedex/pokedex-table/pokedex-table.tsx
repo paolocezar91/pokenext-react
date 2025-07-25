@@ -33,6 +33,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
   useEffect(() => {
     const sortingValues = settings && Array.isArray(settings.sorting) ? settings.sorting : [];
     setSorting(sortingValues);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings?.sorting]);
 
   // eslint-disable-next-line no-unused-vars

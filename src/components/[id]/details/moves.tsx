@@ -78,7 +78,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
           .map((move) => Number(getIdFromUrlSubstring(move.url)));
 
         const details = await pokeApiQuery.getMovesByIds(ids);
-        moves[versionGroupActive].moveset[movesetActive] = moves[versionGroupActive].moveset[movesetActive].map((move, idx) => {
+        moves[versionGroupActive].moveset[movesetActive] = moves[versionGroupActive].moveset[movesetActive].map((move) => {
           return { ...move, details: details.results.find(d => d.name === move.move) };
         });
 
@@ -91,7 +91,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
               })
           );
 
-          moves[versionGroupActive].moveset[movesetActive] = moves[versionGroupActive].moveset[movesetActive].map((move, idx) => {
+          moves[versionGroupActive].moveset[movesetActive] = moves[versionGroupActive].moveset[movesetActive].map((move) => {
             return { ...move, tmDetails: detailsMachine.find(d => d.move.name === move.move) };
           });
         }
@@ -104,6 +104,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
     setShowTable(false);
     getMovesDetails();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [versionGroupActive, movesetActive]);
 
   const headers = <>

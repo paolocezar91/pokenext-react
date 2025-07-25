@@ -152,6 +152,7 @@ export default function PokemonDetails({
     };
 
     setPokemonData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentId]);
 
   if(error)

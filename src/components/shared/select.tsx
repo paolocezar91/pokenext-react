@@ -15,6 +15,7 @@ export default function Select({
   id?: string,
   multiple?: boolean,
   disabled?: boolean,
+  // eslint-disable-next-line no-unused-vars
   onChange: (_: ChangeEvent<HTMLSelectElement>) => void
 }) {
   return <select

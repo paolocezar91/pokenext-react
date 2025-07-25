@@ -124,6 +124,8 @@ export default function Tooltip({
       window.removeEventListener('resize', updatePosition);
       window.removeEventListener('scroll', updatePosition, true);
     };
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isVisible]);
 
   return (

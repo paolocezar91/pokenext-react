@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { capitilize, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
 
 const pokeApiQuery = new PokeApiQuery();
-type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon> };
+type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);

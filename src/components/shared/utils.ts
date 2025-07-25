@@ -125,8 +125,9 @@ export const getIdFromUrlSubstring = (url = '') => url.split("/")[url.split("/")
 export function useAsyncQuery<T>(
   queryFn: () => Promise<T>,
   deps: unknown[] = [],
+  // eslint-disable-next-line no-unused-vars
   onError?: (err: string) => void,
-  initialData?: any
+  initialData?: T
 ) {
   const [data, setData] = useState<T | null>(initialData ?? null);
   const [error, setError] = useState('');
@@ -152,6 +153,7 @@ export function useAsyncQuery<T>(
     return () => {
       ignore = true;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return { data, loading, error };

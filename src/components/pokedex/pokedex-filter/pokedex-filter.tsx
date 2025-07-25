@@ -51,6 +51,7 @@ export default function PokedexFilter({
       const timeOutId = setTimeout(() => onFilterName(filterName), 300);
       return () => clearTimeout(timeOutId);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterName]);
 
   const handleTypeFilter = (t: string[]) => {
