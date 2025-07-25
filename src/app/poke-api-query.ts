@@ -1,5 +1,5 @@
 import { IPkmn } from "@/types/types";
-import { IEvolutionChain, IMove, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
+import { IAbility, IEvolutionChain, IMove, IPokemon, IPokemonSpecies, IPokemonType, IType } from "pokeapi-typescript";
 import BaseQuery from "./base-query";
 
 interface CountResults<T> { results: T[], count: number }
@@ -52,6 +52,10 @@ export default class PokeApiQuery extends BaseQuery {
 
   getAllTypes = async (): Promise<IType[]> => {
     return await this.getURL(`/api/types`);
+  };
+
+  getAbility = async (id: string): Promise<IAbility> => {
+    return await this.getURL(`/api/abilities/${id}`);
   };
 
   getEvolutionChain = async (id: string): Promise<IEvolutionChain> => {
