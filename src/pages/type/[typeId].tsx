@@ -11,7 +11,7 @@ import PokemonByType from "@/components/type/pokemon-by-type";
 import { useUser } from "@/context/user-context";
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { IType } from "pokeapi-typescript";
+import { IMove, INamedApiResource, IType } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import RootLayout from "../layout";
 
@@ -42,7 +42,7 @@ export function getStaticPaths() {
   };
 }
 
-export default function TypeDetails({ typeData, allTypes }: { typeData: IType, allTypes: IType[] }) {
+export default function TypeDetails({ typeData, allTypes }: { typeData: IType & { moves: INamedApiResource<IMove>[] }, allTypes: IType[] }) {
   const { t } = useTranslation('common');
   const { settings } = useUser();
   const router = useRouter();
