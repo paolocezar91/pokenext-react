@@ -18,6 +18,7 @@ export default function MultiSelect({
 }: {
   options: Option[];
   value: string[];
+  // eslint-disable-next-line no-unused-vars
   onChange: (selected: string[]) => void;
   className?: string;
   id?: string;

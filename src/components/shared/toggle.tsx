@@ -18,6 +18,7 @@ export default function Toggle({
   childrenLeft?: React.ReactNode;
   childrenRight?: React.ReactNode;
   size?: 'sm' | 'base'
+  // eslint-disable-next-line no-unused-vars
   onChange: (_: boolean) => void
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

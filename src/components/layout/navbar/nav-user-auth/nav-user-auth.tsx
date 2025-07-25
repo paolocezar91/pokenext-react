@@ -35,7 +35,7 @@ export default function NavUserAuth() {
   return (
     <div className="relative" ref={menuRef}>
       <UserAvatarButton
-        image={session?.user?.image}
+        image={session?.user?.image ?? ''}
         onClick={() => setMenuOpen((open) => !open)}
         onMouseEnter={() => setMenuOpen(true)}
       />

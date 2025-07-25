@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useRef, useState } from "react";
 
 interface SnackbarContextType {
+  // eslint-disable-next-line no-unused-vars
   showSnackbar: (message: string, time?: number) => void;
   hideSnackbar: () => void;
 }

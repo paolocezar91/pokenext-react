@@ -43,7 +43,7 @@ export default class BaseQuery {
       const json = await data.json();
       return json as T;
       // Handle success (e.g., redirect)
-    } catch (err: any) {
+    } catch (err: unknown) {
       throw err;
     }
   };
