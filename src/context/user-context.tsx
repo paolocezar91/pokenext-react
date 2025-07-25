@@ -50,9 +50,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // useAsyncQuery for user
   const { data: fetchedUser, loading: userLoading } = useAsyncQuery<User | null>(
-    () => {
+    async () => {
       if (status === "authenticated" && session?.user?.email) {
-        return userApi.getUser(session.user.email);
+        let user = await userApi.getUser(session.user.email);
+        if(!user) {
+          // creating user if they're not there yet
+          user = await userApi.createUser(session.user.email);
+        }
+        return user;
       }
       return Promise.resolve(null);
     },
@@ -61,9 +66,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // useAsyncQuery for settings
   const { data: fetchedSettings, loading: settingsLoading } = useAsyncQuery<Settings | null>(
-    () => {
+    async () => {
       if (status === "authenticated" && fetchedUser?.id) {
-        return userApi.getSettings(fetchedUser.id);
+        let settings = await userApi.getSettings(fetchedUser.id);
+        if(!settings) {
+          // creating settings if they're not there yet
+          settings = await userApi.upsertSettings(guestDefaultSettings, fetchedUser.id);
+        }
+        return settings;
       }
       return Promise.resolve(null);
     },

@@ -161,8 +161,9 @@ export default function PokemonThumb({
           loading="lazy"
         />}
         {isMega && <Image
-          className="artwork opacity-40 z-2"
-          fill
+          className="artwork z-2 absolute right-0 bottom-0 max-h-10 max-w-10"
+          width={80}
+          height={80}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="/mega-evo.png"
           alt={normalizePokemonName(pkmn.name)}
