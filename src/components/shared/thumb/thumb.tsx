@@ -6,6 +6,7 @@ import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
 import { CSSProperties, useState } from 'react';
 import LoadingSpinner from '../spinner';
 import './thumb.scss';
+import { NUMBERS_OF_POKEMON } from '@/app/const';
 
 export function getArtwork(id: number, sprite: ArtUrl
 ) {
@@ -46,7 +47,7 @@ const spritesUrl = (id: number) => {
 };
 
 export function getNumber(id: number) {
-  if(id <= 1025) {
+  if(id <= NUMBERS_OF_POKEMON) {
     return `#${('000' + id.toString()).slice(-4)}`;
   }
   return 'N/A';

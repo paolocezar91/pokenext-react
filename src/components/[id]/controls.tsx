@@ -5,6 +5,7 @@ import { INamedApiResourceList, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import { getNumber } from "../shared/thumb/thumb";
 import Tooltip from "../shared/tooltip/tooltip";
+import { NUMBERS_OF_POKEMON } from "@/app/const";
 
 
 export default function Controls({
@@ -17,7 +18,7 @@ export default function Controls({
   const { t } = useTranslation('common');
 
   const isLast = () => {
-    return pokemon ? Number(pokemon.id) + 1 <= 1025: false;
+    return pokemon ? Number(pokemon.id) + 1 <= NUMBERS_OF_POKEMON : false;
   };
 
   const isFirst = () => {

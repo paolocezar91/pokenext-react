@@ -13,6 +13,7 @@ import SortButton from "../shared/table/sort-button";
 import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
 import { useState } from "react";
 import LoadingSpinner from "../shared/spinner";
+import { NUMBERS_OF_POKEMON } from "@/app/const";
 export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
@@ -24,7 +25,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     setSorting(prev => updateSortKeys(prev, key));
   };
 
-  const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url))).filter(id => id < 1025);
+  const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url))).filter(id => id < NUMBERS_OF_POKEMON);
 
   const { data: learnedBy } = useAsyncQuery(
     () => pokeApiQuery.getPokemonByIds(ids),

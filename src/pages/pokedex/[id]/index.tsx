@@ -33,11 +33,13 @@ import {
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
+import { NUMBERS_OF_POKEMON } from '@/app/const';
 
 const pokeApiQuery = new PokeApiQuery();
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
+
   try {
     const pokemonData = await pokeApiQuery.getPokemonById(id);
     const previousAndAfter = await pokeApiQuery.getPokemons(pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0, 3);
@@ -54,7 +56,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 }
 
 export async function getStaticPaths() {
-  const pkmns = await pokeApiQuery.getPokemons(0, 1025);
+  const pkmns = await pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON);
   const ids = pkmns.results.reduce((acc, pkmn) => {
     return [...acc, String(pkmn.id), pkmn.name];
   }, [] as string[]);

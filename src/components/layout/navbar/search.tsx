@@ -1,3 +1,4 @@
+import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/poke-api-query";
 import { getNumber } from "@/components/shared/thumb/thumb";
 import { normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
@@ -16,7 +17,7 @@ export default function Search({ className }: { className?: string }) {
   const [suggestions, setSuggestions] = useState<{ name: string, displayName: string, id: number | string }[]>([]);
 
   const { data: pokemonList } = useAsyncQuery(() => {
-    return pokeApiQuery.getPokemons(0, 1025).then(({ results }) =>
+    return pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON).then(({ results }) =>
       results
         .map(p => ({ id: p.id, name: p.name, displayName: `${getNumber(p.id)} ${normalizePokemonName(p.name)}` }))
     );

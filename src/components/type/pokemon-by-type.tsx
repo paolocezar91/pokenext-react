@@ -14,6 +14,7 @@ import { useState } from "react";
 import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
 import SortButton from "../shared/table/sort-button";
 import { useSnackbar } from "@/context/snackbar";
+import { NUMBERS_OF_POKEMON } from "@/app/const";
 export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
@@ -28,7 +29,7 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
 
   const ids = pokemonList
     .map(p => Number(getIdFromUrlSubstring(p.pokemon.url)))
-    .filter(id => id <= 1025);
+    .filter(id => id <= NUMBERS_OF_POKEMON);
 
   const { data: pokemonByType, error } = useAsyncQuery(
     () => pokeApiQuery.getPokemonByIds(ids),

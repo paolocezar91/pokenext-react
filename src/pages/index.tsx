@@ -11,11 +11,9 @@ import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RootLayout from './layout';
+import { NUMBERS_OF_POKEMON, STARTING_POKEMON, TOTAL_POKEMON } from '@/app/const';
 
 const pokeApiQuery = new PokeApiQuery();
-const NUMBERS_OF_POKEMON = 1025;
-const STARTING_POKEMON = 0;
-const TOTAL_POKEMON = 1025;
 
 export const metadata: Metadata = {
   title: `Pokédex -- Next.js Demo`,
@@ -67,7 +65,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
               <PokedexList pokemons={pokemons}>
                 <div className="p-2 bg-background text-xs text-right sticky right-0 bottom-0">
                   {
-                    pokemons.length === 1025 ?
+                    pokemons.length === NUMBERS_OF_POKEMON ?
                       t('pokedex.displayingAllPokemon') :
                       t('pokedex.displayingXofYPokemon', { x: pokemons.length, y: TOTAL_POKEMON })
                   }
