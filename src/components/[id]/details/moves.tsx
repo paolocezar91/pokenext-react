@@ -83,16 +83,14 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
         });
 
         if(movesetActive === 'machine') {
-          const detailsMachine = await Promise.all(
-            moves[versionGroupActive].moveset[movesetActive]
-              .map(async (move) => {
-                const machine = move.details?.machines.find(machine => machine.version_group.name === versionGroupActive);
-                return await pokeApiQuery.getURL<IMachine>(machine?.machine.url ?? '');
-              })
-          );
+          const detailsMachineIds = moves[versionGroupActive].moveset[movesetActive]
+            .map((move) => Number(
+              getIdFromUrlSubstring(move.details?.machines.find(machine => machine.version_group.name === versionGroupActive)?.machine.url)
+            ));
 
+          const detailsMachines = (await pokeApiQuery.getMachinesByIds(detailsMachineIds)).results;
           moves[versionGroupActive].moveset[movesetActive] = moves[versionGroupActive].moveset[movesetActive].map((move) => {
-            return { ...move, tmDetails: detailsMachine.find(d => d.move.name === move.move) };
+            return { ...move, tmDetails: detailsMachines.find(d => d.move.name === move.move) };
           });
         }
 

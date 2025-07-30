@@ -51,7 +51,7 @@ export function PokedexSettings() {
   };
 
   return settings &&
-    <div className="flex flex-col items-center bg-(--pokedex-red) p-2 md:w-max border-b-2 border-solid border-black rounded-l-lg">
+    <div className="flex flex-col items-center bg-(--pokedex-red) py-2 pl-2 md:w-max border-b-2 border-solid border-black rounded-l-lg">
       <PokedexFilter
         name={settings.filter.name}
         types={settings.filter.types ? settings.filter.types.split(",") : []}
