@@ -9,7 +9,7 @@ import MoveTarget from "@/components/moves/move-target";
 import LoadingSpinner from "@/components/shared/spinner";
 import RootLayout from "@/pages/layout";
 import { GetStaticPropsContext } from "next";
-import { IMove, IMoveTarget, INamedApiResource, IPokemon } from "pokeapi-typescript";
+import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
 
