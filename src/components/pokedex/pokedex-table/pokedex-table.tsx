@@ -102,8 +102,8 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
   </thead>;
 
   return <div className="table-container p-2 bg-(--pokedex-red) w-full">
-    <div className="overflow-auto h-[82vh] relative rounded shadow-md">
-      <table className="w-full text-xs rounded">
+    <div className="overflow-auto h-[82vh] relative rounded-lg shadow-md">
+      <table className="w-full text-xs">
         {tHead}
         <tbody className="bg-background">
           {

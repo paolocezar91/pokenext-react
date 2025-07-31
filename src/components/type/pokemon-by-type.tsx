@@ -32,7 +32,7 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     .filter(id => id <= NUMBERS_OF_POKEMON);
 
   const { data: pokemonByType, error } = useAsyncQuery(
-    () => pokeApiQuery.getPokemonByIds(ids),
+    () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
     [pokemonList],
     (e) => showSnackbar(e, 5)
   );

@@ -75,33 +75,27 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
         </div>
         <div className="flex flex-col md:flex-row h-[-webkit-fill-available]">
           <div className="
-            h-[-webkit-fill-available]
-            sm:w-auto
+            w-full
             md:w-1/2
-            flex
-            flex-col
-            md:items-start
-            mr-0
-            md:mr-4
-            self-center
-            md:self-start
+            md:h-[-webkit-fill-available]
+            mr-4
             mt-4
-            md:mt-0"
-          >
-            <MovesByType movesList={typeData.moves} type={typeData.name}></MovesByType>
-          </div>
-          <div className="
-            h-[-webkit-fill-available]
-            sm:w-auto
-            md:w-1/2
-            flex
-            flex-col
-            md:items-start
-            mr-0
-            self-center
-            md:self-start
+            mb-2
+            md:my-0
           ">
             <PokemonByType pokemonList={typeData.pokemon} type={typeData.name}></PokemonByType>
+          </div>
+          <div className="
+            w-full
+            md:w-1/2
+            md:h-[-webkit-fill-available]
+            mr-0
+            md:mr-4
+            mt-4
+            mb-2
+            md:my-0"
+          >
+            <MovesByType movesList={typeData.moves} type={typeData.name}></MovesByType>
           </div>
         </div>
       </div>

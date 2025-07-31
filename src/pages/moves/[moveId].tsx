@@ -62,9 +62,9 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
   return (
     <RootLayout title={`${t('moves.title')} - ${capitilize(kebabToSpace(moveData.name))}`}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
-        <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">
+        <div className="mx-auto px-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">
           {/* Left Column */}
-          <div className="sm:w-auto md:w-150 flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
+          <div className="flex flex-col w-full md:w-150 h-[-webkit-fill-available] md:items-start mt-4 mr-0 md:mr-4 self-center md:self-start">
             <FlavorText moveData={moveData} />
             <MoveDataTable moveData={moveData} />
             {targetData && <MoveTarget targetData={targetData} />}

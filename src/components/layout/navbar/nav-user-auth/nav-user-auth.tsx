@@ -49,7 +49,7 @@ export default function NavUserAuth() {
             width: '100%',
             zIndex: 2,
             height: '100%',
-            right: '690%',
+            right: '696%',
             position: 'absolute'
           }}
         >

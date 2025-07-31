@@ -17,8 +17,8 @@ export default class PokeApiQuery extends BaseQuery {
     return await this.getURL(url);
   };
 
-  getPokemonByIds = async (ids: number[]): Promise<CountResults<IPkmn>> => {
-    return await this.getURL(`/api/pokemon?ids=${ids}`);
+  getPokemonByIds = async (ids: number[], id_limit?: number): Promise<CountResults<IPkmn>> => {
+    return await this.getURL(`/api/pokemon?ids=${ids}&id_limit=${id_limit}`);
   };
 
   getPokemonById = async (id: string): Promise<IPokemon> => {

@@ -5,6 +5,7 @@ import { IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import PokemonThumb from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
+import { NUMBERS_OF_POKEMON } from "@/app/const";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -14,7 +15,8 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
     () => pokeApiQuery.getPokemonByIds(
       species.varieties
         .filter(({ pokemon }) => pokemon.name !== name)
-        .map(({ pokemon }) => Number(getIdFromUrlSubstring(pokemon.url)))
+        .map(({ pokemon }) => Number(getIdFromUrlSubstring(pokemon.url))),
+      NUMBERS_OF_POKEMON
     ),
     [species.varieties],
   );

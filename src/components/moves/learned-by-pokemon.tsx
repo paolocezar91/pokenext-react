@@ -28,7 +28,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
   const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url))).filter(id => id < NUMBERS_OF_POKEMON);
 
   const { data: learnedBy } = useAsyncQuery(
-    () => pokeApiQuery.getPokemonByIds(ids),
+    () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
     [pokemonList],
   );
 

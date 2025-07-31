@@ -15,7 +15,7 @@ export default function NavButton({
   className?: string;
 }) {
   const baseClasses =
-    "flex px-3 py-2 text-sm rounded hover:shadow-md hover:bg-(--pokedex-red-dark) cursor-pointer transition-colors";
+    "flex px-2 py-2 text-sm rounded hover:shadow-md hover:bg-(--pokedex-red-dark) cursor-pointer transition-colors";
 
   const activeClasses = isActive
     ? "bg-(--pokedex-red-darker) text-white border-transparent"

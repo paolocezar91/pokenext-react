@@ -16,7 +16,7 @@ export default function Table({ headers, children, className = "" }: {
   return (
     <table className={`w-full text-xs ${className}`}>
       <thead>
-        <tr className="sticky top-0 bg-background z-1">
+        <tr className="bg-black pt-1 sticky top-0 bg-background z-1">
           {headers}
         </tr>
       </thead>
