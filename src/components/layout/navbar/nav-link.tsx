@@ -12,8 +12,17 @@ export default function NavLink({
   isActive?: boolean;
   className?: string;
 }) {
-  const baseClasses =
-    "block px-2 py-2 text-sm rounded transition-colors hover:shadow-md hover:bg-(--pokedex-red-dark) transition-colors";
+  const baseClasses = `
+    flex
+    px-2
+    py-2
+    text-sm
+    rounded
+    transition-colors
+    hover:shadow-md
+    hover:bg-(--pokedex-red-dark)
+    active:bg-white
+    active:text-(--pokedex-red-dark)`;
 
   const activeClasses = isActive
     ? "bg-(--pokedex-red-darker) text-white border-transparent"

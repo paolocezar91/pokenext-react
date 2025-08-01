@@ -1,20 +1,22 @@
+import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
+import { useSnackbar } from "@/context/snackbar";
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { ITypePokemon } from "pokeapi-typescript";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getTypeIconById } from "../[id]/details/types";
-import LoadingSpinner from "../shared/spinner";
-import { useState } from "react";
-import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
+import SkeletonImage from "../shared/skeleton-image";
 import SortButton from "../shared/table/sort-button";
-import { useSnackbar } from "@/context/snackbar";
-import { NUMBERS_OF_POKEMON } from "@/app/const";
+import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
+import LoadingSpinner from "../shared/spinner";
+import SkeletonBlock from "../shared/skeleton-block";
 export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
@@ -31,18 +33,13 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     .map(p => Number(getIdFromUrlSubstring(p.pokemon.url)))
     .filter(id => id <= NUMBERS_OF_POKEMON);
 
-  const { data: pokemonByType, error } = useAsyncQuery(
+  const { data: pokemonByType } = useAsyncQuery(
     () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
     [pokemonList],
     (e) => showSnackbar(e, 5)
   );
 
-  if(!pokemonByType?.results.length) {
-    if (error) {
-      return <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-        <h3 className="w-fit text-lg mb-4">{t('type.pokemon.title', { type: capitilize(type), length: "ERROR" })}</h3>
-      </div>;
-    }
+  if(!settings) {
     return <LoadingSpinner />;
   }
 
@@ -58,6 +55,22 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
       <SortButton attr="types" onClick={() => toggleSort("types")} sorting={sorting}>{t('table.types')}</SortButton>
     </th>
   </>;
+
+  if(!pokemonByType?.results.length) {
+    const skeletonImage = <SkeletonImage className="w-30 h-30" />;
+    const skeletonTableBody = [...Array(10)].map((_, i) => <tr key={i} className="border-solid border-foreground border-b-2">
+      {[...Array(4)].map((_, j) => <td key={j} className="p-2">
+        {j === 0 ? skeletonImage : <SkeletonBlock />}
+      </td>)}
+    </tr>);
+
+    return <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
+      <h3 className="w-fit text-lg mb-4">{t('type.pokemon.title', { type: capitilize(type), length: 0 })}</h3>
+      <div className="h-[-webkit-fill-available]">
+        <Table headers={tableHeaders}>{skeletonTableBody}</Table>
+      </div>
+    </div>;
+  }
 
   const typesCell = (pokemon: IPkmn) => <td className="p-2">
     {pokemon.types.map((t, idx) =>
@@ -106,7 +119,7 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     });
 
   return (
-    <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
+    <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
       <h3 className="w-fit text-lg mb-4">{t('type.pokemon.title', { type: capitilize(type), length: pokemonByType.results.length })}</h3>
       {!!pokemonByType.results.length &&
       <div className="h-[-webkit-fill-available]">

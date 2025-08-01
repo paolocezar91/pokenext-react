@@ -3,7 +3,7 @@ import { INamedApiResource, IPokemon, IPokemonForm, IPokemonStat, IPokemonType }
 export type IPkmn = {
   name: string;
   types: IPokemonType[]
-  id: number;
+  id: string;
   sprites: unknown;
   stats: IPokemonStat[]
   forms: INamedApiResource<IPokemonForm>[]

@@ -14,6 +14,8 @@ import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorti
 import { useState } from "react";
 import LoadingSpinner from "../shared/spinner";
 import { NUMBERS_OF_POKEMON } from "@/app/const";
+import SkeletonImage from "../shared/skeleton-image";
+import SkeletonBlock from "../shared/skeleton-block";
 export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
@@ -32,7 +34,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     [pokemonList],
   );
 
-  if(!settings || !learnedBy?.results.length) {
+  if(!settings) {
     return <LoadingSpinner />;
   }
 
@@ -48,6 +50,24 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
       <SortButton attr="types" onClick={() => toggleSort("types")} sorting={sorting}>{t('table.types')}</SortButton>
     </th>
   </>;
+
+  if(!learnedBy?.results.length) {
+    const skeletonImage = <SkeletonImage className="w-30 h-30" />;
+    const skeletonTableBody = [...Array(10)].map((_, i) => <tr key={i} className="border-solid border-foreground border-b-2">
+      {[...Array(4)].map((_, j) => <td key={j} className="p-2">
+        {j === 0 ? skeletonImage : <SkeletonBlock />}
+      </td>)}
+    </tr>);
+
+    return <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
+      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.results.length })}</h3>
+      <div className="h-[-webkit-fill-available]">
+        <Table headers={tableHeaders}>{skeletonTableBody}</Table>
+      </div>
+    </div>;
+  }
+
+
 
   const typesCell = (pokemon: IPkmn) => <td className="p-2">
     {pokemon.types.map((t, idx) =>
@@ -97,10 +117,6 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
 
   return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
     <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.results.length })}</h3>
-    {!!learnedBy?.results.length &&
-      <div className="sm:overflow-initial md:overflow-auto">
-        <Table headers={tableHeaders}>{tableBody}</Table>
-      </div>
-    }
+    {!!learnedBy?.results.length && <Table headers={tableHeaders}>{tableBody}</Table>}
   </div>;
 }

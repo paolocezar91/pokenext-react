@@ -1,4 +1,3 @@
-import Tooltip from "@/components/shared/tooltip/tooltip";
 import { ArrowLeftEndOnRectangleIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { User } from "next-auth";
 import { useTranslation } from "react-i18next";

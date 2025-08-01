@@ -58,9 +58,9 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
   }
 
   return <RootLayout title={`${t('type.title')} - ${capitilize(typeData.name)}`}>
-    <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
-      <div className="mx-auto px-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col">
-        <div className="flex items-center mt-4">
+    <div className="h-[inherit] p-4 bg-(--pokedex-red)">
+      <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available] overflow-auto md:overflow-[initial]">
+        <div className="flex items-center">
           <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{capitilize(typeData.name)}</h2>
           <div className="grow"></div>
           <Select value={typeData.name} className="ml-4" onChange={(e) => router.push(`/type/${e.target.value}`)}>
@@ -73,28 +73,13 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
           <PokemonDefensiveChart types={[typeData.name]} name={typeData.name} />
           <PokemonOffensiveChart types={[typeData.name]} name={typeData.name} />
         </div>
-        <div className="flex flex-col md:flex-row h-[-webkit-fill-available]">
-          <div className="
-            w-full
-            md:w-1/2
-            md:h-[-webkit-fill-available]
-            mr-4
-            mt-4
-            mb-2
-            md:my-0
+        <div className="flex flex-col md:flex-row h-[58vh] overflow-[initial] md:overflow-auto mt-4 gap-2 md:gap-4">
+          <div className="w-full md:w-1/2 md:h-[inherit] mb-2
           ">
             <PokemonByType pokemonList={typeData.pokemon} type={typeData.name}></PokemonByType>
           </div>
-          <div className="
-            w-full
-            md:w-1/2
-            md:h-[-webkit-fill-available]
-            mr-0
-            md:mr-4
-            mt-4
-            mb-2
-            md:my-0"
-          >
+          <div className="w-full md:w-1/2 md:h-[inherit] mb-2
+          ">
             <MovesByType movesList={typeData.moves} type={typeData.name}></MovesByType>
           </div>
         </div>

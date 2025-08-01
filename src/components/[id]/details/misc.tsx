@@ -1,13 +1,41 @@
+import SkeletonBlock from "@/components/shared/skeleton-block";
 import { capitilize, kebabToSpace } from "@/components/shared/utils";
 import { IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 
+function PokemonMiscSkeleton() {
+  const { t } = useTranslation('common');
+
+  return <>
+    {
+      [
+        [t('pokedex.details.misc.eggGroups')],
+        [t('pokedex.details.misc.baby')],
+        [t('pokedex.details.misc.legendary')],
+        [t('pokedex.details.misc.mythical')],
+        [t('pokedex.details.misc.growthRate')],
+        // [t('pokedex.details.misc.captureRate')],
+        [t('pokedex.details.misc.hatchCounter')],
+      ].map(([key]) => {
+        return <div className="pokemon-misc" key={key}>
+          <h3 className="w-fit text-lg font-semibold mb-2">{key}</h3>
+          <SkeletonBlock />
+        </div>;
+      })
+    }
+  </>;
+}
+
 export default function PokemonMisc({
   species
 } : {
-  species: IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean }
+  species: IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean } | null
 }) {
   const { t } = useTranslation('common');
+  if(!species){
+    return <PokemonMiscSkeleton />;
+  }
+
   const normalize = (text: string) => {
     return capitilize(kebabToSpace(text));
   };

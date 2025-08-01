@@ -1,11 +1,36 @@
+import SkeletonBlock from "@/components/shared/skeleton-block";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 
 
-export default function PokemonGender({ species }: { species: IPokemonSpecies }) {
+function PokemonGenderSkeleton() {
   const { t } = useTranslation('common');
+
+  return <div className="pokemon-gender">
+    <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.gender.title') }</h3>
+    <div className="female w-full">
+      <div className="flex items-center">
+        <span className="text-red-500 w-5">♀</span> <SkeletonBlock />
+      </div>
+    </div>
+    <div className="female w-full">
+      <div className="flex items-center">
+        <span className="text-blue-500 w-5">♂</span> <SkeletonBlock />
+      </div>
+    </div>
+  </div>;
+}
+
+export default function PokemonGender({ species }: { species: IPokemonSpecies | null }) {
+  const { t } = useTranslation('common');
+
+  // Skeleton
+  if (!species){
+    return <PokemonGenderSkeleton />;
+  }
+
   const name = normalizePokemonName(species.name);
 
   const genderLess = <div className="genderless">
@@ -35,6 +60,5 @@ export default function PokemonGender({ species }: { species: IPokemonSpecies })
   return <div className="pokemon-gender">
     <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.gender.title') }</h3>
     {species.gender_rate < 0 ? genderLess : femaleMaleRate}
-
   </div>;
 }
