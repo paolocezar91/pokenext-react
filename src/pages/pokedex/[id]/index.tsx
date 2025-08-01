@@ -1,5 +1,6 @@
 'use client';
 
+import { NUMBERS_OF_POKEMON } from '@/app/const';
 import PokeApiQuery from '@/app/poke-api-query';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
@@ -17,7 +18,6 @@ import PokemonVarieties from '@/components/[id]/details/varieties';
 import PokemonDefensiveChart from '@/components/shared/defensive-chart';
 import LoadingSpinner from '@/components/shared/spinner';
 import PokemonThumb, { getNumber } from '@/components/shared/thumb/thumb';
-import { useSnackbar } from '@/context/snackbar';
 import RootLayout from '@/pages/layout';
 import { SpeciesChain } from '@/types/types';
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
@@ -33,7 +33,6 @@ import {
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
-import { NUMBERS_OF_POKEMON } from '@/app/const';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -67,6 +66,36 @@ export async function getStaticPaths() {
   };
 }
 
+async function generateSpeciesEvolutionChain(ec: IEvolutionChain): Promise<SpeciesChain> {
+  const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
+  const chain: { first: IPokemon[], second: IPokemon[], third: IPokemon[] } = {
+    first: [await pokeApiQuery.getPokemonById(evolve_to_id)],
+    second: [],
+    third: [],
+  };
+
+  const secondEvo = ec.chain?.evolves_to?.[0];
+  if(secondEvo) {
+    chain.second = await Promise.all(
+      ec.chain.evolves_to.map((evolves_to) => {
+        const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
+        return pokeApiQuery.getPokemonById(evolve_to_id);
+      })
+    );
+
+    if(secondEvo.evolves_to[0]) {
+      chain.third = await Promise.all(
+        secondEvo.evolves_to.map((evolves_to) => {
+          const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
+          return pokeApiQuery.getPokemonById(evolve_to_id);
+        })
+      );
+    }
+  }
+
+  return { loaded: true, chain };
+}
+
 export default function PokemonDetails({
   id,
   pokemonData,
@@ -78,83 +107,37 @@ export default function PokemonDetails({
   previousAndAfter: INamedApiResourceList<IPokemon>,
   error?: { statusText: string, status: number }
 }) {
-  const [pokemon, setPokemon] = useState<IPokemon>(pokemonData);
+  const [pokemon] = useState<IPokemon>(pokemonData);
   const [speciesChain, setSpeciesChain] = useState<SpeciesChain>({ loaded: false, chain: {}});
-  const [species, setSpecies] = useState<
-    IPokemonSpecies &
-    { is_legendary?: boolean; is_mythical?: boolean } | null
-  >(null);
+  const [species, setSpecies] = useState<IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean } | null>(null);
   const [types, setTypes] = useState<IType[]>([]);
   const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
   const { t } = useTranslation('common');
   const params = useParams();
   const currentId = !error ? id || params?.id : undefined;
-  const { showSnackbar, hideSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!currentId) return;
 
-    const setPokemonData = () => {
-      setLoaded(false);
+    const getPokemonMetadata = async () => {
+      const [speciesData, typesData] = await Promise.all([
+        pokeApiQuery.getSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
+        pokeApiQuery.getTypes(pokemonData.types),
+      ]);
 
-      speciesChain.loaded = false;
-      speciesChain.chain = {};
+      setTypes(typesData);
 
-      const getPokemonMetadata = async () => {
-        showSnackbar('Loading...');
-        const [speciesData, typesData] = await Promise.all([
-          pokeApiQuery.getSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
-          pokeApiQuery.getTypes(pokemonData.types),
-        ]);
-
-        if(pokemonData) {
-          setPokemon(pokemonData);
-        }
-        if(typesData.length) {
-          setTypes(typesData);
-        }
-        if(speciesData) {
-          setSpecies(speciesData);
-          const ec = await pokeApiQuery.getEvolutionChain(getIdFromUrlSubstring(speciesData.evolution_chain.url)) as IEvolutionChain;
-          setEvolutionChain(ec);
-
-          const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
-          speciesChain.chain.first = [await pokeApiQuery.getPokemonById(evolve_to_id)];
-          if(ec.chain?.evolves_to?.[0]) {
-            speciesChain.chain.second = await Promise.all(
-              ec.chain.evolves_to.map((evolves_to) => {
-                const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                return pokeApiQuery.getPokemonById(evolve_to_id);
-              })
-            );
-            if(ec.chain.evolves_to[0].evolves_to[0]) {
-              speciesChain.chain.third = await Promise.all(
-                ec.chain.evolves_to[0].evolves_to.map((evolves_to) => {
-                  const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
-                  return pokeApiQuery.getPokemonById(evolve_to_id);
-                })
-              );
-            } else {
-              speciesChain.chain.third = [];
-            }
-          } else {
-            speciesChain.chain.second = [];
-            speciesChain.chain.third = [];
-          }
-          speciesChain.loaded = true;
-          setSpeciesChain(speciesChain);
-          setLoaded(true);
-        }
-      };
-
-      showSnackbar('Loading...');
-      getPokemonMetadata();
-      hideSnackbar();
+      setSpecies(speciesData);
+      const ec = await pokeApiQuery.getEvolutionChain(getIdFromUrlSubstring(speciesData.evolution_chain.url)) as IEvolutionChain;
+      setEvolutionChain(ec);
+      setSpeciesChain(await generateSpeciesEvolutionChain(ec));
+      setLoaded(true);
     };
 
-    setPokemonData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    setLoaded(false);
+    getPokemonMetadata();
+
   }, [currentId]);
 
   if(error)
@@ -214,13 +197,13 @@ export default function PokemonDetails({
               sm:border-0
             ">
             <div className="about grid grid-cols-1 md:grid-cols-6 gap-2">
-              {species && <PokemonDescription species={species} />}
+              {species && <PokemonDescription pokemon={pokemon} species={species} />}
               <div className="col-span-6 flex flex-wrap gap-4">
                 <PokemonFirstAppearance pokemon={pokemon} species={species as IPokemonSpecies} />
                 <PokemonSize pokemon={pokemon} />
-                {species && <PokemonGender species={species} />}
+                <PokemonGender species={species} />
                 <PokemonAbilities pokemon={pokemon} />
-                {species && <PokemonMisc species={species} />}
+                <PokemonMisc species={species} />
               </div>
               <PokemonStats pokemon={pokemon} />
               <PokemonDefensiveChart name={capitilize(pokemon.name)} types={types.map(type => type.name)} />

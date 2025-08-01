@@ -17,7 +17,7 @@ export default function FlavorText({ moveData }: { moveData: IMove }) {
   };
 
   return (
-    <div className="flavor w-full">
+    <div className="flavor w-full mt-2">
       <h3 className="w-fit text-lg mb-4">{t('moves.flavorText.title')}</h3>
       <div className="flex items-end relative items-start justify-between pb-6">
         {getFlavors().length === 0 ?

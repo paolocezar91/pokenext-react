@@ -30,7 +30,7 @@ export default function Search({ className }: { className?: string }) {
     if (value) {
       // Filter suggestions based on the input value using the fetched API data
       const filtered = pokemonList!.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(value)
+        pokemon.name.toLowerCase().includes(value) || pokemon.id === value
       );
       setSuggestions(filtered.slice(0, 10)); // Limit to 10 suggestions
     } else {

@@ -64,7 +64,7 @@
             margin-top: 0;
         }
         .img-hover-zoom {
-            img {
+            img.artwork {
                 margin-top: 0;
                 &.showdown {
                 width: auto !important;
@@ -81,7 +81,7 @@
         &:after {
             animation: slide 1.5s infinite 0s;
         }
-        .img-hover-zoom img {
+        .img-hover-zoom img.artwork {
             transform: scale(0.75);
         }
     }

@@ -19,9 +19,9 @@ export default function LazyThumb({
       <div ref={ref} style={{ minHeight: 120, minWidth: 120 }}>
         {inView ? <motion.div
           layout
-          initial={{ marginLeft: '-1rem', opacity: 0 }}
+          initial={{ marginLeft: '-0.35rem', opacity: 0 }}
           animate={{ marginLeft: 0, opacity: 1 }}
-          exit={{ marginLeft: '-1rem', opacity: 0 }}
+          exit={{ marginLeft: '-0.35rem', opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
           <Link href={`/pokedex/${pokemon.name}`} className="link">
