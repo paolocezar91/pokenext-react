@@ -129,8 +129,8 @@ export default function PokemonThumb({
   if(!pkmn || !settings)
     return loading;
 
-  const artworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).normal[0];
-  const shinyArtworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).shiny[0];
+  const artworkUrl = getArtwork(Number(pkmn.id), settings.artworkUrl as ArtUrl).normal[0];
+  const shinyArtworkUrl = getArtwork(Number(pkmn.id), settings.artworkUrl as ArtUrl).shiny[0];
 
   const loaded = <div
     style={ (pkmn as IPkmn).types ? getBackgroundStyle((pkmn as IPkmn).types) : { 'background': '#CCCCC' }}
