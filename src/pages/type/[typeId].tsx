@@ -57,11 +57,12 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
     );
   }
 
-  return <RootLayout title={`${t('type.title')} - ${capitilize(typeData.name)}`}>
+  const title = `${t('type.title')} - ${capitilize(typeData.name)}`;
+  return <RootLayout title={title}>
     <div className="h-[inherit] p-4 bg-(--pokedex-red)">
       <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available] overflow-auto md:overflow-[initial]">
         <div className="flex items-center">
-          <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{capitilize(typeData.name)}</h2>
+          <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{title}</h2>
           <div className="grow"></div>
           <Select value={typeData.name} className="ml-4" onChange={(e) => router.push(`/type/${e.target.value}`)}>
             {allTypes.map((t, id) => {

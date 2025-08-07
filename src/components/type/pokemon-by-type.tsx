@@ -43,6 +43,7 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     return <LoadingSpinner />;
   }
 
+  // Creating table headers
   const tableHeaders = <>
     <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
     <th className="bg-(--pokedex-red-dark) w-[1%] text-white text-center px-2 py-1">
@@ -56,6 +57,7 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     </th>
   </>;
 
+  // Displaying Skeleton rows while loading
   if(!pokemonByType?.results.length) {
     const skeletonImage = <SkeletonImage className="w-30 h-30" />;
     const skeletonTableBody = [...Array(10)].map((_, i) => <tr key={i} className="border-solid border-foreground border-b-2">
@@ -72,19 +74,6 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     </div>;
   }
 
-  const typesCell = (pokemon: IPkmn) => <td className="p-2">
-    {pokemon.types.map((t, idx) =>
-      <Link href={`/type/${t.type.name}`} key={idx}>
-        <Image
-          width="100"
-          height="20"
-          className="inline m-1"
-          alt={capitilize(t.type.name)}
-          src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
-      </Link>
-    )}
-  </td>;
-
   // eslint-disable-next-line no-unused-vars
   const sortMapping: (a: IPkmn, b: IPkmn) => Record<SortKey, [number | string, number | string]> = (a,b) => ({
     'id': [a.id, b.id],
@@ -92,9 +81,22 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     'types': [a.types.map(t => t.type.name).join(","), b.types.map(t => t.type.name).join(",")],
   });
 
+  // Sorting pokemon
   const sortedPokemon = pokemonByType.results
     .sort(sortResources(sorting, sortMapping, 'id'));
 
+  // Cell for pokemon type images
+  const typesCell = (pokemon: IPkmn) => pokemon.types.map((t, idx) => <Link href={`/type/${t.type.name}`} key={idx}>
+    <Image
+      width="100"
+      height="20"
+      className="inline m-1"
+      alt={capitilize(t.type.name)}
+      src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
+  </Link>);
+
+  // Creating table body
+  // Iterating over sortedPokemon for each column
   const tableBody = sortedPokemon
     .map((pokemon, idx, self) => {
       const isLast = idx === self.length - 1;
@@ -113,7 +115,9 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
               {normalizePokemonName(pokemon.name)}
             </Link>
           </td>
-          {typesCell(pokemon)}
+          <td className="p-2">
+            {typesCell(pokemon)}
+          </td>
         </tr>
       );
     });

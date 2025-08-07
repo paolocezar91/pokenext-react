@@ -74,7 +74,7 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
               <MoveEffect moveData={moveData} />
               <FlavorText moveData={moveData} />
               <MoveDataTable moveData={moveData} />
-              {targetData && <MoveTarget targetData={targetData} />}
+              <MoveTarget targetData={targetData} />
             </div>
             {/* Right Column */}
             <div className="w-full h-[-webkit-fill-available] md:pl-8 mr-0 md:mr-4 mt-4 md:mt-0">
