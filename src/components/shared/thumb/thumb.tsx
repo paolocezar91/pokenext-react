@@ -46,8 +46,8 @@ const spritesUrl = (id: number) => {
   };
 };
 
-export function getNumber(id: number) {
-  if(id <= NUMBERS_OF_POKEMON) {
+export function getNumber(id: number | string) {
+  if(Number(id) <= NUMBERS_OF_POKEMON) {
     return `#${('000' + id.toString()).slice(-4)}`;
   }
   return 'N/A';
@@ -129,8 +129,8 @@ export default function PokemonThumb({
   if(!pkmn || !settings)
     return loading;
 
-  const artworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).normal[0];
-  const shinyArtworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).shiny[0];
+  const artworkUrl = getArtwork(Number(pkmn.id), settings.artworkUrl as ArtUrl).normal[0];
+  const shinyArtworkUrl = getArtwork(Number(pkmn.id), settings.artworkUrl as ArtUrl).shiny[0];
 
   const loaded = <div
     style={ (pkmn as IPkmn).types ? getBackgroundStyle((pkmn as IPkmn).types) : { 'background': '#CCCCC' }}
@@ -162,7 +162,7 @@ export default function PokemonThumb({
           loading="lazy"
         />}
         {isMega && <Image
-          className="artwork z-2 absolute right-0 bottom-0 max-h-10 max-w-10"
+          className="mega-evo z-2 absolute right-0 bottom-0 max-h-10 max-w-10 opacity-70"
           width={80}
           height={80}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

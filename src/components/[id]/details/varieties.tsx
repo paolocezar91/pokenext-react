@@ -1,8 +1,8 @@
 import { NUMBERS_OF_POKEMON } from "@/app/const";
-import PokeApiQuery from "@/app/poke-api-query";
+import PokeApiQuery, { CountResults } from "@/app/poke-api-query";
 import { getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
 import Link from "next/link";
-import { IPokemonSpecies } from "pokeapi-typescript";
+import { IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import PokemonThumb from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
@@ -22,10 +22,12 @@ export default function PokemonVarieties({ name, species }: { name: string, spec
   );
 
   const { data: forms } = useAsyncQuery(
-    () => pokeApiQuery.getPokemonFormByIds(
-      (varieties?.results ?? [])
-        .filter(v => v.name !== name)
-        .map(v => Number(getIdFromUrlSubstring(v.forms[0].url)))),
+    () => varieties ?
+      pokeApiQuery.getPokemonFormByIds(
+        varieties?.results
+          .filter(v => v.name !== name)
+          .map(v => Number(getIdFromUrlSubstring(v.forms[0].url)))
+      ) : new Promise<CountResults<IPokemonForm>>(res => res({ results: [], count: 0 })),
     [varieties?.results, name]
   );
 

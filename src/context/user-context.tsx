@@ -2,7 +2,7 @@ import { TypeUrl } from "@/components/[id]/details/types";
 import { useAsyncQuery, useLocalStorage } from "@/components/shared/utils";
 import { useSession } from "next-auth/react";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import UserApi, { Settings, User } from "./user-api";
+import UserApi, { Settings, User } from "@/app/user-api";
 const userApi = new UserApi();
 
 interface IUserContext {

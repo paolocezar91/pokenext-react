@@ -24,22 +24,22 @@ export default class UserApiQuery extends BaseQuery {
   }
 
   getUser = async (email: string) => {
-    const user = await this.getURL<User>(`/api/user/${email}`);
+    const user = await this.getURL<User>(`/api/graphql/user/${email}`);
     return user;
   };
 
   createUser = async (email: string) => {
-    const user = await this.postURL<User>(`/api/user`, { email });
+    const user = await this.postURL<User>(`/api/graphql/user`, { email });
     return user;
   };
 
   getSettings = async (user_id: number) => {
-    const settings = await this.getURL<Settings>(`/api/settings/${user_id}`);
+    const settings = await this.getURL<Settings>(`/api/graphql/settings/${user_id}`);
     return settings;
   };
 
   upsertSettings = async (body: Partial<Settings>, id?: number,) => {
-    const user = await this.postURL<Settings>(`/api/settings/${id}`, body as Record<string, unknown>);
+    const user = await this.postURL<Settings>(`/api/graphql/settings/${id}`, body as Record<string, unknown>);
     return user;
   };
 
