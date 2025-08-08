@@ -13,6 +13,7 @@ import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
 import { getAllMoves, getMoveById } from "@/app/services/move";
+import { idOrName } from "@/app/api-utils";
 
 const pokeApiQuery = new PokeApiQuery();
 type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
@@ -20,7 +21,7 @@ type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
   try {
-    const moveData = (await getMoveById({ id })).moveById as MoveData;
+    const moveData = (await getMoveById(idOrName(id))).moveById as MoveData;
     return {
       props: {
         moveData
@@ -44,6 +45,7 @@ export async function getStaticPaths() {
 }
 
 export default function MoveDetails({ moveData }: { moveData: MoveData }) {
+  console.log({ moveData });
   const { t } = useTranslation('common');
   const { data: targetData } = useAsyncQuery(
     () => pokeApiQuery.getMoveTarget(getIdFromUrlSubstring(moveData.target.url)),
