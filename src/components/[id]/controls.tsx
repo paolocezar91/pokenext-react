@@ -40,6 +40,8 @@ export default function Controls({
           bg-transparent
           border-transparent
           rounded
+          active:bg-white
+          active:text-(--pokedex-red-dark) 
           ${!isFirst() ? 'disable-click' : 'hover:bg-(--pokedex-red-dark) transition-colors'}
         `}
       >
@@ -52,7 +54,17 @@ export default function Controls({
     <Tooltip content={t('actions.backToList')}>
       <Link
         href="/"
-        className="flex px-2 py-2 border-transparent rounded hover:bg-(--pokedex-red-dark) transition-colors"
+        className={`
+          flex
+          px-2
+          py-2
+          border-transparent
+          rounded
+          transition-colors
+          hover:bg-(--pokedex-red-dark)
+          active:bg-white
+          active:text-(--pokedex-red-dark)
+        `}
       >
         <ArrowUturnLeftIcon className="w-7" />
       </Link>
@@ -74,6 +86,9 @@ export default function Controls({
           bg-transparent
           border-transparent
           rounded
+          active
+          active:bg-white
+          active:text-(--pokedex-red-dark) 
           ${!isLast() ? 'disable-click' : 'hover:bg-(--pokedex-red-dark)'}
         `}
       >

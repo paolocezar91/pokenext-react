@@ -34,7 +34,7 @@ export default function LazyRow(
     </motion.div>}
   </td>;
 
-  const numberCell = (settings!.showShowColumn || settings!.showColumn[0]) && <td className={`
+  const numberCell = shouldShowColumn(settings!, 0) && <td className={`
         px-4
         ${isFirst ? 'pt-4' : ''}
         ${!isLast ? 'border-solid border-b-2 border-foreground text-center': ''} 

@@ -1,3 +1,4 @@
+import SkeletonBlock from "@/components/shared/skeleton-block";
 import { capitilize, kebabToSpace, normalizeVersionGroup, normalizeGeneration } from "@/components/shared/utils";
 import { IPokemon, IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
@@ -13,11 +14,22 @@ export default function PokemonFirstAppearance({ pokemon, species }: { pokemon: 
     group = normalizeVersionGroup(`${versionA}-${versionB}`);
   }
 
+  const renderGroup = () => {
+    if(!species) {
+      return <>
+        <SkeletonBlock />
+      </>;
+    }
+
+    if(group) {
+      return <>{group} ({normalizeGeneration(species.generation.name)})</>;
+    } else {
+      return <>{normalize(versionA)} ({normalize(species.generation.name)})</>;
+    }
+  };
+
   return pokemon.game_indices.length !== 0 && <div className="pokemon-first-appearance col-span-6 md:col-span-2">
     <h3 className="w-fit text-lg font-semibold mb-2">{t('pokedex.details.firstSeen.title')}</h3>
-    { group ?
-      <p>{group} ({normalizeGeneration(species.generation.name)})</p> :
-      <p>{normalize(versionA)} ({normalize(species.generation.name)})</p>
-    }
+    <div className="mt-2">{renderGroup()}</div>
   </div>;
 }

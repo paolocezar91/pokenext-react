@@ -1,16 +1,16 @@
 import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table/table";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "@/components/shared/utils";
+import { useSnackbar } from "@/context/snackbar";
 import Image from "next/image";
 import Link from "next/link";
 import { IMove, INamedApiResource } from "pokeapi-typescript";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import LoadingSpinner from "../shared/spinner";
 import SortButton from "../shared/table/sort-button";
 import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
 import Tooltip from "../shared/tooltip/tooltip";
-import { useSnackbar } from "@/context/snackbar";
+import SkeletonBlock from "../shared/skeleton-block";
 const pokeApiQuery = new PokeApiQuery();
 export type SortKey = 'id' | 'name' | 'class' | 'power' | 'pp' | 'accuracy';
 
@@ -22,19 +22,11 @@ export default function MovesByType({ movesList, type }: { movesList: INamedApiR
     setSorting(prev => updateSortKeys(prev, key));
   };
 
-  const { data: movesByType, error } = useAsyncQuery(
+  const { data: movesByType } = useAsyncQuery(
     () => pokeApiQuery.getMovesByIds(movesList.map(p => Number(getIdFromUrlSubstring(p.url)))),
     [movesList],
     (e) => showSnackbar(e, 5)
   );
-
-  if(!movesByType?.results?.length) {
-    if(error)
-      return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2 h-[-webkit-fill-available]">
-        <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: "ERROR" })}</h3>
-      </div>;
-    return <LoadingSpinner />;
-  }
 
   const tableHeaders = <>
     <th className="bg-(--pokedex-red-dark) w-[50%] text-white text-left px-2 py-1">
@@ -63,6 +55,20 @@ export default function MovesByType({ movesList, type }: { movesList: INamedApiR
     'pp': [a.pp, b.pp],
     'accuracy': [a.accuracy, b.accuracy],
   });
+
+  if(!movesByType?.results?.length) {
+    const skeletonTableBody = [...Array(15)].map((_, i) => <tr key={i} className="border-solid border-foreground  border-b-2">
+      {[...Array(5)].map((_, j) => <td key={j} className="p-2">
+        <SkeletonBlock />
+      </td>)}
+    </tr>);
+    return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 h-[-webkit-fill-available]">
+      <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: 0 })}</h3>
+      <div className="h-[-webkit-fill-available]">
+        <Table headers={tableHeaders}>{skeletonTableBody}</Table>
+      </div>
+    </div>;
+  }
 
   const sortedMoves = movesByType.results
     .sort(sortResources(sorting, sortMapping, 'id'));
@@ -104,7 +110,7 @@ export default function MovesByType({ movesList, type }: { movesList: INamedApiR
       );
     });
 
-  return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2 h-[-webkit-fill-available]">
+  return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 h-[-webkit-fill-available]">
     <h3 className="w-fit text-lg mb-4">{t('type.moves.title', { type: capitilize(type), length: movesByType.results.length })}</h3>
     <div className="h-[-webkit-fill-available]">
       <Table headers={tableHeaders}>{tableBody}</Table>

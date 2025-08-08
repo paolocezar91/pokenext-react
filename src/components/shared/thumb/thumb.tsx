@@ -1,12 +1,14 @@
+import { NUMBERS_OF_POKEMON } from '@/app/const';
 import { getIdFromUrlSubstring, normalizePokemonName } from '@/components/shared/utils';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
 import Image from 'next/image';
 import { INamedApiResource, IPokemon, IPokemonType } from 'pokeapi-typescript';
-import { CSSProperties, useState } from 'react';
-import LoadingSpinner from '../spinner';
+import { CSSProperties, useEffect, useState } from 'react';
+import SkeletonImage from '../skeleton-image';
 import './thumb.scss';
-import { NUMBERS_OF_POKEMON } from '@/app/const';
+
+export type ArtUrl = 'dream-world' | 'home' | 'official-artwork' | 'showdown';
 
 export function getArtwork(id: number, sprite: ArtUrl
 ) {
@@ -17,8 +19,6 @@ export function getArtwork(id: number, sprite: ArtUrl
 
   return rv;
 }
-
-export type ArtUrl = 'dream-world' | 'home' | 'official-artwork' | 'showdown';
 
 const spritesUrl = (id: number) => {
   return {
@@ -46,8 +46,8 @@ const spritesUrl = (id: number) => {
   };
 };
 
-export function getNumber(id: number) {
-  if(id <= NUMBERS_OF_POKEMON) {
+export function getNumber(id: number | string) {
+  if(Number(id) <= NUMBERS_OF_POKEMON) {
     return `#${('000' + id.toString()).slice(-4)}`;
   }
   return 'N/A';
@@ -107,6 +107,7 @@ export default function PokemonThumb({
   showName?: boolean,
   isMega?: boolean,
 }>) {
+  const [pkmn, setPkmn] = useState<IPkmn | null>(null);
   const [shiny, setShiny] = useState<boolean>(false);
   const { settings } = useUser();
   const isXS = size === 'xs' && ['w-30 h-30', 'h-[120px]', 'mb-2', 'text-xs'];
@@ -114,23 +115,24 @@ export default function PokemonThumb({
   const isBase = size === 'base' && ['w-50 h-50', 'h-[200px]', 'mb-2', 'text-sm'];
   const isLG = ['w-80 h-80', 'h-[320px]', 'mb-4', 'text-base'];
   const classes = isXS || isSM || isBase || isLG;
-  const loading = <span className={`loading text-xs my-auto ${classes[0]}`}><LoadingSpinner /></span>;
-  const pkmn = (() => {
+  const loading = <span className={`loading text-xs my-auto ${classes[0]}`}><SkeletonImage className="w-full h-full"/></span>;
+
+  useEffect(() => {
     if (pokemonDataSmall) {
-      return {
-        id: Number(getIdFromUrlSubstring(pokemonDataSmall.url)),
+      setPkmn({
+        id: getIdFromUrlSubstring(pokemonDataSmall.url),
         name: pokemonDataSmall?.name
-      };
+      } as IPkmn);
     } else if(pokemonData) {
-      return pokemonData;
+      setPkmn(pokemonData as IPkmn);
     }
-  })();
+  }, [pokemonDataSmall, pokemonData]);
 
   if(!pkmn || !settings)
     return loading;
 
-  const artworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).normal[0];
-  const shinyArtworkUrl = getArtwork(pkmn.id, settings.artworkUrl as ArtUrl).shiny[0];
+  const artworkUrl = getArtwork(Number(pkmn.id), settings.artworkUrl as ArtUrl).normal[0];
+  const shinyArtworkUrl = getArtwork(Number(pkmn.id), settings.artworkUrl as ArtUrl).shiny[0];
 
   const loaded = <div
     style={ (pkmn as IPkmn).types ? getBackgroundStyle((pkmn as IPkmn).types) : { 'background': '#CCCCC' }}
@@ -162,7 +164,7 @@ export default function PokemonThumb({
           loading="lazy"
         />}
         {isMega && <Image
-          className="artwork z-2 absolute right-0 bottom-0 max-h-10 max-w-10"
+          className="mega-evo z-2 absolute right-0 bottom-0 max-h-10 max-w-10 opacity-70"
           width={80}
           height={80}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

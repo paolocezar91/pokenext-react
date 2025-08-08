@@ -1,3 +1,4 @@
+import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
@@ -7,13 +8,13 @@ import { IPkmn } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { INamedApiResource, IPokemon } from "pokeapi-typescript";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getTypeIconById } from "../[id]/details/types";
+import SkeletonBlock from "../shared/skeleton-block";
+import SkeletonImage from "../shared/skeleton-image";
 import SortButton from "../shared/table/sort-button";
 import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
-import { useState } from "react";
-import LoadingSpinner from "../shared/spinner";
-import { NUMBERS_OF_POKEMON } from "@/app/const";
 export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
@@ -28,20 +29,16 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
   const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url))).filter(id => id < NUMBERS_OF_POKEMON);
 
   const { data: learnedBy } = useAsyncQuery(
-    () => pokeApiQuery.getPokemonByIds(ids),
+    () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
     [pokemonList],
   );
-
-  if(!settings || !learnedBy?.results.length) {
-    return <LoadingSpinner />;
-  }
 
   const tableHeaders = <>
     <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
     <th className="bg-(--pokedex-red-dark) w-[1%] text-white text-center px-2 py-1">
       <SortButton attr="id" onClick={() => toggleSort("id")} sorting={sorting}>#</SortButton>
     </th>
-    <th className="bg-(--pokedex-red-dark) w-[20%] text-white text-left px-2 py-1">
+    <th className="bg-(--pokedex-red-dark) w-[15%] text-white text-left px-2 py-1">
       <SortButton attr="name" onClick={() => toggleSort("name")} sorting={sorting}>{t('table.name')}</SortButton>
     </th>
     <th className="bg-(--pokedex-red-dark) w-[10%] text-white text-left px-2 py-1">
@@ -49,18 +46,48 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     </th>
   </>;
 
-  const typesCell = (pokemon: IPkmn) => <td className="p-2">
-    {pokemon.types.map((t, idx) =>
-      <Link href={`/type/${t.type.name}`} key={idx}>
-        <Image
-          width="100"
-          height="20"
-          className="inline m-1"
-          alt={capitilize(t.type.name)}
-          src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
-      </Link>
-    )}
-  </td>;
+  if(!learnedBy?.results.length) {
+    const skeletonTableBody = [...Array(10)].map((_, i) => <tr key={i} className="border-solid border-foreground border-b-2">
+      {[...Array(4)].map((_, j) => {
+        if(j === 0) {
+          return <td key={j} className="p-2 text-center justify-center flex">
+            <SkeletonImage className="w-30 h-30" />
+          </td>;
+        }
+
+        return <td key={j} className="p-2 text-center justify-center">
+          <SkeletonBlock className="w-10" />
+        </td>;
+      })}
+    </tr>);
+
+    return <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
+      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.results.length })}</h3>
+      <div className="h-[-webkit-fill-available]">
+        <Table headers={tableHeaders}>{skeletonTableBody}</Table>
+      </div>
+    </div>;
+  }
+
+
+
+  const typesCell = (pokemon: IPkmn) => {
+    if(!settings)
+      return;
+
+    return <td className="p-2">
+      {pokemon.types.map((t, idx) =>
+        <Link href={`/type/${t.type.name}`} key={idx}>
+          <Image
+            width="100"
+            height="20"
+            className="inline m-1"
+            alt={capitilize(t.type.name)}
+            src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
+        </Link>
+      )}
+    </td>;
+  };
 
   // eslint-disable-next-line no-unused-vars
   const sortMapping: (a: IPkmn, b: IPkmn) => Record<SortKey, [number | string, number | string]> = (a,b) => ({
@@ -97,10 +124,6 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
 
   return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
     <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.results.length })}</h3>
-    {!!learnedBy?.results.length &&
-      <div className="sm:overflow-initial md:overflow-auto">
-        <Table headers={tableHeaders}>{tableBody}</Table>
-      </div>
-    }
+    {!!learnedBy?.results.length && <Table headers={tableHeaders}>{tableBody}</Table>}
   </div>;
 }

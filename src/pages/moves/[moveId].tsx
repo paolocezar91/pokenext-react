@@ -12,6 +12,8 @@ import { GetStaticPropsContext } from "next";
 import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
+import { getAllMoves, getMoveById } from "@/app/services/move";
+import { idOrName } from "@/app/api-utils";
 
 const pokeApiQuery = new PokeApiQuery();
 type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
@@ -19,7 +21,7 @@ type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
   try {
-    const moveData = await pokeApiQuery.getMove(id) as MoveData;
+    const moveData = (await getMoveById(idOrName(id))).moveById as MoveData;
     return {
       props: {
         moveData
@@ -31,7 +33,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 }
 
 export async function getStaticPaths() {
-  const moves = await pokeApiQuery.getMoves();
+  const moves = await getAllMoves();
   const ids = moves.results.reduce((acc, move) => {
     return [...acc, String(move.id), move.name];
   }, [] as string[]);
@@ -43,6 +45,7 @@ export async function getStaticPaths() {
 }
 
 export default function MoveDetails({ moveData }: { moveData: MoveData }) {
+  console.log({ moveData });
   const { t } = useTranslation('common');
   const { data: targetData } = useAsyncQuery(
     () => pokeApiQuery.getMoveTarget(getIdFromUrlSubstring(moveData.target.url)),
@@ -59,21 +62,27 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
     );
   }
 
+  const title = `${t('moves.title')} - ${capitilize(kebabToSpace(moveData.name))}`;
   return (
-    <RootLayout title={`${t('moves.title')} - ${capitilize(kebabToSpace(moveData.name))}`}>
+    <RootLayout title={title}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
-        <div className="mx-auto p-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col md:flex-row">
-          {/* Left Column */}
-          <div className="sm:w-auto md:w-150 flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
-            <FlavorText moveData={moveData} />
-            <MoveDataTable moveData={moveData} />
-            {targetData && <MoveTarget targetData={targetData} />}
+        <div className="mx-auto px-4 overflow-auto bg-background rounded shadow-md h-[-webkit-fill-available] flex flex-col">
+          <div className="flex items-center mt-4">
+            <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{title}</h2>
           </div>
+          <div className="flex flex-col md:flex-row">
 
-          {/* Right Column */}
-          <div className="w-full h-[-webkit-fill-available] flex flex-col md:items-start md:pl-8 mr-0 md:mr-4 self-center md:self-start mt-4 md:mt-0">
-            <MoveEffect moveData={moveData} />
-            <LearnedByPokemon pokemonList={moveData.learned_by_pokemon} />
+            {/* Left Column */}
+            <div className="flex flex-col w-full md:w-150 h-[-webkit-fill-available] md:items-start mt-4 mr-0 md:mr-4 self-center md:self-start">
+              <MoveEffect moveData={moveData} />
+              <FlavorText moveData={moveData} />
+              <MoveDataTable moveData={moveData} />
+              <MoveTarget targetData={targetData} />
+            </div>
+            {/* Right Column */}
+            <div className="w-full h-[-webkit-fill-available] md:pl-8 mr-0 md:mr-4 mt-4 md:mt-0">
+              <LearnedByPokemon pokemonList={moveData.learned_by_pokemon} />
+            </div>
           </div>
         </div>
       </div>

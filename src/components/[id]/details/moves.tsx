@@ -107,31 +107,31 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }){
 
   const headers = <>
     {movesetActive === 'level-up' &&
-      <th className="w-[5%] bg-(--pokedex-red-dark) text-left p-2">
+      <th className="w-[5%] bg-(--pokedex-red-dark)">
         Lv.
       </th>
     }
     {movesetActive === 'machine' &&
-      <th className="w-[5%] bg-(--pokedex-red-dark) text-left p-2">
+      <th className="w-[5%] bg-(--pokedex-red-dark) text-left px-2 py-1">
         TM/HM
       </th>
     }
-    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white px-2 py-1">
       {t('pokedex.details.moves.name')}
     </th>
-    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white px-2 py-1">
       {t('pokedex.details.moves.type')}
     </th>
-    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white px-2 py-1">
       {t('pokedex.details.moves.class')}
     </th>
-    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white px-2 py-1">
       {t('pokedex.details.moves.power')}
     </th>
-    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white px-2 py-1">
       {t('pokedex.details.moves.pp')}
     </th>
-    <th className="bg-(--pokedex-red-dark) text-left text-white p-2">
+    <th className="bg-(--pokedex-red-dark) text-left text-white px-2 py-1">
       <Tooltip content={t('pokedex.details.moves.accuracyTooltip')}>
         {t('pokedex.details.moves.accuracy')}
       </Tooltip>

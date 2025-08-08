@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import RootLayout from './layout';
 import { NUMBERS_OF_POKEMON, STARTING_POKEMON, TOTAL_POKEMON } from '@/app/const';
+import { getAllPokemon } from '@/app/services/pokemon';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -24,7 +25,7 @@ export async function getServerSideProps(context: NextPageContext) {
   const cookies = parseCookies(context);
   const settings = cookies.user_settings ? JSON.parse(cookies.user_settings) : {};
   // Use settings to filter
-  const pokemonsData = (await pokeApiQuery.getPokemons(STARTING_POKEMON, NUMBERS_OF_POKEMON, settings.filter)).results;
+  const pokemonsData = (await getAllPokemon({ offset: STARTING_POKEMON, limit: NUMBERS_OF_POKEMON, ...settings.filter })).results;
   return { props: { pokemonsData, filterApplied: settings?.filter ?? { name: '', types: '' }}};
 }
 

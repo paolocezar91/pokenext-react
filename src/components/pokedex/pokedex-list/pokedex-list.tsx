@@ -71,9 +71,8 @@ export default function PokedexList({
         relative
         h-[82vh]
         overflow-auto
-        rounded
+        rounded-lg
         bg-background
-        rounded-b-lg
       ">
         <div
           className="mx-auto my-4 flex gap-4 content-start flex-row flex-wrap"
