@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
     ],
   },
   env: {
+    npm_package_version: process.env.npm_package_version,
     POKEAPI_URL: process.env.POKEAPI_URL,
     GRAPHQL_URL: process.env.GRAPHQL_URL
   },

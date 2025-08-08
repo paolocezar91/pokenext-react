@@ -17,17 +17,15 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
           effect_entries {
             effect
             short_effect
-            language {
-              name
-            }
+            language { name }
           }
         }
       }
     `;
 
   try {
-    const data = await request<{ abilityById: IAbility }>(apiUrl, query, vars);
-    return NextResponse.json(data.abilityById, { status: 200 });
+    const { abilityById } = await request<{ abilityById: IAbility }>(apiUrl, query, vars);
+    return NextResponse.json(abilityById, { status: 200 });
   } catch(err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

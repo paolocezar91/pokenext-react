@@ -1,6 +1,7 @@
 'use client';
 
-import PokeApiQuery from "@/app/poke-api-query";
+import { idOrName } from "@/app/api-utils";
+import { getAllTypes, getTypeById } from "@/app/services/type";
 import PokemonDefensiveChart from "@/components/shared/defensive-chart";
 import { PokemonOffensiveChart } from "@/components/shared/offensive-chart";
 import Select from "@/components/shared/select";
@@ -15,13 +16,12 @@ import { IMove, INamedApiResource, IType } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import RootLayout from "../layout";
 
-const pokeApiQuery = new PokeApiQuery();
-
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.typeId);
+  const vars = idOrName(id);
   try {
-    const typeData = await pokeApiQuery.getType(id) as IType;
-    const allTypes = await pokeApiQuery.getAllTypes() as IType[];
+    const typeData = (await getTypeById(vars)).pokemonType as IType;
+    const allTypes = await getAllTypes();
     return {
       props: {
         typeData,
@@ -33,8 +33,12 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   }
 }
 
-export function getStaticPaths() {
-  const ids = Array.from({ length: 18 }, (_, i) => String(i + 1));
+export async function getStaticPaths() {
+  const allTypes = await getAllTypes();
+  const ids = allTypes.types.reduce((acc, type) => {
+    return [...acc, String(type.id), type.name];
+  }, [] as string[]);
+
 
   return {
     paths: ids.map(typeId => ({ params: { typeId }})),

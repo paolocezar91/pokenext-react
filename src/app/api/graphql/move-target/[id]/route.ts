@@ -14,21 +14,16 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
         id
         name
         descriptions {
-          language {
-            name
-          }
+          language { name }
           description
         }
-        moves {
-          name
-          url
-        }
+        moves { name url }
       }
     }
   `;
   try {
-    const data = await request<{ moveTargetById: IMoveTarget }>(apiUrl, query, vars);
-    return NextResponse.json(data.moveTargetById, { status: 200 });
+    const { moveTargetById } = await request<{ moveTargetById: IMoveTarget }>(apiUrl, query, vars);
+    return NextResponse.json(moveTargetById, { status: 200 });
   } catch(err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

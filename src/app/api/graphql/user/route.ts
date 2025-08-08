@@ -16,8 +16,8 @@ export async function POST(req: NextRequest) {
   `;
 
   try {
-    const data = await request<{ createUser: { id: string, email: string }}>(apiUrl, mutation, { email });
-    return NextResponse.json(data.createUser, { status: 200 });
+    const { createUser } = await request<{ createUser: { id: string, email: string }}>(apiUrl, mutation, { email });
+    return NextResponse.json(createUser, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

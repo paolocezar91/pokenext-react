@@ -14,30 +14,18 @@ async function getByIds(ids: string) {
   const query = gql`
     query ($ids: [ID]) {
       machinesByIds(ids: $ids) {
-        machine {
-          url
-        }
-        version_group {
-          name
-          url
-        }
-        item {
-          name
-          url
-        }
         id
-        move {
-          name
-          url
-        }
+        machine { url }
+        version_group { name url }
+        item { name url }
+        move { name url }
       }
     }
   `;
 
   try {
-    const data = await request<{ machinesByIds: IMachine[] }>(apiUrl, query, vars);
-    const response = formatResultsCount(data.machinesByIds);
-    return NextResponse.json(response, { status: 200 });
+    const { machinesByIds } = await request<{ machinesByIds: IMachine[] }>(apiUrl, query, vars);
+    return NextResponse.json(formatResultsCount(machinesByIds), { status: 200 });
   } catch(err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

@@ -93,8 +93,8 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
       }
     }`;
   try {
-    const data = await request<{ evolutionChain: IEvolutionChain }>(apiUrl, query, vars);
-    return NextResponse.json(data.evolutionChain, { status: 200 });
+    const { evolutionChain } = await request<{ evolutionChain: IEvolutionChain }>(apiUrl, query, vars);
+    return NextResponse.json(evolutionChain, { status: 200 });
   } catch(err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

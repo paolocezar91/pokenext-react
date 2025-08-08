@@ -23,9 +23,8 @@ async function getByIds(ids: string) {
   `;
 
   try {
-    const data = await request<{ pokemonFormByIds: IPokemonForm[] }>(apiUrl, query, vars);
-    const response = formatResultsCount(data.pokemonFormByIds);
-    return NextResponse.json(response, { status: 200 });
+    const { pokemonFormByIds } = await request<{ pokemonFormByIds: IPokemonForm[] }>(apiUrl, query, vars);
+    return NextResponse.json(formatResultsCount(pokemonFormByIds), { status: 200 });
   } catch(err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

@@ -16,8 +16,8 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ email:
   `;
 
   try {
-    const data = await request<{ user: { id: string, email: string }}>(apiUrl, query, { email });
-    return NextResponse.json(data.user, { status: 200 });
+    const { user } = await request<{ user: { id: string, email: string }}>(apiUrl, query, { email });
+    return NextResponse.json(user, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

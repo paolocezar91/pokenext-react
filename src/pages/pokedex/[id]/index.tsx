@@ -1,6 +1,7 @@
 'use client';
 
 import { NUMBERS_OF_POKEMON } from '@/app/const';
+import { getAllPokemon, getPokemonById } from '@/app/services/pokemon';
 import PokeApiQuery from '@/app/poke-api-query';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
@@ -16,14 +17,14 @@ import PokemonStats from '@/components/[id]/details/stats';
 import PokemonTypes from '@/components/[id]/details/types';
 import PokemonVarieties from '@/components/[id]/details/varieties';
 import PokemonDefensiveChart from '@/components/shared/defensive-chart';
-import SkeletonImage from '@/components/shared/skeleton-image';
 import PokemonThumb, { getNumber } from '@/components/shared/thumb/thumb';
 import RootLayout from '@/pages/layout';
+import { SpeciesChain } from "@/types/types";
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 import { GetStaticPropsContext } from 'next';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies } from 'pokeapi-typescript';
+import { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
 import { useEffect, useReducer } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -32,16 +33,62 @@ import {
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
-import { generateSpeciesEvolutionChain, PokemonAction, PokemonState } from './utils';
+import { idOrName } from '@/app/api-utils';
 
 const pokeApiQuery = new PokeApiQuery();
 
+export type PokemonState = {
+  pokemon: IPokemon;
+  speciesChain: SpeciesChain;
+  species: IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean } | null;
+  types: IType[];
+  evolutionChain: IEvolutionChain | null;
+};
+
+export type PokemonAction =
+  | { type: 'SET_POKEMON'; payload: IPokemon }
+  | { type: 'SET_SPECIES_CHAIN'; payload: SpeciesChain }
+  | { type: 'SET_SPECIES'; payload: IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean }}
+  | { type: 'SET_TYPES'; payload: IType[] }
+  | { type: 'SET_EVOLUTION_CHAIN'; payload: IEvolutionChain }
+  | { type: 'RESET_STATE' };
+
+export async function generateSpeciesEvolutionChain(ec: IEvolutionChain): Promise<SpeciesChain> {
+  const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
+  const chain: { first: IPokemon[], second: IPokemon[], third: IPokemon[] } = {
+    first: [await pokeApiQuery.getPokemonById(evolve_to_id)],
+    second: [],
+    third: [],
+  };
+
+  const secondEvo = ec.chain?.evolves_to?.[0];
+  if(secondEvo) {
+    chain.second = await Promise.all(
+      ec.chain.evolves_to.map((evolves_to) => {
+        const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
+        return pokeApiQuery.getPokemonById(evolve_to_id);
+      })
+    );
+
+    if(secondEvo.evolves_to[0]) {
+      chain.third = await Promise.all(
+        secondEvo.evolves_to.map((evolves_to) => {
+          const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
+          return pokeApiQuery.getPokemonById(evolve_to_id);
+        })
+      );
+    }
+  }
+
+  return { loaded: true, chain };
+}
+
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.id);
-
+  const vars = idOrName(id);
   try {
-    const pokemonData = await pokeApiQuery.getPokemonById(id);
-    const previousAndAfter = await pokeApiQuery.getPokemons(pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0, 3);
+    const pokemonData = (await getPokemonById(vars)).pokemonById;
+    const previousAndAfter = await getAllPokemon({ offset: pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0, limit: 3 });
     return {
       props: {
         id: pokemonData.id,
@@ -55,7 +102,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 }
 
 export async function getStaticPaths() {
-  const pkmns = await pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON);
+  const pkmns = await getAllPokemon({ limit: NUMBERS_OF_POKEMON, offset: 0 });
   const ids = pkmns.results.reduce((acc, pkmn) => {
     return [...acc, String(pkmn.id), pkmn.name];
   }, [] as string[]);

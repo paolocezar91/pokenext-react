@@ -26,9 +26,9 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ user_i
   `;
 
   try {
-    const data = await request<{ userSettings: Record<string, unknown> }>(apiUrl, query, { user_id });
-    if (data.userSettings) {
-      return NextResponse.json(serializeSettings(data.userSettings), { status: 200 });
+    const { userSettings } = await request<{ userSettings: Record<string, unknown> }>(apiUrl, query, { user_id });
+    if (userSettings) {
+      return NextResponse.json(serializeSettings(userSettings), { status: 200 });
     } else {
       return NextResponse.json(null, { status: 200 });
     }
@@ -61,8 +61,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ use
     }
   `;
   try {
-    const data = await request<{ upsertUserSettings: Record<string, unknown> }>(apiUrl, mutation, { input });
-    return NextResponse.json(serializeSettings(data.upsertUserSettings), { status: 200 });
+    const { upsertUserSettings } = await request<{ upsertUserSettings: Record<string, unknown> }>(apiUrl, mutation, { input });
+    return NextResponse.json(serializeSettings(upsertUserSettings), { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

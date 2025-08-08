@@ -39,7 +39,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
           is_legendary
           is_mythical
           name
-          names { language { name url } name }
+          names { name language { name url } }
           shape { name url }
           varieties {
             is_default
@@ -50,8 +50,8 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
     `;
 
   try {
-    const data = await request<{ pokemonSpecies: IPokemonSpecies }>(apiUrl, query, vars);
-    return NextResponse.json(data.pokemonSpecies, { status: 200 });
+    const { pokemonSpecies } = await request<{ pokemonSpecies: IPokemonSpecies }>(apiUrl, query, vars);
+    return NextResponse.json(pokemonSpecies, { status: 200 });
   } catch(err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }

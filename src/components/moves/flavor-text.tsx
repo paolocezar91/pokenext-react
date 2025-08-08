@@ -8,8 +8,6 @@ import { useTranslation } from "react-i18next";
 import SkeletonBlock from "../shared/skeleton-block";
 
 export default memo(function FlavorText({ moveData }: { moveData: IMove }) {
-  console.log(`flavor-text`, moveData, new Date().toLocaleTimeString());
-
   const [flavorIdx, setFlavorIdx] = useState(0);
   const { t } = useTranslation('common');
   const { settings } = useUser();
