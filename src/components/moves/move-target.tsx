@@ -1,22 +1,30 @@
 import { useUser } from "@/context/user-context";
 import { IMoveTarget } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
+import SkeletonBlock from "../shared/skeleton-block";
 
-export default function MoveTarget({ targetData }: {
-  targetData: IMoveTarget;
-}) {
+export default function MoveTarget({ targetData }: { targetData: IMoveTarget | null }) {
   const { t } = useTranslation('common');
   const { settings } = useUser();
 
-  const description = targetData.descriptions.find((d) => d.language.name === settings?.descriptionLang)?.description || '';
+  const renderTarget = () => {
+    if(!targetData) {
+      return <SkeletonBlock />;
+    }
+
+    const description = targetData.descriptions.find((d) => d.language.name === settings?.descriptionLang)?.description || '';
+    if(!description) {
+      return <p data-testid="target-description">{t('moves.moveTarget.empty')}</p>;
+    }
+
+    return <p data-testid="target-description">{description}</p>;
+
+  };
 
   return (
     <div className="target w-full mt-2">
       <h3 className="w-fit text-lg font-semibold mb-2">{t('moves.moveTarget.title')}</h3>
-      {!description ?
-        <p data-testid="target-description">{t('moves.moveTarget.empty')}</p>:
-        <p data-testid="target-description">{description}</p>
-      }
+      {renderTarget()}
     </div>
   );
 }
