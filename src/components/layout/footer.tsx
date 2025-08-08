@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { VersionInfo } from "./version-info";
 
 export default function Footer() {
-  const me = <Link href="https://github.com/paolocezar91/" target="_blank" className="underline">Paolo Pestalozzi</Link>;
+  const me = <Link href="https://github.com/paolocezar91/" target="_blank" className="underline">PPC</Link>;
   const pokeApi = <Link href="https://pokeapi.co/" target="_blank" className="underline">PokeAPI</Link>;
   const nextJs = <Link href="http://nextjs.org/" target="_blank" className="underline">Next.js</Link>;
   const credits = <p>
@@ -23,8 +24,9 @@ export default function Footer() {
     py-2
     px-4
   ">
-    <div className="flex items-center text-xs text-white">
+    <div className="w-full flex items-center justify-between text-xs text-white">
       { credits }
+      <VersionInfo />
     </div>
   </div>;
 }

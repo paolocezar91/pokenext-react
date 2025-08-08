@@ -16,10 +16,10 @@ function PokemonMiscSkeleton() {
         [t('pokedex.details.misc.growthRate')],
         // [t('pokedex.details.misc.captureRate')],
         [t('pokedex.details.misc.hatchCounter')],
-      ].map(([key]) => {
-        return <div className="pokemon-misc" key={key}>
-          <h3 className="w-fit text-lg font-semibold mb-2">{key}</h3>
-          <SkeletonBlock />
+      ].map(([title]) => {
+        return <div className="pokemon-misc" key={title}>
+          <h3 className="w-fit text-lg font-semibold mb-2">{title}</h3>
+          <SkeletonBlock className="mt-1.5" />
         </div>;
       })
     }
@@ -51,9 +51,9 @@ export default function PokemonMisc({
         [t('pokedex.details.misc.growthRate'), normalize(species.growth_rate.name) ],
         // [t('pokedex.details.misc.captureRate'), `${species.capture_rate} (${captureRate.toFixed(2)}%)`],
         [t('pokedex.details.misc.hatchCounter'), species.hatch_counter]
-      ].map(([key, value]) => {
-        return <div className="pokemon-misc" key={key}>
-          <h3 className="w-fit text-lg font-semibold mb-2">{key}</h3>
+      ].map(([title, value]) => {
+        return <div className="pokemon-misc" key={title}>
+          <h3 className="w-fit text-lg font-semibold mb-2">{title}</h3>
           {value}
         </div>;
       })

@@ -11,25 +11,55 @@ import PokemonEvolutionItem from "./item";
 import PokemonEvolutionLocation from "./location";
 import PokemonEvolutionLevel from "./lvl";
 import PokemonEvolutionTrade from "./trade";
+import SkeletonImage from "@/components/shared/skeleton-image";
+
+export function PokemonEvolutionChartSkeleton() {
+  const { t } = useTranslation('common');
+
+  return <div className="evolution-chain col-span-6 ">
+    <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.evolutionChart.title') }</h3>
+    <ul className="w-fit flex items-start justify-start overflow-x-auto mt-4 gap-4">
+      <li className="mb-2 items-center flex">
+        <SkeletonImage className="w-36 h-36" />
+        <span className="font-bold text-xl ml-4">
+          <ArrowRightIcon className="w-7" />
+        </span>
+      </li>
+      <li className="mb-2 items-center flex">
+        <SkeletonImage className="w-36 h-36" />
+        <span className="font-bold text-xl ml-4">
+          <ArrowRightIcon className="w-7" />
+        </span>
+      </li>
+      <li><SkeletonImage className="w-36 h-36" /></li>
+    </ul>
+  </div>;
+
+}
 
 export default function PokemonEvolutionChart({
   pokemon,
   speciesChain,
   evolutionChain
 }: {
-  pokemon: IPokemon,
-  evolutionChain: IEvolutionChain,
-  speciesChain: SpeciesChain
+  pokemon?: IPokemon | null,
+  speciesChain?: SpeciesChain | null,
+  evolutionChain?: IEvolutionChain | null
 }) {
   const { t } = useTranslation('common');
 
+  // While loading show skeleton
+  if(!speciesChain?.loaded || !evolutionChain || !pokemon) {
+    return <PokemonEvolutionChartSkeleton />;
+  }
+
+  // Pokemon with no evolution
   if(!!speciesChain.chain.first?.length && !speciesChain.chain.second?.length) {
     return <div className="evolution-chain col-span-6 ">
       <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.evolutionChart.title') }</h3>
       <p>{normalizePokemonName(speciesChain.chain.first[0].name)} does not evolve</p>
     </div>;
   }
-
 
   const firstPkmn = speciesChain.chain.first[0];
   const firstChainColumn = <Tooltip

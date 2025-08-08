@@ -1,6 +1,7 @@
 'use client';
 
 import { NUMBERS_OF_POKEMON } from '@/app/const';
+import { getAllPokemon, getPokemonById } from '@/app/services/pokemon';
 import PokeApiQuery from '@/app/poke-api-query';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
@@ -16,16 +17,15 @@ import PokemonStats from '@/components/[id]/details/stats';
 import PokemonTypes from '@/components/[id]/details/types';
 import PokemonVarieties from '@/components/[id]/details/varieties';
 import PokemonDefensiveChart from '@/components/shared/defensive-chart';
-import LoadingSpinner from '@/components/shared/spinner';
 import PokemonThumb, { getNumber } from '@/components/shared/thumb/thumb';
 import RootLayout from '@/pages/layout';
-import { SpeciesChain } from '@/types/types';
+import { SpeciesChain } from "@/types/types";
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 import { GetStaticPropsContext } from 'next';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { IEvolutionChain, INamedApiResourceList, IPokemon, IPokemonSpecies, IType } from 'pokeapi-typescript';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   capitilize,
@@ -33,40 +33,27 @@ import {
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
+import { idOrName } from '@/app/api-utils';
 
 const pokeApiQuery = new PokeApiQuery();
 
-export async function getStaticProps(context: GetStaticPropsContext) {
-  const id = String(context?.params?.id);
+export type PokemonState = {
+  pokemon: IPokemon;
+  speciesChain: SpeciesChain;
+  species: IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean } | null;
+  types: IType[];
+  evolutionChain: IEvolutionChain | null;
+};
 
-  try {
-    const pokemonData = await pokeApiQuery.getPokemonById(id);
-    const previousAndAfter = await pokeApiQuery.getPokemons(pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0, 3);
-    return {
-      props: {
-        id: pokemonData.id,
-        pokemonData,
-        previousAndAfter
-      }
-    };
-  } catch (error) {
-    return { props: error };
-  }
-}
+export type PokemonAction =
+  | { type: 'SET_POKEMON'; payload: IPokemon }
+  | { type: 'SET_SPECIES_CHAIN'; payload: SpeciesChain }
+  | { type: 'SET_SPECIES'; payload: IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean }}
+  | { type: 'SET_TYPES'; payload: IType[] }
+  | { type: 'SET_EVOLUTION_CHAIN'; payload: IEvolutionChain }
+  | { type: 'RESET_STATE' };
 
-export async function getStaticPaths() {
-  const pkmns = await pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON);
-  const ids = pkmns.results.reduce((acc, pkmn) => {
-    return [...acc, String(pkmn.id), pkmn.name];
-  }, [] as string[]);
-
-  return {
-    paths: ids.map(id => ({ params: { id }})),
-    fallback: true
-  };
-}
-
-async function generateSpeciesEvolutionChain(ec: IEvolutionChain): Promise<SpeciesChain> {
+export async function generateSpeciesEvolutionChain(ec: IEvolutionChain): Promise<SpeciesChain> {
   const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
   const chain: { first: IPokemon[], second: IPokemon[], third: IPokemon[] } = {
     first: [await pokeApiQuery.getPokemonById(evolve_to_id)],
@@ -96,6 +83,36 @@ async function generateSpeciesEvolutionChain(ec: IEvolutionChain): Promise<Speci
   return { loaded: true, chain };
 }
 
+export async function getStaticProps(context: GetStaticPropsContext) {
+  const id = String(context?.params?.id);
+  const vars = idOrName(id);
+  try {
+    const pokemonData = (await getPokemonById(vars)).pokemonById;
+    const previousAndAfter = await getAllPokemon({ offset: pokemonData.id - 1 > 0 ? pokemonData.id - 2 : 0, limit: 3 });
+    return {
+      props: {
+        id: pokemonData.id,
+        pokemonData,
+        previousAndAfter
+      }
+    };
+  } catch (error) {
+    return { props: error };
+  }
+}
+
+export async function getStaticPaths() {
+  const pkmns = await getAllPokemon({ limit: NUMBERS_OF_POKEMON, offset: 0 });
+  const ids = pkmns.results.reduce((acc, pkmn) => {
+    return [...acc, String(pkmn.id), pkmn.name];
+  }, [] as string[]);
+
+  return {
+    paths: ids.map(id => ({ params: { id }})),
+    fallback: true
+  };
+}
+
 export default function PokemonDetails({
   id,
   pokemonData,
@@ -107,37 +124,60 @@ export default function PokemonDetails({
   previousAndAfter: INamedApiResourceList<IPokemon>,
   error?: { statusText: string, status: number }
 }) {
-  const [pokemon] = useState<IPokemon>(pokemonData);
-  const [speciesChain, setSpeciesChain] = useState<SpeciesChain>({ loaded: false, chain: {}});
-  const [species, setSpecies] = useState<IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean } | null>(null);
-  const [types, setTypes] = useState<IType[]>([]);
-  const [evolutionChain, setEvolutionChain] = useState<IEvolutionChain | null>(null);
-  const [loaded, setLoaded] = useState<boolean>(false);
+  const initialState: PokemonState = {
+    pokemon: pokemonData,
+    speciesChain: { loaded: false, chain: {}},
+    species: null,
+    types: [],
+    evolutionChain: null,
+  };
+
+  const pokemonReducer = (state: PokemonState, action: PokemonAction): PokemonState => {
+    switch (action.type) {
+      case 'SET_POKEMON':
+        return { ...state, pokemon: action.payload };
+      case 'SET_SPECIES_CHAIN':
+        return { ...state, speciesChain: action.payload };
+      case 'SET_SPECIES':
+        return { ...state, species: action.payload };
+      case 'SET_TYPES':
+        return { ...state, types: action.payload };
+      case 'SET_EVOLUTION_CHAIN':
+        return { ...state, evolutionChain: action.payload };
+      case 'RESET_STATE':
+        return initialState;
+      default:
+        return state;
+    }
+  };
+
   const { t } = useTranslation('common');
   const params = useParams();
   const currentId = !error ? id || params?.id : undefined;
+  const [state, dispatch] = useReducer(pokemonReducer, initialState);
 
   useEffect(() => {
     if (!currentId) return;
 
     const getPokemonMetadata = async () => {
+      dispatch({ type: 'SET_POKEMON', payload: pokemonData });
+
       const [speciesData, typesData] = await Promise.all([
         pokeApiQuery.getSpecies(getIdFromUrlSubstring(pokemonData.species.url)),
         pokeApiQuery.getTypes(pokemonData.types),
       ]);
 
-      setTypes(typesData);
+      dispatch({ type: 'SET_TYPES', payload: typesData });
+      dispatch({ type: 'SET_SPECIES', payload: speciesData });
 
-      setSpecies(speciesData);
       const ec = await pokeApiQuery.getEvolutionChain(getIdFromUrlSubstring(speciesData.evolution_chain.url)) as IEvolutionChain;
-      setEvolutionChain(ec);
-      setSpeciesChain(await generateSpeciesEvolutionChain(ec));
-      setLoaded(true);
+
+      dispatch({ type: 'SET_EVOLUTION_CHAIN', payload: ec });
+      dispatch({ type: 'SET_SPECIES_CHAIN', payload: await generateSpeciesEvolutionChain(ec) });
     };
 
-    setLoaded(false);
+    dispatch( { type: 'RESET_STATE' });
     getPokemonMetadata();
-
   }, [currentId]);
 
   if(error)
@@ -156,68 +196,57 @@ export default function PokemonDetails({
       </div>
     </RootLayout>;
 
-  if (!pokemon) {
-    return (
-      <RootLayout title={`${t('pokedex.loading')}...`}>
-        <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
-          <LoadingSpinner />
-        </div>
-      </RootLayout>
-    );
-  }
+  const title = !state.pokemon ? `${t('pokedex.loading')}...` : `${normalizePokemonName(state.pokemon.name)} ${getNumber(state.pokemon.id)}`;
 
   return (
-    <RootLayout title={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}>
+    <RootLayout title={title}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto relative">
-        {!loaded && <LoadingSpinner />}
-        {loaded && <div className=" wrapper flex flex-col md:flex-row mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
-          <div className=" thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start"
-          >
-            <PokemonThumb pokemonData={pokemon} size="lg" showShinyCheckbox showName />
+        <div className=" wrapper flex flex-col md:flex-row mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
+          <div className=" thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
+            <PokemonThumb pokemonData={state.pokemon} size="lg" showShinyCheckbox showName />
             <hr className="border-solid border-2 border-white mt-2 w-full" />
-            <PokemonTypes types={types} />
-            <PokemonCries pokemon={pokemon} />
+            <PokemonTypes types={state.types} />
+            <PokemonCries pokemon={state.pokemon} />
             <div className="flex-1"></div>
-            <Controls pokemon={pokemon} previousAndAfter={previousAndAfter} />
+            <Controls pokemon={state.pokemon} previousAndAfter={previousAndAfter} />
           </div>
           <div className="
-              pokemon-details
-              border-solid
-              border-l-foreground
-              mt-4
-              px-4
-              pb-4
-              pt-0
-              overflow-[initial]
-              md:overflow-auto
-              md:mt-0
-              md:border-l-4
-              md:my-0
-              sm:my-4
-              sm:border-0
-            ">
+            pokemon-details
+            border-solid
+            border-l-foreground
+            mt-4
+            px-4
+            pb-4
+            pt-0
+            overflow-[initial]
+            md:overflow-auto
+            md:mt-0
+            md:border-l-4
+            md:my-0
+            sm:my-4
+            sm:border-0
+          ">
             <div className="about grid grid-cols-1 md:grid-cols-6 gap-2">
-              {species && <PokemonDescription pokemon={pokemon} species={species} />}
+              <PokemonDescription pokemon={state.pokemon} species={state.species} />
               <div className="col-span-6 flex flex-wrap gap-4">
-                <PokemonFirstAppearance pokemon={pokemon} species={species as IPokemonSpecies} />
-                <PokemonSize pokemon={pokemon} />
-                <PokemonGender species={species} />
-                <PokemonAbilities pokemon={pokemon} />
-                <PokemonMisc species={species} />
+                <PokemonFirstAppearance pokemon={state.pokemon} species={state.species as IPokemonSpecies} />
+                <PokemonSize pokemon={state.pokemon} />
+                <PokemonGender species={state.species} />
+                <PokemonAbilities pokemon={state.pokemon} />
+                <PokemonMisc species={state.species} />
               </div>
-              <PokemonStats pokemon={pokemon} />
-              <PokemonDefensiveChart name={capitilize(pokemon.name)} types={types.map(type => type.name)} />
-              { species && species.varieties.length > 1 &&
-                  <PokemonVarieties name={pokemon.name} species={species} />}
-              { evolutionChain &&
-                  <PokemonEvolutionChart
-                    pokemon={pokemon}
-                    speciesChain={speciesChain}
-                    evolutionChain={evolutionChain} />}
-              <PokemonMoves pokemon={pokemon} />
+              <PokemonStats pokemon={state.pokemon} />
+              <PokemonDefensiveChart name={state.pokemon ? capitilize(state.pokemon.name) : ''} types={state.types.map(type => type.name)} />
+              { state.species && state.species.varieties.length > 1 &&
+                <PokemonVarieties name={state.pokemon.name} species={state.species} />}
+              <PokemonEvolutionChart
+                pokemon={state.pokemon}
+                speciesChain={state.speciesChain}
+                evolutionChain={state.evolutionChain} />
+              <PokemonMoves pokemon={state.pokemon} />
             </div>
           </div>
-        </div>}
+        </div>
       </div>
     </RootLayout>
   );

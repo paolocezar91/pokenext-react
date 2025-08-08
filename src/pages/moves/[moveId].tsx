@@ -12,6 +12,7 @@ import { GetStaticPropsContext } from "next";
 import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
+import { getAllMoves, getMoveById } from "@/app/services/move";
 
 const pokeApiQuery = new PokeApiQuery();
 type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
@@ -19,7 +20,7 @@ type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
   try {
-    const moveData = await pokeApiQuery.getMove(id) as MoveData;
+    const moveData = (await getMoveById({ id })).moveById as MoveData;
     return {
       props: {
         moveData
@@ -31,7 +32,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 }
 
 export async function getStaticPaths() {
-  const moves = await pokeApiQuery.getMoves();
+  const moves = await getAllMoves();
   const ids = moves.results.reduce((acc, move) => {
     return [...acc, String(move.id), move.name];
   }, [] as string[]);
@@ -74,7 +75,7 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
               <MoveEffect moveData={moveData} />
               <FlavorText moveData={moveData} />
               <MoveDataTable moveData={moveData} />
-              {targetData && <MoveTarget targetData={targetData} />}
+              <MoveTarget targetData={targetData} />
             </div>
             {/* Right Column */}
             <div className="w-full h-[-webkit-fill-available] md:pl-8 mr-0 md:mr-4 mt-4 md:mt-0">
