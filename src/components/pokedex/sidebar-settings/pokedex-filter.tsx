@@ -8,8 +8,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Tooltip from '../../shared/tooltip/tooltip';
-import { SettingsContent } from '../settings/settings-content';
-import { SettingsItem } from '../settings/settings-item';
+import { SettingsContent } from './utils/settings-content';
+import { SettingsItem } from './utils/settings-item';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -63,19 +63,19 @@ export default function PokedexFilter({
 
   const toggleFilterForm =
     <Tooltip
+      position="right"
       content={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
       <Button
         className={`
           cursor-pointer
           flex
           p-2
-          rounded
           transition-colors
           active:bg-white
           active:text-(--pokedex-red-dark)
           ${open ?
-            "bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
-            "hover:bg-(--pokedex-red-dark)"}
+            "rounded-s bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
+            "rounded hover:bg-(--pokedex-red-dark)"}
         `}
         onClick={() => setOpen(!open)}
       >

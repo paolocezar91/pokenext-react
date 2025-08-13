@@ -12,12 +12,12 @@ export default function PokemonGender({ species }: { species: IPokemonSpecies | 
     // Skeleton
     if (!species){
       return <>
-        <div className="female w-full">
+        <div className="w-full">
           <div className="flex items-center">
             <SkeletonBlock />
           </div>
         </div>
-        <div className="female w-full">
+        <div className="w-full mt-1">
           <div className="flex items-center">
             <SkeletonBlock />
           </div>

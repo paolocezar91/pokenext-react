@@ -45,7 +45,6 @@ export async function getStaticPaths() {
 }
 
 export default function MoveDetails({ moveData }: { moveData: MoveData }) {
-  console.log({ moveData });
   const { t } = useTranslation('common');
   const { data: targetData } = useAsyncQuery(
     () => pokeApiQuery.getMoveTarget(getIdFromUrlSubstring(moveData.target.url)),
