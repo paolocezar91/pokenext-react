@@ -2,7 +2,7 @@ import '@/app/globals.css';
 import PokeApiQuery from '@/app/poke-api-query';
 import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
 import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
-import { PokedexSettings } from '@/components/pokedex/settings/pokedex-settings';
+import { SidebarSettings } from '@/components/pokedex/sidebar-settings/sidebar-settings';
 import LoadingSpinner from '@/components/shared/spinner';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
@@ -60,7 +60,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
       {settings &&
         <div className="wrapper h-[inherit] pt-4 bg-background">
           <div className="flex items-start">
-            <PokedexSettings />
+            <SidebarSettings />
             {settings.listTable ?
               <PokedexTable pokemons={pokemons}></PokedexTable>:
               <PokedexList pokemons={pokemons}>

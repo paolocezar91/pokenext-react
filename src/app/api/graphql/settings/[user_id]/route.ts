@@ -62,7 +62,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ use
   `;
   try {
     const { upsertUserSettings } = await request<{ upsertUserSettings: Record<string, unknown> }>(apiUrl, mutation, { input });
-    return NextResponse.json(serializeSettings(upsertUserSettings), { status: 200 });
+    const response = serializeSettings(upsertUserSettings);
+    return NextResponse.json(response, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
   }
@@ -86,6 +87,6 @@ const parseSettings = (userId: string, data: Record<string, unknown>) => {
 };
 
 const serializeSettings = (data: Record<string, unknown>) => {
-  const showColumn = Array.from(data.showColumn as string).map(v => v === 'y' ? true : false);
+  const showColumn = data.showColumn ? Array.from(data.showColumn as string).map(v => v === 'y' ? true : false) : null;
   return { ...data, showColumn };
 };

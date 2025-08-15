@@ -13,6 +13,8 @@ const nextConfig: NextConfig = {
         search: '',
       },
     ],
+    formats: ['image/webp'],
+    minimumCacheTTL: 2678400,
   },
   env: {
     npm_package_version: process.env.npm_package_version,

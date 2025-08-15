@@ -5,12 +5,15 @@ import { SettingsContent } from "./settings-content";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-bootstrap";
 import Tooltip from "@/components/shared/tooltip/tooltip";
+import { useUser } from "@/context/user-context";
 
 
 export function SettingsContainer({ children, className = "" }: { children: ReactNode, className: string }) {
   const [showSettings, setShowSettings] = useState(false);
   const { t } = useTranslation('common');
   const settingsRef = useRef<HTMLDivElement>(null);
+  const { settings } = useUser();
+
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -25,31 +28,35 @@ export function SettingsContainer({ children, className = "" }: { children: Reac
     };
   }, []);
 
+  const tooltipTableText = !showSettings ? t('settings.openTableSettings') : t('settings.closeTableSettings');
+  const tooltipThumbText = !showSettings ? t('settings.openThumbnailSettings') : t('settings.closeThumbnailSettings');
+
+
   return <AnimatePresence>
     <div
       ref={settingsRef}
       className={`settings relative z-2 ${className}`}
     >
       <Tooltip
+        position="right"
         content={
-          !showSettings ?
-            t("settings.openSettings") :
-            t("settings.closeSettings")
+          settings?.listTable ?
+            tooltipThumbText :
+            tooltipTableText
         }
       >
         <Button
           className={`
-          cursor-pointer
-          flex
-          p-2
-          rounded
-          transition-colors
-          active:bg-white
-          active:text-(--pokedex-red-dark)
-          ${showSettings ?
-            "bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
-            "hover:bg-(--pokedex-red-dark)"}
-        `}
+            cursor-pointer
+            flex
+            p-2
+            transition-colors
+            active:bg-white
+            active:text-(--pokedex-red-dark)
+            ${showSettings ?
+              "rounded-s bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
+              "rounded hover:bg-(--pokedex-red-dark)"}
+          `}
           onClick={() => setShowSettings(!showSettings)}
         >
           { showSettings ? <ChevronLeftIcon className="w-6" />: <Cog6ToothIcon className="w-6" />}

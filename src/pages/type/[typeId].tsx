@@ -20,12 +20,12 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.typeId);
   const vars = idOrName(id);
   try {
-    const typeData = (await getTypeById(vars)).pokemonType as IType;
-    const allTypes = await getAllTypes();
+    const { pokemonType } = await getTypeById(vars);
+    const { types } = await getAllTypes();
     return {
       props: {
-        typeData,
-        allTypes
+        typeData: pokemonType,
+        allTypes: types
       }
     };
   } catch (error) {
@@ -39,7 +39,6 @@ export async function getStaticPaths() {
     return [...acc, String(type.id), type.name];
   }, [] as string[]);
 
-
   return {
     paths: ids.map(typeId => ({ params: { typeId }})),
     fallback: true
@@ -51,7 +50,7 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
   const { settings } = useUser();
   const router = useRouter();
 
-  if (!typeData || !settings) {
+  if (!allTypes || !typeData || !settings) {
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
