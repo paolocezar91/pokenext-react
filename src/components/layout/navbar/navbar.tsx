@@ -22,7 +22,7 @@ export default function Navbar({ title }: { title: string }) {
       <div className="flex flex-wrap items-center justify-between mx-auto p-4">
         <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <Image
-            priority
+            unoptimized
             src="/logo.svg"
             width={48}
             height={48}
