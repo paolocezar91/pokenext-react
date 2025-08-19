@@ -20,9 +20,9 @@ export default class BaseQuery {
       });
 
       if (data.status === 200) {
-        const json = await data.json();
-        return json;
+        return await data.json();
       }
+
       throw { status: 404, text: data.statusText };
     } catch (error) {
       console.log({ error });

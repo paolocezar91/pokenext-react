@@ -1,5 +1,3 @@
-'use client';
-
 import PokeApiQuery from "@/app/poke-api-query";
 import FlavorText from "@/components/moves/flavor-text";
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";

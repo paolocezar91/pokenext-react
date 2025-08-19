@@ -1,5 +1,3 @@
-'use client';
-
 import { NUMBERS_OF_POKEMON } from '@/app/const';
 import { getAllPokemon, getPokemonById } from '@/app/services/pokemon';
 import PokeApiQuery from '@/app/poke-api-query';

@@ -31,7 +31,6 @@ export function SettingsContainer({ children, className = "" }: { children: Reac
   const tooltipTableText = !showSettings ? t('settings.openTableSettings') : t('settings.closeTableSettings');
   const tooltipThumbText = !showSettings ? t('settings.openThumbnailSettings') : t('settings.closeThumbnailSettings');
 
-
   return <AnimatePresence>
     <div
       ref={settingsRef}
@@ -39,11 +38,7 @@ export function SettingsContainer({ children, className = "" }: { children: Reac
     >
       <Tooltip
         position="right"
-        content={
-          settings?.listTable ?
-            tooltipThumbText :
-            tooltipTableText
-        }
+        content={settings?.listTable ? tooltipTableText : tooltipThumbText }
       >
         <Button
           className={`

@@ -5,7 +5,7 @@ import { useUser } from "@/context/user-context";
 import { useTranslation } from "react-i18next";
 
 
-export default function ThumbSettings() {
+export default function TableSettings() {
   const { settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');
   const handleShowShowColumnChange = (showShowColumn: boolean) => {

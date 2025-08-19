@@ -5,7 +5,7 @@ import { useUser } from "@/context/user-context";
 import { useTranslation } from "react-i18next";
 import { ChangeEvent } from "react";
 
-export default function TableSettings() {
+export default function ThumbSettings() {
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const { settings, upsertSettings } = useUser();
   const { t } = useTranslation('common');

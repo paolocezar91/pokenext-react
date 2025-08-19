@@ -1,5 +1,3 @@
-'use client';
-
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName } from '@/components/shared/utils';
 import { useUser } from '@/context/user-context';
