@@ -5,7 +5,6 @@ export default function Select({
   value,
   className = "",
   id,
-  multiple,
   disabled,
   onChange
 }: {
@@ -13,7 +12,6 @@ export default function Select({
   value?: string | number | readonly string[] | undefined,
   className?: string,
   id?: string,
-  multiple?: boolean,
   disabled?: boolean,
   // eslint-disable-next-line no-unused-vars
   onChange: (_: ChangeEvent<HTMLSelectElement>) => void
@@ -38,7 +36,6 @@ export default function Select({
     onChange={onChange}
     value={value}
     id={id}
-    multiple={multiple}
   >
     {children}
   </select>;
