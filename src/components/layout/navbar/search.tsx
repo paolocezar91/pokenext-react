@@ -1,12 +1,14 @@
 import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/poke-api-query";
 import { getNumber } from "@/components/shared/thumb/thumb";
-import { normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
+import { normalizePokemonName } from "@/components/shared/utils";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+
 const pokeApiQuery = new PokeApiQuery();
 
 export default function Search({ className }: { className?: string }) {
@@ -16,11 +18,13 @@ export default function Search({ className }: { className?: string }) {
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<{ name: string, displayName: string, id: number | string }[]>([]);
 
-  const { data: pokemonList } = useAsyncQuery(() => {
-    return pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON).then(({ results }) =>
-      results
-        .map(p => ({ id: p.id, name: p.name, displayName: `${getNumber(p.id)} ${normalizePokemonName(p.name)}` }))
-    );
+  const searchQuery = () => pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON).then(({ results }) =>
+    results.map(p => ({ id: p.id, name: p.name, displayName: `${getNumber(p.id)} ${normalizePokemonName(p.name)}` }))
+  );
+
+  const { data: pokemonList } = useQuery({
+    queryKey: ['search'],
+    queryFn: searchQuery
   });
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {

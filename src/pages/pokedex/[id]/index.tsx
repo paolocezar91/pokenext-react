@@ -1,6 +1,7 @@
+import { idOrName } from '@/app/api-utils';
 import { NUMBERS_OF_POKEMON } from '@/app/const';
-import { getAllPokemon, getPokemonById } from '@/app/services/pokemon';
 import PokeApiQuery from '@/app/poke-api-query';
+import { getAllPokemon, getPokemonById } from '@/app/services/pokemon';
 import Controls from '@/components/[id]/controls';
 import PokemonAbilities from '@/components/[id]/details/abilities';
 import PokemonCries from '@/components/[id]/details/cries';
@@ -31,7 +32,6 @@ import {
   normalizePokemonName
 } from '../../../components/shared/utils';
 import './index.scss';
-import { idOrName } from '@/app/api-utils';
 
 const pokeApiQuery = new PokeApiQuery();
 

@@ -2,9 +2,10 @@ import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { INamedApiResource, IPokemon } from "pokeapi-typescript";
@@ -28,10 +29,10 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
 
   const ids = pokemonList.map(p => Number(getIdFromUrlSubstring(p.url))).filter(id => id < NUMBERS_OF_POKEMON);
 
-  const { data: learnedBy } = useAsyncQuery(
-    () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
-    [pokemonList],
-  );
+  const { data: learnedBy } = useQuery({
+    queryKey: ['pokemonList', pokemonList],
+    queryFn: () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
+  });
 
   const tableHeaders = <>
     <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
@@ -68,8 +69,6 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
       </div>
     </div>;
   }
-
-
 
   const typesCell = (pokemon: IPkmn) => {
     if(!settings)

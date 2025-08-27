@@ -14,20 +14,15 @@ export default class BaseQuery {
   };
 
   private _getUrl = async (url: string) => {
-    try {
-      const data = await fetch(url, {
-        cache: 'force-cache'
-      });
+    const data = await fetch(url, {
+      cache: 'force-cache'
+    });
 
-      if (data.status === 200) {
-        return await data.json();
-      }
-
-      throw { status: 404, text: data.statusText };
-    } catch (error) {
-      console.log({ error });
-      throw { error };
+    if (data.status === 200) {
+      return await data.json();
     }
+
+    throw { status: 404, text: data.statusText };
   };
 
   private _postUrl = async <T>(url: string, body: Record<string, unknown>) => {
