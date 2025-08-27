@@ -1,4 +1,6 @@
+import { idOrName } from "@/app/api-utils";
 import PokeApiQuery from "@/app/poke-api-query";
+import { getAllMoves, getMoveById } from "@/app/services/move";
 import FlavorText from "@/components/moves/flavor-text";
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
 import MoveDataTable from "@/components/moves/move-data-table";
@@ -6,12 +8,11 @@ import MoveEffect from "@/components/moves/move-effect";
 import MoveTarget from "@/components/moves/move-target";
 import LoadingSpinner from "@/components/shared/spinner";
 import RootLayout from "@/pages/layout";
+import { useQuery } from "@tanstack/react-query";
 import { GetStaticPropsContext } from "next";
 import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "../../components/shared/utils";
-import { getAllMoves, getMoveById } from "@/app/services/move";
-import { idOrName } from "@/app/api-utils";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "../../components/shared/utils";
 
 const pokeApiQuery = new PokeApiQuery();
 type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
@@ -44,12 +45,12 @@ export async function getStaticPaths() {
 
 export default function MoveDetails({ moveData }: { moveData: MoveData }) {
   const { t } = useTranslation('common');
-  const { data: targetData } = useAsyncQuery(
-    () => pokeApiQuery.getMoveTarget(getIdFromUrlSubstring(moveData.target.url)),
-    [moveData.target.url]
-  );
+  const { data: targetData } = useQuery({
+    queryKey: ['moveData.target.url', moveData.target.url],
+    queryFn: () => pokeApiQuery.getMoveTarget(getIdFromUrlSubstring(moveData.target.url)),
+  });
 
-  if (!moveData) {
+  if (!moveData || !targetData) {
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">

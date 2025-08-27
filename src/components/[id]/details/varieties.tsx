@@ -1,6 +1,7 @@
 import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery, { CountResults } from "@/app/poke-api-query";
-import { getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
+import { getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
+import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
@@ -11,25 +12,24 @@ const pokeApiQuery = new PokeApiQuery();
 
 export default function PokemonVarieties({ name, species }: { name: string, species: IPokemonSpecies }) {
   const { t } = useTranslation('common');
-  const { data: varieties } = useAsyncQuery(
-    () => pokeApiQuery.getPokemonByIds(
+  const { data: varieties } = useQuery({
+    queryKey: ['varieties', name],
+    queryFn: () => pokeApiQuery.getPokemonByIds(
       species.varieties
         .filter(({ pokemon }) => pokemon.name !== name)
         .map(({ pokemon }) => Number(getIdFromUrlSubstring(pokemon.url))),
-      NUMBERS_OF_POKEMON
-    ),
-    [species.varieties],
-  );
+      NUMBERS_OF_POKEMON)
+  });
 
-  const { data: forms } = useAsyncQuery(
-    () => varieties ?
+  const { data: forms } = useQuery({
+    queryKey: ['forms', name],
+    queryFn: () => varieties ?
       pokeApiQuery.getPokemonFormByIds(
         varieties?.results
           .filter(v => v.name !== name)
           .map(v => Number(getIdFromUrlSubstring(v.forms[0].url)))
-      ) : new Promise<CountResults<IPokemonForm>>(res => res({ results: [], count: 0 })),
-    [varieties?.results, name]
-  );
+      ) : new Promise<CountResults<IPokemonForm>>(res => res({ results: [], count: 0 }))
+  });
 
   return varieties && forms && <div className="pokemon-varieties col-span-6 mt-2">
     <h3 className="w-fit text-lg font-semibold mb-2">{t('pokedex.details.varieties.title')}</h3>

@@ -3,17 +3,24 @@ import initI18nProd from '@/app/i18n';
 import { UserProvider } from "@/context/user-context";
 import { SessionProvider } from "next-auth/react";
 import { SnackbarProvider } from "@/context/snackbar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 initI18nProd();
 
 function App({ Component, pageProps }: AppProps) {
-  return <SessionProvider>
-    <UserProvider>
-      <SnackbarProvider>
-        <Component {...pageProps} />
-      </SnackbarProvider>
-    </UserProvider>
-  </SessionProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <SessionProvider>
+        <UserProvider>
+          <SnackbarProvider>
+            <Component {...pageProps} />
+          </SnackbarProvider>
+        </UserProvider>
+      </SessionProvider>
+    </QueryClientProvider>
+  );
 }
 
 export default App;

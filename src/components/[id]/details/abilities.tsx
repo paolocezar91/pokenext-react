@@ -1,8 +1,9 @@
 import PokeApiQuery from "@/app/poke-api-query";
 import SkeletonBlock from "@/components/shared/skeleton-block";
 import Tooltip from "@/components/shared/tooltip/tooltip";
-import { getIdFromUrlSubstring, useAsyncQuery } from "@/components/shared/utils";
+import { getIdFromUrlSubstring } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
+import { useQuery } from "@tanstack/react-query";
 import { IPokemon } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 
@@ -12,10 +13,10 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
   const { t } = useTranslation('common');
   const { settings } = useUser();
 
-  const { data: abilityDetails } = useAsyncQuery(
-    () => Promise.all(pokemon.abilities.map((ability) => pokeApiQuery.getAbility(getIdFromUrlSubstring(ability.ability.url)))),
-    [pokemon.abilities]
-  );
+  const { data: abilityDetails } = useQuery({
+    queryKey: ['abilities', pokemon.name],
+    queryFn: () => Promise.all(pokemon.abilities.map((ability) => pokeApiQuery.getAbility(getIdFromUrlSubstring(ability.ability.url)))),
+  });
 
   const renderDetails = () => {
     if(!abilityDetails || !settings) {

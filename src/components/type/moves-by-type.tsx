@@ -1,32 +1,30 @@
 import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table/table";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace, useAsyncQuery } from "@/components/shared/utils";
-import { useSnackbar } from "@/context/snackbar";
+import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "@/components/shared/utils";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { IMove, INamedApiResource } from "pokeapi-typescript";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import SkeletonBlock from "../shared/skeleton-block";
 import SortButton from "../shared/table/sort-button";
 import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
 import Tooltip from "../shared/tooltip/tooltip";
-import SkeletonBlock from "../shared/skeleton-block";
 const pokeApiQuery = new PokeApiQuery();
 export type SortKey = 'id' | 'name' | 'class' | 'power' | 'pp' | 'accuracy';
 
 export default function MovesByType({ movesList, type }: { movesList: INamedApiResource<IMove>[], type: string }) {
   const { t } = useTranslation('common');
   const [sorting, setSorting] = useState<SortingDir<SortKey>[]>([]);
-  const { showSnackbar } = useSnackbar();
   const toggleSort = (key: SortKey) => {
     setSorting(prev => updateSortKeys(prev, key));
   };
 
-  const { data: movesByType } = useAsyncQuery(
-    () => pokeApiQuery.getMovesByIds(movesList.map(p => Number(getIdFromUrlSubstring(p.url)))),
-    [movesList],
-    (e) => showSnackbar(e, 5)
-  );
+  const { data: movesByType } = useQuery({
+    queryKey: ['movesList', movesList, type],
+    queryFn: () => pokeApiQuery.getMovesByIds(movesList.map(p => Number(getIdFromUrlSubstring(p.url)))),
+  });
 
   const tableHeaders = <>
     <th className="bg-(--pokedex-red-dark) w-[50%] text-white text-left px-2 py-1">

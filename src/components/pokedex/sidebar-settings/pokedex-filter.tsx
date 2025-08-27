@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import PokeApiQuery from '@/app/poke-api-query';
 import MultiSelect from '@/components/shared/multi-select';
-import { capitilize, useAsyncQuery } from '@/components/shared/utils';
+import { capitilize } from '@/components/shared/utils';
 import { ChevronLeftIcon, FunnelIcon } from '@heroicons/react/24/solid';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
@@ -28,7 +29,10 @@ export default function PokedexFilter({
   const [filterName, setFilterName] = useState(name);
   const [filterType, setFilterType] = useState<string[]>(types ?? []);
   const [open, setOpen] = useState<boolean>(!!name || !!types?.length);
-  const { data: typeOptions } = useAsyncQuery(() => pokeApiQuery.getAllTypes(), []);
+  const { data: typeOptions } = useQuery({
+    queryKey: ['filterTypes'],
+    queryFn: () => pokeApiQuery.getAllTypes()
+  });
   const filterRef = useRef<HTMLDivElement>(null);
 
   // Close the menu if clicking outside

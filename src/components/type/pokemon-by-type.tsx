@@ -2,21 +2,21 @@ import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/poke-api-query";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
-import { capitilize, getIdFromUrlSubstring, normalizePokemonName, useAsyncQuery } from "@/components/shared/utils";
-import { useSnackbar } from "@/context/snackbar";
+import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "next/link";
 import { ITypePokemon } from "pokeapi-typescript";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { getTypeIconById } from "../[id]/details/types";
+import SkeletonBlock from "../shared/skeleton-block";
 import SkeletonImage from "../shared/skeleton-image";
+import LoadingSpinner from "../shared/spinner";
 import SortButton from "../shared/table/sort-button";
 import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
-import LoadingSpinner from "../shared/spinner";
-import SkeletonBlock from "../shared/skeleton-block";
 export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
@@ -24,7 +24,6 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
   const { t } = useTranslation('common');
   const { settings } = useUser();
   const [sorting, setSorting] = useState<SortingDir<SortKey>[]>([]);
-  const { showSnackbar } = useSnackbar();
   const toggleSort = (key: SortKey) => {
     setSorting(prev => updateSortKeys(prev, key));
   };
@@ -33,11 +32,10 @@ export default function PokemonByType({ pokemonList, type }: { pokemonList: ITyp
     .map(p => Number(getIdFromUrlSubstring(p.pokemon.url)))
     .filter(id => id <= NUMBERS_OF_POKEMON);
 
-  const { data: pokemonByType } = useAsyncQuery(
-    () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
-    [pokemonList],
-    (e) => showSnackbar(e, 5)
-  );
+  const { data: pokemonByType } = useQuery({
+    queryKey: ['pokemonList', pokemonList, type],
+    queryFn: () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
+  });
 
   if(!settings) {
     return <LoadingSpinner />;
