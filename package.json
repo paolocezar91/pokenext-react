@@ -1,6 +1,6 @@
 {
   "name": "pokenext-react",
-  "version": "0.2.2",
+  "version": "0.3.2",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -11,7 +11,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:snapshot": "jest --updateSnapshot"
+    "test:snapshot": "jest --updateSnapshot",
+    "bump:patch": "bump-my-version bump patch package.json",
+    "bump:minor": "bump-my-version bump minor package.json",
+    "bump:major": "bump-my-version bump major package.json"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
