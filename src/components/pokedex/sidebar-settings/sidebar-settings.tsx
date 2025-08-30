@@ -33,11 +33,7 @@ export function SidebarSettings() {
         onFilterName={filterName}
         onFilterTypes={filterTypes}
       />
-      {
-        settings.listTable ?
-          <TableSettings />:
-          <ThumbSettings />
-      }
+      { settings.listTable ? <ThumbSettings /> : <TableSettings /> }
       <hr className="border-1 border-solid border-white my-2 w-full" />
       {/* List Table Toggle */}
       <Tooltip className="mt-1"

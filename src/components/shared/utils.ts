@@ -1,5 +1,24 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
+/**
+ * Calls the provided callback when a click occurs outside the referenced element.
+ * @param ref - React ref to the element
+ * @param callback - Function to call on outside click
+ */
+export function useClickOutside<T extends HTMLElement>(ref: React.RefObject<T | null>, callback: () => void) {
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        callback();
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref, callback]);
+}
+
 export const capitilize = (str = '') => {
   const splitStr = str.toLowerCase().split(' ');
   for (let i = 0; i < splitStr.length; i++) {

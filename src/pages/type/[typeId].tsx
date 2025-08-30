@@ -1,5 +1,3 @@
-'use client';
-
 import { idOrName } from "@/app/api-utils";
 import { getAllTypes, getTypeById } from "@/app/services/type";
 import PokemonDefensiveChart from "@/components/shared/defensive-chart";

@@ -11,7 +11,6 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
       moves.moveData.title
     </h3>
     <table
-      aria-label="Move data table"
       class="w-full"
     >
       <tbody>
@@ -24,13 +23,17 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
           <td
             class="py-1"
           >
-            <img
-              alt="electric"
-              height="20"
-              loading="lazy"
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png"
-              width="100"
-            />
+            <a
+              href="/type/electric"
+            >
+              <img
+                alt="electric"
+                height="20"
+                loading="lazy"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png"
+                width="100"
+              />
+            </a>
           </td>
         </tr>
         <tr>
@@ -42,31 +45,27 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
           <td
             class="py-1"
           >
-            <span
-              class="flex"
+            <div
+              class="tooltip-container"
             >
               <div
-                class="tooltip-container"
+                class="tooltip-trigger"
               >
-                <div
-                  class="tooltip-trigger"
+                <span
+                  class="flex items-center"
                 >
-                  <span
-                    class="flex items-center"
-                  >
-                    <img
-                      alt="special"
-                      class="mr-2"
-                      height="35"
-                      loading="lazy"
-                      src="/move-special.png"
-                      width="35"
-                    />
-                    Special
-                  </span>
-                </div>
+                  <img
+                    alt="special"
+                    class="mr-2"
+                    height="35"
+                    loading="lazy"
+                    src="/move-special.png"
+                    width="35"
+                  />
+                  Special
+                </span>
               </div>
-            </span>
+            </div>
           </td>
         </tr>
         <tr>
@@ -76,7 +75,7 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
             pokedex.details.moves.power
           </th>
           <td
-            class="py-1"
+            class="py-1 w-50"
           >
             90
           </td>
@@ -88,7 +87,7 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
             pokedex.details.moves.accuracy
           </th>
           <td
-            class="py-1"
+            class="py-1 w-50"
           >
             100
           </td>
@@ -100,7 +99,7 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
             pokedex.details.moves.pp
           </th>
           <td
-            class="py-1"
+            class="py-1 w-50"
           >
             15
           </td>
@@ -122,7 +121,6 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
       moves.moveData.title
     </h3>
     <table
-      aria-label="Move data table"
       class="w-full"
     >
       <tbody>
@@ -135,13 +133,17 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
           <td
             class="py-1"
           >
-            <img
-              alt="electric"
-              height="20"
-              loading="lazy"
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png"
-              width="100"
-            />
+            <a
+              href="/type/electric"
+            >
+              <img
+                alt="electric"
+                height="20"
+                loading="lazy"
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png"
+                width="100"
+              />
+            </a>
           </td>
         </tr>
         <tr>
@@ -153,31 +155,27 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
           <td
             class="py-1"
           >
-            <span
-              class="flex"
+            <div
+              class="tooltip-container"
             >
               <div
-                class="tooltip-container"
+                class="tooltip-trigger"
               >
-                <div
-                  class="tooltip-trigger"
+                <span
+                  class="flex items-center"
                 >
-                  <span
-                    class="flex items-center"
-                  >
-                    <img
-                      alt="special"
-                      class="mr-2"
-                      height="35"
-                      loading="lazy"
-                      src="/move-special.png"
-                      width="35"
-                    />
-                    Special
-                  </span>
-                </div>
+                  <img
+                    alt="special"
+                    class="mr-2"
+                    height="35"
+                    loading="lazy"
+                    src="/move-special.png"
+                    width="35"
+                  />
+                  Special
+                </span>
               </div>
-            </span>
+            </div>
           </td>
         </tr>
         <tr>
@@ -187,7 +185,7 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
             pokedex.details.moves.power
           </th>
           <td
-            class="py-1"
+            class="py-1 w-50"
           >
             -
           </td>
@@ -199,7 +197,7 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
             pokedex.details.moves.accuracy
           </th>
           <td
-            class="py-1"
+            class="py-1 w-50"
           >
             -
           </td>
@@ -211,7 +209,7 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
             pokedex.details.moves.pp
           </th>
           <td
-            class="py-1"
+            class="py-1 w-50"
           >
             -
           </td>
