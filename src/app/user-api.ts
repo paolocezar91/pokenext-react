@@ -9,6 +9,7 @@ export type Settings = {
   descriptionLang: string,
   listTable: boolean,
   showColumn: boolean[],
+  showSettings: boolean,
   showShowColumn: boolean,
   showThumbTable: boolean,
   thumbLabelList: string,

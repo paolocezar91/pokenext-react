@@ -113,7 +113,7 @@ export default function Search({ className = "" }: { className?: string }) {
           onChange={handleInputChange}
           className="h-full w-full"
         />
-        <MagnifyingGlassIcon className="w-6" />
+        <MagnifyingGlassIcon className="w-5" />
       </div>
       <AnimatePresence>
         {suggestions.length > 0 && <motion.div

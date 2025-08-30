@@ -24,15 +24,3 @@ export type DefensiveMatchup = {
   resistances: Record<PokemonType, number>;
   immunities: Record<PokemonType, boolean>;
 };
-
-export type UserSettings = {
-  artworkUrl: string;
-  descriptionLang: string;
-  listTable: boolean;
-  showColumn: boolean[];
-  showShowColumn: boolean;
-  showThumbTable: boolean;
-  thumbLabelList: string;
-  thumbSizeList: string;
-  typeArtworkUrl: string;
-};

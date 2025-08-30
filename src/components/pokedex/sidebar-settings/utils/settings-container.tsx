@@ -42,7 +42,7 @@ export function SettingsContainer({ children, className = "" }: { children: Reac
           `}
           onClick={() => setShowSettings(!showSettings)}
         >
-          { showSettings ? <ChevronLeftIcon className="w-6" />: <Cog6ToothIcon className="w-6" />}
+          { showSettings ? <ChevronLeftIcon className="w-5" />: <Cog6ToothIcon className="w-5" />}
         </Button>
       </Tooltip>
       {showSettings && <motion.div
