@@ -32,7 +32,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
   const { data: learnedBy } = useQuery({
     queryKey: ['pokemonList', pokemonList],
     queryFn: () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON)
-      .then(({results}) => results),
+      .then(({ results }) => results),
   });
 
   const tableHeaders = <>
@@ -76,16 +76,16 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
       return;
 
     return pokemon.types.map((t, idx) => {
-      
-        return <Link href={`/type/${t.type.name}`} key={idx}>
-          <Image
-            width="100"
-            height="20"
-            className="inline m-1"
-            alt={capitilize(t.type.name)}
-            src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
-        </Link>
-      }
+
+      return <Link href={`/type/${t.type.name}`} key={idx}>
+        <Image
+          width="100"
+          height="20"
+          className="inline m-1"
+          alt={capitilize(t.type.name)}
+          src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
+      </Link>;
+    }
     );
   };
 

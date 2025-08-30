@@ -1,12 +1,12 @@
+import { useClickOutside } from "@/components/shared/utils";
+import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { handleSignOut, signInWithGithub } from "./auth-actions";
 import UserAvatarButton from "./user-avatar-button";
 import UserMenu from "./user-menu";
 import UserMenuContent from "./user-menu-content";
-import { AnimatePresence, motion } from "framer-motion";
-import { useClickOutside } from "@/components/shared/utils";
 
 export default function NavUserAuth() {
   const { data: session, status } = useSession();
