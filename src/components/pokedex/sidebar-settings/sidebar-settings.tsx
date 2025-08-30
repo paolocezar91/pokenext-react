@@ -19,15 +19,15 @@ export function SidebarSettings() {
   useEffect(() => {
     if (settings?.showSettings) {
       // Show: expand height, then fade in content
-      chevronControls.start({ rotate: -180, transition: { duration: 0.3 } });
-      containerControls.start({ height: "auto", transition: { duration: 0.3 } }).then(() => {
-        contentControls.start({ opacity: 1, transition: { duration: 0.2 } });
+      chevronControls.start({ rotate: -180, transition: { duration: 0.3 }});
+      containerControls.start({ height: "auto", transition: { duration: 0.3 }}).then(() => {
+        contentControls.start({ opacity: 1, transition: { duration: 0.2 }});
       });
     } else {
       // Hide: fade out content, then collapse height
-      chevronControls.start({ rotate: 0, transition: { duration: 0.3 } });
-      contentControls.start({ opacity: 0, transition: { duration: 0.2 } }).then(() => {
-        containerControls.start({ height: 0, transition: { duration: 0.3 } });
+      chevronControls.start({ rotate: 0, transition: { duration: 0.3 }});
+      contentControls.start({ opacity: 0, transition: { duration: 0.2 }}).then(() => {
+        containerControls.start({ height: 0, transition: { duration: 0.3 }});
       });
     }
   }, [settings?.showSettings, containerControls, contentControls, chevronControls]);
@@ -49,7 +49,7 @@ export function SidebarSettings() {
 
   return settings &&
     <div className="absolute z-2 flex flex-col items-center bg-(--pokedex-red) py-2 px-2 md:w-max rounded-br-xl">
-      <Tooltip 
+      <Tooltip
         position="right"
         content={
           !settings.showSettings ?
@@ -58,7 +58,7 @@ export function SidebarSettings() {
         }
       >
         <Button
-          onClick={() => upsertSettings({showSettings: !settings.showSettings})}
+          onClick={() => upsertSettings({ showSettings: !settings.showSettings })}
           className="
             cursor-pointer
             flex
@@ -74,12 +74,12 @@ export function SidebarSettings() {
             animate={chevronControls}
             initial={{ rotate: 0 }}
           >
-            <ChevronDownIcon className="w-5" />        
+            <ChevronDownIcon className="w-5" />
           </motion.div>
         </Button>
       </Tooltip>
 
-      <AnimatePresence> 
+      <AnimatePresence>
         {settings.showSettings && <motion.div
           animate={containerControls}
           initial={{ height: 0 }}
@@ -124,11 +124,11 @@ export function SidebarSettings() {
                 </Button>
               </div>
             </Tooltip>
-            
+
           </motion.div>}
         </motion.div>}
       </AnimatePresence>
-      
+
     </div>;
 }
 

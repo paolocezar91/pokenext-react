@@ -1,12 +1,12 @@
+import Tooltip from "@/components/shared/tooltip/tooltip";
+import { useClickOutside } from "@/components/shared/utils";
+import { useUser } from "@/context/user-context";
 import { ChevronLeftIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { AnimatePresence, motion } from "framer-motion";
-import { ReactNode, useEffect, useRef, useState } from "react";
-import { SettingsContent } from "./settings-content";
-import { useTranslation } from "react-i18next";
+import { ReactNode, useRef, useState } from "react";
 import { Button } from "react-bootstrap";
-import Tooltip from "@/components/shared/tooltip/tooltip";
-import { useUser } from "@/context/user-context";
-import { useClickOutside } from "@/components/shared/utils";
+import { useTranslation } from "react-i18next";
+import { SettingsContent } from "./settings-content";
 
 
 export function SettingsContainer({ children, className = "" }: { children: ReactNode, className: string }) {
