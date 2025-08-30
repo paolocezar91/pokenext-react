@@ -17,7 +17,7 @@ export default function LazyRow(
   const { settings } = useUser();
 
   const thumbCell = <td className={`
-        px-4
+        pl-16 pr-4
         ${isFirst ? 'pt-4' : ''}
         ${!settings!.showThumbTable ? 'py-4': 'py-2'}
       `}>

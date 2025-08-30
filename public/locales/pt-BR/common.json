@@ -120,6 +120,8 @@
     },
     "settings": {
         "title": "Configurações",
+        "showSettings": "Mostrar configs.",
+        "hideSettings": "Esconder configs.",
         "openTableSettings": "Abrir configs. da tabela",
         "closeTableSettings": "Fechar configs. da tabela",
         "openThumbnailSettings": "Abrir configs. das miniaturas",

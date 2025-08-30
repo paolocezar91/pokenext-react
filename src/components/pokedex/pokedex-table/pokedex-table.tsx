@@ -55,9 +55,9 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
   if (!settings)
     return null;
 
-  const tHead = <thead>
+  const tHead = <>
     <tr className="sticky top-0 bg-(--pokedex-red-dark) z-1">
-      <th className="w-[1%] text-white text-center px-2 py-2"></th>
+      <th className="w-[1%] text-white text-center"></th>
       <th className="w-0 text-white text-center px-2 py-2">
         <SortButton attr="id" onClick={() => toggleSort("id")} sorting={sorting}>#</SortButton>
       </th>
@@ -99,12 +99,14 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
       }) }
       <th className="w-[1%]"></th>
     </tr>
-  </thead>;
+  </>;
 
   return <div className="table-container p-2 bg-(--pokedex-red) w-full">
     <div className="overflow-auto h-[82vh] relative rounded-lg shadow-md">
       <table className="w-full text-xs">
-        {tHead}
+        <thead>
+          {tHead}
+        </thead>
         <tbody className="bg-background">
           {
             sortedPokemon

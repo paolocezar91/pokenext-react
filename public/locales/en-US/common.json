@@ -120,6 +120,8 @@
     },
     "settings": {
         "title": "Settings",
+        "showSettings": "Show settings",
+        "hideSettings": "Hide settings",
         "openTableSettings": "Open table settings",
         "closeTableSettings": "Close table settings",
         "openThumbnailSettings": "Open thumbnail settings",
