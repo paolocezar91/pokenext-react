@@ -59,7 +59,7 @@ export default function Pokedex({ pokemonsData, filterApplied }: { pokemonsData:
     <RootLayout title="Home">
       {settings &&
         <div className="wrapper h-[inherit] pt-4 bg-background">
-          <div className="flex items-start">
+          <div className="relative flex items-start">
             <SidebarSettings />
             {settings.listTable ?
               <PokedexTable pokemons={pokemons}></PokedexTable>:

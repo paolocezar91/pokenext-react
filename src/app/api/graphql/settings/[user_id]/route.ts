@@ -14,6 +14,7 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ user_i
         descriptionLang
         listTable
         showColumn
+        showSettings
         showShowColumn
         showThumbTable
         thumbLabelList
@@ -50,6 +51,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ use
         descriptionLang
         listTable
         showColumn
+        showSettings
         showShowColumn
         showThumbTable
         thumbLabelList
@@ -76,6 +78,7 @@ const parseSettings = (userId: string, data: Record<string, unknown>) => {
     descriptionLang: data.descriptionLang,
     listTable: data.listTable,
     showColumn: (data.showColumn as boolean[])?.reduce((str, bool) => str + (bool ? 'y' : 'n'), ''),
+    showSettings: data.showSettings,
     showShowColumn: data.showShowColumn,
     showThumbTable: data.showThumbTable,
     thumbLabelList: data.thumbLabelList,

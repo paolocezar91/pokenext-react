@@ -71,8 +71,8 @@ export default function PokedexFilter({
         onClick={() => setOpen(!open)}
       >
         { open ?
-          <ChevronLeftIcon className="w-6" />:
-          <FunnelIcon className="w-6" />
+          <ChevronLeftIcon className="w-5" />:
+          <FunnelIcon className="w-5" />
         }
         {isFiltered && <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2" />}
       </Button>
