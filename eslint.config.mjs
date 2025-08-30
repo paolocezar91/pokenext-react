@@ -1,7 +1,7 @@
 import { FlatCompat } from "@eslint/eslintrc";
 import { dirname } from "path";
 import { fileURLToPath } from "url";
-import stylisticTS from '@stylistic/eslint-plugin-ts';
+import stylisticTS from '@stylistic/eslint-plugin';
 
 
 const __filename = fileURLToPath(import.meta.url);
