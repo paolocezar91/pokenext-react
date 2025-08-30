@@ -6,6 +6,7 @@ import UserAvatarButton from "./user-avatar-button";
 import UserMenu from "./user-menu";
 import UserMenuContent from "./user-menu-content";
 import { AnimatePresence, motion } from "framer-motion";
+import { useClickOutside } from "@/components/shared/utils";
 
 export default function NavUserAuth() {
   const { data: session, status } = useSession();
@@ -14,19 +15,7 @@ export default function NavUserAuth() {
   const pathname = usePathname() || '';
 
   // Close the menu if clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setMenuOpen(false);
-      }
-    }
-    if (menuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [menuOpen]);
+  useClickOutside(menuRef, () => setMenuOpen(false));
 
   if (status === "loading") {
     return <UserAvatarButton image={undefined} onClick={() => {}} onMouseEnter={() => {}} />;

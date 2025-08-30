@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FlavorText Component should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="flavor w-full mt-2"
+  >
+    <h3
+      class="w-fit text-lg mb-4"
+    >
+      moves.flavorText.title
+    </h3>
+    <div
+      class="flex items-end relative items-start justify-between pb-6"
+    >
+      <p>
+        First flavor text
+      </p>
+      <div
+        class="flex"
+      >
+        <button
+          aria-label="actions.previous flavor text"
+          class="text-xs mr-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600 transition-colors btn btn-primary"
+          data-testid="previous-button"
+          disabled=""
+          type="button"
+        >
+          <div>
+            LeftIcon
+          </div>
+        </button>
+        <button
+          aria-label="actions.next flavor text"
+          class="text-xs ml-1 h-5 rounded hover:bg-(--pokedex-red) disabled:bg-gray-600 transition-colors btn btn-primary"
+          data-testid="next-button"
+          disabled=""
+          type="button"
+        >
+          <div>
+            RightIcon
+          </div>
+        </button>
+      </div>
+      <div
+        class="absolute bottom-[-8px] right-0 border-t-1 border-t-white text-sm"
+      >
+        <small
+          class="mr-2"
+        >
+          (Red/Blue)
+        </small>
+        1 / 1
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

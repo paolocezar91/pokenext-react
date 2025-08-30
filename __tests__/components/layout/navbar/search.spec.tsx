@@ -12,13 +12,23 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
-jest.mock('@/context/UserContext', () => ({
+jest.mock('@/context/user-context', () => ({
   useUser: () => ({
-    settings: { }
+    settings: {}
   })
 }));
 
-describe('NavSearch Component', () => {
+jest.mock('@tanstack/react-query', () => ({
+  useQuery: () => ({
+    data: [
+      { name: "bulbasaur", id: 1, displayName: "0001 Bulbasaur"},
+      { name: "metapod", id: 11, displayName: "0011 Metapod"},
+      { name: "pikachu", id: 25, displayName: "0025 Pikachu"}
+    ]
+  })
+}));
+
+describe('Search Component', () => {
   const mockPush = jest.fn();
 
   beforeEach(() => {

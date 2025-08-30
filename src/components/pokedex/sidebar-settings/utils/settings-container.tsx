@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "react-bootstrap";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { useUser } from "@/context/user-context";
+import { useClickOutside } from "@/components/shared/utils";
 
 
 export function SettingsContainer({ children, className = "" }: { children: ReactNode, className: string }) {
@@ -13,20 +14,7 @@ export function SettingsContainer({ children, className = "" }: { children: Reac
   const { t } = useTranslation('common');
   const settingsRef = useRef<HTMLDivElement>(null);
   const { settings } = useUser();
-
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
-        setShowSettings(false);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  useClickOutside(settingsRef, () => setShowSettings(false));
 
   const tooltipTableText = !showSettings ? t('settings.openTableSettings') : t('settings.closeTableSettings');
   const tooltipThumbText = !showSettings ? t('settings.openThumbnailSettings') : t('settings.closeThumbnailSettings');

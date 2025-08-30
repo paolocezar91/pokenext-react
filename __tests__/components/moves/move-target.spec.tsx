@@ -7,7 +7,7 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
-jest.mock('@/context/UserContext', () => ({
+jest.mock('@/context/user-context', () => ({
   useUser: () => ({
     settings: { descriptionLang: 'en' }
   })

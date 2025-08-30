@@ -10,19 +10,11 @@ jest.mock('next/image', () => ({
   default: (props: any) => <img {...props} />, // Simplified Image mock
 }));
 
-jest.mock('@/context/UserContext', () => ({
+jest.mock('@/context/user-context', () => ({
   useUser: () => ({
     settings: { typeArtworkUrl: 'sword-shield' }
   })
 }));
-
-// jest.mock('@/components/[id]/details/types', () => ({
-//   getTypeIconById: jest.fn((id) => `/type-${id}.png`),
-// }));
-
-// jest.mock('@/components/shared/utils', () => ({
-//   getIdFromUrlSubstring: jest.fn((url) => url.split('/').filter(Boolean).pop()),
-// }));
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({

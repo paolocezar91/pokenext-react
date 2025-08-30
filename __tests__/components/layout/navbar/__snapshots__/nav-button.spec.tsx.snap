@@ -3,7 +3,19 @@
 exports[`NavButton Component should match snapshot 1`] = `
 <DocumentFragment>
   <button
-    class="flex px-3 py-2 text-sm rounded hover:shadow-md hover:bg-(--pokedex-red-dark) cursor-pointer bg-transparent  btn btn-primary"
+    class="
+    flex
+    px-2
+    py-2
+    text-sm
+    rounded
+    cursor-pointer
+    transition-colors
+    hover:shadow-md
+    hover:bg-(--pokedex-red-dark)
+    active:bg-white
+    active:text-(--pokedex-red-dark)
+   bg-transparent  btn btn-primary"
     type="button"
   >
     Bulbasaur

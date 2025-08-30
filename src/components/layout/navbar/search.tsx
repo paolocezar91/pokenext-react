@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 
 const pokeApiQuery = new PokeApiQuery();
 
-export default function Search({ className }: { className?: string }) {
+export default function Search({ className = "" }: { className?: string }) {
   // Store the fetched pokemon list in state
   const router = useRouter();
   const { t } = useTranslation('common');
@@ -111,10 +111,7 @@ export default function Search({ className }: { className?: string }) {
           type="text"
           value={inputValue}
           onChange={handleInputChange}
-          className="
-              h-full
-              w-full
-            "
+          className="h-full w-full"
         />
         <MagnifyingGlassIcon className="w-6" />
       </div>
