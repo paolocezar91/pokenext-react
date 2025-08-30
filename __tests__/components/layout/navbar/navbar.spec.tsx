@@ -23,7 +23,7 @@ jest.mock('@/components/layout/navbar/menu-xs', () => jest.fn(({ }) => <div data
 jest.mock('@/components/layout/navbar/nav-link', () => jest.fn(({ href, children }) => <a href={href}>{children}</a>));
 jest.mock('@/components/layout/navbar/search', () => jest.fn(() => <div>NavSearch</div>));
 
-jest.mock('@/context/UserContext', () => ({
+jest.mock('@/context/user-context', () => ({
   useUser: () => ({
     settings: { descriptionLang: 'en' }
   })

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import PokeApiQuery from '@/app/poke-api-query';
 import MultiSelect from '@/components/shared/multi-select';
-import { capitilize } from '@/components/shared/utils';
+import { capitilize, useClickOutside } from '@/components/shared/utils';
 import { ChevronLeftIcon, FunnelIcon } from '@heroicons/react/24/solid';
 import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -34,21 +34,8 @@ export default function PokedexFilter({
     queryFn: () => pokeApiQuery.getAllTypes()
   });
   const filterRef = useRef<HTMLDivElement>(null);
-
   // Close the menu if clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    }
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open]);
+  useClickOutside(filterRef, () => setOpen(false));
 
   useEffect(() => {
     if(filterName !== undefined && (filterName?.length === 0 || filterName?.length > 2)){

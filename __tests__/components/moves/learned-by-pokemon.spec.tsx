@@ -2,35 +2,46 @@ import LearnedByPokemon from '@/components/moves/learned-by-pokemon';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { INamedApiResource, IPokemon } from 'pokeapi-typescript';
+import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
-jest.mock('@/context/UserContext', () => ({
+jest.mock('@/context/user-context', () => ({
   useUser: () => ({
-    settings: { descriptionLang: 'en' }
+    settings: { descriptionLang: 'en', artworkUrl: 'official-artwork', typeArtworkUrl: 'sword-shield' }
   })
 }));
 
-describe('LearnedByPokemon Component', () => {
-  const mockLearnedByPokemon = [
+jest.mock('@tanstack/react-query', () => ({
+  useQuery: () => ({
+    data: [
+      { name: "ditto", id: 132, types: [ { type: { name: "normal", url: "/api/v2/type/1/" } } ] },
+      { name: "mew", id: 151, types: [ { type: { name: "psychic",  url: "/api/v2/type/14/" } } ] }
+    ]
+  })
+}));
+
+const mockLearnedByPokemon = [
     {
-      "name": "ditto",
-      "url": "/api/v2/pokemon/132/"
+      name: "ditto",
+      url: "/api/v2/pokemon/132/"
     },
     {
-      "name": "mew",
-      "url": "/api/v2/pokemon/151/"
+      name: "mew",
+      url: "/api/v2/pokemon/151/"
     }
   ] as unknown as INamedApiResource<IPokemon>[];
 
+describe('LearnedByPokemon Component', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
   it('should render the component with initial state', () => {
-    render(<LearnedByPokemon learnedByPokemon={mockLearnedByPokemon} />);
+    render(<LearnedByPokemon pokemonList={mockLearnedByPokemon} />);
+    mockAllIsIntersecting(true);
 
     // Test title transformation
     expect(screen.getByRole('heading')).toHaveTextContent('moves.learnedBy.title');
@@ -39,7 +50,8 @@ describe('LearnedByPokemon Component', () => {
   });
 
   it('should have the link to the pokemons', () => {
-    render(<LearnedByPokemon learnedByPokemon={mockLearnedByPokemon} />);
+    render(<LearnedByPokemon pokemonList={mockLearnedByPokemon} />);
+    mockAllIsIntersecting(true);
 
     // Test title transformation
     expect(screen.getByRole('heading')).toHaveTextContent('moves.learnedBy.title');
@@ -48,9 +60,9 @@ describe('LearnedByPokemon Component', () => {
     expect(mewLink).toHaveAttribute('href', '/pokedex/mew');
   });
 
-
   it('should match snapshot', () => {
-    const { asFragment } = render(<LearnedByPokemon learnedByPokemon={mockLearnedByPokemon} />);
+    const { asFragment } = render(<LearnedByPokemon pokemonList={mockLearnedByPokemon} />);
+    mockAllIsIntersecting(true);
     expect(asFragment()).toMatchSnapshot();
   });
 });

@@ -31,7 +31,8 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
 
   const { data: learnedBy } = useQuery({
     queryKey: ['pokemonList', pokemonList],
-    queryFn: () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
+    queryFn: () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON)
+      .then(({results}) => results),
   });
 
   const tableHeaders = <>
@@ -47,7 +48,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     </th>
   </>;
 
-  if(!learnedBy?.results.length) {
+  if(!learnedBy?.length) {
     const skeletonTableBody = [...Array(10)].map((_, i) => <tr key={i} className="border-solid border-foreground border-b-2">
       {[...Array(4)].map((_, j) => {
         if(j === 0) {
@@ -63,7 +64,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     </tr>);
 
     return <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
-      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.results.length })}</h3>
+      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.length })}</h3>
       <div className="h-[-webkit-fill-available]">
         <Table headers={tableHeaders}>{skeletonTableBody}</Table>
       </div>
@@ -74,9 +75,9 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     if(!settings)
       return;
 
-    return <td className="p-2">
-      {pokemon.types.map((t, idx) =>
-        <Link href={`/type/${t.type.name}`} key={idx}>
+    return pokemon.types.map((t, idx) => {
+      
+        return <Link href={`/type/${t.type.name}`} key={idx}>
           <Image
             width="100"
             height="20"
@@ -84,8 +85,8 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
             alt={capitilize(t.type.name)}
             src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
         </Link>
-      )}
-    </td>;
+      }
+    );
   };
 
   // eslint-disable-next-line no-unused-vars
@@ -95,7 +96,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     'types': [a.types.map(t => t.type.name).join(","), b.types.map(t => t.type.name).join(",")],
   });
 
-  const sortedPokemon = learnedBy.results
+  const sortedPokemon = learnedBy
     .sort(sortResources(sorting, sortMapping, 'id'));
 
   const tableBody = sortedPokemon
@@ -116,13 +117,15 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
               {normalizePokemonName(pokemon.name)}
             </Link>
           </td>
-          {typesCell(pokemon)}
+          <td className="p-2">
+            {typesCell(pokemon)}
+          </td>
         </tr>
       );
     });
 
   return <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
-    <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.results.length })}</h3>
-    {!!learnedBy?.results.length && <Table headers={tableHeaders}>{tableBody}</Table>}
+    <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.length })}</h3>
+    {!!learnedBy.length && <Table headers={tableHeaders}>{tableBody}</Table>}
   </div>;
 }

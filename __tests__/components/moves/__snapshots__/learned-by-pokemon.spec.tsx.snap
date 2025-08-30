@@ -10,70 +10,325 @@ exports[`LearnedByPokemon Component should match snapshot 1`] = `
     >
       moves.learnedBy.title
     </h3>
-    <div
-      class="sm:overflow-initial md:overflow-auto flex-1 pr-4"
+    <table
+      class="w-full text-xs "
     >
-      <table
-        class="w-full text-xs"
-      >
-        <thead>
-          <tr
-            class="sticky top-0 bg-background z-1"
+      <thead>
+        <tr
+          class="bg-black pt-1 sticky top-0 bg-background z-1"
+        >
+          <th
+            class="bg-(--pokedex-red-dark) w-[5%]"
+          />
+          <th
+            class="bg-(--pokedex-red-dark) w-[1%] text-white text-center px-2 py-1"
           >
-            <th
-              class="w-[0%] text-white text-center px-2 py-2"
+            <div
+              class="tooltip-container"
             >
-              #
-            </th>
-            <th
-              class="w-[5%] text-white text-left px-2 py-2"
-            >
-              table.name
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="border-solid border-foreground  border-b-2"
-          >
-            <td
-              class="p-2"
-            >
-              #0132
-            </td>
-            <td
-              class="p-2"
-            >
-              <a
-                class="hover:bg-(--pokedex-red-dark) p-1"
-                href="/pokedex/ditto"
+              <div
+                class="tooltip-trigger"
               >
-                Ditto
-              </a>
-            </td>
-          </tr>
-          <tr
-            class=""
+                <button
+                  class="
+          flex 
+          items-start
+          ml-1
+          px-2
+          py-1
+          cursor-pointer
+          rounded
+          bg-(--pokedex-red-dark)
+          hover:bg-(--pokedex-red-darker)
+          transition-colors
+          
+         btn btn-primary"
+                  type="button"
+                >
+                  <span
+                    class="mr-1"
+                  >
+                    #
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    class="w-5"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M6.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.25 4.81V16.5a.75.75 0 0 1-1.5 0V4.81L3.53 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm9.53 4.28a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V7.5a.75.75 0 0 1 .75-.75Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </th>
+          <th
+            class="bg-(--pokedex-red-dark) w-[15%] text-white text-left px-2 py-1"
           >
-            <td
-              class="p-2"
+            <div
+              class="tooltip-container"
             >
-              #0151
-            </td>
-            <td
-              class="p-2"
-            >
-              <a
-                class="hover:bg-(--pokedex-red-dark) p-1"
-                href="/pokedex/mew"
+              <div
+                class="tooltip-trigger"
               >
-                Mew
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                <button
+                  class="
+          flex 
+          items-start
+          ml-1
+          px-2
+          py-1
+          cursor-pointer
+          rounded
+          bg-(--pokedex-red-dark)
+          hover:bg-(--pokedex-red-darker)
+          transition-colors
+          
+         btn btn-primary"
+                  type="button"
+                >
+                  <span
+                    class="mr-1"
+                  >
+                    table.name
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    class="w-5"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M6.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.25 4.81V16.5a.75.75 0 0 1-1.5 0V4.81L3.53 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm9.53 4.28a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V7.5a.75.75 0 0 1 .75-.75Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </th>
+          <th
+            class="bg-(--pokedex-red-dark) w-[10%] text-white text-left px-2 py-1"
+          >
+            <div
+              class="tooltip-container"
+            >
+              <div
+                class="tooltip-trigger"
+              >
+                <button
+                  class="
+          flex 
+          items-start
+          ml-1
+          px-2
+          py-1
+          cursor-pointer
+          rounded
+          bg-(--pokedex-red-dark)
+          hover:bg-(--pokedex-red-darker)
+          transition-colors
+          
+         btn btn-primary"
+                  type="button"
+                >
+                  <span
+                    class="mr-1"
+                  >
+                    table.types
+                  </span>
+                  <svg
+                    aria-hidden="true"
+                    class="w-5"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M6.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.25 4.81V16.5a.75.75 0 0 1-1.5 0V4.81L3.53 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm9.53 4.28a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V7.5a.75.75 0 0 1 .75-.75Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="border-solid border-foreground  border-b-2"
+        >
+          <td
+            class="p-2"
+          >
+            <a
+              href="/pokedex/ditto"
+            >
+              <div
+                class="
+        pokemon flex flex-col mx-auto justify-center items-center
+        
+        w-30 h-30
+        xs
+        titleless
+      "
+                style="background: rgb(168, 167, 122);"
+              >
+                <div
+                  class="pokemon-shadow bg-[rgba(0,0,0,0.2)] w-30 h-30"
+                />
+                <div
+                  class="img-hover-zoom w-full h-full"
+                >
+                  <div
+                    class="relative w-full h-[120px]"
+                  >
+                    <img
+                      alt="Ditto #0132"
+                      class="artwork z-1 official-artwork"
+                      data-nimg="fill"
+                      decoding="async"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      src="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=3840&q=75"
+                      srcset="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=256&q=75 256w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=384&q=75 384w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F132.png&w=3840&q=75 3840w"
+                      style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+                    />
+                  </div>
+                </div>
+              </div>
+            </a>
+          </td>
+          <td
+            class="p-2 text-center"
+          >
+            #0132
+          </td>
+          <td
+            class="p-2"
+          >
+            <a
+              class="transition-colors hover:bg-(--pokedex-red-dark) p-1"
+              href="/pokedex/ditto"
+            >
+              Ditto
+            </a>
+          </td>
+          <td
+            class="p-2"
+          >
+            <a
+              href="/type/normal"
+            >
+              <img
+                alt="Normal"
+                class="inline m-1"
+                data-nimg="1"
+                decoding="async"
+                height="20"
+                loading="lazy"
+                src="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Ftypes%2Fgeneration-viii%2Fsword-shield%2F1.png&w=256&q=75"
+                srcset="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Ftypes%2Fgeneration-viii%2Fsword-shield%2F1.png&w=128&q=75 1x, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Ftypes%2Fgeneration-viii%2Fsword-shield%2F1.png&w=256&q=75 2x"
+                style="color: transparent;"
+                width="100"
+              />
+            </a>
+          </td>
+        </tr>
+        <tr
+          class=""
+        >
+          <td
+            class="p-2"
+          >
+            <a
+              href="/pokedex/mew"
+            >
+              <div
+                class="
+        pokemon flex flex-col mx-auto justify-center items-center
+        
+        w-30 h-30
+        xs
+        titleless
+      "
+                style="background: rgb(249, 85, 135);"
+              >
+                <div
+                  class="pokemon-shadow bg-[rgba(0,0,0,0.2)] w-30 h-30"
+                />
+                <div
+                  class="img-hover-zoom w-full h-full"
+                >
+                  <div
+                    class="relative w-full h-[120px]"
+                  >
+                    <img
+                      alt="Mew #0151"
+                      class="artwork z-1 official-artwork"
+                      data-nimg="fill"
+                      decoding="async"
+                      loading="lazy"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      src="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=3840&q=75"
+                      srcset="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=256&q=75 256w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=384&q=75 384w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Fpokemon%2Fother%2Fofficial-artwork%2F151.png&w=3840&q=75 3840w"
+                      style="position: absolute; height: 100%; width: 100%; left: 0px; top: 0px; right: 0px; bottom: 0px; color: transparent;"
+                    />
+                  </div>
+                </div>
+              </div>
+            </a>
+          </td>
+          <td
+            class="p-2 text-center"
+          >
+            #0151
+          </td>
+          <td
+            class="p-2"
+          >
+            <a
+              class="transition-colors hover:bg-(--pokedex-red-dark) p-1"
+              href="/pokedex/mew"
+            >
+              Mew
+            </a>
+          </td>
+          <td
+            class="p-2"
+          >
+            <a
+              href="/type/psychic"
+            >
+              <img
+                alt="Psychic"
+                class="inline m-1"
+                data-nimg="1"
+                decoding="async"
+                height="20"
+                loading="lazy"
+                src="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Ftypes%2Fgeneration-viii%2Fsword-shield%2F14.png&w=256&q=75"
+                srcset="/_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Ftypes%2Fgeneration-viii%2Fsword-shield%2F14.png&w=128&q=75 1x, /_next/image?url=https%3A%2F%2Fraw.githubusercontent.com%2FPokeAPI%2Fsprites%2Fmaster%2Fsprites%2Ftypes%2Fgeneration-viii%2Fsword-shield%2F14.png&w=256&q=75 2x"
+                style="color: transparent;"
+                width="100"
+              />
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </DocumentFragment>
 `;
