@@ -51,11 +51,7 @@ export function SidebarSettings() {
     <div className="absolute z-2 flex flex-col items-center bg-(--pokedex-red) py-2 px-2 md:w-max rounded-br-xl">
       <Tooltip
         position="right"
-        content={
-          !settings.showSettings ?
-            t('settings.showSettings') :
-            t('settings.hideSettings')
-        }
+        content={!settings.showSettings ? t('settings.showSettings') : t('settings.hideSettings')}
       >
         <Button
           onClick={() => upsertSettings({ showSettings: !settings.showSettings })}
@@ -78,17 +74,10 @@ export function SidebarSettings() {
           </motion.div>
         </Button>
       </Tooltip>
-
       <AnimatePresence>
-        {settings.showSettings && <motion.div
-          animate={containerControls}
-          initial={{ height: 0 }}
-        >
-          <hr className="border-1 border-solid border-white my-1 w-full" />
-          {settings.showSettings && <motion.div
-            animate={contentControls}
-            initial={{ opacity: 0 }}
-          >
+        <motion.div animate={containerControls} initial={{ height: 0 }}>
+          <motion.div animate={contentControls} initial={{ opacity: 0 }}>
+            <hr className="border-1 border-solid border-white my-1 w-full" />
             <PokedexFilter
               name={settings.filter.name}
               types={settings.filter.types ? settings.filter.types.split(",") : []}
@@ -125,10 +114,9 @@ export function SidebarSettings() {
               </div>
             </Tooltip>
 
-          </motion.div>}
-        </motion.div>}
+          </motion.div>
+        </motion.div>
       </AnimatePresence>
-
     </div>;
 }
 
