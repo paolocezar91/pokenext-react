@@ -25,8 +25,8 @@ export function SidebarSettings() {
       });
     } else {
       // Hide: fade out content, then collapse height
-      chevronControls.start({ rotate: 0, transition: { duration: 0.3 }});
       contentControls.start({ opacity: 0, transition: { duration: 0.2 }}).then(() => {
+        chevronControls.start({ rotate: 0, transition: { duration: 0.3 }});
         containerControls.start({ height: 0, transition: { duration: 0.3 }});
       });
     }

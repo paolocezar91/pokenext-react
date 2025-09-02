@@ -9,7 +9,7 @@ interface IUserContext {
   user: User;
   loading: boolean;
   settings: Settings;
-  upsertSettings: (body: Partial<Settings>, id?: number) => Promise<Settings>;
+  upsertSettings: (body: Partial<Settings>, id?: string) => Promise<Settings>;
 }
 
 const userApi = new UserApi();
@@ -54,17 +54,17 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [settings, setSettings] = useState<Settings>(null);
   const [loading, setLoading] = useState(true);
   // Use localStorage for guest user/settings
-  const [guestUser] = useLocalStorage<User>("guest_user", { id: 0, email: "guest@local" });
+  const [guestUser] = useLocalStorage<User>("guest_user", { id: 'guest', email: "guest@local" });
   const [guestSettings, setGuestSettings] = useLocalStorage<Settings>("guest_settings", guestDefaultSettings);
   const { data: fetchedUser, loading: userLoading } = useAsyncQuery<User | null>(
     async () => {
       if (isAuthenticated() && session?.user?.email) {
-        let user = await userApi.getUser(session.user.email);
-        if(!user) {
+        let sessionUser = await userApi.getUser(session.user.email);
+        if(!sessionUser) {
           // creating user if they're not there yet
-          user = await userApi.createUser(session.user.email);
+          sessionUser = await userApi.createUser(session.user.email);
         }
-        return user;
+        return sessionUser;
       }
       return Promise.resolve(null);
     },
@@ -76,6 +76,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async () => {
       if (isAuthenticated() && fetchedUser?.id) {
         let settings = await userApi.getSettings(fetchedUser.id);
+        // let redisSettings = await userApi.getSettingsRedis(fetchedUser.id)
         if(!settings) {
           // creating settings if they're not there yet
           settings = await userApi.upsertSettings(guestDefaultSettings, fetchedUser.id);
@@ -95,23 +96,24 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Upsert settings for authenticated user
-  const handleUpsertSettings = async (body: Partial<Settings>, id?: number) => {
+  const handleUpsertSettings = async (body: Partial<Settings>, id?: string) => {
     // Save previous settings for rollback
     const prevSettings = settings;
     // Optimistically update settings
     const optimisticSettings = { ...settings, ...body } as Settings;
     setSettings(optimisticSettings);
-
     try {
       const updatedSettings = await userApi.upsertSettings(body, id ?? user?.id);
       if (updatedSettings) {
         setSettings(updatedSettings);
         setSettingsCookies(updatedSettings);
+        // userApi.setSettingsRedis(id ?? user?.id ?? '', updatedSettings);
         return updatedSettings;
       }
       // If backend returns null, rollback
       setSettings(prevSettings);
       setSettingsCookies(prevSettings);
+      // userApi.setSettingsRedis(id ?? user?.id ?? '', prevSettings);
       return prevSettings;
     } catch (error) {
       // Rollback on error
@@ -148,13 +150,10 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           settings: isAuthenticated() ? settings :
             isUnauthenticated() ? guestSettings :
             null,
-          upsertSettings: (body: Partial<Settings>, id?: number) => {
-            if (isAuthenticated()) {
-              return handleUpsertSettings(body, id);
-            } else {
-              return handleGuestUpsertSettings(body);
-            }
-          }
+          upsertSettings: (body: Partial<Settings>, id?: string) => 
+            isAuthenticated() ? 
+              handleUpsertSettings(body, id) :
+              handleGuestUpsertSettings(body)
         }
       }
     >
