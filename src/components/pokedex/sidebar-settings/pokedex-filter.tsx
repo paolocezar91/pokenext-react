@@ -52,8 +52,7 @@ export default function PokedexFilter({
 
   const isFiltered = !!filterType.length || filterName !== undefined && filterName?.length > 2;
 
-  const toggleFilterForm =
-    <Tooltip
+  const toggleFilterForm = <Tooltip
       position="right"
       content={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
       <Button
