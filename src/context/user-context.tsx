@@ -9,6 +9,7 @@ interface IUserContext {
   user: User;
   loading: boolean;
   settings: Settings;
+  // eslint-disable-next-line no-unused-vars
   upsertSettings: (body: Partial<Settings>, id?: string) => Promise<Settings>;
 }
 
@@ -49,7 +50,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const { showSnackbar } = useSnackbar();
   const isAuthenticated = () => status === "authenticated";
   const isUnauthenticated = () => status === "unauthenticated";
-    // State for context values
+  // State for context values
   const [user, setUser] = useState<User>(null);
   const [settings, setSettings] = useState<Settings>(null);
   const [loading, setLoading] = useState(true);
@@ -120,7 +121,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setSettings(prevSettings);
       setSettingsCookies(prevSettings);
       // Optionally, show error to user here
-      showSnackbar("Error updating settings!")
+      showSnackbar("Error updating settings!");
       console.error(error);
       return prevSettings;
     }
@@ -146,12 +147,12 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
           loading,
           user: isAuthenticated() ? user :
             isUnauthenticated() ? guestUser :
-            null,
+              null,
           settings: isAuthenticated() ? settings :
             isUnauthenticated() ? guestSettings :
-            null,
-          upsertSettings: (body: Partial<Settings>, id?: string) => 
-            isAuthenticated() ? 
+              null,
+          upsertSettings: (body: Partial<Settings>, id?: string) =>
+            isAuthenticated() ?
               handleUpsertSettings(body, id) :
               handleGuestUpsertSettings(body)
         }

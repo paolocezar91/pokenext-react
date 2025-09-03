@@ -3,7 +3,7 @@ import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import { ChangeEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { getTypeIconById } from "../[id]/details/types";
+import { getTypeIconById, TypeUrl } from "../[id]/details/types";
 import Select from "../shared/select";
 import { normalizeVersionGroup } from "../shared/utils";
 
@@ -24,7 +24,7 @@ export default function TypeArtworkSelect() {
   const { showSnackbar } = useSnackbar();
 
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    upsertSettings({ typeArtworkUrl: e.target.value });
+    upsertSettings({ typeArtworkUrl: e.target.value as TypeUrl });
     showSnackbar(t('settings.artworkOptions.typeArtworkUpdated'), 5);
   };
 

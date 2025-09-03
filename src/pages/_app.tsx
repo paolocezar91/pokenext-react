@@ -15,7 +15,7 @@ function App({ Component, pageProps }: AppProps) {
       <SessionProvider>
         <SnackbarProvider>
           <UserProvider>
-              <Component {...pageProps} />
+            <Component {...pageProps} />
           </UserProvider>
         </SnackbarProvider>
       </SessionProvider>
