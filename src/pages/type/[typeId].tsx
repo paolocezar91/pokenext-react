@@ -1,6 +1,5 @@
-'use client';
-
-import PokeApiQuery from "@/app/poke-api-query";
+import { idOrName } from "@/app/api-utils";
+import { getAllTypes, getTypeById } from "@/app/services/type";
 import PokemonDefensiveChart from "@/components/shared/defensive-chart";
 import { PokemonOffensiveChart } from "@/components/shared/offensive-chart";
 import Select from "@/components/shared/select";
@@ -15,17 +14,16 @@ import { IMove, INamedApiResource, IType } from "pokeapi-typescript";
 import { useTranslation } from "react-i18next";
 import RootLayout from "../layout";
 
-const pokeApiQuery = new PokeApiQuery();
-
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.typeId);
+  const vars = idOrName(id);
   try {
-    const typeData = await pokeApiQuery.getType(id) as IType;
-    const allTypes = await pokeApiQuery.getAllTypes() as IType[];
+    const { pokemonType } = await getTypeById(vars);
+    const { types } = await getAllTypes();
     return {
       props: {
-        typeData,
-        allTypes
+        typeData: pokemonType,
+        allTypes: types
       }
     };
   } catch (error) {
@@ -33,8 +31,11 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   }
 }
 
-export function getStaticPaths() {
-  const ids = Array.from({ length: 18 }, (_, i) => String(i + 1));
+export async function getStaticPaths() {
+  const allTypes = await getAllTypes();
+  const ids = allTypes.types.reduce((acc, type) => {
+    return [...acc, String(type.id), type.name];
+  }, [] as string[]);
 
   return {
     paths: ids.map(typeId => ({ params: { typeId }})),
@@ -47,7 +48,7 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
   const { settings } = useUser();
   const router = useRouter();
 
-  if (!typeData || !settings) {
+  if (!allTypes || !typeData || !settings) {
     return (
       <RootLayout title={`${t('pokedex.loading')}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
@@ -57,11 +58,12 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
     );
   }
 
-  return <RootLayout title={`${t('type.title')} - ${capitilize(typeData.name)}`}>
+  const title = `${t('type.title')} - ${capitilize(typeData.name)}`;
+  return <RootLayout title={title}>
     <div className="h-[inherit] p-4 bg-(--pokedex-red)">
       <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available] overflow-auto md:overflow-[initial]">
         <div className="flex items-center">
-          <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{capitilize(typeData.name)}</h2>
+          <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{title}</h2>
           <div className="grow"></div>
           <Select value={typeData.name} className="ml-4" onChange={(e) => router.push(`/type/${e.target.value}`)}>
             {allTypes.map((t, id) => {

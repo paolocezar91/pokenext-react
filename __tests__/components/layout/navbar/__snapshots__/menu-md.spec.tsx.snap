@@ -26,6 +26,7 @@ exports[`MenuMd matches snapshot 1`] = `
           nav-user-auth
         </div>
       </li>
+      <li />
     </ul>
   </div>
 </DocumentFragment>

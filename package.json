@@ -1,6 +1,6 @@
 {
   "name": "pokenext-react",
-  "version": "0.1.0",
+  "version": "0.3.3",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -11,10 +11,14 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:snapshot": "jest --updateSnapshot"
+    "test:snapshot": "jest --updateSnapshot",
+    "bump:patch": "bump-my-version bump patch package.json",
+    "bump:minor": "bump-my-version bump minor package.json",
+    "bump:major": "bump-my-version bump major package.json"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "@tanstack/react-query": "^5.85.5",
     "bootstrap": "^5.3.3",
     "debounce": "^2.2.0",
     "framer-motion": "^12.23.3",
@@ -36,7 +40,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@stylistic/eslint-plugin-ts": "^4.2.0",
+    "@stylistic/eslint-plugin": "^5.2.3",
     "@tailwindcss/postcss": "^4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",

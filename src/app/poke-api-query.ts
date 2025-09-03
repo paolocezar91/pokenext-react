@@ -13,7 +13,7 @@ import {
 } from "pokeapi-typescript";
 import BaseQuery from "./base-query";
 
-interface CountResults<T> { results: T[], count: number }
+export interface CountResults<T> { results: T[], count: number }
 export default class PokeApiQuery extends BaseQuery {
   constructor() {
     super();

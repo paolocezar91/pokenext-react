@@ -12,7 +12,7 @@ jest.mock("react-i18next", () => ({
   useTranslation: () => ({ t: (key: string) => key }),
 }));
 
-jest.mock('@/context/UserContext', () => ({
+jest.mock('@/context/user-context', () => ({
   useUser: () => ({
     settings: { descriptionLang: 'en' }
   })
@@ -117,5 +117,14 @@ describe('FlavorText Component', () => {
     expect(prevButton).toBeDisabled();
     expect(nextButton).toBeDisabled();
     expect(screen.getByText('1 / 1')).toBeInTheDocument();
+  });
+
+  it('should match snapshot', () => {
+    const singleFlavorData = {
+      ...mockMoveData,
+      flavor_text_entries: [mockMoveData.flavor_text_entries[0]]
+    };
+    const { asFragment } = render(<FlavorText moveData={singleFlavorData} />);
+    expect(asFragment()).toMatchSnapshot();
   });
 });

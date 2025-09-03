@@ -1,7 +1,21 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useReducer, useRef } from 'react';
 import './tooltip.scss';
 
 type TooltipPosition = "top" | "bottom" | "left" | "right";
+
+type TooltipState = {
+  isVisible: boolean,
+  timeoutId: NodeJS.Timeout | null,
+  coords: { top: number, left: number },
+  finalPosition: TooltipPosition
+};
+
+type TooltipAction =
+  | { type: 'SET_IS_VISIBLE'; payload: boolean }
+  | { type: 'SET_TIMEOUT_ID'; payload: NodeJS.Timeout | null }
+  | { type: 'SET_COORDS'; payload: { top: number, left: number }}
+  | { type: 'SET_FINAL_POSITION'; payload: TooltipPosition }
+  | { type: 'RESET_STATE' };
 
 export default function Tooltip({
   children,
@@ -18,10 +32,31 @@ export default function Tooltip({
   disabled?: boolean;
   className?: string;
 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
-  const [coords, setCoords] = useState({ top: 0, left: 0 });
-  const [finalPosition, setFinalPosition] = useState(position);
+  const initialState: TooltipState = {
+    isVisible: false,
+    timeoutId: null,
+    coords: { top: 0, left: 0 },
+    finalPosition: position,
+  };
+
+  const tooltipReducer = (state: TooltipState, action: TooltipAction): TooltipState => {
+    switch (action.type) {
+      case 'SET_IS_VISIBLE':
+        return { ...state, isVisible: action.payload };
+      case 'SET_TIMEOUT_ID':
+        return { ...state, timeoutId: action.payload };
+      case 'SET_COORDS':
+        return { ...state, coords: action.payload };
+      case 'SET_FINAL_POSITION':
+        return { ...state, finalPosition: action.payload };
+      case 'RESET_STATE':
+        return initialState;
+      default:
+        return state;
+    }
+  };
+
+  const [state, dispatch] = useReducer(tooltipReducer, initialState);
   const triggerRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
 
@@ -30,22 +65,22 @@ export default function Tooltip({
 
     if (delay > 0) {
       const id = setTimeout(() => {
-        setIsVisible(true);
+        dispatch({ type:'SET_IS_VISIBLE', payload: true });
         updatePosition();
       }, delay);
-      setTimeoutId(id);
+      dispatch({ type: 'SET_TIMEOUT_ID', payload: id });
     } else {
-      setIsVisible(true);
+      dispatch({ type:'SET_IS_VISIBLE', payload: true });
       updatePosition();
     }
   };
 
   const hideTooltip = () => {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
+    if (state.timeoutId) {
+      clearTimeout(state.timeoutId);
+      dispatch({ type: 'SET_TIMEOUT_ID', payload: null });
     }
-    setIsVisible(false);
+    dispatch({ type:'SET_IS_VISIBLE', payload: false });
   };
 
   const updatePosition = () => {
@@ -109,12 +144,12 @@ export default function Tooltip({
     left = Math.max(10, Math.min(left, viewportWidth - tooltipRect.width - 10));
     top = Math.max(10, Math.min(top, viewportHeight - tooltipRect.height - 10));
 
-    setFinalPosition(newPosition);
-    setCoords({ top, left });
+    dispatch({ type: 'SET_FINAL_POSITION', payload: newPosition });
+    dispatch({ type: 'SET_COORDS', payload: { top, left }});
   };
 
   useEffect(() => {
-    if (isVisible) {
+    if (state.isVisible) {
       updatePosition();
       window.addEventListener('resize', updatePosition);
       window.addEventListener('scroll', updatePosition, true);
@@ -126,7 +161,7 @@ export default function Tooltip({
     };
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isVisible]);
+  }, [state.isVisible]);
 
   return (
     <div className="tooltip-container">
@@ -135,20 +170,20 @@ export default function Tooltip({
         className="tooltip-trigger"
         onMouseEnter={showTooltip}
         onMouseLeave={hideTooltip}
-        onClick={disabled ? undefined : () => setIsVisible(!isVisible)}
-        aria-describedby={isVisible ? "tooltip-content" : undefined}
+        onClick={disabled ? undefined : () => dispatch({ type:'SET_IS_VISIBLE', payload: !state.isVisible })}
+        aria-describedby={state.isVisible ? "tooltip-content" : undefined}
       >
         {children}
       </div>
-      {isVisible &&
+      {state.isVisible &&
         <div
           ref={tooltipRef}
           id="tooltip-content"
           role="tooltip"
-          className={`tooltip-content tooltip-${finalPosition} rounded py-2 px-3 ${className}`}
+          className={`tooltip-content tooltip-${state.finalPosition} rounded py-2 px-3 ${className}`}
           style={{
-            top: `${coords.top}px`,
-            left: `${coords.left}px`,
+            top: `${state.coords.top}px`,
+            left: `${state.coords.left}px`,
           }}
         >
           {content}

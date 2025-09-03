@@ -1,5 +1,3 @@
-'use client';
-
 import Tooltip from '@/components/shared/tooltip/tooltip';
 import { normalizePokemonName } from '@/components/shared/utils';
 import { useUser } from '@/context/user-context';
@@ -42,7 +40,7 @@ export default function PokedexList({
 
       const gap = 16; // gap-4 = 1rem = 16px
       // Calculate how many items fit
-      const itemsPerRow = Math.max(1, Math.floor((parentWidth - 2 * gap) / (itemWidth + gap)));
+      const itemsPerRow = Math.max(1, Math.floor((parentWidth - 6 * gap) / (itemWidth + gap)));
       const totalWidth = itemsPerRow * itemWidth + (itemsPerRow - 1) * gap;
       setContainerWidth(totalWidth);
     }

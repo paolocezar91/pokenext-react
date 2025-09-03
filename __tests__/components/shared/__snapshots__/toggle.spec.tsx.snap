@@ -3,7 +3,7 @@
 exports[`Toggle Component should match snapshot when checked 1`] = `
 <DocumentFragment>
   <label
-    class="undefined inline-flex items-center cursor-pointer"
+    class=" inline-flex items-center cursor-pointer"
     data-testid="toggle-label"
     for="toggle-test"
   >
@@ -48,7 +48,7 @@ exports[`Toggle Component should match snapshot when checked 1`] = `
 exports[`Toggle Component should match snapshot when unchecked 1`] = `
 <DocumentFragment>
   <label
-    class="undefined inline-flex items-center cursor-pointer"
+    class=" inline-flex items-center cursor-pointer"
     data-testid="toggle-label"
     for="toggle-test"
   >
@@ -92,7 +92,7 @@ exports[`Toggle Component should match snapshot when unchecked 1`] = `
 exports[`Toggle Component should match snapshot with children 1`] = `
 <DocumentFragment>
   <label
-    class="undefined inline-flex items-center cursor-pointer"
+    class=" inline-flex items-center cursor-pointer"
     data-testid="toggle-label"
     for="toggle-test"
   >

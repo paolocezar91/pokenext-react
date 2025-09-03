@@ -1,15 +1,16 @@
 /* eslint-disable no-unused-vars */
 import PokeApiQuery from '@/app/poke-api-query';
 import MultiSelect from '@/components/shared/multi-select';
-import { capitilize, useAsyncQuery } from '@/components/shared/utils';
+import { capitilize, useClickOutside } from '@/components/shared/utils';
 import { ChevronLeftIcon, FunnelIcon } from '@heroicons/react/24/solid';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import Tooltip from '../../shared/tooltip/tooltip';
-import { SettingsContent } from '../settings/settings-content';
-import { SettingsItem } from '../settings/settings-item';
+import { SettingsContent } from './utils/settings-content';
+import { SettingsItem } from './utils/settings-item';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -28,23 +29,13 @@ export default function PokedexFilter({
   const [filterName, setFilterName] = useState(name);
   const [filterType, setFilterType] = useState<string[]>(types ?? []);
   const [open, setOpen] = useState<boolean>(!!name || !!types?.length);
-  const { data: typeOptions } = useAsyncQuery(() => pokeApiQuery.getAllTypes(), []);
+  const { data: typeOptions } = useQuery({
+    queryKey: ['filterTypes'],
+    queryFn: () => pokeApiQuery.getAllTypes()
+  });
   const filterRef = useRef<HTMLDivElement>(null);
-
   // Close the menu if clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    }
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [open]);
+  useClickOutside(filterRef, () => setOpen(false));
 
   useEffect(() => {
     if(filterName !== undefined && (filterName?.length === 0 || filterName?.length > 2)){
@@ -61,31 +52,30 @@ export default function PokedexFilter({
 
   const isFiltered = !!filterType.length || filterName !== undefined && filterName?.length > 2;
 
-  const toggleFilterForm =
-    <Tooltip
-      content={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
-      <Button
-        className={`
+  const toggleFilterForm = <Tooltip
+    position="right"
+    content={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
+    <Button
+      className={`
           cursor-pointer
           flex
           p-2
-          rounded
           transition-colors
           active:bg-white
           active:text-(--pokedex-red-dark)
           ${open ?
-            "bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
-            "hover:bg-(--pokedex-red-dark)"}
+            "rounded-s bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
+            "rounded hover:bg-(--pokedex-red-dark)"}
         `}
-        onClick={() => setOpen(!open)}
-      >
-        { open ?
-          <ChevronLeftIcon className="w-6" />:
-          <FunnelIcon className="w-6" />
-        }
-        {isFiltered && <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2" />}
-      </Button>
-    </Tooltip>;
+      onClick={() => setOpen(!open)}
+    >
+      { open ?
+        <ChevronLeftIcon className="w-5" />:
+        <FunnelIcon className="w-5" />
+      }
+      {isFiltered && <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2" />}
+    </Button>
+  </Tooltip>;
 
   const filterForm = typeOptions && <div>
     <SettingsItem title={t('filters.filterName.title')} className="name-filter">

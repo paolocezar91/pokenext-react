@@ -120,8 +120,12 @@
     },
     "settings": {
         "title": "Settings",
-        "openSettings": "Open settings",
-        "closeSettings": "Close settings",
+        "showSettings": "Show settings",
+        "hideSettings": "Hide settings",
+        "openTableSettings": "Open table settings",
+        "closeTableSettings": "Close table settings",
+        "openThumbnailSettings": "Open thumbnail settings",
+        "closeThumbnailSettings": "Close thumbnail settings",
         "thumbnailView": "Display as Thumbnail",
         "tableView": "Display as Table",
         "size": {

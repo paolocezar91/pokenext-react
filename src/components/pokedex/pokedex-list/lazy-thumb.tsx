@@ -1,5 +1,6 @@
+import { Settings } from "@/app/user-api";
 import PokemonThumb from "@/components/shared/thumb/thumb";
-import { IPkmn, UserSettings } from "@/types/types";
+import { IPkmn } from "@/types/types";
 import { AnimatePresence, motion } from 'framer-motion';
 import Link from "next/link";
 import { useInView } from "react-intersection-observer";
@@ -10,7 +11,7 @@ export default function LazyThumb({
   isMobile
 }: {
   pokemon: IPkmn,
-  settings: UserSettings,
+  settings: Settings,
   isMobile: boolean
 }) {
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: '200px' });
