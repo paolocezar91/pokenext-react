@@ -13,11 +13,11 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <UserProvider>
-          <SnackbarProvider>
+        <SnackbarProvider>
+          <UserProvider>
             <Component {...pageProps} />
-          </SnackbarProvider>
-        </UserProvider>
+          </UserProvider>
+        </SnackbarProvider>
       </SessionProvider>
     </QueryClientProvider>
   );

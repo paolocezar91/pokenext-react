@@ -52,12 +52,11 @@ export default function PokedexFilter({
 
   const isFiltered = !!filterType.length || filterName !== undefined && filterName?.length > 2;
 
-  const toggleFilterForm =
-    <Tooltip
-      position="right"
-      content={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
-      <Button
-        className={`
+  const toggleFilterForm = <Tooltip
+    position="right"
+    content={`${t('filters.title')} ${isFiltered ? '(active)': ''}`}>
+    <Button
+      className={`
           cursor-pointer
           flex
           p-2
@@ -68,15 +67,15 @@ export default function PokedexFilter({
             "rounded-s bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white" :
             "rounded hover:bg-(--pokedex-red-dark)"}
         `}
-        onClick={() => setOpen(!open)}
-      >
-        { open ?
-          <ChevronLeftIcon className="w-5" />:
-          <FunnelIcon className="w-5" />
-        }
-        {isFiltered && <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2" />}
-      </Button>
-    </Tooltip>;
+      onClick={() => setOpen(!open)}
+    >
+      { open ?
+        <ChevronLeftIcon className="w-5" />:
+        <FunnelIcon className="w-5" />
+      }
+      {isFiltered && <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2" />}
+    </Button>
+  </Tooltip>;
 
   const filterForm = typeOptions && <div>
     <SettingsItem title={t('filters.filterName.title')} className="name-filter">

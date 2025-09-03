@@ -42,7 +42,6 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
             turn_upside_down
           }
           evolves_to {
-            is_baby
             species { name url }
             evolution_details {
               item { name url }
@@ -59,13 +58,10 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
               needs_overworld_rain
               party_species { name url }
               party_type { name url }
-              relative_physical_stats
               time_of_day
               trade_species { name url }
-              turn_upside_down
             }
             evolves_to {
-              is_baby
               species { name url }
               evolution_details {
                 item { name url }
@@ -82,10 +78,8 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
                 needs_overworld_rain
                 party_species { name url }
                 party_type { name url }
-                relative_physical_stats
                 time_of_day
                 trade_species { name url }
-                turn_upside_down
               }
             }
           }
