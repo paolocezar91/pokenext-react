@@ -1,16 +1,16 @@
-import { getTypeIconById } from "@/components/[id]/details/types";
+import { getTypeIconById } from "@/components/pokedex/[id]/details/types";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import Link from "next/link";
 import { IMove } from "pokeapi-typescript";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 
 
 export default function MoveDataTable({ moveData }: { moveData: IMove }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { settings } = useUser();
 
   return <div className="move-data mt-2 w-full">

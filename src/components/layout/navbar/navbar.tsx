@@ -1,7 +1,7 @@
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import MenuMd from "./menu-md";
 import MenuXs from "./menu-xs";
 import NavLink from "./nav-link";
@@ -9,7 +9,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function Navbar({ title }: { title: string }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const pathname = usePathname() || '';
   const homeButton = pathname !== '/' && <Tooltip content={t('actions.backToList')}>
     <NavLink href="/">

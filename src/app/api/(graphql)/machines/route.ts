@@ -1,4 +1,4 @@
-import { formatResultsCount } from '@/app/api-utils';
+import { formatResultsCount } from '@/app/api/api-utils';
 import { gql, request } from 'graphql-request';
 import { NextRequest, NextResponse } from 'next/server';
 import { IMachine } from 'pokeapi-typescript';

@@ -2,17 +2,17 @@ import { sortResources, updateSortKeys } from '@/components/shared/table/sorting
 import Toggle from '@/components/shared/toggle';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
+import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { statName } from '../../[id]/details/stats';
 import SortButton from '../../shared/table/sort-button';
+import { statName } from '../[id]/details/stats';
 import LazyRow from './lazy-row';
 import { shouldShowColumn } from './utils';
 export type SortKey = 'id' | 'name' | 'hp' | 'types' | 'attack' | 'defense' | 'special-attack' | 'special-defense' | 'speed';
 
 export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
   const { user, settings, upsertSettings } = useUser();
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const [sorting, setSorting] = useState<Array<{ key: SortKey, dir: '+' | '-' }>>([]);
 
   const handleShowColumnChange = (value: boolean, idx: number) => {

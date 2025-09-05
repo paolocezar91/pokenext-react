@@ -1,7 +1,7 @@
 import { capitilize, normalizePokemonName } from "@/components/shared/utils";
 import { PokemonType } from "@/types/types";
-import { useTranslation } from "react-i18next";
-import { typeChart } from "../[id]/details/type-weakness-chart";
+import { useTranslations } from "next-intl";
+import { typeChart } from "../pokedex/[id]/details/type-weakness-chart";
 import { getBackgroundStyleWithStrings } from "./thumb/thumb";
 import Tooltip from "./tooltip/tooltip";
 
@@ -46,7 +46,7 @@ function getOffensiveMatchup(types: PokemonType[]): Record<PokemonType, number> 
 }
 
 export function PokemonOffensiveChart({ types, name }: { types: string[], name: string }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const offensiveChart = getOffensiveMatchup(types as PokemonType[]);
 
   return <div className="offensive-chart col-span-6 md:col-span-3">

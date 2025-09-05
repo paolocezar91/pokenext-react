@@ -1,4 +1,4 @@
-import PokeApiQuery from "@/app/poke-api-query";
+import PokeApiQuery from "@/app/api/poke-api-query";
 import Table from "@/components/shared/table/table";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "@/components/shared/utils";
 import { useQuery } from "@tanstack/react-query";
@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { IMove, INamedApiResource } from "pokeapi-typescript";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 import SortButton from "../shared/table/sort-button";
 import { SortingDir, sortResources, updateSortKeys } from "../shared/table/sorting";
@@ -15,7 +15,7 @@ const pokeApiQuery = new PokeApiQuery();
 export type SortKey = 'id' | 'name' | 'class' | 'power' | 'pp' | 'accuracy';
 
 export default function MovesByType({ movesList, type }: { movesList: INamedApiResource<IMove>[], type: string }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const [sorting, setSorting] = useState<SortingDir<SortKey>[]>([]);
   const toggleSort = (key: SortKey) => {
     setSorting(prev => updateSortKeys(prev, key));

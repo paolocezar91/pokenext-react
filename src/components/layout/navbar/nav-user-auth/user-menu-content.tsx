@@ -1,6 +1,6 @@
 import { ArrowLeftEndOnRectangleIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
 import { User } from "next-auth";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import GithubIcon from "../github-icon";
 import NavButton from "../nav-button";
 import NavLink from "../nav-link";
@@ -16,7 +16,7 @@ export default function UserMenuContent({ session, pathname, onSignIn, onSignOut
   onSignIn: () => void;
   onSignOut: () => void;
 }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
 
   const signInButton = <NavButton className="flex justify-between w-full" onClick={onSignIn}>
     {t('menu.signIn')}

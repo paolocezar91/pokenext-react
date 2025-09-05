@@ -1,4 +1,4 @@
-import { getTypeIconById } from "@/components/[id]/details/types";
+import { getTypeIconById } from "@/components/pokedex/[id]/details/types";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";

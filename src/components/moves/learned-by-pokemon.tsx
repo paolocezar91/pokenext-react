@@ -1,5 +1,5 @@
 import { NUMBERS_OF_POKEMON } from "@/app/const";
-import PokeApiQuery from "@/app/poke-api-query";
+import PokeApiQuery from "@/app/api/poke-api-query";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
@@ -10,8 +10,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { getTypeIconById } from "../[id]/details/types";
+import { useTranslations } from "next-intl";
+import { getTypeIconById } from "../pokedex/[id]/details/types";
 import SkeletonBlock from "../shared/skeleton-block";
 import SkeletonImage from "../shared/skeleton-image";
 import SortButton from "../shared/table/sort-button";
@@ -20,7 +20,7 @@ export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
 export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedApiResource<IPokemon>[] }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { settings } = useUser();
   const [sorting, setSorting] = useState<SortingDir<SortKey>[]>([]);
   const toggleSort = (key: SortKey) => {
@@ -75,15 +75,14 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     if(!settings)
       return;
 
-    return pokemon.types.map((t, idx) => {
-
-      return <Link href={`/type/${t.type.name}`} key={idx}>
+    return pokemon.types.map((type, idx) => {
+      return <Link href={`/type/${type.type.name}`} key={idx}>
         <Image
           width="100"
           height="20"
           className="inline m-1"
-          alt={capitilize(t.type.name)}
-          src={getTypeIconById(getIdFromUrlSubstring(t.type.url), settings!.typeArtworkUrl)} />
+          alt={capitilize(type.type.name)}
+          src={getTypeIconById(getIdFromUrlSubstring(type.type.url), settings!.typeArtworkUrl)} />
       </Link>;
     }
     );

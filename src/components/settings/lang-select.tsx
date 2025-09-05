@@ -1,16 +1,11 @@
 import { ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
-import nextI18nextConfig from "../../../next-i18next.config";
+import { useTranslations } from "next-intl";
 import Select from "../shared/select";
 import { useSnackbar } from "@/context/snackbar";
+import { locales } from "@/i18n/config";
 
-export default function LangSelect({
-  currentLanguage = 'en-US',
-}: {
-  currentLanguage?: string,
-}) {
-  const { t, i18n } = useTranslation('common');
-  const locales = nextI18nextConfig.i18n.locales;
+export default function LangSelect() {
+  const t = useTranslations()
   const { showSnackbar } = useSnackbar();
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {

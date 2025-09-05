@@ -1,5 +1,6 @@
-import nextI18nextConfig from './next-i18next.config.js';
+import { locales, } from "@/i18n/config";
 import type { NextConfig } from "next";
+import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -26,8 +27,8 @@ const nextConfig: NextConfig = {
     maxInactiveAge: 360 * 1000,
     // number of pages that should be kept simultaneously without being disposed
     pagesBufferLength: 1,
-  },
-  i18n: nextI18nextConfig.i18n
+  }
 };
 
-export default nextConfig;
+const withNextIntl = createNextIntlPlugin();
+export default withNextIntl(nextConfig);
