@@ -6,11 +6,11 @@ import { useRouter } from "next/router";
 
 export default function LangSelect() {
   const t = useTranslations();
-  const router = useRouter()
-  const locale = useLocale()
+  const router = useRouter();
+  const locale = useLocale();
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    router.push(`/${e.target.value}/settings`)
+    router.push(`/${e.target.value}/settings`);
   };
   return <label htmlFor="lang">
     <div className="flex flex-col mb-4">

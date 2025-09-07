@@ -12,7 +12,7 @@ import { GetServerSidePropsContext, Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
-import RootLayout from './layout';
+import RootLayout from '../../components/layout/layout';
 import { getMessages } from '@/i18n/messages';
 
 const pokeApiQuery = new PokeApiQuery();

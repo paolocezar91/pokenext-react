@@ -7,7 +7,7 @@ import { useUser } from "@/context/user-context";
 import { locales } from "@/i18n/config";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
-import RootLayout from "./layout";
+import RootLayout from "../../components/layout/layout";
 import { getMessages } from "@/i18n/messages";
 
 export async function getStaticProps(context: GetStaticPropsContext) {

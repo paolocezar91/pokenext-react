@@ -50,7 +50,7 @@ export function PokemonOffensiveChart({ types, name }: { types: string[], name: 
   const offensiveChart = getOffensiveMatchup(types as PokemonType[]);
 
   return <div className="offensive-chart col-span-6 md:col-span-3">
-    <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.offensiveChart.title', 'Offensive Chart') }</h3>
+    <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.offensiveChart.title') }</h3>
     <div className="flex flex-wrap text-white">
       {
         Object.keys(typeChart).map((type, idx) => {

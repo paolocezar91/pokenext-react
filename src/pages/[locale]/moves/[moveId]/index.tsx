@@ -7,7 +7,7 @@ import MoveDataTable from "@/components/moves/move-data-table";
 import MoveEffect from "@/components/moves/move-effect";
 import MoveTarget from "@/components/moves/move-target";
 import LoadingSpinner from "@/components/shared/spinner";
-import RootLayout from "@/pages/[locale]/layout";
+import RootLayout from "@/components/layout/layout";
 import { useQuery } from "@tanstack/react-query";
 import { GetStaticPropsContext } from "next";
 import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";

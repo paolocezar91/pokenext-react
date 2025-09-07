@@ -18,7 +18,7 @@ import PokemonVarieties from '@/components/pokedex/[id]/details/varieties';
 import PokemonDefensiveChart from '@/components/shared/defensive-chart';
 import PokemonThumb, { getNumber } from '@/components/shared/thumb/thumb';
 import { locales } from '@/i18n/config';
-import RootLayout from '@/pages/[locale]/layout';
+import RootLayout from '@/components/layout/layout';
 import { SpeciesChain } from "@/types/types";
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid';
 import { GetStaticPropsContext } from 'next';
@@ -106,7 +106,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 export async function getStaticPaths() {
   const pkmns = await getAllPokemon({ limit: NUMBERS_OF_POKEMON, offset: 0 });
   const ids = pkmns.results.reduce((acc, pkmn) => {
-    return [...acc, String(pkmn.id), pkmn.name];
+    return [...acc, pkmn.name];
   }, [] as string[]);
 
   // Generate all combinations of locale and id

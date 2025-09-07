@@ -3,7 +3,7 @@ import { getMessages } from "@/i18n/messages";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
-import RootLayout from "./layout";
+import RootLayout from "../../components/layout/layout";
 import { locales } from "@/i18n/config";
 
 export async function getStaticProps(context: GetStaticPropsContext) {

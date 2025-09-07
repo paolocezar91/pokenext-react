@@ -8,13 +8,13 @@ import { capitilize } from "@/components/shared/utils";
 import MovesByType from "@/components/type/moves-by-type";
 import PokemonByType from "@/components/type/pokemon-by-type";
 import { useUser } from "@/context/user-context";
+import { locales } from "@/i18n/config";
+import { getMessages } from "@/i18n/messages";
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
 import { IMove, INamedApiResource, IType } from "pokeapi-typescript";
-import RootLayout from "../../layout";
+import RootLayout from "../../../../components/layout/layout";
 import { useTranslations } from "next-intl";
-import { locales } from "@/i18n/config";
-import { getMessages } from "@/i18n/messages";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.typeId);
