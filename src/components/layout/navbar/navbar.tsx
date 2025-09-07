@@ -6,7 +6,7 @@ import MenuMd from "./menu-md";
 import MenuXs from "./menu-xs";
 import NavLink from "./nav-link";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 
 export default function Navbar({ title }: { title: string }) {
   const t = useTranslations();

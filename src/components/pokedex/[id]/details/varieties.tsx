@@ -2,7 +2,7 @@ import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery, { CountResults } from "@/app/api/poke-api-query";
 import { getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import PokemonThumb from "../../../shared/thumb/thumb";

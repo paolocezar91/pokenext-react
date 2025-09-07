@@ -7,7 +7,7 @@ import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
@@ -64,7 +64,7 @@ export default function LearnedByPokemon({ pokemonList }: { pokemonList: INamedA
     </tr>);
 
     return <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
-      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: learnedBy?.length })}</h3>
+      <h3 className="w-fit text-lg mb-4">{t('moves.learnedBy.title', { length: String(learnedBy?.length) })}</h3>
       <div className="h-[-webkit-fill-available]">
         <Table headers={tableHeaders}>{skeletonTableBody}</Table>
       </div>

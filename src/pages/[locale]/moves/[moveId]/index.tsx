@@ -14,6 +14,7 @@ import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "@/components/shared/utils";
 import { locales } from "@/i18n/config";
+import { getMessages } from "@/i18n/messages";
 
 const pokeApiQuery = new PokeApiQuery();
 type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
@@ -26,7 +27,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       props: {
         moveData,
         locale: context.params?.locale,
-        messages: (await import(`@/locales/${context.params?.locale}/common.json`)).default
+        messages: await getMessages(String(context.params?.locale))
       }
     };
   } catch (error) {

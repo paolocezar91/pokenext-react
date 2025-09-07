@@ -4,7 +4,7 @@ import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/compo
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { useInView } from "react-intersection-observer";
 import { shouldShowColumn } from "./utils";
 import { AnimatePresence, motion } from 'framer-motion';

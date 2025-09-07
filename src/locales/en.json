@@ -67,6 +67,7 @@
     "menu": {
         "home": "Home",
         "settings": "Settings",
+        "about": "About",
         "signIn": "Sign In",
         "signOut": "Sign out"
     },
@@ -158,6 +159,9 @@
         },
         "showThumb": "Show thumbnail",
         "showShowColumns": "Hide/Show columns"
+    },
+    "about": {
+        "title": "About"
     },
     "actions": {
         "next": "Next",

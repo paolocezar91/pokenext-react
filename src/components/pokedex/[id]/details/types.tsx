@@ -2,7 +2,7 @@
 import { capitilize } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { IType } from "pokeapi-typescript";
 
 export type TypeUrl = 'omega-ruby-alpha-sapphire'|

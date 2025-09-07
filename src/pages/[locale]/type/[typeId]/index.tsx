@@ -14,6 +14,7 @@ import { IMove, INamedApiResource, IType } from "pokeapi-typescript";
 import RootLayout from "../../layout";
 import { useTranslations } from "next-intl";
 import { locales } from "@/i18n/config";
+import { getMessages } from "@/i18n/messages";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.typeId);
@@ -26,7 +27,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         typeData: pokemonType,
         allTypes: types,
         locale: context.params?.locale,
-        messages: (await import(`@/locales/${context.params?.locale}/common.json`)).default
+        messages: await getMessages(String(context.params?.locale))  
       }
     };
   } catch (error) {

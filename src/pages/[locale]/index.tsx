@@ -1,18 +1,19 @@
-import '@/app/globals.css';
 import PokeApiQuery from '@/app/api/poke-api-query';
+import { NUMBERS_OF_POKEMON, STARTING_POKEMON, TOTAL_POKEMON } from '@/app/const';
+import '@/app/globals.css';
+import { getAllPokemon } from '@/app/services/pokemon';
 import PokedexList from '@/components/pokedex/pokedex-list/pokedex-list';
 import PokedexTable from '@/components/pokedex/pokedex-table/pokedex-table';
 import { SidebarSettings } from '@/components/pokedex/sidebar-settings/sidebar-settings';
 import LoadingSpinner from '@/components/shared/spinner';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
-import { Metadata, NextPageContext } from 'next';
+import { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
 import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
 import RootLayout from './layout';
-import { NUMBERS_OF_POKEMON, STARTING_POKEMON, TOTAL_POKEMON } from '@/app/const';
-import { getAllPokemon } from '@/app/services/pokemon';
-import { useTranslations } from 'next-intl';
+import { getMessages } from '@/i18n/messages';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -24,7 +25,6 @@ export const metadata: Metadata = {
 export async function getServerSideProps(context: any) {
   const cookies = parseCookies(context);
   const settings = cookies.user_settings ? JSON.parse(cookies.user_settings) : {};
-  console.log(context.params.locale);
   // Use settings to filter
   const pokemonsData = (await getAllPokemon({ offset: STARTING_POKEMON, limit: NUMBERS_OF_POKEMON, ...settings.filter })).results;
   
@@ -32,7 +32,7 @@ export async function getServerSideProps(context: any) {
     pokemonsData,
     filterApplied: settings?.filter ?? { name: '', types: '' },
     locale: context.params?.locale,
-    messages: (await import(`@/locales/${context.params?.locale}/common.json`)).default
+    messages: await getMessages(context.params?.locale)
   }};
 }
 

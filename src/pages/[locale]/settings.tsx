@@ -8,12 +8,13 @@ import { locales } from "@/i18n/config";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import RootLayout from "./layout";
+import { getMessages } from "@/i18n/messages";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       locale: context.params?.locale,
-      messages: (await import(`@/locales/${context.params?.locale}/common.json`)).default
+      messages: await getMessages(String(context.params?.locale))
     }
   };
 }
@@ -36,7 +37,7 @@ export default function SettingsPage() {
         <div>
           <h3 className="w-fit">{t('settings.languageOptions.title')}</h3>
           <div className="my-4">
-            <LangSelect />
+            {/* <LangSelect /> */}
             <DescriptionLangSelect/>
           </div>
           <h3 className="w-fit">{t('settings.artworkOptions.title')}</h3>

@@ -33,6 +33,7 @@ import {
   normalizePokemonName
 } from '../../../../components/shared/utils';
 import './index.scss';
+import { getMessages } from '@/i18n/messages';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -94,7 +95,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         pokemonData,
         previousAndAfter,
         locale: context.params?.locale,
-        messages: (await import(`@/locales/${context.params?.locale}/common.json`)).default
+        messages: await getMessages(String(context.params?.locale))
       }
     };
   } catch (error) {

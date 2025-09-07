@@ -3,7 +3,7 @@ import Tooltip from "@/components/shared/tooltip/tooltip";
 import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { IMove } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";

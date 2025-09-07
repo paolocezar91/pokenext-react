@@ -3,7 +3,7 @@ import Select from "@/components/shared/select";
 import { capitilize, getIdFromUrlSubstring, kebabToSpace, normalizeVersionGroup } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { IMachine, IMove, IPokemon, IPokemonMoveVersion } from "pokeapi-typescript";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";

@@ -1,11 +1,11 @@
+import { NUMBERS_OF_POKEMON } from "@/app/const";
+import Link from "@/components/shared/link";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { ArrowUturnLeftIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
-import { INamedApiResourceList, IPokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
+import { INamedApiResourceList, IPokemon } from "pokeapi-typescript";
 import { getNumber } from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
-import { NUMBERS_OF_POKEMON } from "@/app/const";
 
 
 export default function Controls({
@@ -53,7 +53,7 @@ export default function Controls({
   const goList = () => <div className="flex-1 text-center">
     <Tooltip content={t('actions.backToList')}>
       <Link
-        href="/"
+        href={`/`}
         className={`
           flex
           px-2
