@@ -10,14 +10,14 @@ type Props = Omit<LinkProps, "href"> & {
 };
 
 export default function Link({ href, children, className = "", target, ...props }: Props) {
-  const locale = useLocale()
+  const locale = useLocale();
   const localizedHref = `/${locale}${href.startsWith("/") ? href : "/" + href}`;
-  return <NextLink 
+  return <NextLink
     className={className}
     href={localizedHref}
     target={target}
     {...props}
   >
-      {children}
+    {children}
   </NextLink>;
 }

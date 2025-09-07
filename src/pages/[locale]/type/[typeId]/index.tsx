@@ -27,7 +27,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         typeData: pokemonType,
         allTypes: types,
         locale: context.params?.locale,
-        messages: await getMessages(String(context.params?.locale))  
+        messages: await getMessages(String(context.params?.locale))
       }
     };
   } catch (error) {
@@ -45,7 +45,7 @@ export async function getStaticPaths() {
   const paths = [];
   for (const locale of locales) {
     for (const typeId of ids) {
-      paths.push({ params: { locale, typeId } });
+      paths.push({ params: { locale, typeId }});
     }
   }
 

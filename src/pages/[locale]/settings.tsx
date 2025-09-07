@@ -37,7 +37,7 @@ export default function SettingsPage() {
         <div>
           <h3 className="w-fit">{t('settings.languageOptions.title')}</h3>
           <div className="my-4">
-            {/* <LangSelect /> */}
+            <LangSelect />
             <DescriptionLangSelect/>
           </div>
           <h3 className="w-fit">{t('settings.artworkOptions.title')}</h3>

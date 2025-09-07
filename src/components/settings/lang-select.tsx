@@ -1,24 +1,24 @@
-import { ChangeEvent } from "react";
-import { useTranslations } from "next-intl";
-import Select from "../shared/select";
-import { useSnackbar } from "@/context/snackbar";
 import { locales } from "@/i18n/config";
+import { useLocale, useTranslations } from "next-intl";
+import { ChangeEvent } from "react";
+import Select from "../shared/select";
+import { useRouter } from "next/router";
 
 export default function LangSelect() {
-  const t = useTranslations()
-  const { showSnackbar } = useSnackbar();
+  const t = useTranslations();
+  const router = useRouter()
+  const locale = useLocale()
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    i18n.changeLanguage(e.target.value);
-    showSnackbar(t('settings.languageOptions.languageUpdate'), 5);
+    router.push(`/${e.target.value}/settings`)
   };
   return <label htmlFor="lang">
     <div className="flex flex-col mb-4">
       <span>{t('settings.languageOptions.language')}:</span>
       <Select
+        value={locale}
         data-testid="lang"
         id="lang"
-        value={currentLanguage}
         onChange={handleLangChange}>
         {
           locales.map((lang: string) => {

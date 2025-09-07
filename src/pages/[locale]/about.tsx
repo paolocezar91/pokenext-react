@@ -35,8 +35,6 @@ export default function AboutPage() {
   const vercel = <Link href="https://vercel.com/" target="_blank" className="underline">Vercel</Link>;
   const render = <Link href="https://www.render.com/" target="_blank" className="underline">Render</Link>;
   const github = <Link href="https://github.com/paolocezar91/" target="_blank" className="underline">Github</Link>;
-  
-
 
   return <RootLayout title={title}>
     <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
@@ -48,13 +46,14 @@ export default function AboutPage() {
             </h2>
             <VersionInfo />
           </span>
-          Developed by {me} using {nextJs}, {react}, {graphQL}, {mongoDB}, {vercel} and {render} as a project to study and deep dive into React's ecosystem. Data was extracted from {pokeApi} project.
+          Developed by {me} using {nextJs}, {react}, {graphQL}, {mongoDB}, {vercel} and {render} as a project to study
+          and deep dive into React's ecosystem. Data was extracted from {pokeApi} project.
         </p>
         <p className="mt-3">
-            You can find more about the project on {github}.
+          You can find more about the project on {github}.
         </p>
         <p className="mt-3">
-          Pokémon belongs to Creatures Inc., GAME FREAK Inc. and Nintendo. All images and data are used in spirit of fair use. 
+          Pokémon belongs to Creatures Inc., GAME FREAK Inc. and Nintendo. All images and data are used in spirit of fair use.
         </p>
       </div>
     </div>

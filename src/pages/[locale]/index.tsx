@@ -8,7 +8,7 @@ import { SidebarSettings } from '@/components/pokedex/sidebar-settings/sidebar-s
 import LoadingSpinner from '@/components/shared/spinner';
 import { useUser } from '@/context/user-context';
 import { IPkmn } from '@/types/types';
-import { Metadata } from 'next';
+import { GetServerSidePropsContext, Metadata } from 'next';
 import { useTranslations } from 'next-intl';
 import { parseCookies } from 'nookies';
 import { useEffect, useState } from 'react';
@@ -22,17 +22,17 @@ export const metadata: Metadata = {
   description: 'By Paolo Pestalozzi with PokeAPI and Next.js.'
 };
 
-export async function getServerSideProps(context: any) {
+export async function getServerSideProps(context: GetServerSidePropsContext) {
   const cookies = parseCookies(context);
   const settings = cookies.user_settings ? JSON.parse(cookies.user_settings) : {};
   // Use settings to filter
   const pokemonsData = (await getAllPokemon({ offset: STARTING_POKEMON, limit: NUMBERS_OF_POKEMON, ...settings.filter })).results;
-  
+
   return { props: {
     pokemonsData,
     filterApplied: settings?.filter ?? { name: '', types: '' },
     locale: context.params?.locale,
-    messages: await getMessages(context.params?.locale)
+    messages: await getMessages(String(context.params?.locale))
   }};
 }
 

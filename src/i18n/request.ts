@@ -7,7 +7,7 @@ import { getMessages } from './messages';
 export default getRequestConfig(async () => {
   const store = await cookies();
   const locale = store.get('locale')?.value || defaultLocale;
- 
+
   return {
     locale,
     messages: getMessages(locale)
