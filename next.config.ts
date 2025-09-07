@@ -1,9 +1,16 @@
-import { locales, } from "@/i18n/config";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from 'next-intl/plugin';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/en/',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {
