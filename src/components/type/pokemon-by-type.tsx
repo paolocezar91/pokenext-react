@@ -1,5 +1,5 @@
 import { NUMBERS_OF_POKEMON } from "@/app/const";
-import PokeApiQuery from "@/app/poke-api-query";
+import PokeApiQuery from "@/app/api/poke-api-query";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
@@ -7,11 +7,11 @@ import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { ITypePokemon } from "pokeapi-typescript";
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { getTypeIconById } from "../[id]/details/types";
+import { useTranslations } from "next-intl";
+import { getTypeIconById } from "../pokedex/[id]/details/types";
 import SkeletonBlock from "../shared/skeleton-block";
 import SkeletonImage from "../shared/skeleton-image";
 import LoadingSpinner from "../shared/spinner";
@@ -21,7 +21,7 @@ export type SortKey = 'id' | 'name' | 'types';
 const pokeApiQuery = new PokeApiQuery();
 
 export default function PokemonByType({ pokemonList, type }: { pokemonList: ITypePokemon[], type: string }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { settings } = useUser();
   const [sorting, setSorting] = useState<SortingDir<SortKey>[]>([]);
   const toggleSort = (key: SortKey) => {

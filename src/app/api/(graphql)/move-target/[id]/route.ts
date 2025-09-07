@@ -1,4 +1,4 @@
-import { idOrName } from "@/app/api-utils";
+import { idOrName } from "@/app/api/api-utils";
 import { gql,request } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 import { IMoveTarget } from "pokeapi-typescript";

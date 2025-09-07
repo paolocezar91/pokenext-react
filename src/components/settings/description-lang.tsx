@@ -1,7 +1,7 @@
 import { useSnackbar } from "@/context/snackbar";
 import { useUser } from "@/context/user-context";
+import { useTranslations } from "next-intl";
 import { ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
 import Select from "../shared/select";
 
 const locales = [
@@ -29,7 +29,7 @@ export type TypeLocale = "en" |
     "zh-Hans";
 
 export default function DescriptionLangSelect() {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { settings, upsertSettings } = useUser();
   const { showSnackbar } = useSnackbar();
 

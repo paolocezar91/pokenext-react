@@ -3,8 +3,8 @@ import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 import { IMove } from 'pokeapi-typescript';
 
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
 }));
 
 jest.mock('@/context/user-context', () => ({

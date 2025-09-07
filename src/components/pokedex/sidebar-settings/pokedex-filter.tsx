@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import PokeApiQuery from '@/app/poke-api-query';
+import PokeApiQuery from '@/app/api/poke-api-query';
 import MultiSelect from '@/components/shared/multi-select';
 import { capitilize, useClickOutside } from '@/components/shared/utils';
 import { ChevronLeftIcon, FunnelIcon } from '@heroicons/react/24/solid';
@@ -7,10 +7,10 @@ import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useTranslation } from 'react-i18next';
 import Tooltip from '../../shared/tooltip/tooltip';
 import { SettingsContent } from './utils/settings-content';
 import { SettingsItem } from './utils/settings-item';
+import { useTranslations } from 'next-intl';
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -25,7 +25,7 @@ export default function PokedexFilter({
   onFilterName: (value: string) => void
   onFilterTypes: (values: string[]) => void
 }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const [filterName, setFilterName] = useState(name);
   const [filterType, setFilterType] = useState<string[]>(types ?? []);
   const [open, setOpen] = useState<boolean>(!!name || !!types?.length);

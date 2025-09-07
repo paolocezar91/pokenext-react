@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { ReactNode } from "react";
 
 export default function NavLink({

@@ -1,10 +1,10 @@
-import { getTypeIconById } from "@/components/[id]/details/types";
+import { getTypeIconById } from "@/components/pokedex/[id]/details/types";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import { capitilize, getIdFromUrlSubstring, normalizePokemonName } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import Image from "next/image";
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { useInView } from "react-intersection-observer";
 import { shouldShowColumn } from "./utils";
 import { AnimatePresence, motion } from 'framer-motion';

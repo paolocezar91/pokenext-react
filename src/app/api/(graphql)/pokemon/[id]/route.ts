@@ -1,4 +1,4 @@
-import { idOrName } from '@/app/api-utils';
+import { idOrName } from '@/app/api/api-utils';
 import { getPokemonById } from '@/app/services/pokemon';
 import { NextRequest, NextResponse } from 'next/server';
 

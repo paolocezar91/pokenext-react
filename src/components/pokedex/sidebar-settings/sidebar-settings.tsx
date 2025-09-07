@@ -4,14 +4,14 @@ import { ChevronDownIcon, Squares2X2Icon, TableCellsIcon } from "@heroicons/reac
 import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
 import { Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import PokedexFilter from "./pokedex-filter";
 import TableSettings from "./table-settings";
 import ThumbSettings from "./thumb-settings";
 
 export function SidebarSettings() {
   const { settings, upsertSettings } = useUser();
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const containerControls = useAnimation();
   const contentControls = useAnimation();
   const chevronControls = useAnimation();

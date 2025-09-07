@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request';
 import { IPokemon } from 'pokeapi-typescript';
-import { formatResultsCount } from '../api-utils';
+import { formatResultsCount } from '../api/api-utils';
 import { requestGraphql } from './graphql';
 
 export async function getPokemonById(vars: { id?: number | string, name?: string }) {

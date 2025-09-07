@@ -1,10 +1,10 @@
 import { useUser } from "@/context/user-context";
 import { IMove } from "pokeapi-typescript";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 
 export default function MoveEffect({ moveData }: { moveData: IMove; }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { settings } = useUser();
 
   const getEffects = () => {

@@ -4,8 +4,9 @@ import { render, screen } from '@testing-library/react';
 import { INamedApiResource, IPokemon } from 'pokeapi-typescript';
 import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
 
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+  useLocale: () => 'en'
 }));
 
 jest.mock('@/context/user-context', () => ({
@@ -57,7 +58,7 @@ describe('LearnedByPokemon Component', () => {
     expect(screen.getByRole('heading')).toHaveTextContent('moves.learnedBy.title');
     expect(screen.getByText('Mew')).toBeInTheDocument();
     const mewLink = screen.getByRole('link', { name: 'Mew' });
-    expect(mewLink).toHaveAttribute('href', '/pokedex/mew');
+    expect(mewLink).toHaveAttribute('href', '/en/pokedex/mew');
   });
 
   it('should match snapshot', () => {

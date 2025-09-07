@@ -1,22 +1,26 @@
 #!/bin/bash
 
-# Path to your .bumpversion.toml
 TOML_FILE=".bumpversion.toml"
 
 # Get the current version from the TOML file
 current_version=$(grep -Po '(?<=current_version = ")[^"]+' "$TOML_FILE")
 
-# Check if the current version is staged for commit (i.e., has changes not yet committed)
-if git diff --cached --name-only | grep -q "$TOML_FILE"; then
-  echo "You have staged changes to $TOML_FILE. Please commit your version bump before pushing."
+# Check if .bumpversion.toml was changed in the latest commit
+if ! git diff --name-only HEAD~1 HEAD | grep -q "$TOML_FILE"; then
+  echo "You must bump the version in $TOML_FILE before pushing."
   exit 1
 fi
 
-# Optionally, check if the latest commit includes a version bump
-if ! git log -1 --pretty=%B | grep -q "$current_version"; then
-  echo "Latest commit does not include the current version ($current_version). Please bump the version and commit before pushing."
+# Check if the current_version in the file matches the version added in the latest commit
+added_version=$(git diff HEAD~1 HEAD "$TOML_FILE" | grep '^+current_version' | grep -Po '(?<=\")[^\"]+')
+if [ -z "$added_version" ]; then
+  echo "No version bump detected in $TOML_FILE. Please update the version before pushing."
   exit 1
 fi
 
-# All good
+if [ "$current_version" != "$added_version" ]; then
+  echo "Current version in $TOML_FILE ($current_version) does not match the version added in the latest commit ($added_version)."
+  exit 1
+fi
+
 exit 0

@@ -4,12 +4,12 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { IMove } from "pokeapi-typescript";
 import { memo, useState } from "react";
 import { Button } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 
 export default memo(function FlavorText({ moveData }: { moveData: IMove }) {
   const [flavorIdx, setFlavorIdx] = useState(0);
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { settings } = useUser();
 
 

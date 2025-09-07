@@ -1,4 +1,4 @@
-import { ResultsCount } from '@/app/api-utils';
+import { ResultsCount } from '@/app/api/api-utils';
 import { getAllPokemon, getPokemonByIds } from '@/app/services/pokemon';
 import { NextRequest, NextResponse } from 'next/server';
 import { IPokemon } from 'pokeapi-typescript';

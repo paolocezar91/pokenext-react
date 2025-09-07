@@ -1,9 +1,9 @@
 import { useSnackbar } from "@/context/snackbar";
 import { useUser } from "@/context/user-context";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
-import { getTypeIconById, TypeUrl } from "../[id]/details/types";
+import { getTypeIconById, TypeUrl } from "../pokedex/[id]/details/types";
 import Select from "../shared/select";
 import { normalizeVersionGroup } from "../shared/utils";
 
@@ -20,7 +20,7 @@ const sprites = [
 
 export default function TypeArtworkSelect() {
   const { settings, upsertSettings } = useUser();
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { showSnackbar } = useSnackbar();
 
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {

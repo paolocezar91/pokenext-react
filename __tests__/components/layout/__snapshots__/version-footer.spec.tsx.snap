@@ -1,47 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Footer should match snapshot with no valid description 1`] = `
+exports[`VersionInfo should match snapshot with no valid description 1`] = `
 <DocumentFragment>
   <div
-    class="   footer   container   w-full   fixed   bottom-0   flex   justify-between   border-solid   border-t-2   border-(--pokedex-red-light)   bg-(--pokedex-red)   py-2   px-4   "
+    class="text-xs text-white"
   >
-    <div
-      class="w-full flex items-center justify-between text-xs text-white"
-    >
-      <p>
-        By 
-        <a
-          class="underline"
-          href="https://github.com/paolocezar91/"
-          target="_blank"
-        >
-          PPC
-        </a>
-         with 
-        <a
-          class="underline"
-          href="https://pokeapi.co/"
-          target="_blank"
-        >
-          PokeAPI
-        </a>
-         and 
-        <a
-          class="underline"
-          href="http://nextjs.org/"
-          target="_blank"
-        >
-          Next.js
-        </a>
-        .
-      </p>
-      <div
-        class="text-xs text-white"
-      >
-        <div>
-          v0.2.2
-        </div>
-      </div>
+    <div>
+      v0.3.3
     </div>
   </div>
 </DocumentFragment>

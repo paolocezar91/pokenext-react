@@ -1,5 +1,5 @@
 import { NUMBERS_OF_POKEMON } from "@/app/const";
-import PokeApiQuery from "@/app/poke-api-query";
+import PokeApiQuery from "@/app/api/poke-api-query";
 import { getNumber } from "@/components/shared/thumb/thumb";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
@@ -7,14 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 
 const pokeApiQuery = new PokeApiQuery();
 
 export default function Search({ className = "" }: { className?: string }) {
   // Store the fetched pokemon list in state
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<{ name: string, displayName: string, id: number | string }[]>([]);
 
