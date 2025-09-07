@@ -8,8 +8,9 @@ const baseProps = {
   onSignOut: jest.fn(),
 };
 
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+  useLocale: () => 'en'
 }));
 
 describe('UserMenuContent', () => {
@@ -20,6 +21,7 @@ describe('UserMenuContent', () => {
   it('renders sign-in and settings when no session', () => {
     render(<UserMenuContent {...baseProps} session={undefined as any} />);
     expect(screen.getByText(/menu.settings/i)).toBeInTheDocument();
+    expect(screen.getByText(/menu.about/i)).toBeInTheDocument();
     expect(screen.getByText(/menu.signIn/i)).toBeInTheDocument();
     expect(screen.queryByText(/menu.signOut/i)).not.toBeInTheDocument();
   });
@@ -43,6 +45,7 @@ describe('UserMenuContent', () => {
     render(<UserMenuContent {...baseProps} session={session} />);
     expect(screen.getByText('Ash')).toBeInTheDocument();
     expect(screen.getByText(/menu.settings/i)).toBeInTheDocument();
+    expect(screen.getByText(/menu.about/i)).toBeInTheDocument();
     expect(screen.getByText(/menu.signOut/i)).toBeInTheDocument();
     expect(screen.queryByText(/menu.signIn/i)).not.toBeInTheDocument();
   });

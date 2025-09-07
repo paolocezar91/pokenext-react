@@ -14,7 +14,7 @@ exports[`Nav Link Component should match snapshot 1`] = `
     hover:bg-(--pokedex-red-dark)
     active:bg-white
     active:text-(--pokedex-red-dark) bg-transparent "
-    href="/pokedex/bulbasaur"
+    href="/en/pokedex/bulbasaur"
   >
     Bulbasaur
   </a>

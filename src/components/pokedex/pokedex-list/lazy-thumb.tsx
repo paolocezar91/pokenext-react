@@ -1,8 +1,8 @@
-import { Settings } from "@/app/user-api";
+import { Settings } from "@/app/api/user-api";
 import PokemonThumb from "@/components/shared/thumb/thumb";
 import { IPkmn } from "@/types/types";
 import { AnimatePresence, motion } from 'framer-motion';
-import Link from "next/link";
+import Link from "@/components/shared/link";
 import { useInView } from "react-intersection-observer";
 
 export default function LazyThumb({

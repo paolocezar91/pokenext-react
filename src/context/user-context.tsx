@@ -1,5 +1,5 @@
-import UserApi, { Settings, User } from "@/app/user-api";
-import { TypeUrl } from "@/components/[id]/details/types";
+import UserApi, { Settings, User } from "@/app/api/user-api";
+import { TypeUrl } from "@/components/pokedex/[id]/details/types";
 import { useAsyncQuery, useLocalStorage } from "@/components/shared/utils";
 import { useSession } from "next-auth/react";
 import React, { createContext, useContext, useEffect, useState } from "react";

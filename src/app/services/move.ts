@@ -1,6 +1,6 @@
 import { gql } from 'graphql-request';
 import { IMove } from 'pokeapi-typescript';
-import { formatResultsCount } from '../api-utils';
+import { formatResultsCount } from '../api/api-utils';
 import { requestGraphql } from './graphql';
 
 

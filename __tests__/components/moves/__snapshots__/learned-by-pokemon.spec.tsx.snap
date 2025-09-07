@@ -174,7 +174,8 @@ exports[`LearnedByPokemon Component should match snapshot 1`] = `
             class="p-2"
           >
             <a
-              href="/pokedex/ditto"
+              class=""
+              href="/en/pokedex/ditto"
             >
               <div
                 class="
@@ -221,7 +222,7 @@ exports[`LearnedByPokemon Component should match snapshot 1`] = `
           >
             <a
               class="transition-colors hover:bg-(--pokedex-red-dark) p-1"
-              href="/pokedex/ditto"
+              href="/en/pokedex/ditto"
             >
               Ditto
             </a>
@@ -230,7 +231,8 @@ exports[`LearnedByPokemon Component should match snapshot 1`] = `
             class="p-2"
           >
             <a
-              href="/type/normal"
+              class=""
+              href="/en/type/normal"
             >
               <img
                 alt="Normal"
@@ -254,7 +256,8 @@ exports[`LearnedByPokemon Component should match snapshot 1`] = `
             class="p-2"
           >
             <a
-              href="/pokedex/mew"
+              class=""
+              href="/en/pokedex/mew"
             >
               <div
                 class="
@@ -301,7 +304,7 @@ exports[`LearnedByPokemon Component should match snapshot 1`] = `
           >
             <a
               class="transition-colors hover:bg-(--pokedex-red-dark) p-1"
-              href="/pokedex/mew"
+              href="/en/pokedex/mew"
             >
               Mew
             </a>
@@ -310,7 +313,8 @@ exports[`LearnedByPokemon Component should match snapshot 1`] = `
             class="p-2"
           >
             <a
-              href="/type/psychic"
+              class=""
+              href="/en/type/psychic"
             >
               <img
                 alt="Psychic"

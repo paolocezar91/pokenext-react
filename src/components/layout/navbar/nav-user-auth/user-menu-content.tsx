@@ -1,6 +1,6 @@
-import { ArrowLeftEndOnRectangleIcon, Cog6ToothIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftEndOnRectangleIcon, Cog6ToothIcon, QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { User } from "next-auth";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import GithubIcon from "../github-icon";
 import NavButton from "../nav-button";
 import NavLink from "../nav-link";
@@ -16,12 +16,17 @@ export default function UserMenuContent({ session, pathname, onSignIn, onSignOut
   onSignIn: () => void;
   onSignOut: () => void;
 }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
 
   const signInButton = <NavButton className="flex justify-between w-full" onClick={onSignIn}>
     {t('menu.signIn')}
     <GithubIcon />
   </NavButton>;
+
+  const aboutButton = <NavLink className="flex justify-between w-full" href="/about/" isActive={pathname === '/about'}>
+    <span>{t('menu.about')}</span>
+    <QuestionMarkCircleIcon width={22}/>
+  </NavLink>;
 
   const settingsButton = <NavLink className="flex justify-between w-full" href="/settings/" isActive={pathname === '/settings'}>
     <span>{t('menu.settings')}</span>
@@ -42,9 +47,8 @@ export default function UserMenuContent({ session, pathname, onSignIn, onSignOut
       <li className="flex justify-between items-center mb-2 border-b-2 border-white border-solid px-2 py-4">
         <span className="text-xs">{userNameOrEmail}</span>
       </li>
-      <li className="h-10 m-1">
-        {settingsButton}
-      </li>
+      <li className="h-10 m-1">{settingsButton}</li>
+      <li className="h-10 m-1">{aboutButton}</li>
       <li className="h-10 m-1">
         {session ? signOutButton : signInButton}
       </li>

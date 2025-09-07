@@ -1,4 +1,4 @@
-import { idOrName } from '@/app/api-utils';
+import { idOrName } from '@/app/api/api-utils';
 import { getMoveById } from '@/app/services/move';
 import { NextRequest, NextResponse } from 'next/server';
 

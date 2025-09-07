@@ -1,11 +1,15 @@
-export { auth as middleware } from "@/auth";
+import { auth } from "@/auth";
+import createMiddleware from 'next-intl/middleware';
+import { routing } from './i18n/routing';
 
-// Or like this if you need to do something here.
-// export default auth((req) => {
-//   console.log(req.auth) //  { session: { user: { ... } } }
-// })
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function middleware(request: any) {
+  await auth(request);
+  return createMiddleware(routing)(request);
+}
 
-// Read more: https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|fonts|favicon.ico|logo.svg).*)",
+  ],
 };

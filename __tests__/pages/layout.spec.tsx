@@ -1,4 +1,4 @@
-import RootLayout from '@/pages/layout';
+import RootLayout from '@/components/layout/layout';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 

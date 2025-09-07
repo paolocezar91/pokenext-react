@@ -1,9 +1,9 @@
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 import { getBackgroundStyleWithStrings } from "./thumb/thumb";
 import Tooltip from "./tooltip/tooltip";
 import { capitilize, normalizePokemonName } from "@/components/shared/utils";
 import { DefensiveMatchup, PokemonType } from "@/types/types";
-import { typeChart } from "../[id]/details/type-weakness-chart";
+import { typeChart } from "../pokedex/[id]/details/type-weakness-chart";
 
 
 
@@ -69,7 +69,7 @@ const getFractionValue = (value: number) => {
 };
 
 export default function PokemonDefensiveChart({ types, name }: { types: string[], name: string }) {
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const defensiveChart = getDefensiveMatchup(types as PokemonType[]);
 
   return <div className="defensive-chart col-span-6 md:col-span-3">

@@ -2,12 +2,12 @@ import Toggle from "@/components/shared/toggle";
 import { SettingsContainer } from "./utils/settings-container";
 import { SettingsItem } from "./utils/settings-item";
 import { useUser } from "@/context/user-context";
-import { useTranslation } from "react-i18next";
+import { useTranslations } from "next-intl";
 
 
 export default function TableSettings() {
   const { settings, upsertSettings } = useUser();
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const handleShowShowColumnChange = (showShowColumn: boolean) => {
     upsertSettings({ showShowColumn });
   };

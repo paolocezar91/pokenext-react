@@ -1,8 +1,8 @@
 import { useSnackbar } from "@/context/snackbar";
 import { useUser } from "@/context/user-context";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { ChangeEvent } from "react";
-import { useTranslation } from "react-i18next";
 import Select from "../shared/select";
 import { ArtUrl, getArtwork } from "../shared/thumb/thumb";
 import { capitilize, kebabToSpace } from "../shared/utils";
@@ -11,7 +11,7 @@ const sprites: ArtUrl[] = ['dream-world', 'home', 'official-artwork', 'showdown'
 
 export default function ThumbnailArtworkSelect() {
   const { settings, upsertSettings } = useUser();
-  const { t } = useTranslation('common');
+  const t = useTranslations();
   const { showSnackbar } = useSnackbar();
 
   const handleArtworkChange = (e: ChangeEvent<HTMLSelectElement>) => {
