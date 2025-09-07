@@ -16,10 +16,9 @@ jest.mock('@/context/user-context', () => ({
   })
 }));
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string) => key,
-  }),
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+  useLocale: () => 'en'
 }));
 
 describe('MoveDataTable Component', () => {

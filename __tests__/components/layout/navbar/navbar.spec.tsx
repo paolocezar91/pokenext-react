@@ -13,8 +13,8 @@ jest.mock('next/navigation', () => ({
 }));
 
 // Mock react-i18next
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
 }));
 
 // Mock the DefaultMenu and MobileMenu and other child components to simplify testing
@@ -28,6 +28,12 @@ jest.mock('@/context/user-context', () => ({
     settings: { descriptionLang: 'en' }
   })
 }));
+
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+  useLocale: () => 'en'
+}));
+
 
 describe('Navbar Component', () => {
   const mockUsePathname = () => '/';
@@ -60,13 +66,13 @@ describe('Navbar Component', () => {
     render(<Navbar title="Pokedex App" />);
     const logoLink = screen.getByRole('link', { name: /pokedex app/i });
     expect(logoLink).toBeInTheDocument();
-    expect(logoLink).toHaveAttribute('href', '/');
+    expect(logoLink).toHaveAttribute('href', '/en');
   });
 
   it('renders home link correctly', () => {
     render(<Navbar title="Pokedex App" />);
-    const homeLink = screen.getAllByRole('link').find(link => link.getAttribute('href') === '/');
+    const homeLink = screen.getAllByRole('link').find(link => link.getAttribute('href') === '/en');
     expect(homeLink).toBeInTheDocument();
-    expect(homeLink).toHaveAttribute('href', '/');
+    expect(homeLink).toHaveAttribute('href', '/en');
   });
 });

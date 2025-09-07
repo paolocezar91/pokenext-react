@@ -3,8 +3,8 @@ import { IMoveTarget } from 'pokeapi-typescript';
 import '@testing-library/jest-dom';
 import MoveTarget from '@/components/moves/move-target';
 
-jest.mock("react-i18next", () => ({
-  useTranslation: () => ({ t: (key: string) => key }),
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
 }));
 
 jest.mock('@/context/user-context', () => ({

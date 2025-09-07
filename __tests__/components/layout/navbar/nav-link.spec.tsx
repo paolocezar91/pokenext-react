@@ -2,6 +2,11 @@ import NavLink from '@/components/layout/navbar/nav-link';
 import '@testing-library/jest-dom';
 import { render, screen } from '@testing-library/react';
 
+jest.mock("next-intl", () => ({
+  useTranslations: () => (key: string) => key,
+  useLocale: () => 'en'
+}));
+
 describe('Nav Link Component', () => {
   it('renders correctly with href, className and children', () => {
     render(<NavLink href='/pokedex/bulbasaur' className='bulbasaur'>Bulbasaur</NavLink>);
@@ -9,7 +14,7 @@ describe('Nav Link Component', () => {
     expect(link).toBeInTheDocument();
     expect(link).toHaveTextContent('Bulbasaur');
     expect(link).toHaveClass('bulbasaur');
-    expect(link).toHaveAttribute('href', '/pokedex/bulbasaur');
+    expect(link).toHaveAttribute('href', '/en/pokedex/bulbasaur');
   });
 
   it('should match snapshot', () => {

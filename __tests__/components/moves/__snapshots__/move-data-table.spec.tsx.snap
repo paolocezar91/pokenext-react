@@ -24,7 +24,8 @@ exports[`MoveDataTable Component should match snapshot with complete data 1`] = 
             class="py-1"
           >
             <a
-              href="/type/electric"
+              class=""
+              href="/en/type/electric"
             >
               <img
                 alt="electric"
@@ -134,7 +135,8 @@ exports[`MoveDataTable Component should match snapshot with null values 1`] = `
             class="py-1"
           >
             <a
-              href="/type/electric"
+              class=""
+              href="/en/type/electric"
             >
               <img
                 alt="electric"
