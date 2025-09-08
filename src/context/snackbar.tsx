@@ -1,4 +1,10 @@
-import React, { createContext, useCallback, useContext, useRef, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useRef,
+  useState,
+} from "react";
 
 interface SnackbarContextType {
   // eslint-disable-next-line no-unused-vars
@@ -6,15 +12,20 @@ interface SnackbarContextType {
   hideSnackbar: () => void;
 }
 
-const SnackbarContext = createContext<SnackbarContextType | undefined>(undefined);
+const SnackbarContext = createContext<SnackbarContextType | undefined>(
+  undefined,
+);
 
 export const useSnackbar = () => {
   const ctx = useContext(SnackbarContext);
-  if (!ctx) throw new Error("useSnackbar must be used within a SnackbarProvider");
+  if (!ctx)
+    throw new Error("useSnackbar must be used within a SnackbarProvider");
   return ctx;
 };
 
-export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [progress, setProgress] = useState(0);
@@ -24,7 +35,7 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const showSnackbar = useCallback((msg: string, time?: number) => {
     setMessage(msg);
     setOpen(true);
-    if(time) {
+    if (time) {
       setProgress(100);
       if (timerRef.current) clearTimeout(timerRef.current);
       if (progressRef.current) clearInterval(progressRef.current);
@@ -33,7 +44,7 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       let elapsed = 0;
       progressRef.current = setInterval(() => {
         elapsed += interval;
-        setProgress(Math.max(0, 100 - elapsed / (time * 1000) * 100));
+        setProgress(Math.max(0, 100 - (elapsed / (time * 1000)) * 100));
       }, interval);
       timerRef.current = setTimeout(() => {
         setOpen(false);
@@ -51,9 +62,11 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   return (
-    <SnackbarContext.Provider value={{ showSnackbar, hideSnackbar: handleClose }}>
+    <SnackbarContext.Provider
+      value={{ showSnackbar, hideSnackbar: handleClose }}
+    >
       {children}
-      {open &&
+      {open && (
         <div
           className="fixed z-99 rounded text-white bg-gray-800 box-shadow bottom-10"
           style={{
@@ -72,11 +85,16 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               ×
             </button>
           </div>
-          {<div className="bg-white h-1" style={{
-            width: `${progress}%`,
-          }}/> }
+          {
+            <div
+              className="bg-white h-1"
+              style={{
+                width: `${progress}%`,
+              }}
+            />
+          }
         </div>
-      }
+      )}
     </SnackbarContext.Provider>
   );
 };

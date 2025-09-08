@@ -14,31 +14,50 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
   const { settings } = useUser();
 
   const { data: abilityDetails } = useQuery({
-    queryKey: ['abilities', pokemon.name],
-    queryFn: () => Promise.all(pokemon.abilities.map((ability) => pokeApiQuery.getAbility(getIdFromUrlSubstring(ability.ability.url)))),
+    queryKey: ["abilities", pokemon.name],
+    queryFn: () =>
+      Promise.all(
+        pokemon.abilities.map((ability) =>
+          pokeApiQuery.getAbility(getIdFromUrlSubstring(ability.ability.url)),
+        ),
+      ),
   });
 
   const renderDetails = () => {
-    if(!abilityDetails || !settings) {
-      return <>
-        <li className="pt-1.5"><SkeletonBlock className="w-full" /></li>
-        <li className="pt-1.5"><SkeletonBlock className="w-full" /></li>
-      </>;
+    if (!abilityDetails || !settings) {
+      return (
+        <>
+          <li className="pt-1.5">
+            <SkeletonBlock className="w-full" />
+          </li>
+          <li className="pt-1.5">
+            <SkeletonBlock className="w-full" />
+          </li>
+        </>
+      );
     }
 
-    return abilityDetails.map((ability, i) =>
-      <li key={i} className="capitalize">
-        <Tooltip content={abilityDetails[i].effect_entries.find((entry) => entry.language.name === settings.descriptionLang)?.short_effect}>
+    return abilityDetails.map((ability, i) => (
+      <li key={ability.id} className="capitalize">
+        <Tooltip
+          content={
+            abilityDetails[i].effect_entries.find(
+              (entry) => entry.language.name === settings.descriptionLang,
+            )?.short_effect
+          }
+        >
           {ability.name}
         </Tooltip>
       </li>
-    );
+    ));
   };
 
-  return <div className="pokemon-abilities">
-    <h3 className="w-fit text-lg font-semibold mb-2">{ t('pokedex.details.abilities.title') }</h3>
-    <ul className="list-disc pl-5">
-      {renderDetails()}
-    </ul>
-  </div>;
+  return (
+    <div className="pokemon-abilities">
+      <h3 className="w-fit text-lg font-semibold mb-2">
+        {t("pokedex.details.abilities.title")}
+      </h3>
+      <ul className="list-disc pl-5">{renderDetails()}</ul>
+    </div>
+  );
 }

@@ -1,6 +1,6 @@
 import { PokemonType } from "@/types/types";
 
-export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
+export const typeChart: Record<PokemonType, Record<PokemonType, number>> = {
   normal: {
     normal: 1,
     fire: 1,
@@ -19,7 +19,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 1,
-    fairy: 1
+    fairy: 1,
   },
   fire: {
     normal: 1,
@@ -39,7 +39,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 0.5,
-    fairy: 0.5
+    fairy: 0.5,
   },
   water: {
     normal: 1,
@@ -59,7 +59,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 0.5,
-    fairy: 1
+    fairy: 1,
   },
   electric: {
     normal: 1,
@@ -79,7 +79,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 0.5,
-    fairy: 1
+    fairy: 1,
   },
   grass: {
     normal: 1,
@@ -99,7 +99,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 1,
-    fairy: 1
+    fairy: 1,
   },
   ice: {
     normal: 1,
@@ -119,7 +119,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 2,
-    fairy: 1
+    fairy: 1,
   },
   fighting: {
     normal: 1,
@@ -139,7 +139,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 0.5,
     steel: 1,
-    fairy: 2
+    fairy: 2,
   },
   poison: {
     normal: 1,
@@ -159,7 +159,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 1,
-    fairy: 0.5
+    fairy: 0.5,
   },
   ground: {
     normal: 1,
@@ -179,7 +179,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 1,
-    fairy: 1
+    fairy: 1,
   },
   flying: {
     normal: 1,
@@ -199,7 +199,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 1,
-    fairy: 1
+    fairy: 1,
   },
   psychic: {
     normal: 1,
@@ -219,7 +219,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 0,
     steel: 1,
-    fairy: 1
+    fairy: 1,
   },
   bug: {
     normal: 1,
@@ -239,7 +239,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 1,
-    fairy: 1
+    fairy: 1,
   },
   rock: {
     normal: 0.5,
@@ -259,7 +259,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 1,
     steel: 2,
-    fairy: 1
+    fairy: 1,
   },
   ghost: {
     normal: 0,
@@ -279,7 +279,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 2,
     steel: 1,
-    fairy: 1
+    fairy: 1,
   },
   dragon: {
     normal: 1,
@@ -299,7 +299,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 2,
     dark: 1,
     steel: 1,
-    fairy: 2
+    fairy: 2,
   },
   dark: {
     normal: 1,
@@ -319,7 +319,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 1,
     dark: 0.5,
     steel: 1,
-    fairy: 2
+    fairy: 2,
   },
   steel: {
     normal: 0.5,
@@ -339,7 +339,7 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 0.5,
     dark: 0.5,
     steel: 0.5,
-    fairy: 0.5
+    fairy: 0.5,
   },
   fairy: {
     normal: 1,
@@ -359,6 +359,6 @@ export const typeChart: Record <PokemonType, Record <PokemonType, number>> = {
     dragon: 0,
     dark: 0.5,
     steel: 2,
-    fairy: 1
+    fairy: 1,
   },
 };

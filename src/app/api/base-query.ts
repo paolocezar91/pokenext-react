@@ -6,16 +6,16 @@ export default class BaseQuery {
   }
 
   getURL = async <T>(url: string) => {
-    return await this._getUrl(`${this.apiUrl}${url}`) as T;
+    return (await this._getUrl(`${this.apiUrl}${url}`)) as T;
   };
 
   postURL = async <T>(url: string, body: Record<string, unknown>) => {
-    return await this._postUrl(`${this.apiUrl}${url}`, body) as T;
+    return (await this._postUrl(`${this.apiUrl}${url}`, body)) as T;
   };
 
   private _getUrl = async (url: string) => {
     const data = await fetch(url, {
-      cache: 'force-cache'
+      cache: "force-cache",
     });
 
     if (data.status === 200) {
@@ -44,7 +44,9 @@ export default class BaseQuery {
   };
 
   protected cleanParams = (params: Record<string, string>) => {
-    Object.keys(params).forEach((key) => params[key] === undefined && delete params[key]);
+    Object.keys(params).forEach(
+      (key) => params[key] === undefined && delete params[key],
+    );
     return params;
   };
 }

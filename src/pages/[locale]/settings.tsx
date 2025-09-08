@@ -14,39 +14,45 @@ export async function getStaticProps(context: GetStaticPropsContext) {
   return {
     props: {
       locale: context.params?.locale,
-      messages: await getMessages(String(context.params?.locale))
-    }
+      messages: await getMessages(String(context.params?.locale)),
+    },
   };
 }
 
 export async function getStaticPaths() {
   return {
-    paths: locales.map(locale => ({ params: { locale }})),
-    fallback: false
+    paths: locales.map((locale) => ({ params: { locale } })),
+    fallback: false,
   };
 }
 
 export default function SettingsPage() {
   const t = useTranslations();
-  const title = t('settings.title');
+  const title = t("settings.title");
   const { settings } = useUser();
 
-  return <RootLayout title={title}>
-    {settings ? <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
-      <div className="p-4 bg-background rounded shadow-md h-[-webkit-fill-available] grid grid-cols-1 md:grid-cols-2">
-        <div>
-          <h3 className="w-fit">{t('settings.languageOptions.title')}</h3>
-          <div className="my-4">
-            <LangSelect />
-            <DescriptionLangSelect/>
-          </div>
-          <h3 className="w-fit">{t('settings.artworkOptions.title')}</h3>
-          <div className="my-4">
-            <ThumbnailArtworkSelect/>
-            <TypeArtworkSelect/>
+  return (
+    <RootLayout title={title}>
+      {settings ? (
+        <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
+          <div className="p-4 bg-background rounded shadow-md h-[-webkit-fill-available] grid grid-cols-1 md:grid-cols-2">
+            <div>
+              <h3 className="w-fit">{t("settings.languageOptions.title")}</h3>
+              <div className="my-4">
+                <LangSelect />
+                <DescriptionLangSelect />
+              </div>
+              <h3 className="w-fit">{t("settings.artworkOptions.title")}</h3>
+              <div className="my-4">
+                <ThumbnailArtworkSelect />
+                <TypeArtworkSelect />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>: <LoadingSpinner />}
-  </RootLayout>;
+      ) : (
+        <LoadingSpinner />
+      )}
+    </RootLayout>
+  );
 }

@@ -12,29 +12,28 @@ export default function LangSelect() {
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     router.push(`/${e.target.value}/settings`);
   };
-  return <label htmlFor="lang">
-    <div className="flex flex-col mb-4">
-      <span>{t('settings.languageOptions.language')}:</span>
-      <Select
-        value={locale}
-        data-testid="lang"
-        id="lang"
-        onChange={handleLangChange}>
-        {
-          locales.map((lang: string) => {
-            return <option
-              key={lang}
-              value={lang}
-              className="text-xs"
-            >
-              {lang}
-            </option>;
-          })
-        }
-      </Select>
-      <div className="text-xs hover:text-(--pokedex-red) w-75">
-        { t('settings.languageOptions.languageTooltip') }
+  return (
+    <label htmlFor="lang">
+      <div className="flex flex-col mb-4">
+        <span>{t("settings.languageOptions.language")}:</span>
+        <Select
+          value={locale}
+          data-testid="lang"
+          id="lang"
+          onChange={handleLangChange}
+        >
+          {locales.map((lang: string) => {
+            return (
+              <option key={lang} value={lang} className="text-xs">
+                {lang}
+              </option>
+            );
+          })}
+        </Select>
+        <div className="text-xs hover:text-(--pokedex-red) w-75">
+          {t("settings.languageOptions.languageTooltip")}
+        </div>
       </div>
-    </div>
-  </label>;
+    </label>
+  );
 }

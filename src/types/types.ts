@@ -1,23 +1,44 @@
-import { INamedApiResource, IPokemon, IPokemonForm, IPokemonStat, IPokemonType } from "pokeapi-typescript";
+import {
+  INamedApiResource,
+  IPokemon,
+  IPokemonForm,
+  IPokemonStat,
+  IPokemonType,
+} from "pokeapi-typescript";
 
 export type IPkmn = {
   name: string;
-  types: IPokemonType[]
+  types: IPokemonType[];
   id: string;
   sprites: unknown;
-  stats: IPokemonStat[]
-  forms: INamedApiResource<IPokemonForm>[]
+  stats: IPokemonStat[];
+  forms: INamedApiResource<IPokemonForm>[];
 };
 
 export type SpeciesChain = {
   loaded: boolean;
-  chain: Record<string, IPokemon[]>
+  chain: Record<string, IPokemon[]>;
 };
 
 export type PokemonType =
-  | 'normal' | 'fire' | 'water' | 'electric' | 'grass' | 'ice'
-  | 'fighting' | 'poison' | 'ground' | 'flying' | 'psychic'
-  | 'bug' | 'rock' | 'ghost' | 'dragon' | 'dark' | 'steel' | 'fairy';
+  | "normal"
+  | "fire"
+  | "water"
+  | "electric"
+  | "grass"
+  | "ice"
+  | "fighting"
+  | "poison"
+  | "ground"
+  | "flying"
+  | "psychic"
+  | "bug"
+  | "rock"
+  | "ghost"
+  | "dragon"
+  | "dark"
+  | "steel"
+  | "fairy";
 
 export type DefensiveMatchup = {
   weaknesses: Record<PokemonType, number>;

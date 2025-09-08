@@ -11,8 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
   title: string;
 }>) {
-
-  title = 'PokéNext -- ' + title;
+  title = "PokéNext -- " + title;
 
   return (
     <>
@@ -20,10 +19,8 @@ export default function RootLayout({
         <title>{title}</title>
       </Head>
       <div className="container mx-auto">
-        <Navbar title={title}/>
-        <main className="sm:w-min md:w-[initial]">
-          {children}
-        </main>
+        <Navbar title={title} />
+        <main className="sm:w-min md:w-[initial]">{children}</main>
         <Footer />
       </div>
     </>

@@ -5,8 +5,9 @@ import Search from "./search";
 
 export default function MenuMd({ children }: { children: ReactNode }) {
   return (
-    <div className="hidden w-full md:block md:w-auto" >
-      <ul className="
+    <div className="hidden w-full md:block md:w-auto">
+      <ul
+        className="
           flex
           flex-col
           items-center
@@ -22,19 +23,18 @@ export default function MenuMd({ children }: { children: ReactNode }) {
           md:mt-0
           md:border-0
           md:bg-(--pokedex-red)
-        ">
+        "
+      >
         <li className="h-10">
           <div className="go-to rounded">
-            <Search className="w-full"/>
+            <Search className="w-full" />
           </div>
         </li>
         <li className="h-10">
           <NavUserAuth />
         </li>
-        <li>
-          {children}
-        </li>
+        <li>{children}</li>
       </ul>
     </div>
   );
-};
+}
