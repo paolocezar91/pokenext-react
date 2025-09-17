@@ -7,19 +7,20 @@ export default function Select({
   id,
   multiple,
   disabled,
-  onChange
+  onChange,
 }: {
-  children: ReactNode,
-  value?: string | number | readonly string[] | undefined,
-  className?: string,
-  id?: string,
-  multiple?: boolean,
-  disabled?: boolean,
+  children: ReactNode;
+  value?: string | number | readonly string[] | undefined;
+  className?: string;
+  id?: string;
+  multiple?: boolean;
+  disabled?: boolean;
   // eslint-disable-next-line no-unused-vars
-  onChange: (_: ChangeEvent<HTMLSelectElement>) => void
+  onChange: (_: ChangeEvent<HTMLSelectElement>) => void;
 }) {
-  return <select
-    className={`
+  return (
+    <select
+      className={`
       bg-white
       text-black
       text-xs
@@ -34,12 +35,13 @@ export default function Select({
       disabled:opacity-70
       ${className}
     `}
-    disabled={disabled}
-    onChange={onChange}
-    value={value}
-    id={id}
-    multiple={multiple}
-  >
-    {children}
-  </select>;
+      disabled={disabled}
+      onChange={onChange}
+      value={value}
+      id={id}
+      multiple={multiple}
+    >
+      {children}
+    </select>
+  );
 }

@@ -9,15 +9,23 @@ type Props = Omit<LinkProps, "href"> & {
   target?: string;
 };
 
-export default function Link({ href, children, className = "", target, ...props }: Props) {
+export default function Link({
+  href,
+  children,
+  className = "",
+  target,
+  ...props
+}: Props) {
   const locale = useLocale();
   const localizedHref = `/${locale}${href.startsWith("/") ? href : "/" + href}`;
-  return <NextLink
-    className={className}
-    href={localizedHref}
-    target={target}
-    {...props}
-  >
-    {children}
-  </NextLink>;
+  return (
+    <NextLink
+      className={className}
+      href={localizedHref}
+      target={target}
+      {...props}
+    >
+      {children}
+    </NextLink>
+  );
 }

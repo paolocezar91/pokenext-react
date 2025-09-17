@@ -1,14 +1,14 @@
 .user-menu {
-    transform: translateY(8px);
+  transform: translateY(8px);
 
-    &::after {
-        content: '';
-        position: absolute;
-        border-width: 8px;
-        border-style: solid;
-        bottom: 100%;
-        left: 93%;
-        margin-left: -5px;
-        border-color: transparent transparent #fff transparent;
-    }
+  &::after {
+    content: "";
+    position: absolute;
+    border-width: 8px;
+    border-style: solid;
+    bottom: 100%;
+    left: 93%;
+    margin-left: -5px;
+    border-color: transparent transparent #fff transparent;
+  }
 }

@@ -8,23 +8,21 @@ export default function MenuXs({ children }: { children?: ReactNode }) {
   const [openSearch, setOpenSearch] = useState(false);
   return (
     <>
-      <div
-        className={`md:hidden flex`}
-        id="navbar-multi-level"
-      >
-        <NavButton isActive={openSearch} onClick={() => setOpenSearch(!openSearch)}>
-          <MagnifyingGlassIcon className="w-6"/>
+      <div className={`md:hidden flex`} id="navbar-multi-level">
+        <NavButton
+          isActive={openSearch}
+          onClick={() => setOpenSearch(!openSearch)}
+        >
+          <MagnifyingGlassIcon className="w-6" />
         </NavButton>
-        <div className="mr-2">
-          {children}
-        </div>
+        <div className="mr-2">{children}</div>
         <NavUserAuth />
       </div>
-      {openSearch && <div
-        className="bg-gray-700 mt-4 w-full"
-      >
-        <Search className="w-full"/>
-      </div>}
+      {openSearch && (
+        <div className="bg-gray-700 mt-4 w-full">
+          <Search className="w-full" />
+        </div>
+      )}
     </>
   );
-};
+}

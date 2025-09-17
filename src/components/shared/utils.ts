@@ -5,7 +5,10 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
  * @param ref - React ref to the element
  * @param callback - Function to call on outside click
  */
-export function useClickOutside<T extends HTMLElement>(ref: React.RefObject<T | null>, callback: () => void) {
+export function useClickOutside<T extends HTMLElement>(
+  ref: React.RefObject<T | null>,
+  callback: () => void,
+) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -19,15 +22,16 @@ export function useClickOutside<T extends HTMLElement>(ref: React.RefObject<T | 
   }, [ref, callback]);
 }
 
-export const capitilize = (str = '') => {
-  const splitStr = str.toLowerCase().split(' ');
+export const capitilize = (str = "") => {
+  const splitStr = str.toLowerCase().split(" ");
   for (let i = 0; i < splitStr.length; i++) {
     // You do not need to check if i is larger than splitStr length, as your for does that for you
     // Assign it back to the array
-    splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+    splitStr[i] =
+      splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
   }
   // Directly return the joined string
-  return splitStr.join(' ');
+  return splitStr.join(" ");
 };
 
 export const normalizeGeneration = (text: string) => {
@@ -61,9 +65,15 @@ export const normalizeVersionGroup = (text: string) => {
   text = text.replace("omega-ruby-alpha-sapphire", "OR/AS");
   text = text.replace("sun-moon", "Sun/Moon");
   text = text.replace("ultra-sun-ultra-moon", "Ultra Sun/Ultra Moon");
-  text = text.replace("lets-go-pikachu-lets-go-eevee", "Let's Go Pikachu/Eevee");
+  text = text.replace(
+    "lets-go-pikachu-lets-go-eevee",
+    "Let's Go Pikachu/Eevee",
+  );
   text = text.replace("sword-shield", "Sword/Shield");
-  text = text.replace("brilliant-diamond-and-shining-pearl", "Brill. Diamond/Shin. Pearl");
+  text = text.replace(
+    "brilliant-diamond-and-shining-pearl",
+    "Brill. Diamond/Shin. Pearl",
+  );
   text = text.replace("legends-arceus", "Legends: Arceus");
   text = text.replace("scarlet-violet", "Scarlet/Violet");
   return text;
@@ -71,108 +81,111 @@ export const normalizeVersionGroup = (text: string) => {
 
 export const normalizePokemonName = (text: string) => {
   // edge cases
-  text = text.replace('nidoran-m', 'nidoran ♂');
-  text = text.replace('nidoran-f', 'nidoran ♀');
-  text = text.replace('mr-mime', 'mr. Mime');
-  text = text.replace('mime-jr', 'mime Jr.');
-  text = text.replace('mr-rime', 'mr. Rime');
-  text = text.replace('-altered', ' (Altered)');
-  text = text.replace('-land', ' (Land)');
-  text = text.replace('-red-striped', ' (Red Striped)');
-  text = text.replace('-blue-striped', ' (Blue Striped)');
-  text = text.replace('-white-striped', ' (White Striped)');
-  text = text.replace('-standard', ' (Standard)');
-  text = text.replace('-incarnate', ' (Incarnate)');
-  text = text.replace('-therian', ' (Therian)');
-  text = text.replace('-ordinary', '');
-  text = text.replace('-aria', ' (Aria)');
-  text = text.replace('-unbound', ' (Unbound)');
-  text = text.replace('-male', ' ♂');
-  text = text.replace('-female', ' ♀');
-  text = text.replace('-50', ' (50%)');
-  text = text.replace('-baile', ' (Baile)');
-  text = text.replace('-pom-pom', ' (Pom-Pom)');
-  text = text.replace('-pau', ' (Pa\'u)');
-  text = text.replace('-sensu', ' (Sensu)');
-  text = text.replace('-disguised', '');
-  text = text.replace('-full-belly', '');
-  text = text.replace('-single-strike', '');
-  text = text.replace('-green-plumage', ' (Green Plumage)');
-  text = text.replace('-yellow-plumage', ' (Yellow Plumage)');
-  text = text.replace('-blue-plumage', ' (Blue Plumage)');
-  text = text.replace('-white-plumage', ' (White Plumage)');
-  text = text.replace('-curly', '');
-  text = text.replace('-plant', ' (Plant)');
-  text = text.replace('-sandy', ' (Sandy)');
-  text = text.replace('-trash', ' (Trash)');
-  text = text.replace('-alola', ' (Alola)');
-  text = text.replace('-galar', ' (Galar)');
-  text = text.replace('-gmax', ' (Gigantamax)');
-  text = text.replace('-mega-x', ' (Mega X)');
-  text = text.replace('-mega-y', ' (Mega Y)');
-  text = text.replace('-mega', ' (Mega)');
-  text = text.replace('-hisui', ' (Hisui)');
-  text = text.replace('-heat', ' (Heat)');
-  text = text.replace('-wash', ' (Wash)');
-  text = text.replace('-frost', ' (Frost)');
-  text = text.replace('-fan', ' (Fan)');
-  text = text.replace('-mow', ' (Mow)');
-  text = text.replace('-normal', '');
-  text = text.replace('-average', '');
-  text = text.replace('-shield', ' (Shield)');
-  text = text.replace('-midday', ' (Midday)');
-  text = text.replace('-solo', '');
-  text = text.replace('-amped', ' (Amped)');
-  text = text.replace('-ice', ' (Ice)');
-  text = text.replace('-family-of-four', ' (Family of Four)');
-  text = text.replace('-zero', ' (Zero)');
-  text = text.replace('-two-segment', ' (Two Segment)');
+  text = text.replace("nidoran-m", "nidoran ♂");
+  text = text.replace("nidoran-f", "nidoran ♀");
+  text = text.replace("mr-mime", "mr. Mime");
+  text = text.replace("mime-jr", "mime Jr.");
+  text = text.replace("mr-rime", "mr. Rime");
+  text = text.replace("-altered", " (Altered)");
+  text = text.replace("-land", " (Land)");
+  text = text.replace("-red-striped", " (Red Striped)");
+  text = text.replace("-blue-striped", " (Blue Striped)");
+  text = text.replace("-white-striped", " (White Striped)");
+  text = text.replace("-standard", " (Standard)");
+  text = text.replace("-incarnate", " (Incarnate)");
+  text = text.replace("-therian", " (Therian)");
+  text = text.replace("-ordinary", "");
+  text = text.replace("-aria", " (Aria)");
+  text = text.replace("-unbound", " (Unbound)");
+  text = text.replace("-male", " ♂");
+  text = text.replace("-female", " ♀");
+  text = text.replace("-50", " (50%)");
+  text = text.replace("-baile", " (Baile)");
+  text = text.replace("-pom-pom", " (Pom-Pom)");
+  text = text.replace("-pau", " (Pa'u)");
+  text = text.replace("-sensu", " (Sensu)");
+  text = text.replace("-disguised", "");
+  text = text.replace("-full-belly", "");
+  text = text.replace("-single-strike", "");
+  text = text.replace("-green-plumage", " (Green Plumage)");
+  text = text.replace("-yellow-plumage", " (Yellow Plumage)");
+  text = text.replace("-blue-plumage", " (Blue Plumage)");
+  text = text.replace("-white-plumage", " (White Plumage)");
+  text = text.replace("-curly", "");
+  text = text.replace("-plant", " (Plant)");
+  text = text.replace("-sandy", " (Sandy)");
+  text = text.replace("-trash", " (Trash)");
+  text = text.replace("-alola", " (Alola)");
+  text = text.replace("-galar", " (Galar)");
+  text = text.replace("-gmax", " (Gigantamax)");
+  text = text.replace("-mega-x", " (Mega X)");
+  text = text.replace("-mega-y", " (Mega Y)");
+  text = text.replace("-mega", " (Mega)");
+  text = text.replace("-hisui", " (Hisui)");
+  text = text.replace("-heat", " (Heat)");
+  text = text.replace("-wash", " (Wash)");
+  text = text.replace("-frost", " (Frost)");
+  text = text.replace("-fan", " (Fan)");
+  text = text.replace("-mow", " (Mow)");
+  text = text.replace("-normal", "");
+  text = text.replace("-average", "");
+  text = text.replace("-shield", " (Shield)");
+  text = text.replace("-midday", " (Midday)");
+  text = text.replace("-solo", "");
+  text = text.replace("-amped", " (Amped)");
+  text = text.replace("-ice", " (Ice)");
+  text = text.replace("-family-of-four", " (Family of Four)");
+  text = text.replace("-zero", " (Zero)");
+  text = text.replace("-two-segment", " (Two Segment)");
 
   return capitilize(text);
 };
 
 export const kebabToSpace = (name: string) => {
-  return name.replaceAll('-',' ');
+  return name.replaceAll("-", " ");
 };
 
 export const kebabToSlash = (name: string) => {
-  return name.replaceAll('-','/');
+  return name.replaceAll("-", "/");
 };
 
-export const getIdFromUrlSubstring = (url = '') => url.split("/")[url.split("/").length - 2];
+export const getIdFromUrlSubstring = (url = "") =>
+  url.split("/")[url.split("/").length - 2];
 
 export function useAsyncQuery<T>(
   queryFn: () => Promise<T>,
   deps: unknown[] = [],
   // eslint-disable-next-line no-unused-vars
   onError?: (err: string) => void,
-  initialData?: T
+  initialData?: T,
 ) {
   const [data, setData] = useState<T | null>(initialData ?? null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let ignore = false;
     setLoading(true);
 
-    queryFn().then(result => {
-      if (!ignore) {
-        setData(result);
-        setLoading(false);
-      }
-    }).catch((e) => {
-      if (!ignore) {
-        setLoading(false);
-        setError(String(e.error));
-        if (onError) onError(String(e.error));
-      }
-    });
+    queryFn()
+      .then((result) => {
+        if (!ignore) {
+          setData(result);
+          setLoading(false);
+        }
+      })
+      .catch((e) => {
+        if (!ignore) {
+          setLoading(false);
+          setError(String(e.error));
+          if (onError) onError(String(e.error));
+        }
+      });
 
     return () => {
       ignore = true;
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return { data, loading, error };
@@ -180,7 +193,7 @@ export function useAsyncQuery<T>(
 
 export const useLocalStorage = <T>(
   key: string,
-  defaultValue: T
+  defaultValue: T,
 ): [T, Dispatch<SetStateAction<T>>] => {
   const isMounted = useRef(false);
   const [value, setValue] = useState<T>(defaultValue);

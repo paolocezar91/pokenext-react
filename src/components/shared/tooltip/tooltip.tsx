@@ -1,21 +1,21 @@
-import React, { useEffect, useReducer, useRef } from 'react';
-import './tooltip.scss';
+import React, { useEffect, useReducer, useRef } from "react";
+import "./tooltip.scss";
 
 type TooltipPosition = "top" | "bottom" | "left" | "right";
 
 type TooltipState = {
-  isVisible: boolean,
-  timeoutId: NodeJS.Timeout | null,
-  coords: { top: number, left: number },
-  finalPosition: TooltipPosition
+  isVisible: boolean;
+  timeoutId: NodeJS.Timeout | null;
+  coords: { top: number; left: number };
+  finalPosition: TooltipPosition;
 };
 
 type TooltipAction =
-  | { type: 'SET_IS_VISIBLE'; payload: boolean }
-  | { type: 'SET_TIMEOUT_ID'; payload: NodeJS.Timeout | null }
-  | { type: 'SET_COORDS'; payload: { top: number, left: number }}
-  | { type: 'SET_FINAL_POSITION'; payload: TooltipPosition }
-  | { type: 'RESET_STATE' };
+  | { type: "SET_IS_VISIBLE"; payload: boolean }
+  | { type: "SET_TIMEOUT_ID"; payload: NodeJS.Timeout | null }
+  | { type: "SET_COORDS"; payload: { top: number; left: number } }
+  | { type: "SET_FINAL_POSITION"; payload: TooltipPosition }
+  | { type: "RESET_STATE" };
 
 export default function Tooltip({
   children,
@@ -23,7 +23,7 @@ export default function Tooltip({
   position = "top",
   delay = 0,
   disabled = false,
-  className = ""
+  className = "",
 }: {
   children: React.ReactNode;
   content: React.ReactNode;
@@ -39,17 +39,20 @@ export default function Tooltip({
     finalPosition: position,
   };
 
-  const tooltipReducer = (state: TooltipState, action: TooltipAction): TooltipState => {
+  const tooltipReducer = (
+    state: TooltipState,
+    action: TooltipAction,
+  ): TooltipState => {
     switch (action.type) {
-      case 'SET_IS_VISIBLE':
+      case "SET_IS_VISIBLE":
         return { ...state, isVisible: action.payload };
-      case 'SET_TIMEOUT_ID':
+      case "SET_TIMEOUT_ID":
         return { ...state, timeoutId: action.payload };
-      case 'SET_COORDS':
+      case "SET_COORDS":
         return { ...state, coords: action.payload };
-      case 'SET_FINAL_POSITION':
+      case "SET_FINAL_POSITION":
         return { ...state, finalPosition: action.payload };
-      case 'RESET_STATE':
+      case "RESET_STATE":
         return initialState;
       default:
         return state;
@@ -65,12 +68,12 @@ export default function Tooltip({
 
     if (delay > 0) {
       const id = setTimeout(() => {
-        dispatch({ type:'SET_IS_VISIBLE', payload: true });
+        dispatch({ type: "SET_IS_VISIBLE", payload: true });
         updatePosition();
       }, delay);
-      dispatch({ type: 'SET_TIMEOUT_ID', payload: id });
+      dispatch({ type: "SET_TIMEOUT_ID", payload: id });
     } else {
-      dispatch({ type:'SET_IS_VISIBLE', payload: true });
+      dispatch({ type: "SET_IS_VISIBLE", payload: true });
       updatePosition();
     }
   };
@@ -78,9 +81,9 @@ export default function Tooltip({
   const hideTooltip = () => {
     if (state.timeoutId) {
       clearTimeout(state.timeoutId);
-      dispatch({ type: 'SET_TIMEOUT_ID', payload: null });
+      dispatch({ type: "SET_TIMEOUT_ID", payload: null });
     }
-    dispatch({ type:'SET_IS_VISIBLE', payload: false });
+    dispatch({ type: "SET_IS_VISIBLE", payload: false });
   };
 
   const updatePosition = () => {
@@ -98,43 +101,43 @@ export default function Tooltip({
 
     // Check if the preferred position fits, otherwise find the best alternative
     switch (position) {
-      case 'top':
+      case "top":
         if (triggerRect.top - tooltipRect.height < 0) {
-          newPosition = 'bottom';
+          newPosition = "bottom";
         }
         break;
-      case 'bottom':
+      case "bottom":
         if (triggerRect.bottom + tooltipRect.height > viewportHeight) {
-          newPosition = 'top';
+          newPosition = "top";
         }
         break;
-      case 'left':
+      case "left":
         if (triggerRect.left - tooltipRect.width < 0) {
-          newPosition = 'right';
+          newPosition = "right";
         }
         break;
-      case 'right':
+      case "right":
         if (triggerRect.right + tooltipRect.width > viewportWidth) {
-          newPosition = 'left';
+          newPosition = "left";
         }
         break;
     }
 
     // Calculate coordinates based on final position
     switch (newPosition) {
-      case 'top':
+      case "top":
         top = triggerRect.top - tooltipRect.height;
         left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
         break;
-      case 'bottom':
+      case "bottom":
         top = triggerRect.bottom;
         left = triggerRect.left + triggerRect.width / 2 - tooltipRect.width / 2;
         break;
-      case 'left':
+      case "left":
         top = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
         left = triggerRect.left - tooltipRect.width;
         break;
-      case 'right':
+      case "right":
         top = triggerRect.top + triggerRect.height / 2 - tooltipRect.height / 2;
         left = triggerRect.right;
         break;
@@ -144,23 +147,23 @@ export default function Tooltip({
     left = Math.max(10, Math.min(left, viewportWidth - tooltipRect.width - 10));
     top = Math.max(10, Math.min(top, viewportHeight - tooltipRect.height - 10));
 
-    dispatch({ type: 'SET_FINAL_POSITION', payload: newPosition });
-    dispatch({ type: 'SET_COORDS', payload: { top, left }});
+    dispatch({ type: "SET_FINAL_POSITION", payload: newPosition });
+    dispatch({ type: "SET_COORDS", payload: { top, left } });
   };
 
   useEffect(() => {
     if (state.isVisible) {
       updatePosition();
-      window.addEventListener('resize', updatePosition);
-      window.addEventListener('scroll', updatePosition, true);
+      window.addEventListener("resize", updatePosition);
+      window.addEventListener("scroll", updatePosition, true);
     }
 
     return () => {
-      window.removeEventListener('resize', updatePosition);
-      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
     };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.isVisible]);
 
   return (
@@ -170,12 +173,17 @@ export default function Tooltip({
         className="tooltip-trigger"
         onMouseEnter={showTooltip}
         onMouseLeave={hideTooltip}
-        onClick={disabled ? undefined : () => dispatch({ type:'SET_IS_VISIBLE', payload: !state.isVisible })}
+        onClick={
+          disabled
+            ? undefined
+            : () =>
+                dispatch({ type: "SET_IS_VISIBLE", payload: !state.isVisible })
+        }
         aria-describedby={state.isVisible ? "tooltip-content" : undefined}
       >
         {children}
       </div>
-      {state.isVisible &&
+      {state.isVisible && (
         <div
           ref={tooltipRef}
           id="tooltip-content"
@@ -188,7 +196,7 @@ export default function Tooltip({
         >
           {content}
         </div>
-      }
+      )}
     </div>
   );
-};
+}

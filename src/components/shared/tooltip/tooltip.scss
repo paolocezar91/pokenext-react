@@ -22,7 +22,7 @@
 
   /* Arrow styles */
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     border-width: 5px;
     border-style: solid;
@@ -89,7 +89,9 @@
 .tooltip-content[aria-hidden="true"] {
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.15s, visibility 0.15s;
+  transition:
+    opacity 0.15s,
+    visibility 0.15s;
 }
 
 .tooltip-content[aria-hidden="false"] {

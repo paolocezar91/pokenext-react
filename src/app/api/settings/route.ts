@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const settings = await req.json();
@@ -7,8 +7,8 @@ export async function POST(req: NextRequest) {
     {
       status: 200,
       headers: {
-        'Set-Cookie': `user_settings=${encodeURIComponent(JSON.stringify(settings))}; Path=/; Max-Age=${30 * 24 * 60 * 60}`,
+        "Set-Cookie": `user_settings=${encodeURIComponent(JSON.stringify(settings))}; Path=/; Max-Age=${30 * 24 * 60 * 60}`,
       },
-    }
+    },
   );
 }

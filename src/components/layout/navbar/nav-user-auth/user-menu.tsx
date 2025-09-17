@@ -1,12 +1,16 @@
 import { ReactNode } from "react";
-import './user-menu.scss';
+import "./user-menu.scss";
 
-export default function UserMenu({ open, onClose, children }: {
+export default function UserMenu({
+  open,
+  onClose,
+  children,
+}: {
   open: boolean;
   onClose: () => void;
   children: ReactNode;
 }) {
-  return open ?
+  return open ? (
     <div
       onMouseLeave={onClose}
       className="
@@ -27,5 +31,5 @@ export default function UserMenu({ open, onClose, children }: {
     >
       {children}
     </div>
-    : null;
+  ) : null;
 }

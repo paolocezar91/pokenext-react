@@ -2,16 +2,25 @@ import { gql } from "graphql-request";
 import { IType } from "pokeapi-typescript";
 import { requestGraphql } from "./graphql";
 
-export async function getTypeById(vars: { id?: number | string, name?: string }) {
+export async function getTypeById(vars: {
+  id?: number | string;
+  name?: string;
+}) {
   const query = gql`
     query ($id: Int, $name: String) {
       pokemonType(id: $id, name: $name) {
         id
         name
         pokemon {
-          pokemon { name url }
+          pokemon {
+            name
+            url
+          }
         }
-        moves { name url }
+        moves {
+          name
+          url
+        }
       }
     }
   `;
@@ -27,15 +36,15 @@ export async function getAllTypes() {
   const query = gql`
     query {
       types {
-          id
-          name
+        id
+        name
       }
     }
   `;
 
   try {
     return await requestGraphql<{ types: IType[] }>(query);
-  } catch(err) {
+  } catch (err) {
     throw err;
   }
 }

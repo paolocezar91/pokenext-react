@@ -1,11 +1,11 @@
 export interface ResultsCount<T> {
-  count: number,
-  results: T[]
+  count: number;
+  results: T[];
 }
 
 export const idOrName = (idOrName: string) => {
   const isId = !isNaN(Number(idOrName));
-  const name = isId ? '' : idOrName;
+  const name = isId ? "" : idOrName;
   const id = isId ? Number(idOrName) : undefined;
 
   return { name, id };
@@ -14,6 +14,6 @@ export const idOrName = (idOrName: string) => {
 export const formatResultsCount = <T>(results: T[]) => {
   return {
     count: results.length,
-    results
+    results,
   } as ResultsCount<T>;
 };

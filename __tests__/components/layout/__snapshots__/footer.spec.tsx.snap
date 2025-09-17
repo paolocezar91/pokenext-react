@@ -39,7 +39,7 @@ exports[`Footer should match snapshot with no valid description 1`] = `
         class="text-xs text-white"
       >
         <div>
-          v0.3.3
+          v0.4.1
         </div>
       </div>
     </div>
