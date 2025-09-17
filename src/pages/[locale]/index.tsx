@@ -18,6 +18,7 @@ import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import RootLayout from "../../components/layout/layout";
 import { getMessages } from "@/i18n/messages";
+import { NextRequest } from "next/server";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -33,7 +34,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     : {};
   // Use settings to filter
   const pokemonsData = (
-    await getAllPokemon({
+    await getAllPokemon(context.req as unknown as NextRequest, {
       offset: STARTING_POKEMON,
       limit: NUMBERS_OF_POKEMON,
       ...settings.filter,
@@ -60,7 +61,7 @@ export default function Pokedex({
   const [pokemons, setPokemons] = useState<IPkmn[]>(pokemonsData);
   const [loading, setLoading] = useState<boolean>(false);
   const [filtered, setFiltered] = useState<{ name: string; types: string }>(
-    filterApplied,
+    filterApplied
   );
   const { settings } = useUser();
   const t = useTranslations();
@@ -91,7 +92,7 @@ export default function Pokedex({
   return (
     <RootLayout title="Home">
       {settings && (
-        <div className="wrapper h-[inherit] pt-4 bg-background">
+        <div className="wrapper h-[inherit] bg-background">
           <div className="relative flex items-start">
             <SidebarSettings />
             {settings.listTable ? (

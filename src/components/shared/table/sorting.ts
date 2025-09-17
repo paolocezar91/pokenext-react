@@ -2,13 +2,13 @@ export type SortingDir<T> = { key: T; dir: "+" | "-" };
 // eslint-disable-next-line no-unused-vars
 export type SortMapping<T extends string, U> = (
   a: U,
-  b: U,
+  b: U
 ) => Record<T, [number | string, number | string]>;
 
 export function sortResources<T extends string, U>(
   sorting: Array<{ key: T; dir: "+" | "-" }>,
   sortMapping: SortMapping<T, U>,
-  defaultKey: string,
+  defaultKey: string
 ) {
   return (a: U, b: U) => {
     for (const { key, dir } of sorting) {

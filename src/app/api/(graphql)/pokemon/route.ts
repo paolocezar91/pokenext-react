@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
         name: req.nextUrl.searchParams.get("name") ?? undefined,
         types: req.nextUrl.searchParams.get("types") ?? undefined,
       };
-      response = await getAllPokemon(vars);
+      response = await getAllPokemon(req, vars);
     }
     return NextResponse.json(response, { status: 200 });
   } catch (err) {

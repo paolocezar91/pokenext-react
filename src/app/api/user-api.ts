@@ -39,18 +39,7 @@ export default class UserApiQuery extends BaseQuery {
   upsertSettings = async (body: Partial<Settings>, id?: string) => {
     return await this.postURL<Settings>(
       `/api/settings/${id}`,
-      body as Record<string, unknown>,
+      body as Record<string, unknown>
     );
-  };
-
-  setSettingsRedis = async (user_id: string, updatedSettings: unknown) => {
-    return await this.postURL(
-      `/api/cache/settings/${user_id}`,
-      updatedSettings as Record<string, unknown>,
-    );
-  };
-
-  getSettingsRedis = async (user_id: string) => {
-    return await this.getURL(`/api/cache/settings/${user_id}`);
   };
 }

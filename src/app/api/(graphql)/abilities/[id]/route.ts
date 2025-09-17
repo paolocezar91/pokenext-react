@@ -1,13 +1,12 @@
 import { idOrName } from "@/app/api/api-utils";
-import { gql, request } from "graphql-request";
+import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 import { IAbility } from "pokeapi-typescript";
-
-const apiUrl = process.env.GRAPHQL_URL as string;
+import { queryGraphql } from "@/app/services/graphql";
 
 export async function GET(
-  _: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const vars = idOrName(id);
@@ -29,10 +28,10 @@ export async function GET(
   `;
 
   try {
-    const { abilityById } = await request<{ abilityById: IAbility }>(
-      apiUrl,
+    const { abilityById } = await queryGraphql<{ abilityById: IAbility }>(
+      req,
       query,
-      vars,
+      vars
     );
     return NextResponse.json(abilityById, { status: 200 });
   } catch (err) {

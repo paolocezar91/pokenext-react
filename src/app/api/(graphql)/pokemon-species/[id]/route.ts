@@ -1,13 +1,12 @@
 import { idOrName } from "@/app/api/api-utils";
-import { gql, request } from "graphql-request";
+import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 import { IPokemonSpecies } from "pokeapi-typescript";
-
-const apiUrl = process.env.GRAPHQL_URL as string;
+import { queryGraphql } from "@/app/services/graphql";
 
 export async function GET(
-  _: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const vars = idOrName(id);
@@ -100,9 +99,9 @@ export async function GET(
   `;
 
   try {
-    const { pokemonSpecies } = await request<{
+    const { pokemonSpecies } = await queryGraphql<{
       pokemonSpecies: IPokemonSpecies;
-    }>(apiUrl, query, vars);
+    }>(req, query, vars);
     return NextResponse.json(pokemonSpecies, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });

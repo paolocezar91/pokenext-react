@@ -1,7 +1,6 @@
 import { gql, request } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
-
-const apiUrl = process.env.GRAPHQL_URL as string;
+import { queryGraphql } from "@/app/services/graphql";
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
@@ -16,9 +15,9 @@ export async function POST(req: NextRequest) {
   `;
 
   try {
-    const { createUser } = await request<{
+    const { createUser } = await queryGraphql<{
       createUser: { id: string; email: string };
-    }>(apiUrl, mutation, { email });
+    }>(req, mutation, { email });
     return NextResponse.json(createUser, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });

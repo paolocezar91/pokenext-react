@@ -17,11 +17,11 @@ export default function PokedexList({
   const { settings } = useUser();
   const parentRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number | undefined>(
-    undefined,
+    undefined
   );
   const isMobile =
     /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent,
+      navigator.userAgent
     );
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function PokedexList({
       // Calculate how many items fit
       const itemsPerRow = Math.max(
         1,
-        Math.floor((parentWidth - 6 * gap) / (itemWidth + gap)),
+        Math.floor((parentWidth - 6 * gap) / (itemWidth + gap))
       );
       const totalWidth = itemsPerRow * itemWidth + (itemsPerRow - 1) * gap;
       setContainerWidth(totalWidth);
@@ -79,7 +79,7 @@ export default function PokedexList({
           className="
         list
         relative
-        h-[82vh]
+        h-[85vh]
         overflow-auto
         rounded-lg
         bg-background
@@ -102,7 +102,9 @@ export default function PokedexList({
                 <div key={pokemon.id}>
                   {settings.thumbLabelList == "tooltip" && (
                     <Tooltip
-                      content={`${normalizePokemonName(pokemon.name)} ${getNumber(pokemon.id)}`}
+                      content={`${normalizePokemonName(
+                        pokemon.name
+                      )} ${getNumber(pokemon.id)}`}
                     >
                       {lazyThumb}
                     </Tooltip>

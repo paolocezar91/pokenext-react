@@ -1,7 +1,8 @@
 import { gql } from "graphql-request";
 import { IPokemon } from "pokeapi-typescript";
 import { formatResultsCount } from "../api/api-utils";
-import { requestGraphql } from "./graphql";
+import { queryGraphql, requestGraphql } from "./graphql";
+import { NextRequest } from "next/server";
 
 export async function getPokemonById(vars: {
   id?: number | string;
@@ -161,7 +162,7 @@ export async function getPokemonByIds(vars: { ids: string }) {
   try {
     const data = await requestGraphql<{ pokemonsByIds: IPokemon[] }>(
       query,
-      vars,
+      vars
     );
     return formatResultsCount(data.pokemonsByIds);
   } catch (err) {
@@ -169,12 +170,15 @@ export async function getPokemonByIds(vars: { ids: string }) {
   }
 }
 
-export async function getAllPokemon(vars: {
-  limit?: number;
-  offset?: number;
-  name?: string;
-  types?: string;
-}) {
+export async function getAllPokemon(
+  req: NextRequest,
+  vars: {
+    limit?: number;
+    offset?: number;
+    name?: string;
+    types?: string;
+  }
+) {
   const query = gql`
     query ($limit: Int, $offset: Int, $name: String, $types: String) {
       pokemons(limit: $limit, offset: $offset, name: $name, types: $types) {
@@ -197,7 +201,7 @@ export async function getAllPokemon(vars: {
   `;
 
   try {
-    const data = await requestGraphql<{ pokemons: IPokemon[] }>(query, vars);
+    const data = await queryGraphql<{ pokemons: IPokemon[] }>(req, query, vars);
     return formatResultsCount(data.pokemons);
   } catch (err) {
     throw err;

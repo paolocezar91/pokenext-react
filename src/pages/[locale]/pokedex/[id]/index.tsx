@@ -68,7 +68,7 @@ export type PokemonAction =
   | { type: "RESET_STATE" };
 
 export async function generateSpeciesEvolutionChain(
-  ec: IEvolutionChain,
+  ec: IEvolutionChain
 ): Promise<SpeciesChain> {
   const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
   const chain: { first: IPokemon[]; second: IPokemon[]; third: IPokemon[] } = {
@@ -83,7 +83,7 @@ export async function generateSpeciesEvolutionChain(
       ec.chain.evolves_to.map((evolves_to) => {
         const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
         return pokeApiQuery.getPokemonById(evolve_to_id);
-      }),
+      })
     );
 
     if (secondEvo.evolves_to[0]) {
@@ -91,7 +91,7 @@ export async function generateSpeciesEvolutionChain(
         secondEvo.evolves_to.map((evolves_to) => {
           const evolve_to_id = getIdFromUrlSubstring(evolves_to.species.url);
           return pokeApiQuery.getPokemonById(evolve_to_id);
-        }),
+        })
       );
     }
   }
@@ -163,7 +163,7 @@ export default function PokemonDetails({
 
   const pokemonReducer = (
     state: PokemonState,
-    action: PokemonAction,
+    action: PokemonAction
   ): PokemonState => {
     switch (action.type) {
       case "SET_POKEMON":
@@ -203,7 +203,7 @@ export default function PokemonDetails({
       dispatch({ type: "SET_SPECIES", payload: speciesData });
 
       const ec = (await pokeApiQuery.getEvolutionChain(
-        getIdFromUrlSubstring(speciesData.evolution_chain.url),
+        getIdFromUrlSubstring(speciesData.evolution_chain.url)
       )) as IEvolutionChain;
 
       dispatch({ type: "SET_EVOLUTION_CHAIN", payload: ec });
@@ -237,7 +237,7 @@ export default function PokemonDetails({
   const title = !state.pokemon
     ? `${t("pokedex.loading")}...`
     : `${normalizePokemonName(state.pokemon.name)} ${getNumber(
-        state.pokemon.id,
+        state.pokemon.id
       )}`;
 
   return (

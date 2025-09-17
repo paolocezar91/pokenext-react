@@ -7,7 +7,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
  */
 export function useClickOutside<T extends HTMLElement>(
   ref: React.RefObject<T | null>,
-  callback: () => void,
+  callback: () => void
 ) {
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -67,12 +67,12 @@ export const normalizeVersionGroup = (text: string) => {
   text = text.replace("ultra-sun-ultra-moon", "Ultra Sun/Ultra Moon");
   text = text.replace(
     "lets-go-pikachu-lets-go-eevee",
-    "Let's Go Pikachu/Eevee",
+    "Let's Go Pikachu/Eevee"
   );
   text = text.replace("sword-shield", "Sword/Shield");
   text = text.replace(
     "brilliant-diamond-and-shining-pearl",
-    "Brill. Diamond/Shin. Pearl",
+    "Brill. Diamond/Shin. Pearl"
   );
   text = text.replace("legends-arceus", "Legends: Arceus");
   text = text.replace("scarlet-violet", "Scarlet/Violet");
@@ -152,48 +152,9 @@ export const kebabToSlash = (name: string) => {
 export const getIdFromUrlSubstring = (url = "") =>
   url.split("/")[url.split("/").length - 2];
 
-export function useAsyncQuery<T>(
-  queryFn: () => Promise<T>,
-  deps: unknown[] = [],
-  // eslint-disable-next-line no-unused-vars
-  onError?: (err: string) => void,
-  initialData?: T,
-) {
-  const [data, setData] = useState<T | null>(initialData ?? null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    let ignore = false;
-    setLoading(true);
-
-    queryFn()
-      .then((result) => {
-        if (!ignore) {
-          setData(result);
-          setLoading(false);
-        }
-      })
-      .catch((e) => {
-        if (!ignore) {
-          setLoading(false);
-          setError(String(e.error));
-          if (onError) onError(String(e.error));
-        }
-      });
-
-    return () => {
-      ignore = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
-
-  return { data, loading, error };
-}
-
 export const useLocalStorage = <T>(
   key: string,
-  defaultValue: T,
+  defaultValue: T
 ): [T, Dispatch<SetStateAction<T>>] => {
   const isMounted = useRef(false);
   const [value, setValue] = useState<T>(defaultValue);

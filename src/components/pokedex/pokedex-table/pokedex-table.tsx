@@ -53,7 +53,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
   // eslint-disable-next-line no-unused-vars
   const sortMapping: (
     a: IPkmn,
-    b: IPkmn,
+    b: IPkmn
   ) => Record<SortKey, [number | string, number | string]> = (a, b) => ({
     types: [
       a.types.map((t) => t.type.name).join(","),
@@ -70,7 +70,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
   });
 
   const sortedPokemon = pokemons.sort(
-    sortResources(sorting, sortMapping, "id"),
+    sortResources(sorting, sortMapping, "id")
   );
 
   if (!settings) return null;
@@ -153,7 +153,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
 
   return (
     <div className="table-container p-2 bg-(--pokedex-red) w-full">
-      <div className="overflow-auto h-[82vh] relative rounded-lg shadow-md">
+      <div className="overflow-auto h-[85vh] relative rounded-lg shadow-md">
         <table className="w-full text-xs">
           <thead>{tHead}</thead>
           <tbody className="bg-background">

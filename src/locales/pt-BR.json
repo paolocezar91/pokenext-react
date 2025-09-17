@@ -67,6 +67,7 @@
   "menu": {
     "home": "Início",
     "settings": "Config.",
+    "about": "Sobre",
     "signIn": "Entrar",
     "signOut": "Sair"
   },
@@ -158,6 +159,9 @@
     },
     "showThumb": "Mostrar miniatura",
     "showShowColumns": "Esconder/Mostrar colunas"
+  },
+  "about": {
+    "title": "Sobre"
   },
   "actions": {
     "next": "Próximo",

@@ -28,7 +28,7 @@ export default function LazyRow({
   const thumbCell = (
     <td
       className={`
-        pl-16 pr-4
+        pl-10 pr-4
         ${isFirst ? "pt-4" : ""}
         ${!settings!.showThumbTable ? "py-4" : "py-2"}
       `}
@@ -54,7 +54,9 @@ export default function LazyRow({
       className={`
         px-4
         ${isFirst ? "pt-4" : ""}
-        ${!isLast ? "border-solid border-b-2 border-foreground text-center" : ""} 
+        ${
+          !isLast ? "border-solid border-b-2 border-foreground text-center" : ""
+        } 
         ${!settings!.showThumbTable ? "py-4" : "py-2"} 
       `}
     >
@@ -103,7 +105,7 @@ export default function LazyRow({
             alt={capitilize(t.type.name)}
             src={getTypeIconById(
               getIdFromUrlSubstring(t.type.url),
-              settings!.typeArtworkUrl,
+              settings!.typeArtworkUrl
             )}
           />
         </Link>

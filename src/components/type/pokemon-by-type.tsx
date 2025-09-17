@@ -117,9 +117,9 @@ export default function PokemonByType({
   // eslint-disable-next-line no-unused-vars
   const sortMapping: (
     a: IPkmn,
-    b: IPkmn,
+    b: IPkmn
   ) => Record<SortKey, [number | string, number | string]> = (a, b) => ({
-    id: [a.id, b.id],
+    id: [Number(a.id), Number(b.id)],
     name: [a.name, b.name],
     types: [
       a.types.map((t) => t.type.name).join(","),
@@ -129,7 +129,7 @@ export default function PokemonByType({
 
   // Sorting pokemon
   const sortedPokemon = pokemonByType.results.sort(
-    sortResources(sorting, sortMapping, "id"),
+    sortResources(sorting, sortMapping, "id")
   );
 
   // Cell for pokemon type images
@@ -143,7 +143,7 @@ export default function PokemonByType({
           alt={capitilize(t.type.name)}
           src={getTypeIconById(
             getIdFromUrlSubstring(t.type.url),
-            settings!.typeArtworkUrl,
+            settings!.typeArtworkUrl
           )}
         />
       </Link>
@@ -156,7 +156,9 @@ export default function PokemonByType({
     return (
       <tr
         key={pokemon.id}
-        className={`${!isLast ? "border-solid border-foreground  border-b-2" : ""}`}
+        className={`${
+          !isLast ? "border-solid border-foreground  border-b-2" : ""
+        }`}
       >
         <td className="p-2">
           <Link href={`/pokedex/${pokemon.name}`}>
