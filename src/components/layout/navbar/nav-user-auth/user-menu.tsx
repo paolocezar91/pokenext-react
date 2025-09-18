@@ -10,7 +10,7 @@ export default function UserMenu({
   onClose: () => void;
   children: ReactNode;
 }) {
-  return open ? (
+  return open ?
     <div
       onMouseLeave={onClose}
       className="
@@ -31,5 +31,5 @@ export default function UserMenu({
     >
       {children}
     </div>
-  ) : null;
+    : null;
 }

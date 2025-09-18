@@ -44,7 +44,7 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
       let elapsed = 0;
       progressRef.current = setInterval(() => {
         elapsed += interval;
-        setProgress(Math.max(0, 100 - (elapsed / (time * 1000)) * 100));
+        setProgress(Math.max(0, 100 - elapsed / (time * 1000) * 100));
       }, interval);
       timerRef.current = setTimeout(() => {
         setOpen(false);
@@ -66,7 +66,7 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{ showSnackbar, hideSnackbar: handleClose }}
     >
       {children}
-      {open && (
+      {open &&
         <div
           className="fixed z-99 rounded text-white bg-gray-800 box-shadow bottom-10"
           style={{
@@ -94,7 +94,7 @@ export const SnackbarProvider: React.FC<{ children: React.ReactNode }> = ({
             />
           }
         </div>
-      )}
+      }
     </SnackbarContext.Provider>
   );
 };

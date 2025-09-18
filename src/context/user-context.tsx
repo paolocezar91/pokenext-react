@@ -166,8 +166,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         settings: isAuthenticated()
           ? settings
           : isUnauthenticated()
-          ? guestSettings
-          : null,
+            ? guestSettings
+            : null,
         upsertSettings: (body: Partial<Settings>, id?: string) =>
           isAuthenticated()
             ? handleUpsertSettings(body, id)

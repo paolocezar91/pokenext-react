@@ -17,7 +17,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 export async function getStaticPaths() {
   return {
-    paths: locales.map((locale) => ({ params: { locale } })),
+    paths: locales.map((locale) => ({ params: { locale }})),
     fallback: false,
   };
 }
@@ -26,7 +26,7 @@ export default function AboutPage() {
   const t = useTranslations();
   const title = t("about.title");
 
-  const me = (
+  const me =
     <Link
       href="https://github.com/paolocezar91/"
       target="_blank"
@@ -34,43 +34,43 @@ export default function AboutPage() {
     >
       Paolo Pestalozzi
     </Link>
-  );
-  const pokeApi = (
+  ;
+  const pokeApi =
     <Link href="https://pokeapi.co/" target="_blank" className="underline">
       PokeAPI
     </Link>
-  );
-  const nextJs = (
+  ;
+  const nextJs =
     <Link href="https://nextjs.org/" target="_blank" className="underline">
       Next.js
     </Link>
-  );
-  const react = (
+  ;
+  const react =
     <Link href="https://react.dev/" target="_blank" className="underline">
       React
     </Link>
-  );
-  const graphQL = (
+  ;
+  const graphQL =
     <Link href="https://graphql.org/" target="_blank" className="underline">
       GraphQL
     </Link>
-  );
-  const mongoDB = (
+  ;
+  const mongoDB =
     <Link href="https://www.mongodb.com/" target="_blank" className="underline">
       Mongo DB
     </Link>
-  );
-  const vercel = (
+  ;
+  const vercel =
     <Link href="https://vercel.com/" target="_blank" className="underline">
       Vercel
     </Link>
-  );
-  const render = (
+  ;
+  const render =
     <Link href="https://www.render.com/" target="_blank" className="underline">
       Render
     </Link>
-  );
-  const github = (
+  ;
+  const github =
     <Link
       href="https://github.com/paolocezar91/"
       target="_blank"
@@ -78,7 +78,7 @@ export default function AboutPage() {
     >
       Github
     </Link>
-  );
+  ;
 
   return (
     <RootLayout title={title}>

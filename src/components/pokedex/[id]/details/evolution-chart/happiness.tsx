@@ -6,8 +6,8 @@ export default function PokemonEvolutionHappiness({
   evolution_details: IEvolutionDetail;
 }) {
   return (
-    evolution_details.min_happiness && (
+    evolution_details.min_happiness &&
       <span className="text-xs">high friendship </span>
-    )
+
   );
 }

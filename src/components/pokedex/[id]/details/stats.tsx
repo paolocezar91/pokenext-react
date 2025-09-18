@@ -38,12 +38,12 @@ export default function PokemonStats({ pokemon }: { pokemon: IPokemon }) {
       <div className="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
         <div
           className="bg-blue-600 h-2.5 rounded-full"
-          style={{ width: `${(value * 100) / dividedBy}%` }}
+          style={{ width: `${value * 100 / dividedBy}%` }}
         ></div>
       </div>
     );
   };
-  const total = pokemon.stats.reduce((acc, stat) => (acc += stat.base_stat), 0);
+  const total = pokemon.stats.reduce((acc, stat) => acc += stat.base_stat, 0);
 
   return (
     <div className="stats col-span-6 md:col-span-3">

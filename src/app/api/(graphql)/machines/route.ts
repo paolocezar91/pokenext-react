@@ -6,11 +6,8 @@ import { IMachine } from "pokeapi-typescript";
 
 export async function GET(req: NextRequest) {
   const ids = req.nextUrl.searchParams.get("ids");
-  return await getByIds(ids!, req);
-}
 
-async function getByIds(ids: string, req: NextRequest) {
-  const vars = { ids: ids.split(",") };
+  const vars = { ids: ids!.split(",") };
   const query = gql`
     query ($ids: [ID]) {
       machinesByIds(ids: $ids) {

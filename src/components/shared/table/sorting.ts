@@ -1,7 +1,9 @@
 export type SortingDir<T> = { key: T; dir: "+" | "-" };
-// eslint-disable-next-line no-unused-vars
+
 export type SortMapping<T extends string, U> = (
+  // eslint-disable-next-line no-unused-vars
   a: U,
+  // eslint-disable-next-line no-unused-vars
   b: U
 ) => Record<T, [number | string, number | string]>;
 

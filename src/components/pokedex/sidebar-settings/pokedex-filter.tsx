@@ -54,9 +54,9 @@ export default function PokedexFilter({
   };
 
   const isFiltered =
-    !!filterType.length || (filterName !== undefined && filterName?.length > 2);
+    !!filterType.length || filterName !== undefined && filterName?.length > 2;
 
-  const toggleFilterForm = (
+  const toggleFilterForm =
     <Tooltip
       position="right"
       content={`${t("filters.title")} ${isFiltered ? "(active)" : ""}`}
@@ -77,19 +77,19 @@ export default function PokedexFilter({
         `}
         onClick={() => setOpen(!open)}
       >
-        {open ? (
+        {open ?
           <ChevronLeftIcon className="w-5" />
-        ) : (
+          :
           <FunnelIcon className="w-5" />
-        )}
-        {isFiltered && (
+        }
+        {isFiltered &&
           <span className="absolute right-1 top-1 bg-green-400 rounded-lg w-2 h-2" />
-        )}
+        }
       </Button>
     </Tooltip>
-  );
+  ;
 
-  const filterForm = typeOptions && (
+  const filterForm = typeOptions &&
     <div>
       <SettingsItem
         title={t("filters.filterName.title")}
@@ -132,13 +132,13 @@ export default function PokedexFilter({
         />
       </SettingsItem>
     </div>
-  );
+  ;
 
   return (
     <AnimatePresence>
       <div className="settings relative z-2" ref={filterRef}>
         {toggleFilterForm}
-        {open && (
+        {open &&
           <motion.div
             initial={{ left: "2rem", opacity: 0 }}
             animate={{ left: "2.5rem", opacity: 1 }}
@@ -152,7 +152,7 @@ export default function PokedexFilter({
               {filterForm}
             </SettingsContent>
           </motion.div>
-        )}
+        }
       </div>
     </AnimatePresence>
   );

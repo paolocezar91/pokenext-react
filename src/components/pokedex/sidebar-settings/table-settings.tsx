@@ -22,7 +22,7 @@ export default function ThumbSettings() {
 
   return (
     <SettingsContainer className="mt-1">
-      {!isMobile && (
+      {!isMobile &&
         <SettingsItem title={t("settings.size.title")} htmlFor="thumbSize">
           <Select
             className="w-70"
@@ -35,7 +35,7 @@ export default function ThumbSettings() {
             <option value="base">{t("settings.size.base")}</option>
           </Select>
         </SettingsItem>
-      )}
+      }
       <SettingsItem title={t("settings.label.title")} htmlFor="thumbLabel">
         <Select
           className="w-70"

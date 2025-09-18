@@ -66,11 +66,11 @@ export default function MultiSelect({
         tabIndex={0}
         onBlur={() => setTimeout(() => setOpen(false), 500)}
       >
-        {selectedOptions.length === 0 && (
+        {selectedOptions.length === 0 &&
           <span className="text-gray-400">{placeholder}</span>
-        )}
+        }
         <span className="grow flex gap-1">
-          {selectedOptions.map((opt) => (
+          {selectedOptions.map((opt) =>
             <span
               key={opt.value}
               className="
@@ -99,11 +99,11 @@ export default function MultiSelect({
                 ×
               </button>
             </span>
-          ))}
+          )}
         </span>
         <ChevronDownIcon className="w-5" />
       </div>
-      {open && (
+      {open &&
         <ul
           className="
         absolute
@@ -120,7 +120,7 @@ export default function MultiSelect({
         shadow-lg
       "
         >
-          {options.map((opt) => (
+          {options.map((opt) =>
             <li
               key={opt.value}
               className={`
@@ -139,13 +139,13 @@ export default function MultiSelect({
               onClick={() => handleSelect(opt.value)}
             >
               {opt.label}
-              {value.includes(opt.value) && (
+              {value.includes(opt.value) &&
                 <span className="ml-2 text-green-600">✔</span>
-              )}
+              }
             </li>
-          ))}
+          )}
         </ul>
-      )}
+      }
     </div>
   );
 }

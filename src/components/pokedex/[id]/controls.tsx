@@ -28,7 +28,7 @@ export default function Controls({
     return pokemon ? pokemon.id - 1 > 0 : false;
   };
 
-  const goPrev = (name: string, id: number) => (
+  const goPrev = (name: string, id: number) =>
     <div className="previous flex-1 text-left">
       <Tooltip
         content={`${normalizePokemonName(name)} ${getNumber(id)}`}
@@ -52,9 +52,9 @@ export default function Controls({
         </Link>
       </Tooltip>
     </div>
-  );
+  ;
 
-  const goList = () => (
+  const goList = () =>
     <div className="flex-1 text-center">
       <Tooltip content={t("actions.backToList")}>
         <Link
@@ -75,9 +75,9 @@ export default function Controls({
         </Link>
       </Tooltip>
     </div>
-  );
+  ;
 
-  const goNext = (name = "", id: number) => (
+  const goNext = (name = "", id: number) =>
     <div className="next flex-1 text-right">
       <Tooltip
         content={`${normalizePokemonName(name)} ${getNumber(id)}`}
@@ -103,7 +103,7 @@ export default function Controls({
         </Link>
       </Tooltip>
     </div>
-  );
+  ;
 
   return (
     <div className="controls my-2 px-8 w-full flex justify-between">

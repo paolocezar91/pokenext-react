@@ -11,7 +11,7 @@ export default function UserAvatarButton({
   onClick: () => void;
   onMouseEnter: () => void;
 }) {
-  return image ? (
+  return image ?
     <Button onClick={onClick} onMouseEnter={onMouseEnter}>
       <Image
         src={image}
@@ -19,7 +19,7 @@ export default function UserAvatarButton({
         className="w-10 h-10 rounded-full border-2 border-gray-300 object-cover opacity-90 hover:opacity-100"
       />
     </Button>
-  ) : (
+    :
     <NavButton
       onClick={onClick}
       onMouseEnter={onMouseEnter}
@@ -27,5 +27,5 @@ export default function UserAvatarButton({
     >
       <UserIcon className="h-6 w-6 text-white" />
     </NavButton>
-  );
+  ;
 }

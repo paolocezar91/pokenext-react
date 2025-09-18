@@ -124,8 +124,8 @@ const parseSettings = (userId: string, data: Record<string, unknown>) => {
 const serializeSettings = (data: Record<string, unknown>) => {
   const showColumn = data.showColumn
     ? Array.from(data.showColumn as string).map((v) =>
-        v === "y" ? true : false
-      )
+      v === "y" ? true : false
+    )
     : null;
   return { ...data, showColumn };
 };

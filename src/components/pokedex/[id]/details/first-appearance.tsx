@@ -50,13 +50,13 @@ export default function PokemonFirstAppearance({
   };
 
   return (
-    pokemon.game_indices.length !== 0 && (
+    pokemon.game_indices.length !== 0 &&
       <div className="pokemon-first-appearance col-span-6 md:col-span-2">
         <h3 className="w-fit text-lg font-semibold mb-2">
           {t("pokedex.details.firstSeen.title")}
         </h3>
         <div className="mt-2">{renderGroup()}</div>
       </div>
-    )
+
   );
 }

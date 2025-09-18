@@ -1,14 +1,13 @@
 import DescriptionLangSelect from "@/components/settings/description-lang";
-import LangSelect from "@/components/settings/lang-select";
 import ThumbnailArtworkSelect from "@/components/settings/thumbnail-artwork-select";
 import TypeArtworkSelect from "@/components/settings/type-artwork-select";
 import LoadingSpinner from "@/components/shared/spinner";
 import { useUser } from "@/context/user-context";
 import { locales } from "@/i18n/config";
+import { getMessages } from "@/i18n/messages";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import RootLayout from "../../components/layout/layout";
-import { getMessages } from "@/i18n/messages";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   return {
@@ -21,7 +20,7 @@ export async function getStaticProps(context: GetStaticPropsContext) {
 
 export async function getStaticPaths() {
   return {
-    paths: locales.map((locale) => ({ params: { locale } })),
+    paths: locales.map((locale) => ({ params: { locale }})),
     fallback: false,
   };
 }
@@ -33,7 +32,7 @@ export default function SettingsPage() {
 
   return (
     <RootLayout title={title}>
-      {settings ? (
+      {settings ?
         <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto md:overflow-[initial]">
           <div className="p-4 bg-background rounded shadow-md h-[-webkit-fill-available] grid grid-cols-1 md:grid-cols-2">
             <div>
@@ -49,9 +48,9 @@ export default function SettingsPage() {
             </div>
           </div>
         </div>
-      ) : (
+        :
         <LoadingSpinner />
-      )}
+      }
     </RootLayout>
   );
 }

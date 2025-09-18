@@ -123,11 +123,11 @@ export default function PokemonThumb({
   ];
   const isLG = ["w-80 h-80", "h-[320px]", "mb-4", "text-base"];
   const classes = isXS || isSM || isBase || isLG;
-  const loading = (
+  const loading =
     <span className={`loading text-xs my-auto ${classes[0]}`}>
       <SkeletonImage className="w-full h-full" />
     </span>
-  );
+  ;
 
   useEffect(() => {
     if (pokemonDataSmall) {
@@ -149,7 +149,7 @@ export default function PokemonThumb({
     settings.artworkUrl as ArtUrl,
   ).shiny[0];
 
-  const loaded = (
+  const loaded =
     <div
       style={
         (pkmn as IPkmn).types
@@ -169,7 +169,7 @@ export default function PokemonThumb({
       ></div>
       <div className="img-hover-zoom w-full h-full">
         <div className={`relative w-full ${classes[1]}`}>
-          {!shiny && (
+          {!shiny &&
             <Image
               className={`artwork z-1 ${settings.artworkUrl}`}
               fill
@@ -178,8 +178,8 @@ export default function PokemonThumb({
               alt={`${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}`}
               loading="lazy"
             />
-          )}
-          {shiny && (
+          }
+          {shiny &&
             <Image
               className={`artwork z-1 ${settings.artworkUrl}`}
               fill
@@ -188,8 +188,8 @@ export default function PokemonThumb({
               alt={`Shiny ${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
               loading="lazy"
             />
-          )}
-          {isMega && (
+          }
+          {isMega &&
             <Image
               className="mega-evo z-2 absolute right-0 bottom-0 max-h-10 max-w-10 opacity-70"
               width={80}
@@ -199,26 +199,26 @@ export default function PokemonThumb({
               alt={normalizePokemonName(pkmn.name)}
               loading="lazy"
             />
-          )}
+          }
         </div>
       </div>
-      {showName && (
+      {showName &&
         <span className={`name text-white w-60 ${classes[3]}`}>
           {normalizePokemonName(pkmn.name)}
         </span>
-      )}
-      {showName && (
+      }
+      {showName &&
         <span className={`id text-white  ${classes[2]} ${classes[3]}`}>
           {getNumber(pkmn.id)}
         </span>
-      )}
+      }
     </div>
-  );
+  ;
 
   return (
     <>
       {loaded}
-      {showShinyCheckbox && (
+      {showShinyCheckbox &&
         <label className="w-full text-right mt-1" htmlFor="shiny">
           Shiny
           <input
@@ -230,7 +230,7 @@ export default function PokemonThumb({
             onChange={() => setShiny(!shiny)}
           />
         </label>
-      )}
+      }
     </>
   );
 }

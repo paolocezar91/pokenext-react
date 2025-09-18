@@ -1,6 +1,5 @@
-import Link from "next/link";
-import { VersionInfo } from "./version-info";
 import LangSelect from "../settings/lang-select";
+import { VersionInfo } from "./version-info";
 
 export default function Footer() {
   return (

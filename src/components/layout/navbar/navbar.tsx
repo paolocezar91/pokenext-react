@@ -11,13 +11,13 @@ import Link from "@/components/shared/link";
 export default function Navbar({ title }: { title: string }) {
   const t = useTranslations();
   const pathname = usePathname() || "";
-  const homeButton = pathname !== "/" && (
+  const homeButton = pathname !== "/" &&
     <Tooltip content={t("actions.backToList")}>
       <NavLink href="/">
         <ArrowUturnLeftIcon className="w-6" />
       </NavLink>
     </Tooltip>
-  );
+  ;
 
   return (
     <nav className="bg-(--pokedex-red) border-white border-b-2 border-solid">

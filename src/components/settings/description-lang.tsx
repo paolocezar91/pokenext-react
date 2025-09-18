@@ -40,7 +40,7 @@ export default function DescriptionLangSelect() {
   };
 
   return (
-    settings && (
+    settings &&
       <label htmlFor="description-lang">
         <div className="flex flex-col">
           <span>{t("settings.languageOptions.descriptionLanguage")}:</span>
@@ -63,6 +63,6 @@ export default function DescriptionLangSelect() {
           {t("settings.languageOptions.descriptionLanguageTooltip")}
         </div>
       </label>
-    )
+
   );
 }

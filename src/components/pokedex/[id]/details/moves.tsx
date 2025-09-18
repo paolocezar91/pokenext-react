@@ -92,7 +92,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
         moves?.[versionGroupActive]?.moveset?.[movesetActive]
       ) {
         const ids = moves[versionGroupActive].moveset[movesetActive].map(
-          (move) => Number(getIdFromUrlSubstring(move.url)),
+          (move) => Number(getIdFromUrlSubstring(move.url))
         );
 
         const details = await pokeApiQuery.getMovesByIds(ids);
@@ -112,11 +112,10 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
             Number(
               getIdFromUrlSubstring(
                 move.details?.machines.find(
-                  (machine) =>
-                    machine.version_group.name === versionGroupActive,
-                )?.machine.url,
-              ),
-            ),
+                  (machine) => machine.version_group.name === versionGroupActive
+                )?.machine.url
+              )
+            )
           );
 
           const detailsMachines = (
@@ -143,16 +142,16 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [versionGroupActive, movesetActive]);
 
-  const headers = (
+  const headers =
     <>
-      {movesetActive === "level-up" && (
+      {movesetActive === "level-up" &&
         <th className="w-[5%] bg-(--pokedex-red-dark)">Lv.</th>
-      )}
-      {movesetActive === "machine" && (
+      }
+      {movesetActive === "machine" &&
         <th className="w-[5%] bg-(--pokedex-red-dark) text-left px-2 py-1">
           TM/HM
         </th>
-      )}
+      }
       <th className="bg-(--pokedex-red-dark) text-left text-white px-2 py-1">
         {t("pokedex.details.moves.name")}
       </th>
@@ -174,8 +173,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
         </Tooltip>
       </th>
     </>
-  );
-
+  ;
   const body =
     settings &&
     movesetActive &&
@@ -191,19 +189,21 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
       .map((move, idx, arr) => {
         const isLast = idx === arr.length - 1;
         return (
-          move.details && (
+          move.details &&
             <tr
-              className={`${!isLast ? "border-solid border-b-1 border-foreground" : ""} align-middle`}
+              className={`${
+                !isLast ? "border-solid border-b-1 border-foreground" : ""
+              } align-middle`}
               key={move.details.id}
             >
-              {movesetActive === "level-up" && (
+              {movesetActive === "level-up" &&
                 <td className="p-2 text-right">{move.level_learned_at}</td>
-              )}
-              {movesetActive === "machine" && (
+              }
+              {movesetActive === "machine" &&
                 <td className="p-2 text-center uppercase">
                   {move.tmDetails?.item.name}
                 </td>
-              )}
+              }
               <td className="p-2">
                 <Link
                   href={`/moves/${move.move}`}
@@ -220,7 +220,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
                     alt={capitilize(move.details.type.name)}
                     src={getTypeIconById(
                       getIdFromUrlSubstring(move.details.type.url),
-                      settings.typeArtworkUrl,
+                      settings.typeArtworkUrl
                     )}
                   />
                 </Link>
@@ -241,18 +241,18 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
               <td className="p-2">{move.details.pp ?? "-"}</td>
               <td className="p-2">{move.details.accuracy ?? "-"}</td>
             </tr>
-          )
+
         );
       });
 
   return (
-    settings && (
+    settings &&
       <div className="moves col-span-6 mt-2">
         <h3 className="w-fit text-lg font-semibold mb-2">
           {t("pokedex.details.moves.title")}
         </h3>
         <div className="flex flex-col sm:flex-row my-2">
-          {!!moves && (
+          {!!moves &&
             <div className="version-picker">
               <label className=" text-xs flex flex-col">
                 <span className="mb-1">
@@ -287,8 +287,8 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
                 </Select>
               </label>
             </div>
-          )}
-          {versionGroupActive && (
+          }
+          {versionGroupActive &&
             <div className="moveset-picker">
               <label className="mt-2 md:mt-0 md:ml-2 text-xs flex flex-col">
                 <span className="mb-1">
@@ -308,11 +308,11 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
                     {t("actions.select")}
                   </option>
                   {Object.keys(moves[versionGroupActive].moveset).map(
-                    (moveset, idx) => {
+                    (moveset) => {
                       return (
                         !!moves[versionGroupActive].moveset[
                           moveset as MovesetTypes
-                        ].length && (
+                        ].length &&
                           <option
                             key={moveset}
                             value={moveset}
@@ -322,25 +322,25 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
                               ? "TM/HM"
                               : capitilize(kebabToSpace(moveset))}
                           </option>
-                        )
+
                       );
-                    },
+                    }
                   )}
                 </Select>
               </label>
             </div>
-          )}
+          }
         </div>
 
         <div className="tables overflow-x-auto mb-6">
-          {versionGroupActive && movesetActive && !showTable && (
+          {versionGroupActive && movesetActive && !showTable &&
             <div className="p-4 flex items-center justify-center">
               <LoadingSpinner />
             </div>
-          )}
+          }
           {showTable && <Table headers={headers}>{body}</Table>}
         </div>
       </div>
-    )
+
   );
 }

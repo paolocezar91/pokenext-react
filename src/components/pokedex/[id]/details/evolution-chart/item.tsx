@@ -8,7 +8,7 @@ export default function PokemonEvolutionItem({
   evolution_details: IEvolutionDetail;
 }) {
   return (
-    evolution_details.item?.name && (
+    evolution_details.item?.name &&
       <span>
         {" "}
         use
@@ -22,6 +22,6 @@ export default function PokemonEvolutionItem({
           />
         </span>
       </span>
-    )
+
   );
 }

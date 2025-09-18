@@ -2,6 +2,7 @@ import { idOrName } from "@/app/api/api-utils";
 import PokeApiQuery from "@/app/api/poke-api-query";
 import { NUMBERS_OF_POKEMON } from "@/app/const";
 import { getAllPokemon, getPokemonById } from "@/app/services/pokemon";
+import RootLayout from "@/components/layout/layout";
 import Controls from "@/components/pokedex/[id]/controls";
 import PokemonAbilities from "@/components/pokedex/[id]/details/abilities";
 import PokemonCries from "@/components/pokedex/[id]/details/cries";
@@ -18,7 +19,7 @@ import PokemonVarieties from "@/components/pokedex/[id]/details/varieties";
 import PokemonDefensiveChart from "@/components/shared/defensive-chart";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import { locales } from "@/i18n/config";
-import RootLayout from "@/components/layout/layout";
+import { getMessages } from "@/i18n/messages";
 import { SpeciesChain } from "@/types/types";
 import { ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import { GetStaticPropsContext } from "next";
@@ -39,8 +40,6 @@ import {
   normalizePokemonName,
 } from "../../../../components/shared/utils";
 import "./index.scss";
-import { getMessages } from "@/i18n/messages";
-import { NextRequest } from "next/server";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -58,12 +57,12 @@ export type PokemonAction =
   | { type: "SET_POKEMON"; payload: IPokemon }
   | { type: "SET_SPECIES_CHAIN"; payload: SpeciesChain }
   | {
-      type: "SET_SPECIES";
-      payload: IPokemonSpecies & {
-        is_legendary?: boolean;
-        is_mythical?: boolean;
-      };
-    }
+    type: "SET_SPECIES";
+    payload: IPokemonSpecies & {
+      is_legendary?: boolean;
+      is_mythical?: boolean;
+    };
+  }
   | { type: "SET_TYPES"; payload: IType[] }
   | { type: "SET_EVOLUTION_CHAIN"; payload: IEvolutionChain }
   | { type: "RESET_STATE" };
@@ -133,7 +132,7 @@ export async function getStaticPaths() {
   const paths = [];
   for (const locale of locales) {
     for (const id of ids) {
-      paths.push({ params: { locale, id } });
+      paths.push({ params: { locale, id }});
     }
   }
 
@@ -156,7 +155,7 @@ export default function PokemonDetails({
 }) {
   const initialState: PokemonState = {
     pokemon: pokemonData,
-    speciesChain: { loaded: false, chain: {} },
+    speciesChain: { loaded: false, chain: {}},
     species: null,
     types: [],
     evolutionChain: null,
@@ -238,8 +237,8 @@ export default function PokemonDetails({
   const title = !state.pokemon
     ? `${t("pokedex.loading")}...`
     : `${normalizePokemonName(state.pokemon.name)} ${getNumber(
-        state.pokemon.id
-      )}`;
+      state.pokemon.id
+    )}`;
 
   return (
     <RootLayout title={title}>
@@ -299,12 +298,12 @@ export default function PokemonDetails({
                 name={state.pokemon ? capitilize(state.pokemon.name) : ""}
                 types={state.types.map((type) => type.name)}
               />
-              {state.species && state.species.varieties.length > 1 && (
+              {state.species && state.species.varieties.length > 1 &&
                 <PokemonVarieties
                   name={state.pokemon.name}
                   species={state.species}
                 />
-              )}
+              }
               <PokemonEvolutionChart
                 pokemon={state.pokemon}
                 speciesChain={state.speciesChain}

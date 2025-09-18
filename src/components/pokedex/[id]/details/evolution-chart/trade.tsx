@@ -8,11 +8,11 @@ export default function PokemonEvolutionTrade({
   evolution_details: IEvolutionDetail;
 }) {
   return (
-    evolution_details.trigger.name === "trade" && (
+    evolution_details.trigger.name === "trade" &&
       <span>
         {" "}
         trade{" "}
-        {evolution_details.held_item?.name && (
+        {evolution_details.held_item?.name &&
           <span className="flex flex-col items-center text-xs">
             {kebabToSpace(evolution_details.held_item?.name)}
             <Image
@@ -22,8 +22,8 @@ export default function PokemonEvolutionTrade({
               alt={kebabToSpace(evolution_details.held_item?.name)}
             />
           </span>
-        )}
+        }
       </span>
-    )
+
   );
 }

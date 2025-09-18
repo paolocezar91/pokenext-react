@@ -15,6 +15,7 @@ import SkeletonBlock from "../shared/skeleton-block";
 import SortButton from "../shared/table/sort-button";
 import {
   SortingDir,
+  SortMapping,
   sortResources,
   updateSortKeys,
 } from "../shared/table/sorting";
@@ -39,11 +40,11 @@ export default function MovesByType({
     queryKey: ["movesList", movesList, type],
     queryFn: () =>
       pokeApiQuery.getMovesByIds(
-        movesList.map((p) => Number(getIdFromUrlSubstring(p.url))),
+        movesList.map((p) => Number(getIdFromUrlSubstring(p.url)))
       ),
   });
 
-  const tableHeaders = (
+  const tableHeaders =
     <>
       <th className="bg-(--pokedex-red-dark) w-[50%] text-white text-left px-2 py-1">
         <SortButton
@@ -91,13 +92,8 @@ export default function MovesByType({
         </SortButton>
       </th>
     </>
-  );
-
-  // eslint-disable-next-line no-unused-vars
-  const sortMapping: (
-    a: IMove,
-    b: IMove,
-  ) => Record<SortKey, [number | string, number | string]> = (a, b) => ({
+  ;
+  const sortMapping: SortMapping<SortKey, IMove> = (a, b) => ({
     id: [a.id, b.id],
     name: [a.name, b.name],
     class: [a.damage_class.name, b.damage_class.name],
@@ -107,15 +103,15 @@ export default function MovesByType({
   });
 
   if (!movesByType?.results?.length) {
-    const skeletonTableBody = [...Array(15)].map((_, i) => (
+    const skeletonTableBody = [...Array(15)].map((_, i) =>
       <tr key={i} className="border-solid border-foreground  border-b-2">
-        {[...Array(5)].map((_, j) => (
+        {[...Array(5)].map((_, j) =>
           <td key={j} className="p-2">
             <SkeletonBlock />
           </td>
-        ))}
+        )}
       </tr>
-    ));
+    );
     return (
       <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 h-[-webkit-fill-available]">
         <h3 className="w-fit text-lg mb-4">
@@ -129,7 +125,7 @@ export default function MovesByType({
   }
 
   const sortedMoves = movesByType.results.sort(
-    sortResources(sorting, sortMapping, "id"),
+    sortResources(sorting, sortMapping, "id")
   );
 
   const tableBody = sortedMoves.map((move, idx) => {
@@ -137,7 +133,9 @@ export default function MovesByType({
     return (
       <tr
         key={move.id}
-        className={`${!isLast ? "border-solid border-foreground  border-b-2" : ""}`}
+        className={`${
+          !isLast ? "border-solid border-foreground  border-b-2" : ""
+        }`}
       >
         <td className="p-1">
           <Link

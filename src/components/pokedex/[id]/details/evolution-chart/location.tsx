@@ -7,11 +7,11 @@ export default function PokemonEvolutionLocation({
   evolution_details: IEvolutionDetail;
 }) {
   return (
-    evolution_details.location?.name && (
+    evolution_details.location?.name &&
       <span className="text-xs">
         {" "}
         at {kebabToSpace(evolution_details.location.name)}{" "}
       </span>
-    )
+
   );
 }

@@ -70,7 +70,7 @@ export default function PokedexList({
   }, [settings?.thumbSizeList]);
 
   return (
-    settings && (
+    settings &&
       <div
         className="list-container w-full p-2 bg-(--pokedex-red) relative"
         ref={parentRef}
@@ -89,18 +89,17 @@ export default function PokedexList({
             className="mx-auto my-4 flex gap-4 content-start flex-row flex-wrap"
             style={containerWidth ? { width: containerWidth } : undefined}
           >
-            {pokemons.map((pokemon, i) => {
-              const lazyThumb = (
+            {pokemons.map((pokemon) => {
+              const lazyThumb =
                 <LazyThumb
                   pokemon={pokemon}
                   settings={settings}
                   isMobile={isMobile}
                 />
-              );
-
+              ;
               return (
                 <div key={pokemon.id}>
-                  {settings.thumbLabelList == "tooltip" && (
+                  {settings.thumbLabelList == "tooltip" &&
                     <Tooltip
                       content={`${normalizePokemonName(
                         pokemon.name
@@ -108,7 +107,7 @@ export default function PokedexList({
                     >
                       {lazyThumb}
                     </Tooltip>
-                  )}
+                  }
                   {(settings.thumbLabelList == "thumbnail" ||
                     settings.thumbLabelList == "none") &&
                     lazyThumb}
@@ -119,6 +118,6 @@ export default function PokedexList({
           {children}
         </div>
       </div>
-    )
+
   );
 }

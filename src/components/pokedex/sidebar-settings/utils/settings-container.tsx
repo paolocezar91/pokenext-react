@@ -44,21 +44,21 @@ export function SettingsContainer({
             active:bg-white
             active:text-(--pokedex-red-dark)
             ${
-              showSettings
-                ? "rounded-s bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white"
-                : "rounded hover:bg-(--pokedex-red-dark)"
-            }
+    showSettings
+      ? "rounded-s bg-(--pokedex-red-dark) hover:text-(--pokedex-red-dark) hover:bg-white"
+      : "rounded hover:bg-(--pokedex-red-dark)"
+    }
           `}
             onClick={() => setShowSettings(!showSettings)}
           >
-            {showSettings ? (
+            {showSettings ?
               <ChevronLeftIcon className="w-5" />
-            ) : (
+              :
               <Cog6ToothIcon className="w-5" />
-            )}
+            }
           </Button>
         </Tooltip>
-        {showSettings && (
+        {showSettings &&
           <motion.div
             initial={{ left: "2rem", opacity: 0 }}
             animate={{ left: "2.5rem", opacity: 1 }}
@@ -70,7 +70,7 @@ export function SettingsContainer({
               {children}
             </SettingsContent>
           </motion.div>
-        )}
+        }
       </div>
     </AnimatePresence>
   );

@@ -11,14 +11,13 @@ import PokedexTable from "@/components/pokedex/pokedex-table/pokedex-table";
 import { SidebarSettings } from "@/components/pokedex/sidebar-settings/sidebar-settings";
 import LoadingSpinner from "@/components/shared/spinner";
 import { useUser } from "@/context/user-context";
+import { getMessages } from "@/i18n/messages";
 import { IPkmn } from "@/types/types";
 import { GetServerSidePropsContext, Metadata } from "next";
 import { useTranslations } from "next-intl";
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import RootLayout from "../../components/layout/layout";
-import { getMessages } from "@/i18n/messages";
-import { NextRequest } from "next/server";
 
 const pokeApiQuery = new PokeApiQuery();
 
@@ -91,28 +90,28 @@ export default function Pokedex({
 
   return (
     <RootLayout title="Home">
-      {settings && (
+      {settings &&
         <div className="wrapper h-[inherit] bg-background">
           <div className="relative flex items-start">
             <SidebarSettings />
-            {settings.listTable ? (
+            {settings.listTable ?
               <PokedexTable pokemons={pokemons}></PokedexTable>
-            ) : (
+              :
               <PokedexList pokemons={pokemons}>
                 <div className="p-2 bg-background text-xs text-right sticky right-0 bottom-0">
                   {pokemons.length === NUMBERS_OF_POKEMON
                     ? t("pokedex.displayingAllPokemon")
                     : t("pokedex.displayingXofYPokemon", {
-                        x: pokemons.length,
-                        y: TOTAL_POKEMON,
-                      })}
+                      x: pokemons.length,
+                      y: TOTAL_POKEMON,
+                    })}
                 </div>
               </PokedexList>
-            )}
+            }
             {loading && <LoadingSpinner />}
           </div>
         </div>
-      )}
+      }
     </RootLayout>
   );
 }

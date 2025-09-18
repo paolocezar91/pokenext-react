@@ -30,8 +30,8 @@ export default function PokemonGender({
       );
     }
 
-    const femaleRate = (species.gender_rate / 8) * 100;
-    const maleRate = ((8 - species.gender_rate) / 8) * 100;
+    const femaleRate = species.gender_rate / 8 * 100;
+    const maleRate = (8 - species.gender_rate) / 8 * 100;
     const name = normalizePokemonName(species.name);
     if (species.gender_rate < 0) {
       return (

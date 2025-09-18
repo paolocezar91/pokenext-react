@@ -23,19 +23,19 @@ export function SidebarSettings() {
   useEffect(() => {
     if (settings?.showSettings) {
       // Show: expand height, then fade in content
-      chevronControls.start({ rotate: -180, transition: { duration: 0.3 } });
+      chevronControls.start({ rotate: -180, transition: { duration: 0.3 }});
       containerControls
-        .start({ height: "auto", transition: { duration: 0.3 } })
+        .start({ height: "auto", transition: { duration: 0.3 }})
         .then(() => {
-          contentControls.start({ opacity: 1, transition: { duration: 0.2 } });
+          contentControls.start({ opacity: 1, transition: { duration: 0.2 }});
         });
     } else {
       // Hide: fade out content, then collapse height
       contentControls
-        .start({ opacity: 0, transition: { duration: 0.2 } })
+        .start({ opacity: 0, transition: { duration: 0.2 }})
         .then(() => {
-          chevronControls.start({ rotate: 0, transition: { duration: 0.3 } });
-          containerControls.start({ height: 0, transition: { duration: 0.3 } });
+          chevronControls.start({ rotate: 0, transition: { duration: 0.3 }});
+          containerControls.start({ height: 0, transition: { duration: 0.3 }});
         });
     }
   }, [
@@ -63,7 +63,7 @@ export function SidebarSettings() {
   };
 
   return (
-    settings && (
+    settings &&
       <div className="absolute z-2 flex flex-col items-center bg-(--pokedex-red) py-2 px-2 md:w-max rounded-br-xl">
         <Tooltip
           position="right"
@@ -131,11 +131,11 @@ export function SidebarSettings() {
                     active:text-(--pokedex-red-dark)
                   "
                   >
-                    {settings.listTable ? (
+                    {settings.listTable ?
                       <Squares2X2Icon className="w-5" />
-                    ) : (
+                      :
                       <TableCellsIcon className="w-5" />
-                    )}
+                    }
                   </Button>
                 </div>
               </Tooltip>
@@ -143,6 +143,6 @@ export function SidebarSettings() {
           </motion.div>
         </AnimatePresence>
       </div>
-    )
+
   );
 }

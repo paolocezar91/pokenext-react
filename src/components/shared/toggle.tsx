@@ -71,24 +71,24 @@ export default function Toggle({
               : "Toggle"
         }
       />
-      {childrenLeft && (
+      {childrenLeft &&
         <span className="ms-3 mr-2 text-xs text-foreground">
           {" "}
           {childrenLeft}{" "}
         </span>
-      )}
+      }
       <div
         className={`
       ${baseClass}
       ${height}
     `}
       ></div>
-      {childrenRight && (
+      {childrenRight &&
         <span className="ms-3 ml-2 text-xs text-foreground">
           {" "}
           {childrenRight}{" "}
         </span>
-      )}
+      }
     </label>
   );
 }

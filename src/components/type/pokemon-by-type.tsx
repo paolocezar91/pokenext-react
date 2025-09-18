@@ -22,6 +22,7 @@ import LoadingSpinner from "../shared/spinner";
 import SortButton from "../shared/table/sort-button";
 import {
   SortingDir,
+  SortMapping,
   sortResources,
   updateSortKeys,
 } from "../shared/table/sorting";
@@ -56,7 +57,7 @@ export default function PokemonByType({
   }
 
   // Creating table headers
-  const tableHeaders = (
+  const tableHeaders =
     <>
       <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
       <th className="bg-(--pokedex-red-dark) w-[1%] text-white text-center px-2 py-1">
@@ -87,20 +88,19 @@ export default function PokemonByType({
         </SortButton>
       </th>
     </>
-  );
-
+  ;
   // Displaying Skeleton rows while loading
   if (!pokemonByType?.results.length) {
     const skeletonImage = <SkeletonImage className="w-30 h-30" />;
-    const skeletonTableBody = [...Array(10)].map((_, i) => (
+    const skeletonTableBody = [...Array(10)].map((_, i) =>
       <tr key={i} className="border-solid border-foreground border-b-2">
-        {[...Array(4)].map((_, j) => (
+        {[...Array(4)].map((_, j) =>
           <td key={j} className="p-2">
             {j === 0 ? skeletonImage : <SkeletonBlock />}
           </td>
-        ))}
+        )}
       </tr>
-    ));
+    );
 
     return (
       <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
@@ -114,11 +114,7 @@ export default function PokemonByType({
     );
   }
 
-  // eslint-disable-next-line no-unused-vars
-  const sortMapping: (
-    a: IPkmn,
-    b: IPkmn
-  ) => Record<SortKey, [number | string, number | string]> = (a, b) => ({
+  const sortMapping: SortMapping<SortKey, IPkmn> = (a, b) => ({
     id: [Number(a.id), Number(b.id)],
     name: [a.name, b.name],
     types: [
@@ -134,7 +130,7 @@ export default function PokemonByType({
 
   // Cell for pokemon type images
   const typesCell = (pokemon: IPkmn) =>
-    pokemon.types.map((t, idx) => (
+    pokemon.types.map((t) =>
       <Link href={`/type/${t.type.name}`} key={t.type.name}>
         <Image
           width="100"
@@ -147,7 +143,7 @@ export default function PokemonByType({
           )}
         />
       </Link>
-    ));
+    );
 
   // Creating table body
   // Iterating over sortedPokemon for each column
@@ -187,11 +183,11 @@ export default function PokemonByType({
           length: pokemonByType.results.length,
         })}
       </h3>
-      {!!pokemonByType.results.length && (
+      {!!pokemonByType.results.length &&
         <div className="h-[-webkit-fill-available]">
           <Table headers={tableHeaders}>{tableBody}</Table>
         </div>
-      )}
+      }
     </div>
   );
 }

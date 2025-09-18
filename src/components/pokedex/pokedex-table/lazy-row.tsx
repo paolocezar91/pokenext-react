@@ -25,7 +25,7 @@ export default function LazyRow({
   const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "200px" });
   const { settings } = useUser();
 
-  const thumbCell = (
+  const thumbCell =
     <td
       className={`
         pl-10 pr-4
@@ -33,7 +33,7 @@ export default function LazyRow({
         ${!settings!.showThumbTable ? "py-4" : "py-2"}
       `}
     >
-      {settings!.showThumbTable && (
+      {settings!.showThumbTable &&
         <motion.div
           layout
           initial={{ scale: 0, opacity: 0 }}
@@ -45,11 +45,10 @@ export default function LazyRow({
             <PokemonThumb pokemonData={pokemon} size="xs" />
           </Link>
         </motion.div>
-      )}
+      }
     </td>
-  );
-
-  const numberCell = shouldShowColumn(settings!, 0) && (
+  ;
+  const numberCell = shouldShowColumn(settings!, 0) &&
     <td
       className={`
         px-4
@@ -67,9 +66,8 @@ export default function LazyRow({
         {getNumber(pokemon.id)}
       </Link>
     </td>
-  );
-
-  const nameCell = shouldShowColumn(settings!, 1) && (
+  ;
+  const nameCell = shouldShowColumn(settings!, 1) &&
     <td
       className={`
         px-2 
@@ -85,9 +83,8 @@ export default function LazyRow({
         {normalizePokemonName(pokemon.name)}
       </Link>
     </td>
-  );
-
-  const typesCell = shouldShowColumn(settings!, 2) && (
+  ;
+  const typesCell = shouldShowColumn(settings!, 2) &&
     <td
       className={`
         px-2
@@ -96,7 +93,7 @@ export default function LazyRow({
         ${!settings!.showThumbTable ? "py-4" : "py-2"}
       `}
     >
-      {pokemon.types.map((t, idx) => (
+      {pokemon.types.map((t) =>
         <Link href={`/type/${t.type.name}`} key={t.type.name}>
           <Image
             width="100"
@@ -109,10 +106,9 @@ export default function LazyRow({
             )}
           />
         </Link>
-      ))}
+      )}
     </td>
-  );
-
+  ;
   const statsCells = pokemon.stats
     .filter((_, idx) => shouldShowColumn(settings!, 3 + idx))
     .map((stat) => {
@@ -135,8 +131,8 @@ export default function LazyRow({
   return (
     <tr ref={ref} className="bg-background">
       <AnimatePresence>
-        {inView ? (
-          settings && (
+        {inView ?
+          settings &&
             <>
               {thumbCell}
               {numberCell}
@@ -145,10 +141,10 @@ export default function LazyRow({
               {statsCells}
               <td></td>
             </>
-          )
-        ) : (
+
+          :
           <td className="p-1" colSpan={11}></td>
-        )}
+        }
       </AnimatePresence>
     </tr>
   );

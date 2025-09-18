@@ -142,7 +142,7 @@ export default function Search({ className = "" }: { className?: string }) {
         <MagnifyingGlassIcon className="w-5" />
       </div>
       <AnimatePresence>
-        {suggestions.length > 0 && (
+        {suggestions.length > 0 &&
           <motion.div
             layout
             initial={{ opacity: 0 }}
@@ -152,7 +152,7 @@ export default function Search({ className = "" }: { className?: string }) {
             style={{ width: "100%" }}
           >
             <ul className="absolute bg-white border border-foreground text-black text-xs rounded shadow-lg mt-1 max-h-40 overflow-y-auto w-60 z-10">
-              {suggestions.map((suggestion) => (
+              {suggestions.map((suggestion) =>
                 <li
                   key={suggestion.name}
                   onClick={() => handleSuggestionClick(suggestion)}
@@ -160,10 +160,10 @@ export default function Search({ className = "" }: { className?: string }) {
                 >
                   {getSuggestion(suggestion)}
                 </li>
-              ))}
+              )}
             </ul>
           </motion.div>
-        )}
+        }
       </AnimatePresence>
     </form>
   );

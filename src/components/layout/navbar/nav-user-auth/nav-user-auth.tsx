@@ -35,7 +35,7 @@ export default function NavUserAuth() {
         onMouseEnter={() => setMenuOpen(true)}
       />
       <AnimatePresence>
-        {menuOpen && (
+        {menuOpen &&
           <motion.div
             initial={{ opacity: 0, top: "1.5rem" }}
             animate={{ opacity: 1, top: "2rem" }}
@@ -58,7 +58,7 @@ export default function NavUserAuth() {
               />
             </UserMenu>
           </motion.div>
-        )}
+        }
       </AnimatePresence>
     </div>
   );

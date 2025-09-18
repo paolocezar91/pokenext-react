@@ -1,6 +1,6 @@
-import { gql, request } from "graphql-request";
-import { NextRequest, NextResponse } from "next/server";
 import { authorizedQueryGraphql } from "@/app/services/graphql";
+import { gql } from "graphql-request";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();

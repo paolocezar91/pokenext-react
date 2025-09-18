@@ -1,12 +1,11 @@
 import { locales } from "@/i18n/config";
-import { useLocale, useTranslations } from "next-intl";
+import { LanguageIcon } from "@heroicons/react/24/solid";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/router";
 import { ChangeEvent } from "react";
 import Select from "../shared/select";
-import { useRouter } from "next/router";
-import { LanguageIcon } from "@heroicons/react/24/solid";
 
 export default function LangSelect() {
-  const t = useTranslations();
   const router = useRouter();
   const locale = useLocale();
 

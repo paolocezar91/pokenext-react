@@ -29,7 +29,7 @@ export default function TypeArtworkSelect() {
   };
 
   return (
-    settings && (
+    settings &&
       <div className="flex flex-col sm:flex-row">
         <label htmlFor="lang" className="w-full grow">
           <div className="flex flex-col">
@@ -61,6 +61,6 @@ export default function TypeArtworkSelect() {
           src={getTypeIconById("12", settings.typeArtworkUrl)}
         />
       </div>
-    )
+
   );
 }

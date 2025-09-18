@@ -43,7 +43,7 @@ const getAuthorizationToken = async (
   req: NextRequest,
   additionalHeaders: HeadersInit = {}
 ) => {
-  const token = (await getToken({ req, secret })) as Object;
+  const token = (await getToken({ req, secret })) as object;
 
   const headers = token
     ? { Authorization: `Bearer ${sign(token, secret)}`, ...additionalHeaders }

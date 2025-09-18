@@ -37,25 +37,25 @@ export default function PokemonVarieties({
     queryFn: () =>
       varieties
         ? pokeApiQuery.getPokemonFormByIds(
-            varieties?.results
-              .filter((v) => v.name !== name)
-              .map((v) => Number(getIdFromUrlSubstring(v.forms[0].url))),
-          )
+          varieties?.results
+            .filter((v) => v.name !== name)
+            .map((v) => Number(getIdFromUrlSubstring(v.forms[0].url))),
+        )
         : new Promise<CountResults<IPokemonForm>>((res) =>
-            res({ results: [], count: 0 }),
-          ),
+          res({ results: [], count: 0 }),
+        ),
   });
 
   return (
     varieties &&
-    forms && (
+    forms &&
       <div className="pokemon-varieties col-span-6 mt-2">
         <h3 className="w-fit text-lg font-semibold mb-2">
           {t("pokedex.details.varieties.title")}
         </h3>
         <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
           {!!forms?.results?.length &&
-            varieties?.results?.map((pkmn, i) => (
+            varieties?.results?.map((pkmn, i) =>
               <Tooltip key={pkmn.id} content={normalizePokemonName(pkmn.name)}>
                 <Link className="flex-2" href={`/pokedex/${pkmn.name}`}>
                   <PokemonThumb
@@ -65,9 +65,9 @@ export default function PokemonVarieties({
                   />
                 </Link>
               </Tooltip>
-            ))}
+            )}
         </div>
       </div>
-    )
+
   );
 }

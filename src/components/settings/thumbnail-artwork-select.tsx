@@ -25,7 +25,7 @@ export default function ThumbnailArtworkSelect() {
   };
 
   return (
-    settings && (
+    settings &&
       <div className="flex flex-col sm:flex-row">
         <label htmlFor="lang" className="w-full grow">
           <div className="flex flex-col">
@@ -57,6 +57,6 @@ export default function ThumbnailArtworkSelect() {
           src={getArtwork(1, settings.artworkUrl as ArtUrl).normal[0]}
         />
       </div>
-    )
+
   );
 }

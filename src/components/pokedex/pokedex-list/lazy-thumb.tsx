@@ -18,7 +18,7 @@ export default function LazyThumb({
   return (
     <AnimatePresence>
       <div ref={ref} style={{ minHeight: 120, minWidth: 120 }}>
-        {inView ? (
+        {inView ?
           <motion.div
             layout
             initial={{ marginLeft: "-0.35rem", opacity: 0 }}
@@ -34,7 +34,7 @@ export default function LazyThumb({
               />
             </Link>
           </motion.div>
-        ) : null}
+          : null}
       </div>
     </AnimatePresence>
   );

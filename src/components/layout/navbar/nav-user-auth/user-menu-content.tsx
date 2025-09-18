@@ -27,14 +27,14 @@ export default function UserMenuContent({
 }) {
   const t = useTranslations();
 
-  const signInButton = (
+  const signInButton =
     <NavButton className="flex justify-between w-full" onClick={onSignIn}>
       {t("menu.signIn")}
       <GithubIcon />
     </NavButton>
-  );
+  ;
 
-  const aboutButton = (
+  const aboutButton =
     <NavLink
       className="flex justify-between w-full"
       href="/about/"
@@ -43,9 +43,9 @@ export default function UserMenuContent({
       <span>{t("menu.about")}</span>
       <QuestionMarkCircleIcon width={22} />
     </NavLink>
-  );
+  ;
 
-  const settingsButton = (
+  const settingsButton =
     <NavLink
       className="flex justify-between w-full"
       href="/settings/"
@@ -54,20 +54,20 @@ export default function UserMenuContent({
       <span>{t("menu.settings")}</span>
       <Cog6ToothIcon width={22} />
     </NavLink>
-  );
+  ;
 
-  const signOutButton = (
+  const signOutButton =
     <NavButton className="flex justify-between w-full" onClick={onSignOut}>
       <span>{t("menu.signOut")}</span>
       <ArrowLeftEndOnRectangleIcon width={22} />
     </NavButton>
-  );
+  ;
 
-  const userNameOrEmail = (
+  const userNameOrEmail =
     <span className="ml-2 text-sm text-white mb-2 font-bold">
       {session ? session?.user?.name || session?.user?.email : "Guest"}
     </span>
-  );
+  ;
 
   return (
     <ul className="w-full">

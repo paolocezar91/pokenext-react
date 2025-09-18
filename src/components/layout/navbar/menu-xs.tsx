@@ -18,11 +18,11 @@ export default function MenuXs({ children }: { children?: ReactNode }) {
         <div className="mr-2">{children}</div>
         <NavUserAuth />
       </div>
-      {openSearch && (
+      {openSearch &&
         <div className="bg-gray-700 mt-4 w-full">
           <Search className="w-full" />
         </div>
-      )}
+      }
     </>
   );
 }

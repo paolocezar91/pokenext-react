@@ -13,7 +13,7 @@ type TooltipState = {
 type TooltipAction =
   | { type: "SET_IS_VISIBLE"; payload: boolean }
   | { type: "SET_TIMEOUT_ID"; payload: NodeJS.Timeout | null }
-  | { type: "SET_COORDS"; payload: { top: number; left: number } }
+  | { type: "SET_COORDS"; payload: { top: number; left: number }}
   | { type: "SET_FINAL_POSITION"; payload: TooltipPosition }
   | { type: "RESET_STATE" };
 
@@ -148,7 +148,7 @@ export default function Tooltip({
     top = Math.max(10, Math.min(top, viewportHeight - tooltipRect.height - 10));
 
     dispatch({ type: "SET_FINAL_POSITION", payload: newPosition });
-    dispatch({ type: "SET_COORDS", payload: { top, left } });
+    dispatch({ type: "SET_COORDS", payload: { top, left }});
   };
 
   useEffect(() => {
@@ -177,13 +177,13 @@ export default function Tooltip({
           disabled
             ? undefined
             : () =>
-                dispatch({ type: "SET_IS_VISIBLE", payload: !state.isVisible })
+              dispatch({ type: "SET_IS_VISIBLE", payload: !state.isVisible })
         }
         aria-describedby={state.isVisible ? "tooltip-content" : undefined}
       >
         {children}
       </div>
-      {state.isVisible && (
+      {state.isVisible &&
         <div
           ref={tooltipRef}
           id="tooltip-content"
@@ -196,7 +196,7 @@ export default function Tooltip({
         >
           {content}
         </div>
-      )}
+      }
     </div>
   );
 }

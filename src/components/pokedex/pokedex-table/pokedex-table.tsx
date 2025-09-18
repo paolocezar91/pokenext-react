@@ -1,4 +1,5 @@
 import {
+  SortMapping,
   sortResources,
   updateSortKeys,
 } from "@/components/shared/table/sorting";
@@ -50,11 +51,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings?.sorting]);
 
-  // eslint-disable-next-line no-unused-vars
-  const sortMapping: (
-    a: IPkmn,
-    b: IPkmn
-  ) => Record<SortKey, [number | string, number | string]> = (a, b) => ({
+  const sortMapping: SortMapping<SortKey, IPkmn> = (a, b) => ({
     types: [
       a.types.map((t) => t.type.name).join(","),
       b.types.map((t) => t.type.name).join(","),
@@ -75,7 +72,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
 
   if (!settings) return null;
 
-  const tHead = (
+  const tHead =
     <>
       <tr className="sticky top-0 bg-(--pokedex-red-dark) z-1">
         <th className="w-[1%] text-white text-center"></th>
@@ -88,7 +85,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
             #
           </SortButton>
         </th>
-        {shouldShowColumn(settings, 1) && (
+        {shouldShowColumn(settings, 1) &&
           <th className="w-[18%] text-white text-left px-2 py-2">
             <SortButton
               attr="name"
@@ -98,10 +95,10 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
               {t("table.name")}
             </SortButton>
           </th>
-        )}
-        {shouldShowColumn(settings, 2) && (
+        }
+        {shouldShowColumn(settings, 2) &&
           <th className="text-white text-left px-2 py-2">
-            {!settings.showShowColumn ? (
+            {!settings.showShowColumn ?
               <SortButton
                 onClick={() => toggleSort("types")}
                 sorting={sorting}
@@ -109,7 +106,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
               >
                 {t("table.types")}
               </SortButton>
-            ) : (
+              :
               <Toggle
                 size="sm"
                 childrenLeft={t("table.types")}
@@ -117,15 +114,15 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
                 value={settings.showColumn[2]}
                 onChange={(e) => handleShowColumnChange(e, 2)}
               />
-            )}
+            }
           </th>
-        )}
+        }
         {!!pokemons.length &&
           pokemons[0].stats.map((stat, idx) => {
             return (
-              shouldShowColumn(settings, 3 + idx) && (
+              shouldShowColumn(settings, 3 + idx) &&
                 <th key={idx} className="text-white text-center px-2 py-2">
-                  {!settings.showShowColumn ? (
+                  {!settings.showShowColumn ?
                     <SortButton
                       onClick={() => toggleSort(stat.stat.name as SortKey)}
                       sorting={sorting}
@@ -133,7 +130,7 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
                     >
                       {statName(stat.stat.name)}
                     </SortButton>
-                  ) : (
+                    :
                     <Toggle
                       size="sm"
                       childrenLeft={statName(stat.stat.name)}
@@ -141,16 +138,15 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
                       value={settings.showColumn[idx + 3]}
                       onChange={(e) => handleShowColumnChange(e, idx + 3)}
                     />
-                  )}
+                  }
                 </th>
-              )
+
             );
           })}
         <th className="w-[1%]"></th>
       </tr>
     </>
-  );
-
+  ;
   return (
     <div className="table-container p-2 bg-(--pokedex-red) w-full">
       <div className="overflow-auto h-[85vh] relative rounded-lg shadow-md">
@@ -161,14 +157,14 @@ export default function PokedexTable({ pokemons }: { pokemons: IPkmn[] }) {
               const isFirst = i === 0;
               const isLast = i === pokemons.length - 1;
               return (
-                settings && (
+                settings &&
                   <LazyRow
                     key={pokemon.id}
                     isFirst={isFirst}
                     isLast={isLast}
                     pokemon={pokemon}
                   />
-                )
+
               );
             })}
           </tbody>

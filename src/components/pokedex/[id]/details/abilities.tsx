@@ -37,7 +37,7 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
       );
     }
 
-    return abilityDetails.map((ability, i) => (
+    return abilityDetails.map((ability, i) =>
       <li key={ability.id} className="capitalize">
         <Tooltip
           content={
@@ -49,7 +49,7 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
           {ability.name}
         </Tooltip>
       </li>
-    ));
+    );
   };
 
   return (

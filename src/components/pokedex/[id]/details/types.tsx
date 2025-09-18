@@ -39,9 +39,9 @@ export default function PokemonTypes({ types }: { types: IType[] }) {
   const { settings } = useUser();
 
   return (
-    settings && (
+    settings &&
       <div className="pokemon-types w-full mt-4 mb-4 flex flex-wrap gap-2">
-        {types.map((type, i) => (
+        {types.map((type) =>
           <Link href={`/type/${type.name}`} key={type.name}>
             <Image
               src={getTypeIconById(type.id.toString(), settings.typeArtworkUrl)}
@@ -50,8 +50,8 @@ export default function PokemonTypes({ types }: { types: IType[] }) {
               alt={capitilize(type.name)}
             />
           </Link>
-        ))}
+        )}
       </div>
-    )
+
   );
 }

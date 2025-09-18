@@ -48,7 +48,7 @@ export async function getStaticPaths() {
   const paths = [];
   for (const locale of locales) {
     for (const moveId of ids) {
-      paths.push({ params: { locale, moveId } });
+      paths.push({ params: { locale, moveId }});
     }
   }
 

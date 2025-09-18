@@ -20,7 +20,7 @@ export default function MoveDataTable({ moveData }: { moveData: IMove }) {
           <tr>
             <th className="text-left">{t("pokedex.details.moves.type")}</th>
             <td className="py-1">
-              {settings ? (
+              {settings ?
                 <Link href={`/type/${moveData.type.name}`}>
                   <Image
                     loading="lazy"
@@ -33,15 +33,15 @@ export default function MoveDataTable({ moveData }: { moveData: IMove }) {
                     )}
                   />
                 </Link>
-              ) : (
+                :
                 <SkeletonBlock className="w-45" />
-              )}
+              }
             </td>
           </tr>
           <tr>
             <th className="text-left">{t("pokedex.details.moves.class")}</th>
             <td className="py-1">
-              {settings ? (
+              {settings ?
                 <Tooltip content={capitilize(moveData.damage_class.name)}>
                   <span className="flex items-center">
                     <Image
@@ -55,39 +55,39 @@ export default function MoveDataTable({ moveData }: { moveData: IMove }) {
                     {capitilize(moveData.damage_class.name)}
                   </span>
                 </Tooltip>
-              ) : (
+                :
                 <SkeletonBlock />
-              )}
+              }
             </td>
           </tr>
           <tr>
             <th className="text-left">{t("pokedex.details.moves.power")}</th>
             <td className="py-1 w-50">
-              {settings ? (
-                (moveData.power ?? "-")
-              ) : (
+              {settings ?
+                moveData.power ?? "-"
+                :
                 <SkeletonBlock className="w-50" />
-              )}
+              }
             </td>
           </tr>
           <tr>
             <th className="text-left">{t("pokedex.details.moves.accuracy")}</th>
             <td className="py-1 w-50">
-              {settings ? (
-                (moveData.accuracy ?? "-")
-              ) : (
+              {settings ?
+                moveData.accuracy ?? "-"
+                :
                 <SkeletonBlock className="w-45" />
-              )}
+              }
             </td>
           </tr>
           <tr>
             <th className="text-left">{t("pokedex.details.moves.pp")}</th>
             <td className="py-1 w-50">
-              {settings ? (
-                (moveData.pp ?? "-")
-              ) : (
+              {settings ?
+                moveData.pp ?? "-"
+                :
                 <SkeletonBlock className="w-40" />
-              )}
+              }
             </td>
           </tr>
         </tbody>
