@@ -1,6 +1,6 @@
 import { gql, request } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
-import { queryGraphql } from "@/app/services/graphql";
+import { authorizedQueryGraphql } from "@/app/services/graphql";
 
 export async function POST(req: NextRequest) {
   const { email } = await req.json();
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   `;
 
   try {
-    const { createUser } = await queryGraphql<{
+    const { createUser } = await authorizedQueryGraphql<{
       createUser: { id: string; email: string };
     }>(req, mutation, { email });
     return NextResponse.json(createUser, { status: 200 });

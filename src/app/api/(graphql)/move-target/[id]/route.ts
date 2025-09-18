@@ -1,8 +1,8 @@
 import { idOrName } from "@/app/api/api-utils";
+import { queryGraphql } from "@/app/services/graphql";
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 import { IMoveTarget } from "pokeapi-typescript";
-import { queryGraphql } from "@/app/services/graphql";
 
 export async function GET(
   req: NextRequest,
@@ -31,7 +31,7 @@ export async function GET(
   try {
     const { moveTargetById } = await queryGraphql<{
       moveTargetById: IMoveTarget;
-    }>(req, query, vars);
+    }>(query, vars);
     return NextResponse.json(moveTargetById, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });

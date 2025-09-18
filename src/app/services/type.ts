@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import { IType } from "pokeapi-typescript";
-import { requestGraphql } from "./graphql";
+import { queryGraphql } from "./graphql";
 
 export async function getTypeById(vars: {
   id?: number | string;
@@ -26,7 +26,7 @@ export async function getTypeById(vars: {
   `;
 
   try {
-    return await requestGraphql<{ pokemonType: IType }>(query, vars);
+    return await queryGraphql<{ pokemonType: IType }>(query, vars);
   } catch (err) {
     throw err;
   }
@@ -43,7 +43,7 @@ export async function getAllTypes() {
   `;
 
   try {
-    return await requestGraphql<{ types: IType[] }>(query);
+    return await queryGraphql<{ types: IType[] }>(query);
   } catch (err) {
     throw err;
   }

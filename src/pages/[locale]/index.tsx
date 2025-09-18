@@ -34,7 +34,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     : {};
   // Use settings to filter
   const pokemonsData = (
-    await getAllPokemon(context.req as unknown as NextRequest, {
+    await getAllPokemon({
       offset: STARTING_POKEMON,
       limit: NUMBERS_OF_POKEMON,
       ...settings.filter,

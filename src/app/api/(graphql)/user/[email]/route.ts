@@ -1,6 +1,6 @@
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
-import { queryGraphql } from "@/app/services/graphql";
+import { authorizedQueryGraphql } from "@/app/services/graphql";
 
 export async function GET(
   req: NextRequest,
@@ -18,7 +18,7 @@ export async function GET(
   `;
 
   try {
-    const { user } = await queryGraphql<{
+    const { user } = await authorizedQueryGraphql<{
       user: { id: string; email: string };
     }>(req, query, { email });
     return NextResponse.json(user, { status: 200 });

@@ -1,7 +1,7 @@
 import { gql } from "graphql-request";
 import { IMove } from "pokeapi-typescript";
 import { formatResultsCount } from "../api/api-utils";
-import { requestGraphql } from "./graphql";
+import { queryGraphql } from "./graphql";
 
 export async function getMoveById(vars: {
   id?: number | string;
@@ -49,7 +49,7 @@ export async function getMoveById(vars: {
     }
   `;
   try {
-    return await requestGraphql<{ moveById: IMove }>(query, vars);
+    return await queryGraphql<{ moveById: IMove }>(query, vars);
   } catch (err) {
     throw err;
   }
@@ -85,7 +85,7 @@ export async function getMoveByIds(vars: { ids: string }) {
   `;
 
   try {
-    const data = await requestGraphql<{ movesByIds: IMove[] }>(query, vars);
+    const data = await queryGraphql<{ movesByIds: IMove[] }>(query, vars);
     return formatResultsCount(data.movesByIds);
   } catch (err) {
     throw err;
@@ -102,7 +102,7 @@ export async function getAllMoves() {
     }
   `;
   try {
-    const data = await requestGraphql<{ moves: IMove[] }>(query);
+    const data = await queryGraphql<{ moves: IMove[] }>(query);
     return formatResultsCount(data.moves);
   } catch (err) {
     throw err;

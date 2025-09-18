@@ -40,6 +40,7 @@ import {
 } from "../../../../components/shared/utils";
 import "./index.scss";
 import { getMessages } from "@/i18n/messages";
+import { NextRequest } from "next/server";
 
 const pokeApiQuery = new PokeApiQuery();
 

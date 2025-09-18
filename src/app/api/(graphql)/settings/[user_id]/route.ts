@@ -1,4 +1,4 @@
-import { queryGraphql } from "@/app/services/graphql";
+import { authorizedQueryGraphql } from "@/app/services/graphql";
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -37,7 +37,7 @@ export async function GET(
   `;
 
   try {
-    const { userSettings } = await queryGraphql<{
+    const { userSettings } = await authorizedQueryGraphql<{
       userSettings: Record<string, unknown>;
     }>(req, query, { user_id });
 
@@ -90,7 +90,7 @@ export async function POST(
   `;
 
   try {
-    const { upsertUserSettings } = await queryGraphql<{
+    const { upsertUserSettings } = await authorizedQueryGraphql<{
       upsertUserSettings: Record<string, unknown>;
     }>(req, mutation, { input });
     const response = serializeSettings(upsertUserSettings);

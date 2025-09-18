@@ -1,7 +1,7 @@
+import { queryGraphql } from "@/app/services/graphql";
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 import { IEvolutionChain } from "pokeapi-typescript";
-import { queryGraphql } from "@/app/services/graphql";
 
 export async function GET(
   req: NextRequest,
@@ -179,7 +179,7 @@ export async function GET(
   try {
     const { evolutionChain } = await queryGraphql<{
       evolutionChain: IEvolutionChain;
-    }>(req, query, vars);
+    }>(query, vars);
     return NextResponse.json(evolutionChain, { status: 200 });
   } catch (err) {
     return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });

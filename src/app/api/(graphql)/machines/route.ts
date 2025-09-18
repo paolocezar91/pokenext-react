@@ -1,8 +1,8 @@
 import { formatResultsCount } from "@/app/api/api-utils";
+import { queryGraphql } from "@/app/services/graphql";
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 import { IMachine } from "pokeapi-typescript";
-import { queryGraphql } from "@/app/services/graphql";
 
 export async function GET(req: NextRequest) {
   const ids = req.nextUrl.searchParams.get("ids");
@@ -35,11 +35,9 @@ async function getByIds(ids: string, req: NextRequest) {
   `;
 
   try {
-    const { machinesByIds } = await queryGraphql<{ machinesByIds: IMachine[] }>(
-      req,
-      query,
-      vars
-    );
+    const { machinesByIds } = await queryGraphql<{
+      machinesByIds: IMachine[];
+    }>(query, vars);
     return NextResponse.json(formatResultsCount(machinesByIds), {
       status: 200,
     });
