@@ -101,6 +101,18 @@
       "title": "{type} moves ({ length })"
     }
   },
+  "items": {
+    "title": "Items",
+    "category": "Category",
+    "cost": "Cost",
+    "attributes": "Attributes",
+    "flingEffect": "Fling Effect",
+    "flingPower": "Fling Power",
+    "heldBy": {
+      "title": "Held by {total} pokemon",
+      "description": "These pokemon have a chance of holding the item on wild encounters"
+    }
+  },
   "table": {
     "name": "Name",
     "types": "Type(s)"

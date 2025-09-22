@@ -57,12 +57,12 @@ export type PokemonAction =
   | { type: "SET_POKEMON"; payload: IPokemon }
   | { type: "SET_SPECIES_CHAIN"; payload: SpeciesChain }
   | {
-    type: "SET_SPECIES";
-    payload: IPokemonSpecies & {
-      is_legendary?: boolean;
-      is_mythical?: boolean;
-    };
-  }
+      type: "SET_SPECIES";
+      payload: IPokemonSpecies & {
+        is_legendary?: boolean;
+        is_mythical?: boolean;
+      };
+    }
   | { type: "SET_TYPES"; payload: IType[] }
   | { type: "SET_EVOLUTION_CHAIN"; payload: IEvolutionChain }
   | { type: "RESET_STATE" };
@@ -132,7 +132,7 @@ export async function getStaticPaths() {
   const paths = [];
   for (const locale of locales) {
     for (const id of ids) {
-      paths.push({ params: { locale, id }});
+      paths.push({ params: { locale, id } });
     }
   }
 
@@ -155,7 +155,7 @@ export default function PokemonDetails({
 }) {
   const initialState: PokemonState = {
     pokemon: pokemonData,
-    speciesChain: { loaded: false, chain: {}},
+    speciesChain: { loaded: false, chain: {} },
     species: null,
     types: [],
     evolutionChain: null,
@@ -237,14 +237,14 @@ export default function PokemonDetails({
   const title = !state.pokemon
     ? `${t("pokedex.loading")}...`
     : `${normalizePokemonName(state.pokemon.name)} ${getNumber(
-      state.pokemon.id
-    )}`;
+        state.pokemon.id
+      )}`;
 
   return (
     <RootLayout title={title}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) overflow-auto relative">
-        <div className=" wrapper flex flex-col md:flex-row mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
-          <div className=" thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
+        <div className="wrapper flex flex-col md:flex-row mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available]">
+          <div className="thumb flex flex-col h-[-webkit-fill-available] md:items-start mr-0 md:mr-4 self-center md:self-start">
             <PokemonThumb
               pokemonData={state.pokemon}
               size="lg"
@@ -298,12 +298,12 @@ export default function PokemonDetails({
                 name={state.pokemon ? capitilize(state.pokemon.name) : ""}
                 types={state.types.map((type) => type.name)}
               />
-              {state.species && state.species.varieties.length > 1 &&
+              {state.species && state.species.varieties.length > 1 && (
                 <PokemonVarieties
                   name={state.pokemon.name}
                   species={state.species}
                 />
-              }
+              )}
               <PokemonEvolutionChart
                 pokemon={state.pokemon}
                 speciesChain={state.speciesChain}
