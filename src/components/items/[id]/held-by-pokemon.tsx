@@ -1,7 +1,19 @@
-import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/api/poke-api-query";
+import { NUMBERS_OF_POKEMON } from "@/app/const";
+import { getTypeIconById } from "@/components/pokedex/[id]/details/types";
+import Link from "@/components/shared/link";
+import SkeletonBlock from "@/components/shared/skeleton-block";
+import SkeletonImage from "@/components/shared/skeleton-image";
+import SortButton from "@/components/shared/table/sort-button";
+import {
+  SortingDir,
+  SortMapping,
+  sortResources,
+  updateSortKeys,
+} from "@/components/shared/table/sorting";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
+import Tooltip from "@/components/shared/tooltip/tooltip";
 import {
   capitilize,
   getIdFromUrlSubstring,
@@ -9,33 +21,20 @@ import {
 } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
+import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import Link from "@/components/shared/link";
-import { ITypePokemon } from "pokeapi-typescript";
-import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { getTypeIconById } from "../pokedex/[id]/details/types";
-import SkeletonBlock from "../shared/skeleton-block";
-import SkeletonImage from "../shared/skeleton-image";
-import LoadingSpinner from "../shared/spinner";
-import SortButton from "../shared/table/sort-button";
-import {
-  SortingDir,
-  SortMapping,
-  sortResources,
-  updateSortKeys,
-} from "../shared/table/sorting";
-import PokedexList from "../pokedex/pokedex-list/pokedex-list";
+import Image from "next/image";
+import { IItemHolderPokemon } from "pokeapi-typescript";
+import { useState } from "react";
+
 export type SortKey = "id" | "name" | "types";
 const pokeApiQuery = new PokeApiQuery();
 
-export default function PokemonByType({
+export default function HeldByPokemon({
   pokemonList,
-  type,
 }: {
-  pokemonList: ITypePokemon[];
-  type: string;
+  pokemonList: IItemHolderPokemon[];
 }) {
   const t = useTranslations();
   const { settings } = useUser();
@@ -46,18 +45,18 @@ export default function PokemonByType({
 
   const ids = pokemonList
     .map((p) => Number(getIdFromUrlSubstring(p.pokemon.url)))
-    .filter((id) => id <= NUMBERS_OF_POKEMON);
+    .filter((id) => id < NUMBERS_OF_POKEMON);
 
-  const { data: pokemonByType } = useQuery({
-    queryKey: ["pokemonList", pokemonList, type],
-    queryFn: () => pokeApiQuery.getPokemonByIds(ids, NUMBERS_OF_POKEMON),
+  const { data: heldBy } = useQuery({
+    queryKey: ["pokemonList", pokemonList],
+    queryFn: () =>
+      !ids.length
+        ? []
+        : pokeApiQuery
+            .getPokemonByIds(ids, NUMBERS_OF_POKEMON)
+            .then(({ results }) => results),
   });
 
-  if (!settings) {
-    return <LoadingSpinner />;
-  }
-
-  // Creating table headers
   const tableHeaders = (
     <>
       <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
@@ -70,7 +69,7 @@ export default function PokemonByType({
           #
         </SortButton>
       </th>
-      <th className="bg-(--pokedex-red-dark) w-[20%] text-white text-left px-2 py-1">
+      <th className="bg-(--pokedex-red-dark) w-[15%] text-white text-left px-2 py-1">
         <SortButton
           attr="name"
           onClick={() => toggleSort("name")}
@@ -90,23 +89,32 @@ export default function PokemonByType({
       </th>
     </>
   );
-  // Displaying Skeleton rows while loading
-  if (!pokemonByType?.results.length) {
-    const skeletonImage = <SkeletonImage className="w-30 h-30" />;
+
+  if (!heldBy) {
     const skeletonTableBody = [...Array(10)].map((_, i) => (
       <tr key={i} className="border-solid border-foreground border-b-2">
-        {[...Array(4)].map((_, j) => (
-          <td key={j} className="p-2">
-            {j === 0 ? skeletonImage : <SkeletonBlock />}
-          </td>
-        ))}
+        {[...Array(4)].map((_, j) => {
+          if (j === 0) {
+            return (
+              <td key={j} className="p-2 text-center justify-center flex">
+                <SkeletonImage className="w-30 h-30" />
+              </td>
+            );
+          }
+
+          return (
+            <td key={j} className="p-2 text-center justify-center">
+              <SkeletonBlock className="w-10" />
+            </td>
+          );
+        })}
       </tr>
     ));
 
     return (
       <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
         <h3 className="w-fit text-lg mb-4">
-          {t("type.pokemon.title", { type: capitilize(type), length: 0 })}
+          {t("item.heldBy.title", { total: String(heldBy?.length) })}
         </h3>
         <div className="h-[-webkit-fill-available]">
           <Table headers={tableHeaders}>{skeletonTableBody}</Table>
@@ -115,39 +123,39 @@ export default function PokemonByType({
     );
   }
 
+  const typesCell = (pokemon: IPkmn) => {
+    if (!settings) return;
+
+    return pokemon.types.map((type) => {
+      return (
+        <Link href={`/type/${type.type.name}`} key={type.type.name}>
+          <Image
+            width="100"
+            height="20"
+            className="inline m-1"
+            alt={capitilize(type.type.name)}
+            src={getTypeIconById(
+              getIdFromUrlSubstring(type.type.url),
+              settings!.typeArtworkUrl
+            )}
+          />
+        </Link>
+      );
+    });
+  };
+
   const sortMapping: SortMapping<SortKey, IPkmn> = (a, b) => ({
-    id: [Number(a.id), Number(b.id)],
+    id: [a.id, b.id],
     name: [a.name, b.name],
     types: [
-      a.types.map((t) => t.type.name).join(","),
-      b.types.map((t) => t.type.name).join(","),
+      a.types.map((type) => type.type.name).join(","),
+      b.types.map((type) => type.type.name).join(","),
     ],
   });
 
-  // Sorting pokemon
-  const sortedPokemon = pokemonByType.results.sort(
-    sortResources(sorting, sortMapping, "id")
-  );
+  const sortedPokemon =
+    heldBy.sort(sortResources(sorting, sortMapping, "id")) ?? [];
 
-  // Cell for pokemon type images
-  const typesCell = (pokemon: IPkmn) =>
-    pokemon.types.map((t) => (
-      <Link href={`/type/${t.type.name}`} key={t.type.name}>
-        <Image
-          width="100"
-          height="20"
-          className="inline m-1"
-          alt={capitilize(t.type.name)}
-          src={getTypeIconById(
-            getIdFromUrlSubstring(t.type.url),
-            settings!.typeArtworkUrl
-          )}
-        />
-      </Link>
-    ));
-
-  // Creating table body
-  // Iterating over sortedPokemon for each column
   const tableBody = sortedPokemon.map((pokemon, idx, self) => {
     const isLast = idx === self.length - 1;
     return (
@@ -177,18 +185,16 @@ export default function PokemonByType({
   });
 
   return (
-    <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
-      <h3 className="w-fit text-lg mb-4">
-        {t("type.pokemon.title", {
-          type: capitilize(type),
-          length: pokemonByType.results.length,
-        })}
-      </h3>
-      {!!pokemonByType.results.length && (
-        <div className="h-[-webkit-fill-available]">
-          <Table headers={tableHeaders}>{tableBody}</Table>
-        </div>
-      )}
+    <div className="w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0 mt-2">
+      <div className="flex">
+        <h3 className="w-fit text-lg mb-4">
+          {t("items.heldBy.title", { total: heldBy?.length ?? 0 })}
+        </h3>
+        <Tooltip content={t("items.heldBy.description")}>
+          <QuestionMarkCircleIcon className="w-5 hover:fill-(--pokedex-red)" />
+        </Tooltip>
+      </div>
+      {!!heldBy?.length && <Table headers={tableHeaders}>{tableBody}</Table>}
     </div>
   );
 }
