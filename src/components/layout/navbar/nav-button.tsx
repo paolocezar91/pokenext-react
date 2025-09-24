@@ -14,7 +14,7 @@ export default function NavButton({
   isActive?: boolean;
   className?: string;
 }) {
-  const baseClasses =`
+  const baseClasses = `
     flex
     px-2
     py-2
@@ -41,4 +41,4 @@ export default function NavButton({
       {children}
     </Button>
   );
-};
+}

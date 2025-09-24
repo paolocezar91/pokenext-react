@@ -1,9 +1,10 @@
 import UserApi, { Settings, User } from "@/app/api/user-api";
 import { TypeUrl } from "@/components/pokedex/[id]/details/types";
-import { useAsyncQuery, useLocalStorage } from "@/components/shared/utils";
+import { useLocalStorage } from "@/components/shared/utils";
 import { useSession } from "next-auth/react";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSnackbar } from "./snackbar";
+import { useQuery } from "@tanstack/react-query";
 
 interface IUserContext {
   user: User;
@@ -23,10 +24,10 @@ const UserContext = createContext<IUserContext>({
 });
 
 const setSettingsCookies = async (updatedSettings: unknown) => {
-  await fetch('/api/settings', {
-    method: 'POST',
+  await fetch("/api/settings", {
+    method: "POST",
     body: JSON.stringify(updatedSettings),
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
   });
 };
 
@@ -42,10 +43,12 @@ const guestDefaultSettings: Settings = {
   thumbSizeList: "xs",
   typeArtworkUrl: "sword-shield" as TypeUrl,
   filter: { name: "", types: "" },
-  sorting: []
+  sorting: [],
 };
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { data: session, status } = useSession();
   const { showSnackbar } = useSnackbar();
   const isAuthenticated = () => status === "authenticated";
@@ -55,13 +58,20 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [settings, setSettings] = useState<Settings>(null);
   const [loading, setLoading] = useState(true);
   // Use localStorage for guest user/settings
-  const [guestUser] = useLocalStorage<User>("guest_user", { id: 'guest', email: "guest@local" });
-  const [guestSettings, setGuestSettings] = useLocalStorage<Settings>("guest_settings", guestDefaultSettings);
-  const { data: fetchedUser, loading: userLoading } = useAsyncQuery<User | null>(
-    async () => {
+  const [guestUser] = useLocalStorage<User>("guest_user", {
+    id: "guest",
+    email: "guest@local",
+  });
+  const [guestSettings, setGuestSettings] = useLocalStorage<Settings>(
+    "guest_settings",
+    guestDefaultSettings
+  );
+  const { data: fetchedUser, isLoading: userLoading } = useQuery<User | null>({
+    queryKey: ["fetchedUser", session, status],
+    queryFn: async () => {
       if (isAuthenticated() && session?.user?.email) {
         let sessionUser = await userApi.getUser(session.user.email);
-        if(!sessionUser) {
+        if (!sessionUser) {
           // creating user if they're not there yet
           sessionUser = await userApi.createUser(session.user.email);
         }
@@ -69,29 +79,36 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
       return Promise.resolve(null);
     },
-    [session, status]
-  );
+  });
 
   // useAsyncQuery for settings
-  const { data: fetchedSettings, loading: settingsLoading } = useAsyncQuery<Settings | null>(
-    async () => {
-      if (isAuthenticated() && fetchedUser?.id) {
-        let settings = await userApi.getSettings(fetchedUser.id);
-        // let redisSettings = await userApi.getSettingsRedis(fetchedUser.id)
-        if(!settings) {
-          // creating settings if they're not there yet
-          settings = await userApi.upsertSettings(guestDefaultSettings, fetchedUser.id);
+  const { data: fetchedSettings, isLoading: settingsLoading } =
+    useQuery<Settings | null>({
+      queryFn: async () => {
+        if (isAuthenticated() && fetchedUser?.id) {
+          let settings = await userApi.getSettings(fetchedUser.id);
+          // let redisSettings = await userApi.getSettingsRedis(fetchedUser.id)
+          if (!settings) {
+            // creating settings if they're not there yet
+            settings = await userApi.upsertSettings(
+              guestDefaultSettings,
+              fetchedUser.id
+            );
+          }
+          return settings;
         }
-        return settings;
-      }
-      return Promise.resolve(null);
-    },
-    [fetchedUser, status]
-  );
+        return Promise.resolve(null);
+      },
+      queryKey: [fetchedUser, status],
+    });
 
   // Guest upsertSettings (always returns full Settings)
   const handleGuestUpsertSettings = async (body: Partial<Settings>) => {
-    const updated = { ...guestDefaultSettings, ...guestSettings, ...body } as Settings;
+    const updated = {
+      ...guestDefaultSettings,
+      ...guestSettings,
+      ...body,
+    } as Settings;
     setGuestSettings(updated);
     return updated;
   };
@@ -104,17 +121,18 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const optimisticSettings = { ...settings, ...body } as Settings;
     setSettings(optimisticSettings);
     try {
-      const updatedSettings = await userApi.upsertSettings(body, id ?? user?.id);
+      const updatedSettings = await userApi.upsertSettings(
+        body,
+        id ?? user?.id
+      );
       if (updatedSettings) {
         setSettings(updatedSettings);
         setSettingsCookies(updatedSettings);
-        // userApi.setSettingsRedis(id ?? user?.id ?? '', updatedSettings);
         return updatedSettings;
       }
       // If backend returns null, rollback
       setSettings(prevSettings);
       setSettingsCookies(prevSettings);
-      // userApi.setSettingsRedis(id ?? user?.id ?? '', prevSettings);
       return prevSettings;
     } catch (error) {
       // Rollback on error
@@ -130,8 +148,8 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Sync context state with fetched data
   useEffect(() => {
     if (isAuthenticated()) {
-      if (!user) setUser(fetchedUser);
-      if (!settings) setSettings(fetchedSettings);
+      if (!user && fetchedUser) setUser(fetchedUser);
+      if (!settings && fetchedSettings) setSettings(fetchedSettings);
       setLoading(userLoading || settingsLoading);
     } else if (isUnauthenticated()) {
       setUser(guestUser);
@@ -142,23 +160,21 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   return (
     <UserContext.Provider
-      value={
-        {
-          loading,
-          user: isAuthenticated() ? user :
-            isUnauthenticated() ? guestUser :
-              null,
-          settings: isAuthenticated() ? settings :
-            isUnauthenticated() ? guestSettings :
-              null,
-          upsertSettings: (body: Partial<Settings>, id?: string) =>
-            isAuthenticated() ?
-              handleUpsertSettings(body, id) :
-              handleGuestUpsertSettings(body)
-        }
-      }
+      value={{
+        loading,
+        user: isAuthenticated() ? user : isUnauthenticated() ? guestUser : null,
+        settings: isAuthenticated()
+          ? settings
+          : isUnauthenticated()
+            ? guestSettings
+            : null,
+        upsertSettings: (body: Partial<Settings>, id?: string) =>
+          isAuthenticated()
+            ? handleUpsertSettings(body, id)
+            : handleGuestUpsertSettings(body),
+      }}
     >
-      {status !== 'loading' && children}
+      {status !== "loading" && children}
     </UserContext.Provider>
   );
 };

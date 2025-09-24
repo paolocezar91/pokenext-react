@@ -1,16 +1,12 @@
-import { formatResultsCount } from '@/app/api/api-utils';
-import { gql, request } from 'graphql-request';
-import { NextRequest, NextResponse } from 'next/server';
-import { IPokemonForm } from 'pokeapi-typescript';
-const apiUrl = process.env.GRAPHQL_URL as string;
+import { formatResultsCount } from "@/app/api/api-utils";
+import { queryGraphql } from "@/app/services/graphql";
+import { gql } from "graphql-request";
+import { NextRequest, NextResponse } from "next/server";
+import { IPokemonForm } from "pokeapi-typescript";
 
 export async function GET(req: NextRequest) {
   const ids = req.nextUrl.searchParams.get("ids");
-  return await getByIds(ids!);
-}
-
-async function getByIds(ids: string) {
-  const vars = { ids: ids.split(',') };
+  const vars = { ids: ids!.split(",") };
   const query = gql`
     query ($ids: [ID]) {
       pokemonFormByIds(ids: $ids) {
@@ -23,9 +19,13 @@ async function getByIds(ids: string) {
   `;
 
   try {
-    const { pokemonFormByIds } = await request<{ pokemonFormByIds: IPokemonForm[] }>(apiUrl, query, vars);
-    return NextResponse.json(formatResultsCount(pokemonFormByIds), { status: 200 });
-  } catch(err) {
-    return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
+    const { pokemonFormByIds } = await queryGraphql<{
+      pokemonFormByIds: IPokemonForm[];
+    }>(query, vars);
+    return NextResponse.json(formatResultsCount(pokemonFormByIds), {
+      status: 200,
+    });
+  } catch (err) {
+    return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });
   }
 }

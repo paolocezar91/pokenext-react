@@ -1,4 +1,4 @@
-import { buildInfo } from '@/build-info';
+import { buildInfo } from "@/build-info";
 
 export function VersionInfo() {
   return (

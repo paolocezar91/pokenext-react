@@ -9,24 +9,25 @@ const locales = [
   "fr",
   "ja-Hrkt",
   "ko",
-  "de" ,
+  "de",
   "es",
   "it",
   "ja",
   "zh-Hant",
-  "zh-Hans"
+  "zh-Hans",
 ];
 
-export type TypeLocale = "en" |
-    "fr" |
-    "ja-Hrkt" |
-    "ko" |
-    "de" |
-    "es" |
-    "it" |
-    "ja" |
-    "zh-Hant" |
-    "zh-Hans";
+export type TypeLocale =
+  | "en"
+  | "fr"
+  | "ja-Hrkt"
+  | "ko"
+  | "de"
+  | "es"
+  | "it"
+  | "ja"
+  | "zh-Hant"
+  | "zh-Hans";
 
 export default function DescriptionLangSelect() {
   const t = useTranslations();
@@ -35,26 +36,33 @@ export default function DescriptionLangSelect() {
 
   const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
     upsertSettings({ descriptionLang: e.target.value });
-    showSnackbar(t('settings.languageOptions.languageUpdate'), 5);
+    showSnackbar(t("settings.languageOptions.languageUpdate"), 5);
   };
 
-  return settings && <label htmlFor="description-lang">
-    <div className="flex flex-col">
-      <span>{t('settings.languageOptions.descriptionLanguage')}:</span>
-      <Select
-        data-testid="description-lang"
-        id="description-lang"
-        value={settings.descriptionLang}
-        onChange={handleLangChange}>
-        {
-          locales.map((lang: string) => {
-            return <option className="text-xs" key={lang} value={lang}>{lang}</option>;
-          })
-        }
-      </Select>
-    </div>
-    <div className="text-xs hover:text-(--pokedex-red)">
-      { t('settings.languageOptions.descriptionLanguageTooltip') }
-    </div>
-  </label>;
+  return (
+    settings &&
+      <label htmlFor="description-lang">
+        <div className="flex flex-col">
+          <span>{t("settings.languageOptions.descriptionLanguage")}:</span>
+          <Select
+            data-testid="description-lang"
+            id="description-lang"
+            value={settings.descriptionLang}
+            onChange={handleLangChange}
+          >
+            {locales.map((lang: string) => {
+              return (
+                <option className="text-xs" key={lang} value={lang}>
+                  {lang}
+                </option>
+              );
+            })}
+          </Select>
+        </div>
+        <div className="text-xs hover:text-(--pokedex-red)">
+          {t("settings.languageOptions.descriptionLanguageTooltip")}
+        </div>
+      </label>
+
+  );
 }

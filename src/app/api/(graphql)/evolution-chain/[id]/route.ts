@@ -1,10 +1,12 @@
-import { gql, request } from 'graphql-request';
-import { NextRequest, NextResponse } from 'next/server';
-import { IEvolutionChain } from 'pokeapi-typescript';
+import { queryGraphql } from "@/app/services/graphql";
+import { gql } from "graphql-request";
+import { NextRequest, NextResponse } from "next/server";
+import { IEvolutionChain } from "pokeapi-typescript";
 
-const apiUrl = process.env.GRAPHQL_URL as string;
-
-export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const { id } = await params;
   const vars = { id: Number(id) };
   const query = gql`
@@ -22,74 +24,164 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
             url
           }
           evolution_details {
-            item { name url }
-            trigger { name url }
+            item {
+              name
+              url
+            }
+            trigger {
+              name
+              url
+            }
             gender
-            held_item { name url }
-            move { name url }
-            known_move_type { name url }
-            location { name url }
+            held_item {
+              name
+              url
+            }
+            move {
+              name
+              url
+            }
+            known_move_type {
+              name
+              url
+            }
+            location {
+              name
+              url
+            }
             min_level
             min_happiness
             min_beauty
             min_affection
             needs_overworld_rain
-            party_species { name url }
-            party_type { name url }
+            party_species {
+              name
+              url
+            }
+            party_type {
+              name
+              url
+            }
             relative_physical_stats
             time_of_day
-            trade_species { name url }
+            trade_species {
+              name
+              url
+            }
             turn_upside_down
           }
           evolves_to {
-            species { name url }
+            species {
+              name
+              url
+            }
             evolution_details {
-              item { name url }
-              trigger { name url }
+              item {
+                name
+                url
+              }
+              trigger {
+                name
+                url
+              }
               gender
-              held_item { name url }
-              move { name url }
-              known_move_type { name url }
-              location { name url }
+              held_item {
+                name
+                url
+              }
+              move {
+                name
+                url
+              }
+              known_move_type {
+                name
+                url
+              }
+              location {
+                name
+                url
+              }
               min_level
               min_happiness
               min_beauty
               min_affection
               needs_overworld_rain
-              party_species { name url }
-              party_type { name url }
+              party_species {
+                name
+                url
+              }
+              party_type {
+                name
+                url
+              }
               time_of_day
-              trade_species { name url }
+              trade_species {
+                name
+                url
+              }
             }
             evolves_to {
-              species { name url }
+              species {
+                name
+                url
+              }
               evolution_details {
-                item { name url }
-                trigger { name url }
+                item {
+                  name
+                  url
+                }
+                trigger {
+                  name
+                  url
+                }
                 gender
-                held_item { name url }
-                move { name url }
-                known_move_type { name url }
-                location { name url }
+                held_item {
+                  name
+                  url
+                }
+                move {
+                  name
+                  url
+                }
+                known_move_type {
+                  name
+                  url
+                }
+                location {
+                  name
+                  url
+                }
                 min_level
                 min_happiness
                 min_beauty
                 min_affection
                 needs_overworld_rain
-                party_species { name url }
-                party_type { name url }
+                party_species {
+                  name
+                  url
+                }
+                party_type {
+                  name
+                  url
+                }
                 time_of_day
-                trade_species { name url }
+                trade_species {
+                  name
+                  url
+                }
               }
             }
           }
         }
       }
-    }`;
+    }
+  `;
   try {
-    const { evolutionChain } = await request<{ evolutionChain: IEvolutionChain }>(apiUrl, query, vars);
+    const { evolutionChain } = await queryGraphql<{
+      evolutionChain: IEvolutionChain;
+    }>(query, vars);
     return NextResponse.json(evolutionChain, { status: 200 });
-  } catch(err) {
-    return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });
   }
 }

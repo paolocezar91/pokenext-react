@@ -2,7 +2,11 @@ import { UserIcon } from "@heroicons/react/24/solid";
 import { Button, Image } from "react-bootstrap";
 import NavButton from "../nav-button";
 
-export default function UserAvatarButton({ image, onClick, onMouseEnter }: {
+export default function UserAvatarButton({
+  image,
+  onClick,
+  onMouseEnter,
+}: {
   image?: string;
   onClick: () => void;
   onMouseEnter: () => void;
@@ -16,7 +20,11 @@ export default function UserAvatarButton({ image, onClick, onMouseEnter }: {
       />
     </Button>
     :
-    <NavButton onClick={onClick} onMouseEnter={onMouseEnter} aria-label="User menu">
+    <NavButton
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      aria-label="User menu"
+    >
       <UserIcon className="h-6 w-6 text-white" />
     </NavButton>
   ;

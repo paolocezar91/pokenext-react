@@ -1,6 +1,5 @@
 import { ChangeEvent } from "react";
 
-
 export default function Toggle({
   value,
   disabled,
@@ -8,8 +7,8 @@ export default function Toggle({
   className = "",
   childrenLeft,
   childrenRight,
-  size = 'base',
-  onChange
+  size = "base",
+  onChange,
 }: {
   value: boolean;
   id: string;
@@ -17,17 +16,17 @@ export default function Toggle({
   className?: string;
   childrenLeft?: React.ReactNode;
   childrenRight?: React.ReactNode;
-  size?: 'sm' | 'base'
+  size?: "sm" | "base";
   // eslint-disable-next-line no-unused-vars
-  onChange: (_: boolean) => void
+  onChange: (_: boolean) => void;
 }) {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.checked);
   };
 
-  const heightBase = 'w-11 h-6 after:h-5 after:w-5';
-  const heightSM = 'w-7 h-4 after:h-3 after:w-3';
-  const height = size === 'sm' ? heightSM : heightBase;
+  const heightBase = "w-11 h-6 after:h-5 after:w-5";
+  const heightSM = "w-7 h-4 after:h-3 after:w-3";
+  const height = size === "sm" ? heightSM : heightBase;
   const baseClass = `relative
       bg-gray-700
       border-gray-600
@@ -51,27 +50,45 @@ export default function Toggle({
       after:border
       after:rounded-full`;
 
-  return <label
-    className={`${className} inline-flex items-center cursor-pointer`}
-    htmlFor={`toggle-${id}`}
-    data-testid="toggle-label"
-  >
-    <input
-      id={`toggle-${id}`}
-      type="checkbox"
-      className="sr-only peer"
-      checked={value}
-      onChange={handleChange}
-      disabled={disabled}
-      aria-label={
-        (typeof childrenRight === 'string' ? childrenRight : typeof childrenLeft === 'string' ? childrenLeft : 'Toggle')}
-    />
-    {childrenLeft && <span className="ms-3 mr-2 text-xs text-foreground"> {childrenLeft} </span>}
-    <div className={`
+  return (
+    <label
+      className={`${className} inline-flex items-center cursor-pointer`}
+      htmlFor={`toggle-${id}`}
+      data-testid="toggle-label"
+    >
+      <input
+        id={`toggle-${id}`}
+        type="checkbox"
+        className="sr-only peer"
+        checked={value}
+        onChange={handleChange}
+        disabled={disabled}
+        aria-label={
+          typeof childrenRight === "string"
+            ? childrenRight
+            : typeof childrenLeft === "string"
+              ? childrenLeft
+              : "Toggle"
+        }
+      />
+      {childrenLeft &&
+        <span className="ms-3 mr-2 text-xs text-foreground">
+          {" "}
+          {childrenLeft}{" "}
+        </span>
+      }
+      <div
+        className={`
       ${baseClass}
       ${height}
-    `}></div>
-    {childrenRight && <span className="ms-3 ml-2 text-xs text-foreground"> {childrenRight} </span>}
-  </label>
-  ;
+    `}
+      ></div>
+      {childrenRight &&
+        <span className="ms-3 ml-2 text-xs text-foreground">
+          {" "}
+          {childrenRight}{" "}
+        </span>
+      }
+    </label>
+  );
 }

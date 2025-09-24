@@ -27,8 +27,8 @@ export async function getStaticProps(context: GetStaticPropsContext) {
         typeData: pokemonType,
         allTypes: types,
         locale: context.params?.locale,
-        messages: await getMessages(String(context.params?.locale))
-      }
+        messages: await getMessages(String(context.params?.locale)),
+      },
     };
   } catch (error) {
     return { props: error };
@@ -51,18 +51,24 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: true
+    fallback: true,
   };
 }
 
-export default function TypeDetails({ typeData, allTypes }: { typeData: IType & { moves: INamedApiResource<IMove>[] }, allTypes: IType[] }) {
+export default function TypeDetails({
+  typeData,
+  allTypes,
+}: {
+  typeData: IType & { moves: INamedApiResource<IMove>[] };
+  allTypes: IType[];
+}) {
   const t = useTranslations();
   const { settings } = useUser();
   const router = useRouter();
 
   if (!allTypes || !typeData || !settings) {
     return (
-      <RootLayout title={`${t('pokedex.loading')}...`}>
+      <RootLayout title={`${t("pokedex.loading")}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
           <LoadingSpinner />
         </div>
@@ -70,34 +76,60 @@ export default function TypeDetails({ typeData, allTypes }: { typeData: IType & 
     );
   }
 
-  const title = `${t('type.title')} - ${capitilize(typeData.name)}`;
-  return <RootLayout title={title}>
-    <div className="h-[inherit] p-4 bg-(--pokedex-red)">
-      <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available] overflow-auto md:overflow-[initial]">
-        <div className="flex items-center">
-          <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{title}</h2>
-          <div className="grow"></div>
-          <Select value={typeData.name} className="ml-4" onChange={(e) => router.push(`/type/${e.target.value}`)}>
-            {allTypes.map((t, id) => {
-              return <option key={id} value={t.name}>{capitilize(t.name)}</option>;
-            })}
-          </Select>
-        </div>
-        <div className="flex flex-col md:flex-row">
-          <PokemonDefensiveChart types={[typeData.name]} name={typeData.name} />
-          <PokemonOffensiveChart types={[typeData.name]} name={typeData.name} />
-        </div>
-        <div className="flex flex-col md:flex-row h-[58vh] overflow-[initial] md:overflow-auto mt-4 gap-2 md:gap-4">
-          <div className="w-full md:w-1/2 md:h-[inherit] mb-2
-          ">
-            <PokemonByType pokemonList={typeData.pokemon} type={typeData.name}></PokemonByType>
+  const title = `${t("type.title")} - ${capitilize(typeData.name)}`;
+  return (
+    <RootLayout title={title}>
+      <div className="h-[inherit] p-4 bg-(--pokedex-red)">
+        <div className="mx-auto p-4 bg-background rounded shadow-md h-[-webkit-fill-available] overflow-auto md:overflow-[initial]">
+          <div className="flex items-center">
+            <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{title}</h2>
+            <div className="grow"></div>
+            <Select
+              value={typeData.name}
+              className="ml-4"
+              onChange={(e) => router.push(`/type/${e.target.value}`)}
+            >
+              {allTypes.map((t, id) => {
+                return (
+                  <option key={id} value={t.name}>
+                    {capitilize(t.name)}
+                  </option>
+                );
+              })}
+            </Select>
           </div>
-          <div className="w-full md:w-1/2 md:h-[inherit] mb-2
-          ">
-            <MovesByType movesList={typeData.moves} type={typeData.name}></MovesByType>
+          <div className="flex flex-col md:flex-row">
+            <PokemonDefensiveChart
+              types={[typeData.name]}
+              name={typeData.name}
+            />
+            <PokemonOffensiveChart
+              types={[typeData.name]}
+              name={typeData.name}
+            />
+          </div>
+          <div className="flex flex-col md:flex-row h-[58vh] overflow-[initial] md:overflow-auto mt-4 gap-2 md:gap-4">
+            <div
+              className="w-full md:w-1/2 md:h-[inherit] mb-2
+          "
+            >
+              <PokemonByType
+                pokemonList={typeData.pokemon}
+                type={typeData.name}
+              ></PokemonByType>
+            </div>
+            <div
+              className="w-full md:w-1/2 md:h-[inherit] mb-2
+          "
+            >
+              <MovesByType
+                movesList={typeData.moves}
+                type={typeData.name}
+              ></MovesByType>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </RootLayout>;
+    </RootLayout>
+  );
 }

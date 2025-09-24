@@ -1,40 +1,51 @@
 import { locales } from "@/i18n/config";
-import { useLocale, useTranslations } from "next-intl";
+import { LanguageIcon } from "@heroicons/react/24/solid";
+import { useLocale } from "next-intl";
+import { useRouter } from "next/router";
 import { ChangeEvent } from "react";
 import Select from "../shared/select";
-import { useRouter } from "next/router";
 
 export default function LangSelect() {
-  const t = useTranslations();
   const router = useRouter();
   const locale = useLocale();
 
-  const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    router.push(`/${e.target.value}/settings`);
+  const languages: Record<string, string> = {
+    en: "English",
+    "pt-BR": "Português",
   };
-  return <label htmlFor="lang">
-    <div className="flex flex-col mb-4">
-      <span>{t('settings.languageOptions.language')}:</span>
+
+  const handleLangChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    const route = router.asPath.split("/").reduce((acc, item, i) => {
+      if (i === 0) return acc;
+      if (i === 1) return `${acc}/${e.target.value}`;
+      return `${acc}/${item}`;
+    }, "");
+    router.push(route);
+  };
+  return (
+    <label htmlFor="lang" className="flex items-center">
+      <label htmlFor="lang" className="pr-2">
+        <LanguageIcon className="w-5" />
+      </label>
       <Select
+        className="py-0! px-1! border-0!"
         value={locale}
         data-testid="lang"
         id="lang"
-        onChange={handleLangChange}>
-        {
-          locales.map((lang: string) => {
-            return <option
+        onChange={handleLangChange}
+      >
+        {locales.map((lang: string) => {
+          return (
+            <option
               key={lang}
               value={lang}
-              className="text-xs"
+              className="text-xs bg-white text-black"
             >
-              {lang}
-            </option>;
-          })
-        }
+              {languages[lang]}
+            </option>
+          );
+        })}
       </Select>
-      <div className="text-xs hover:text-(--pokedex-red) w-75">
-        { t('settings.languageOptions.languageTooltip') }
-      </div>
-    </div>
-  </label>;
+    </label>
+  );
 }

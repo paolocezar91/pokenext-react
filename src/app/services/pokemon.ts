@@ -1,11 +1,14 @@
-import { gql } from 'graphql-request';
-import { IPokemon } from 'pokeapi-typescript';
-import { formatResultsCount } from '../api/api-utils';
-import { requestGraphql } from './graphql';
+import { gql } from "graphql-request";
+import { IPokemon } from "pokeapi-typescript";
+import { formatResultsCount } from "../api/api-utils";
+import { queryGraphql } from "./graphql";
 
-export async function getPokemonById(vars: { id?: number | string, name?: string }) {
+export async function getPokemonById(vars: {
+  id?: number | string;
+  name?: string;
+}) {
   const query = gql`
-    query ($id: ID, $name: String) { 
+    query ($id: ID, $name: String) {
       pokemonById(id: $id, name: $name) {
         id
         name
@@ -16,34 +19,64 @@ export async function getPokemonById(vars: { id?: number | string, name?: string
         order
         location_area_encounters
         abilities {
-          ability { name url }
+          ability {
+            name
+            url
+          }
           is_hidden
           slot
         }
-        cries { latest legacy }
-        forms { name url }
+        cries {
+          latest
+          legacy
+        }
+        forms {
+          name
+          url
+        }
         game_indices {
           game_index
-          version { name url }
+          version {
+            name
+            url
+          }
         }
         moves {
-          move { name url }
+          move {
+            name
+            url
+          }
           version_group_details {
             level_learned_at
-            move_learn_method { name url }
+            move_learn_method {
+              name
+              url
+            }
             order
-            version_group { name url }
+            version_group {
+              name
+              url
+            }
           }
         }
         past_abilities {
           abilities {
-            ability { name url }
+            ability {
+              name
+              url
+            }
             is_hidden
             slot
           }
-          generation { name url }
+          generation {
+            name
+            url
+          }
         }
-        species { name url }
+        species {
+          name
+          url
+        }
         sprites {
           other {
             dream_world {
@@ -75,20 +108,26 @@ export async function getPokemonById(vars: { id?: number | string, name?: string
         stats {
           base_stat
           effort
-          stat { name url }
+          stat {
+            name
+            url
+          }
         }
         types {
           slot
-          type { name url }
+          type {
+            name
+            url
+          }
         }
       }
     }
   `;
 
   try {
-    const data = await requestGraphql<{ pokemonById: IPokemon }>(query, vars);
+    const data = await queryGraphql<{ pokemonById: IPokemon }>(query, vars);
     return data;
-  } catch(err) {
+  } catch (err) {
     throw err;
   }
 }
@@ -100,46 +139,64 @@ export async function getPokemonByIds(vars: { ids: string }) {
         id
         name
         types {
-          type { name url }
+          type {
+            name
+            url
+          }
         }
         stats {
           base_stat
-          stat { name }
+          stat {
+            name
+          }
         }
-        forms { name url }
+        forms {
+          name
+          url
+        }
       }
     }
   `;
 
   try {
-    const data = await requestGraphql<{ pokemonsByIds: IPokemon[] }>(query, vars);
+    const data = await queryGraphql<{ pokemonsByIds: IPokemon[] }>(query, vars);
     return formatResultsCount(data.pokemonsByIds);
-  } catch(err) {
+  } catch (err) {
     throw err;
   }
 }
 
-export async function getAllPokemon(vars: { limit?: number, offset?: number, name?: string, types?: string }) {
+export async function getAllPokemon(vars: {
+  limit?: number;
+  offset?: number;
+  name?: string;
+  types?: string;
+}) {
   const query = gql`
     query ($limit: Int, $offset: Int, $name: String, $types: String) {
       pokemons(limit: $limit, offset: $offset, name: $name, types: $types) {
         id
         name
         types {
-          type { name url }
+          type {
+            name
+            url
+          }
         }
         stats {
           base_stat
-          stat { name }
+          stat {
+            name
+          }
         }
       }
     }
   `;
 
   try {
-    const data = await requestGraphql<{ pokemons: IPokemon[] }>(query, vars);
+    const data = await queryGraphql<{ pokemons: IPokemon[] }>(query, vars);
     return formatResultsCount(data.pokemons);
-  } catch(err) {
+  } catch (err) {
     throw err;
   }
 }

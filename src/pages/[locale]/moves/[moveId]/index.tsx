@@ -12,7 +12,11 @@ import { useQuery } from "@tanstack/react-query";
 import { GetStaticPropsContext } from "next";
 import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
-import { capitilize, getIdFromUrlSubstring, kebabToSpace } from "@/components/shared/utils";
+import {
+  capitilize,
+  getIdFromUrlSubstring,
+  kebabToSpace,
+} from "@/components/shared/utils";
 import { locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 
@@ -27,8 +31,8 @@ export async function getStaticProps(context: GetStaticPropsContext) {
       props: {
         moveData,
         locale: context.params?.locale,
-        messages: await getMessages(String(context.params?.locale))
-      }
+        messages: await getMessages(String(context.params?.locale)),
+      },
     };
   } catch (error) {
     return { props: error };
@@ -50,20 +54,21 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: true
+    fallback: true,
   };
 }
 
 export default function MoveDetails({ moveData }: { moveData: MoveData }) {
   const t = useTranslations();
   const { data: targetData } = useQuery({
-    queryKey: ['moveData.target.url', moveData.target.url],
-    queryFn: () => pokeApiQuery.getMoveTarget(getIdFromUrlSubstring(moveData.target.url)),
+    queryKey: ["moveData.target.url", moveData.target.url],
+    queryFn: () =>
+      pokeApiQuery.getMoveTarget(getIdFromUrlSubstring(moveData.target.url)),
   });
 
   if (!moveData || !targetData) {
     return (
-      <RootLayout title={`${t('pokedex.loading')}...`}>
+      <RootLayout title={`${t("pokedex.loading")}...`}>
         <div className="h-[inherit] p-4 bg-(--pokedex-red) flex items-center justify-center">
           <LoadingSpinner />
         </div>
@@ -71,7 +76,7 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
     );
   }
 
-  const title = `${t('moves.title')} - ${capitilize(kebabToSpace(moveData.name))}`;
+  const title = `${t("moves.title")} - ${capitilize(kebabToSpace(moveData.name))}`;
   return (
     <RootLayout title={title}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
@@ -80,7 +85,6 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
             <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{title}</h2>
           </div>
           <div className="flex flex-col md:flex-row">
-
             {/* Left Column */}
             <div className="flex flex-col w-full md:w-150 h-[-webkit-fill-available] md:items-start mt-4 mr-0 md:mr-4 self-center md:self-start">
               <MoveEffect moveData={moveData} />

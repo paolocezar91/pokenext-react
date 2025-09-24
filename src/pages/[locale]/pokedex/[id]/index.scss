@@ -1,43 +1,40 @@
 $size: 18rem;
 
 .wrapper {
-    overflow: initial;
+  overflow: initial;
 }
 
 @media screen and (max-width: 900px) {
-    .wrapper {
-        overflow: auto;
-        margin-bottom: 2rem;
-        position: relative;
-    }
-    .controls {
-        background-color: var(--background);
-        position: -webkit-sticky;
-        top: 0;
-        z-index: 10;
-        left: 0;
-        margin-bottom: 0;
-    }
+  .wrapper {
+    overflow: auto;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .controls {
+    background-color: var(--background);
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 10;
+    left: 0;
+    margin-bottom: 0;
+  }
 }
 
-
-
 .pokemon-details {
-    font-size: 14px;
-    max-height: 80vh;
-    height: 78vh;
-    hr {
-        border-top-width: 8px;
-    }
-    
+  font-size: 14px;
+  max-height: 80vh;
+  height: 78vh;
+  hr {
+    border-top-width: 8px;
+  }
 }
 
 .controls {
-    a {
-        &.disable-click{
-            pointer-events: none;
-            text-decoration: none;
-            color: #333;
-        }
+  a {
+    &.disable-click {
+      pointer-events: none;
+      text-decoration: none;
+      color: #333;
     }
+  }
 }

@@ -1,24 +1,30 @@
-import NavLink from '@/components/layout/navbar/nav-link';
-import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
+import NavLink from "@/components/layout/navbar/nav-link";
+import "@testing-library/jest-dom";
+import { render, screen } from "@testing-library/react";
 
 jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
-  useLocale: () => 'en'
+  useLocale: () => "en",
 }));
 
-describe('Nav Link Component', () => {
-  it('renders correctly with href, className and children', () => {
-    render(<NavLink href='/pokedex/bulbasaur' className='bulbasaur'>Bulbasaur</NavLink>);
-    const link = screen.getByRole('link');
+describe("Nav Link Component", () => {
+  it("renders correctly with href, className and children", () => {
+    render(
+      <NavLink href="/pokedex/bulbasaur" className="bulbasaur">
+        Bulbasaur
+      </NavLink>,
+    );
+    const link = screen.getByRole("link");
     expect(link).toBeInTheDocument();
-    expect(link).toHaveTextContent('Bulbasaur');
-    expect(link).toHaveClass('bulbasaur');
-    expect(link).toHaveAttribute('href', '/en/pokedex/bulbasaur');
+    expect(link).toHaveTextContent("Bulbasaur");
+    expect(link).toHaveClass("bulbasaur");
+    expect(link).toHaveAttribute("href", "/en/pokedex/bulbasaur");
   });
 
-  it('should match snapshot', () => {
-    const { asFragment } = render(<NavLink href='/pokedex/bulbasaur'>Bulbasaur</NavLink>);
+  it("should match snapshot", () => {
+    const { asFragment } = render(
+      <NavLink href="/pokedex/bulbasaur">Bulbasaur</NavLink>,
+    );
     expect(asFragment()).toMatchSnapshot();
   });
 });

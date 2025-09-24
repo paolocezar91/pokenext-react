@@ -15,16 +15,23 @@ export default function Search({ className = "" }: { className?: string }) {
   // Store the fetched pokemon list in state
   const router = useRouter();
   const t = useTranslations();
-  const [inputValue, setInputValue] = useState('');
-  const [suggestions, setSuggestions] = useState<{ name: string, displayName: string, id: number | string }[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const [suggestions, setSuggestions] = useState<
+    { name: string; displayName: string; id: number | string }[]
+  >([]);
 
-  const searchQuery = () => pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON).then(({ results }) =>
-    results.map(p => ({ id: p.id, name: p.name, displayName: `${getNumber(p.id)} ${normalizePokemonName(p.name)}` }))
-  );
+  const searchQuery = () =>
+    pokeApiQuery.getPokemons(0, NUMBERS_OF_POKEMON).then(({ results }) =>
+      results.map((p) => ({
+        id: p.id,
+        name: p.name,
+        displayName: `${getNumber(p.id)} ${normalizePokemonName(p.name)}`,
+      })),
+    );
 
   const { data: pokemonList } = useQuery({
-    queryKey: ['search'],
-    queryFn: searchQuery
+    queryKey: ["search"],
+    queryFn: searchQuery,
   });
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -33,8 +40,9 @@ export default function Search({ className = "" }: { className?: string }) {
 
     if (value) {
       // Filter suggestions based on the input value using the fetched API data
-      const filtered = pokemonList!.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(value) || pokemon.id === value
+      const filtered = pokemonList!.filter(
+        (pokemon) =>
+          pokemon.name.toLowerCase().includes(value) || pokemon.id === value,
       );
       setSuggestions(filtered.slice(0, 10)); // Limit to 10 suggestions
     } else {
@@ -42,7 +50,11 @@ export default function Search({ className = "" }: { className?: string }) {
     }
   };
 
-  const handleSuggestionClick = (suggestion: { name: string, displayName: string, id: number | string }) => {
+  const handleSuggestionClick = (suggestion: {
+    name: string;
+    displayName: string;
+    id: number | string;
+  }) => {
     setInputValue(suggestion.name);
     setSuggestions([]); // Clear suggestions after selection
     setTimeout(() => {
@@ -75,22 +87,35 @@ export default function Search({ className = "" }: { className?: string }) {
     );
   };
 
-  const getSuggestion = (suggestion: { name: string, displayName: string, id: number | string }) => {
+  const getSuggestion = (suggestion: {
+    name: string;
+    displayName: string;
+    id: number | string;
+  }) => {
     const { name, displayName, id } = suggestion;
-    const idx = typeof id === 'number' ? getNumber(id) : '';
-    const isMatch = inputValue.length > 0 && name.toLowerCase().includes(inputValue.toLowerCase());
+    const idx = typeof id === "number" ? getNumber(id) : "";
+    const isMatch =
+      inputValue.length > 0 &&
+      name.toLowerCase().includes(inputValue.toLowerCase());
 
     return (
       <div className="flex items-center space-x-2 rtl:space-x-reverse">
-        <span className="text-xs">{isMatch ? boldPartialMatch(displayName, inputValue) : displayName}</span>
+        <span className="text-xs">
+          {isMatch ? boldPartialMatch(displayName, inputValue) : displayName}
+        </span>
         {idx && <span className="text-xs">({idx})</span>}
       </div>
     );
   };
 
   return (
-    <form onSubmit={goTo} data-testid="form-go-to" className={`${className} relative`}>
-      <div className="
+    <form
+      onSubmit={goTo}
+      data-testid="form-go-to"
+      className={`${className} relative`}
+    >
+      <div
+        className="
           h-10
           flex
           bg-white
@@ -104,10 +129,11 @@ export default function Search({ className = "" }: { className?: string }) {
           border-2
           border-black
           hover:border-gray-700
-        ">
+        "
+      >
         <input
           name="pokemon-search"
-          placeholder={t('actions.go.placeholder')}
+          placeholder={t("actions.go.placeholder")}
           type="text"
           value={inputValue}
           onChange={handleInputChange}
@@ -116,24 +142,28 @@ export default function Search({ className = "" }: { className?: string }) {
         <MagnifyingGlassIcon className="w-5" />
       </div>
       <AnimatePresence>
-        {suggestions.length > 0 && <motion.div
-          layout
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          style={{ width: '100%' }}
-        >
-          <ul className="absolute bg-white border border-foreground text-black text-xs rounded shadow-lg mt-1 max-h-40 overflow-y-auto w-60 z-10">
-            {suggestions.map((suggestion) => <li
-              key={suggestion.name}
-              onClick={() => handleSuggestionClick(suggestion)}
-              className="px-2 py-1 cursor-pointer hover:bg-gray-200 transition-colors"
-            >
-              {getSuggestion(suggestion)}
-            </li>)}
-          </ul>
-        </motion.div>}
+        {suggestions.length > 0 &&
+          <motion.div
+            layout
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ width: "100%" }}
+          >
+            <ul className="absolute bg-white border border-foreground text-black text-xs rounded shadow-lg mt-1 max-h-40 overflow-y-auto w-60 z-10">
+              {suggestions.map((suggestion) =>
+                <li
+                  key={suggestion.name}
+                  onClick={() => handleSuggestionClick(suggestion)}
+                  className="px-2 py-1 cursor-pointer hover:bg-gray-200 transition-colors"
+                >
+                  {getSuggestion(suggestion)}
+                </li>
+              )}
+            </ul>
+          </motion.div>
+        }
       </AnimatePresence>
     </form>
   );

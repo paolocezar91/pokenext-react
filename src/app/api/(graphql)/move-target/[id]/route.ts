@@ -1,11 +1,13 @@
 import { idOrName } from "@/app/api/api-utils";
-import { gql,request } from "graphql-request";
+import { queryGraphql } from "@/app/services/graphql";
+import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
 import { IMoveTarget } from "pokeapi-typescript";
 
-const apiUrl = process.env.GRAPHQL_URL as string;
-
-export async function GET(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const { id } = await params;
   const vars = idOrName(id);
   const query = gql`
@@ -14,17 +16,24 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ id: st
         id
         name
         descriptions {
-          language { name }
+          language {
+            name
+          }
           description
         }
-        moves { name url }
+        moves {
+          name
+          url
+        }
       }
     }
   `;
   try {
-    const { moveTargetById } = await request<{ moveTargetById: IMoveTarget }>(apiUrl, query, vars);
+    const { moveTargetById } = await queryGraphql<{
+      moveTargetById: IMoveTarget;
+    }>(query, vars);
     return NextResponse.json(moveTargetById, { status: 200 });
-  } catch(err) {
-    return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });
   }
 }

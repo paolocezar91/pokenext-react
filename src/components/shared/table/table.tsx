@@ -2,16 +2,18 @@ import React, { ReactNode } from "react";
 import { useInView } from "react-intersection-observer";
 
 function LazyRow({ children }: { children: ReactNode }) {
-  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: '200px' });
-  return <tbody ref={ref}>
-    {inView && children}
-  </tbody>;
+  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "200px" });
+  return <tbody ref={ref}>{inView && children}</tbody>;
 }
 
-export default function Table({ headers, children, className = "" }: {
+export default function Table({
+  headers,
+  children,
+  className = "",
+}: {
   headers: ReactNode;
   children: ReactNode;
-  className?: string
+  className?: string;
 }) {
   return (
     <table className={`w-full text-xs ${className}`}>
@@ -23,5 +25,4 @@ export default function Table({ headers, children, className = "" }: {
       <LazyRow>{children}</LazyRow>
     </table>
   );
-};
-
+}

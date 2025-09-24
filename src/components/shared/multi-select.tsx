@@ -6,7 +6,6 @@ type Option = {
   label: string;
 };
 
-
 export default function MultiSelect({
   options,
   value,
@@ -67,7 +66,9 @@ export default function MultiSelect({
         tabIndex={0}
         onBlur={() => setTimeout(() => setOpen(false), 500)}
       >
-        {selectedOptions.length === 0 && <span className="text-gray-400">{placeholder}</span>}
+        {selectedOptions.length === 0 &&
+          <span className="text-gray-400">{placeholder}</span>
+        }
         <span className="grow flex gap-1">
           {selectedOptions.map((opt) =>
             <span
@@ -89,7 +90,7 @@ export default function MultiSelect({
               <button
                 type="button"
                 className="ml-1 p-1 text-red-500 hover:text-red-700 cursor-pointer"
-                onClick={e => {
+                onClick={(e) => {
                   e.stopPropagation();
                   handleRemove(opt.value);
                 }}
@@ -100,10 +101,11 @@ export default function MultiSelect({
             </span>
           )}
         </span>
-        <ChevronDownIcon className="w-5"/>
+        <ChevronDownIcon className="w-5" />
       </div>
       {open &&
-      <ul className="
+        <ul
+          className="
         absolute
         z-10
         left-0
@@ -116,11 +118,12 @@ export default function MultiSelect({
         max-h-48
         overflow-auto
         shadow-lg
-      ">
-        {options.map((opt) =>
-          <li
-            key={opt.value}
-            className={`
+      "
+        >
+          {options.map((opt) =>
+            <li
+              key={opt.value}
+              className={`
               px-3
               py-2
               cursor-pointer
@@ -130,16 +133,18 @@ export default function MultiSelect({
               flex
               items-center
               text-gray-800 
-              ${value.includes(opt.value) ? "font-bold": ""}
+              ${value.includes(opt.value) ? "font-bold" : ""}
               ${value.length >= maxSelected && !value.includes(opt.value) ? "opacity-50 pointer-events-none" : ""}
             `}
-            onClick={() => handleSelect(opt.value)}
-          >
-            {opt.label}
-            {value.includes(opt.value) && <span className="ml-2 text-green-600">✔</span>}
-          </li>
-        )}
-      </ul>
+              onClick={() => handleSelect(opt.value)}
+            >
+              {opt.label}
+              {value.includes(opt.value) &&
+                <span className="ml-2 text-green-600">✔</span>
+              }
+            </li>
+          )}
+        </ul>
       }
     </div>
   );

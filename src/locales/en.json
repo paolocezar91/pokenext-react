@@ -1,178 +1,190 @@
 {
-    "pokedex": {
-        "pokedex": "Pokédex",
-        "loading": "Loading",
-        "notFound": "Pokémon not found",
-        "details": {
-            "shiny": "Shiny",
-            "size": { 
-                "title": "Size",
-                "height": "Height",
-                "weight": "Weight"
-            },
-            "abilities": {
-                "title": "Abilities"
-            },
-            "firstSeen": {
-                "title": "First Seen"
-            },
-            "evolutionChart": {
-                "title": "Evolution Chart"
-            },
-            "stats": {
-                "title": "Base Stats"
-            },
-            "varieties": {
-                "title": "Varieties"
-            },
-            "defensiveChart": {
-                "title": "Defensive Chart"
-            },
-            "offensiveChart": {
-                "title": "Offensive Chart"
-            },
-            "gender": {
-                "title": "Gender",
-                "femaleRate": "{rate}% of wild {name} are female",
-                "maleRate": "{rate}% of wild {name} are male",
-                "genderless": "{name} is genderless"
-            },
-            "misc": {
-                "eggGroups": "Egg Groups",
-                "baby": "Baby",
-                "legendary": "Legendary",
-                "mythical": "Mythical",
-                "growthRate": "Growth Rate",
-                "captureRate": "Catch Rate",
-                "hatchCounter": "Hatch Counter",
-                "yes": "Yes",
-                "no": "No"
-            },
-            "moves": {
-                "title": "Moves",
-                "chooseVersion": "Choose a version",
-                "learntBy": "Learnt By",
-                "name": "Name",
-                "type": "Type",
-                "class": "Class",
-                "power": "Power",
-                "accuracy": "Acc.",
-                "accuracyTooltip": "Accuracy",
-                "pp": "PP"
-            }
-        },
-        "displayingXofYPokemon": "Displaying { x } of { y } Pokémon",
-        "displayingAllPokemon": "Displaying all Pokémon"
+  "pokedex": {
+    "pokedex": "Pokédex",
+    "loading": "Loading",
+    "notFound": "Pokémon not found",
+    "details": {
+      "shiny": "Shiny",
+      "size": {
+        "title": "Size",
+        "height": "Height",
+        "weight": "Weight"
+      },
+      "abilities": {
+        "title": "Abilities"
+      },
+      "firstSeen": {
+        "title": "First Seen"
+      },
+      "evolutionChart": {
+        "title": "Evolution Chart"
+      },
+      "stats": {
+        "title": "Base Stats"
+      },
+      "varieties": {
+        "title": "Varieties"
+      },
+      "defensiveChart": {
+        "title": "Defensive Chart"
+      },
+      "offensiveChart": {
+        "title": "Offensive Chart"
+      },
+      "gender": {
+        "title": "Gender",
+        "femaleRate": "{rate}% of wild {name} are female",
+        "maleRate": "{rate}% of wild {name} are male",
+        "genderless": "{name} is genderless"
+      },
+      "misc": {
+        "eggGroups": "Egg Groups",
+        "baby": "Baby",
+        "legendary": "Legendary",
+        "mythical": "Mythical",
+        "growthRate": "Growth Rate",
+        "captureRate": "Catch Rate",
+        "hatchCounter": "Hatch Counter",
+        "yes": "Yes",
+        "no": "No"
+      },
+      "moves": {
+        "title": "Moves",
+        "chooseVersion": "Choose a version",
+        "learntBy": "Learnt By",
+        "name": "Name",
+        "type": "Type",
+        "class": "Class",
+        "power": "Power",
+        "accuracy": "Acc.",
+        "accuracyTooltip": "Accuracy",
+        "pp": "PP"
+      }
     },
-    "menu": {
-        "home": "Home",
-        "settings": "Settings",
-        "about": "About",
-        "signIn": "Sign In",
-        "signOut": "Sign out"
+    "displayingXofYPokemon": "Displaying { x } of { y } Pokémon",
+    "displayingAllPokemon": "Displaying all Pokémon"
+  },
+  "menu": {
+    "home": "Home",
+    "settings": "Settings",
+    "about": "About",
+    "signIn": "Sign In",
+    "signOut": "Sign out"
+  },
+  "moves": {
+    "title": "Move",
+    "flavorText": {
+      "title": "Flavor Text",
+      "empty": "No flavor text available"
+    },
+    "learnedBy": {
+      "title": "Learned by {length} pokémon"
+    },
+    "moveData": {
+      "title": "Move Data"
+    },
+    "moveEffect": {
+      "title": "Effect",
+      "empty": "No effect text available"
+    },
+    "moveTarget": {
+      "title": "Target",
+      "empty": "No description available"
+    }
+  },
+  "type": {
+    "title": "Type",
+    "pokemon": {
+      "title": "{type} Pokémon ({ length })"
     },
     "moves": {
-        "title": "Move",
-        "flavorText": {
-            "title": "Flavor Text",
-            "empty": "No flavor text available"
-        },
-        "learnedBy": {
-            "title": "Learned by {length} pokémon"
-        },
-        "moveData": {
-            "title": "Move Data"
-        },
-        "moveEffect": {
-            "title": "Effect",
-            "empty": "No effect text available"
-        },
-        "moveTarget": {
-            "title": "Target",
-            "empty": "No description available"
-        }
-    },
-    "type": {
-        "title": "Type", 
-        "pokemon": {
-            "title": "{type} Pokémon ({ length })"
-        },
-        "moves": {
-            "title": "{type} moves ({ length })"
-        }
-    },
-    "table": {
-        "name": "Name",
-        "types": "Type(s)"
-    },
-    "filters": {
-        "title": "Filters",
-        "openFilters": "Open filter options",
-        "closeFilters": "Close filter options",
-        "filterName": {
-            "title": "Name",
-            "placeholder": "Filter by name...",
-            "tooltip": "Try \"Bulbasaur\""
-        },
-        "filterTypes": {
-            "title": "Types",
-            "placeholder": "Filter by up to 2 types..."
-        }
-    },
-    "settings": {
-        "title": "Settings",
-        "showSettings": "Show settings",
-        "hideSettings": "Hide settings",
-        "openTableSettings": "Open table settings",
-        "closeTableSettings": "Close table settings",
-        "openThumbnailSettings": "Open thumbnail settings",
-        "closeThumbnailSettings": "Close thumbnail settings",
-        "thumbnailView": "Display as Thumbnail",
-        "tableView": "Display as Table",
-        "size": {
-            "title": "Thumb Size",
-            "xs": "Small",
-            "sm": "Normal",
-            "base": "Large"
-        },
-        "label": {
-            "title": "Thumb Label",
-            "tooltip": "Tooltip",
-            "thumbnail": "Thumbnail",
-            "none": "None"
-        },
-        "languageOptions":{
-            "title": "Language Options",
-            "language": "Language",
-            "languageTooltip": "Changes the app language",
-            "descriptionLanguage": "Description Language",
-            "descriptionLanguageTooltip": "Changes the data description language",
-            "languageUpdate": "Language updated."        
-        },
-        "artworkOptions": {
-            "title": "Artwork Options",
-            "thumbnailArtwork": "Thumbnail art",
-            "thumbnailArtworkUpdated": "Thumbnail artwork updated.",
-            "typeArtworkIcon": "Pokémon type icon",
-            "typeArtworkUpdated": "Type artwork updated.",
-            "typeArtworkTooltip": "Changes the artwork source for the type icons"
-        },
-        "showThumb": "Show thumbnail",
-        "showShowColumns": "Hide/Show columns"
-    },
-    "about": {
-        "title": "About"
-    },
-    "actions": {
-        "next": "Next",
-        "prev": "Prev",
-        "back": "Back",
-        "backToList": "Back to List",
-        "select": "Select...",
-        "go": {
-            "placeholder": "Search...",
-            "tooltip": "Try \"1\" or \"Bulbasaur\"...",
-            "button": "Go"
-        }
+      "title": "{type} moves ({ length })"
     }
+  },
+  "items": {
+    "title": "Items",
+    "category": "Category",
+    "cost": "Cost",
+    "attributes": "Attributes",
+    "flingEffect": "Fling Effect",
+    "flingPower": "Fling Power",
+    "heldBy": {
+      "title": "Held by {total} pokemon",
+      "description": "These pokemon have a chance of holding the item on wild encounters"
+    }
+  },
+  "table": {
+    "name": "Name",
+    "types": "Type(s)"
+  },
+  "filters": {
+    "title": "Filters",
+    "openFilters": "Open filter options",
+    "closeFilters": "Close filter options",
+    "filterName": {
+      "title": "Name",
+      "placeholder": "Filter by name...",
+      "tooltip": "Try \"Bulbasaur\""
+    },
+    "filterTypes": {
+      "title": "Types",
+      "placeholder": "Filter by up to 2 types..."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "showSettings": "Show settings",
+    "hideSettings": "Hide settings",
+    "openTableSettings": "Open table settings",
+    "closeTableSettings": "Close table settings",
+    "openThumbnailSettings": "Open thumbnail settings",
+    "closeThumbnailSettings": "Close thumbnail settings",
+    "thumbnailView": "Display as Thumbnail",
+    "tableView": "Display as Table",
+    "size": {
+      "title": "Thumb Size",
+      "xs": "Small",
+      "sm": "Normal",
+      "base": "Large"
+    },
+    "label": {
+      "title": "Thumb Label",
+      "tooltip": "Tooltip",
+      "thumbnail": "Thumbnail",
+      "none": "None"
+    },
+    "languageOptions": {
+      "title": "Language Options",
+      "language": "Language",
+      "languageTooltip": "Changes the app language",
+      "descriptionLanguage": "Description Language",
+      "descriptionLanguageTooltip": "Changes the data description language",
+      "languageUpdate": "Language updated."
+    },
+    "artworkOptions": {
+      "title": "Artwork Options",
+      "thumbnailArtwork": "Thumbnail art",
+      "thumbnailArtworkUpdated": "Thumbnail artwork updated.",
+      "typeArtworkIcon": "Pokémon type icon",
+      "typeArtworkUpdated": "Type artwork updated.",
+      "typeArtworkTooltip": "Changes the artwork source for the type icons"
+    },
+    "showThumb": "Show thumbnail",
+    "showShowColumns": "Hide/Show columns"
+  },
+  "about": {
+    "title": "About"
+  },
+  "actions": {
+    "next": "Next",
+    "prev": "Prev",
+    "back": "Back",
+    "backToList": "Back to List",
+    "select": "Select...",
+    "go": {
+      "placeholder": "Search...",
+      "tooltip": "Try \"1\" or \"Bulbasaur\"...",
+      "button": "Go"
+    }
+  }
 }

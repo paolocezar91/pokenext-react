@@ -1,13 +1,15 @@
-import { gql, request } from 'graphql-request';
-import { NextRequest, NextResponse } from 'next/server';
+import { gql } from "graphql-request";
+import { NextRequest, NextResponse } from "next/server";
+import { authorizedQueryGraphql } from "@/app/services/graphql";
 
-const apiUrl = process.env.GRAPHQL_URL as string;
-
-export async function GET(_: NextRequest, { params }: { params: Promise<{ email: string }> }) {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ email: string }> }
+) {
   const email = (await params).email;
 
   const query = gql`
-    query ($email: String!) { 
+    query ($email: String!) {
       user(email: $email) {
         id
         email
@@ -16,9 +18,11 @@ export async function GET(_: NextRequest, { params }: { params: Promise<{ email:
   `;
 
   try {
-    const { user } = await request<{ user: { id: string, email: string }}>(apiUrl, query, { email });
+    const { user } = await authorizedQueryGraphql<{
+      user: { id: string; email: string };
+    }>(req, query, { email });
     return NextResponse.json(user, { status: 200 });
   } catch (err) {
-    return NextResponse.json({ error: 'GraphQL error', err }, { status: 500 });
+    return NextResponse.json({ error: "GraphQL error", err }, { status: 500 });
   }
 }
