@@ -1,23 +1,23 @@
 import {
-  INamedApiResource,
-  IPokemon,
-  IPokemonForm,
-  IPokemonStat,
-  IPokemonType,
+  NamedApiResource,
+  Pokemon,
+  PokemonForm,
+  PokemonStat,
+  PokemonType,
 } from "pokeapi-typescript";
 
 export type IPkmn = {
   name: string;
-  types: IPokemonType[];
+  types: PokemonType[];
   id: string;
   sprites: unknown;
-  stats: IPokemonStat[];
-  forms: INamedApiResource<IPokemonForm>[];
+  stats: PokemonStat[];
+  forms: NamedApiResource<PokemonForm>[];
 };
 
 export type SpeciesChain = {
   loaded: boolean;
-  chain: Record<string, IPokemon[]>;
+  chain: Record<string, Pokemon[]>;
 };
 
 export type PokemonType =

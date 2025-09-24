@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { IMoveTarget } from "pokeapi-typescript";
+import { MoveTarget } from "pokeapi-typescript";
 import "@testing-library/jest-dom";
-import MoveTarget from "@/components/moves/move-target";
+import PokemonMoveTarget from "@/components/moves/move-target";
 
 jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
@@ -14,7 +14,7 @@ jest.mock("@/context/user-context", () => ({
 }));
 
 describe("MoveTarget Component", () => {
-  const mockTargetData: IMoveTarget = {
+  const mockTargetData: MoveTarget = {
     name: "specific-move",
     descriptions: [
       {
@@ -30,7 +30,7 @@ describe("MoveTarget Component", () => {
         language: { name: "en", url: "" },
       },
     ],
-    // Include other required IMoveTarget properties with mock values
+    // Include other required MoveTarget properties with mock values
     moves: [],
     id: 1,
     names: [],
@@ -40,10 +40,10 @@ describe("MoveTarget Component", () => {
     render(<MoveTarget targetData={mockTargetData} />);
 
     expect(
-      screen.getByRole("heading", { name: "moves.moveTarget.title" }),
+      screen.getByRole("heading", { name: "moves.moveTarget.title" })
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Targets a specific move of the opponent"),
+      screen.getByText("Targets a specific move of the opponent")
     ).toBeInTheDocument();
 
     // Verify non-English description is not shown
@@ -51,7 +51,7 @@ describe("MoveTarget Component", () => {
 
     // Verify only the first English description is shown
     expect(
-      screen.queryByText("Another English description that should not appear"),
+      screen.queryByText("Another English description that should not appear")
     ).not.toBeInTheDocument();
   });
 
@@ -64,7 +64,7 @@ describe("MoveTarget Component", () => {
     render(<MoveTarget targetData={emptyDescriptionData} />);
 
     expect(
-      screen.getByRole("heading", { name: "moves.moveTarget.title" }),
+      screen.getByRole("heading", { name: "moves.moveTarget.title" })
     ).toBeInTheDocument();
     expect(screen.queryByText("moves.moveTarget.empty")).toBeInTheDocument();
   });
@@ -83,7 +83,7 @@ describe("MoveTarget Component", () => {
     render(<MoveTarget targetData={noEnglishData} />);
 
     expect(
-      screen.getByRole("heading", { name: "moves.moveTarget.title" }),
+      screen.getByRole("heading", { name: "moves.moveTarget.title" })
     ).toBeInTheDocument();
     expect(screen.queryByText("moves.moveTarget.empty")).toBeInTheDocument();
   });

@@ -7,7 +7,7 @@ import {
   ChevronDoubleRightIcon,
 } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
-import { INamedApiResourceList, IPokemon } from "pokeapi-typescript";
+import { NamedApiResourceList, Pokemon } from "pokeapi-typescript";
 import { getNumber } from "../../shared/thumb/thumb";
 import Tooltip from "../../shared/tooltip/tooltip";
 
@@ -15,8 +15,8 @@ export default function Controls({
   pokemon,
   previousAndAfter,
 }: {
-  pokemon: IPokemon;
-  previousAndAfter: INamedApiResourceList<IPokemon>;
+  pokemon: Pokemon;
+  previousAndAfter: NamedApiResourceList<Pokemon>;
 }) {
   const t = useTranslations();
 
@@ -45,7 +45,11 @@ export default function Controls({
           rounded
           active:bg-white
           active:text-(--pokedex-red-dark) 
-          ${!isFirst() ? "disable-click" : "hover:bg-(--pokedex-red-dark) transition-colors"}
+          ${
+            !isFirst()
+              ? "disable-click"
+              : "hover:bg-(--pokedex-red-dark) transition-colors"
+          }
         `}
         >
           <ChevronDoubleLeftIcon className="w-7" />
@@ -53,7 +57,6 @@ export default function Controls({
       </Tooltip>
     </div>
   ;
-
   const goList = () =>
     <div className="flex-1 text-center">
       <Tooltip content={t("actions.backToList")}>
@@ -76,7 +79,6 @@ export default function Controls({
       </Tooltip>
     </div>
   ;
-
   const goNext = (name = "", id: number) =>
     <div className="next flex-1 text-right">
       <Tooltip
@@ -104,7 +106,6 @@ export default function Controls({
       </Tooltip>
     </div>
   ;
-
   return (
     <div className="controls my-2 px-8 w-full flex justify-between">
       {!!previousAndAfter.results[0]?.name &&

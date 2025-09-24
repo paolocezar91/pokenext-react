@@ -1,8 +1,8 @@
 import "pokeapi-typescript";
-import { IMove, INamedApiResource } from "pokeapi-typescript";
+import { Move, NamedApiResource } from "pokeapi-typescript";
 
 declare module "pokeapi-typescript" {
-  interface IType {
-    moves: INamedApiResource<IMove>[];
+  interface Type {
+    moves: NamedApiResource<Move>[];
   }
 }

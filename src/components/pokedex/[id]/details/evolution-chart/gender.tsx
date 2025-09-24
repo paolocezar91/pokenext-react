@@ -1,9 +1,9 @@
-import { IEvolutionDetail } from "pokeapi-typescript";
+import { EvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionGender({
   evolution_details,
 }: {
-  evolution_details: IEvolutionDetail;
+  evolution_details: EvolutionDetail;
 }) {
   if (!evolution_details.gender) return null;
   if (evolution_details.gender === 1) {

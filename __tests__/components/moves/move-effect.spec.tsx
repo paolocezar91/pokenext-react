@@ -1,7 +1,7 @@
 import MoveEffect from "@/components/moves/move-effect";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { IMove } from "pokeapi-typescript";
+import { Move } from "pokeapi-typescript";
 
 jest.mock("next-intl", () => ({
   useTranslations: () => (key: string) => key,
@@ -24,13 +24,13 @@ describe("MoveEffect Component", () => {
         effect: "A new effect",
       },
     ],
-  } as unknown as IMove;
+  } as unknown as Move;
 
   it("should render the component with English description", () => {
     render(<MoveEffect moveData={mockData} />);
 
     expect(
-      screen.getByRole("heading", { name: "moves.moveEffect.title" }),
+      screen.getByRole("heading", { name: "moves.moveEffect.title" })
     ).toBeInTheDocument();
     expect(screen.getByText("A new effect")).toBeInTheDocument();
   });
@@ -38,12 +38,12 @@ describe("MoveEffect Component", () => {
   it("should handle empty descriptions array", () => {
     const emptyData = {
       effect_entries: [],
-    } as unknown as IMove;
+    } as unknown as Move;
 
     render(<MoveEffect moveData={emptyData} />);
 
     expect(
-      screen.getByRole("heading", { name: "moves.moveEffect.title" }),
+      screen.getByRole("heading", { name: "moves.moveEffect.title" })
     ).toBeInTheDocument();
     expect(screen.queryByText("moves.moveEffect.empty")).toBeInTheDocument();
   });
@@ -56,7 +56,7 @@ describe("MoveEffect Component", () => {
   it("should match snapshot with no valid description", () => {
     const emptyData = {
       effect_entries: [],
-    } as unknown as IMove;
+    } as unknown as Move;
 
     const { asFragment } = render(<MoveEffect moveData={emptyData} />);
     expect(asFragment()).toMatchSnapshot();

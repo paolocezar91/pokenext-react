@@ -1,16 +1,16 @@
-import { IEvolutionDetail } from "pokeapi-typescript";
+import { EvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionPartySpecies({
   evolution_details,
 }: {
-  evolution_details: IEvolutionDetail;
+  evolution_details: EvolutionDetail;
 }) {
   return (
-    evolution_details.party_species && (
+    evolution_details.party_species &&
       <span className="text-xs">
         {" "}
         with {evolution_details.party_species.name} in party
       </span>
-    )
+
   );
 }

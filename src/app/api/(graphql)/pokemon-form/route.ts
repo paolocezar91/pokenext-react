@@ -2,7 +2,7 @@ import { formatResultsCount } from "@/app/api/api-utils";
 import { queryGraphql } from "@/app/services/graphql";
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
-import { IPokemonForm } from "pokeapi-typescript";
+import { PokemonForm } from "pokeapi-typescript";
 
 export async function GET(req: NextRequest) {
   const ids = req.nextUrl.searchParams.get("ids");
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const { pokemonFormByIds } = await queryGraphql<{
-      pokemonFormByIds: IPokemonForm[];
+      pokemonFormByIds: PokemonForm[];
     }>(query, vars);
     return NextResponse.json(formatResultsCount(pokemonFormByIds), {
       status: 200,

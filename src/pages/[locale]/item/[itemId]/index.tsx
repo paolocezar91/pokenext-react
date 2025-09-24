@@ -13,7 +13,7 @@ import { getMessages } from "@/i18n/messages";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { IItem } from "pokeapi-typescript";
+import { Item } from "pokeapi-typescript";
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.itemId);
@@ -43,7 +43,7 @@ export async function getStaticPaths() {
   const paths = [];
   for (const locale of locales) {
     for (const itemId of ids) {
-      paths.push({ params: { locale, itemId } });
+      paths.push({ params: { locale, itemId }});
     }
   }
 
@@ -53,13 +53,7 @@ export async function getStaticPaths() {
   };
 }
 
-export default function ItemDetails({
-  itemData,
-  id,
-}: {
-  itemData: IItem;
-  id: number;
-}) {
+export default function ItemDetails({ itemData }: { itemData: Item }) {
   const t = useTranslations();
 
   if (!itemData) {
@@ -86,7 +80,7 @@ export default function ItemDetails({
           <div className="show w-2/3">
             <div className="flex items-center mt-4">
               <h2 className="w-fit text-xl font-semibold mb-2 mr-4">{title}</h2>
-              {itemData.sprites.default && (
+              {itemData.sprites.default &&
                 <Image
                   className="mr-2"
                   src={itemData.sprites.default}
@@ -94,7 +88,7 @@ export default function ItemDetails({
                   width={48}
                   height={48}
                 />
-              )}
+              }
             </div>
             <ItemFlavorText item={itemData} />
             <ItemDescription item={itemData} />

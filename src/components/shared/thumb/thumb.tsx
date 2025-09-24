@@ -6,7 +6,7 @@ import {
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import Image from "next/image";
-import { INamedApiResource, IPokemon, IPokemonType } from "pokeapi-typescript";
+import { NamedApiResource, Pokemon, PokemonType } from "pokeapi-typescript";
 import { CSSProperties, useEffect, useState } from "react";
 import SkeletonImage from "../skeleton-image";
 import "./thumb.scss";
@@ -46,7 +46,7 @@ export function getNumber(id: number | string) {
   return "N/A";
 }
 
-export function getBackgroundStyle(types: IPokemonType[] = []): CSSProperties {
+export function getBackgroundStyle(types: PokemonType[] = []): CSSProperties {
   const colors = types?.map((type) => getTypeColor(type.type.name)) || [];
   return colors.length === 1
     ? { background: `${colors[0]}` }
@@ -54,7 +54,7 @@ export function getBackgroundStyle(types: IPokemonType[] = []): CSSProperties {
 }
 
 export function getBackgroundStyleWithStrings(
-  types: string[] = [],
+  types: string[] = []
 ): CSSProperties {
   const colors = types?.map((type) => getTypeColor(type)) || [];
   return colors.length === 1
@@ -102,8 +102,8 @@ export default function PokemonThumb({
   showName,
   isMega,
 }: Readonly<{
-  pokemonData?: IPokemon | IPkmn;
-  pokemonDataSmall?: INamedApiResource<IPokemon>;
+  pokemonData?: Pokemon | IPkmn;
+  pokemonDataSmall?: NamedApiResource<Pokemon>;
   className?: string;
   showShinyCheckbox?: boolean;
   size?: string;
@@ -128,7 +128,6 @@ export default function PokemonThumb({
       <SkeletonImage className="w-full h-full" />
     </span>
   ;
-
   useEffect(() => {
     if (pokemonDataSmall) {
       setPkmn({
@@ -146,7 +145,7 @@ export default function PokemonThumb({
     .normal[0];
   const shinyArtworkUrl = getArtwork(
     Number(pkmn.id),
-    settings.artworkUrl as ArtUrl,
+    settings.artworkUrl as ArtUrl
   ).shiny[0];
 
   const loaded =
@@ -185,7 +184,9 @@ export default function PokemonThumb({
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               src={shinyArtworkUrl}
-              alt={`Shiny ${normalizePokemonName(pkmn.name)} ${getNumber(pkmn.id)}}`}
+              alt={`Shiny ${normalizePokemonName(pkmn.name)} ${getNumber(
+                pkmn.id
+              )}}`}
               loading="lazy"
             />
           }
@@ -214,7 +215,6 @@ export default function PokemonThumb({
       }
     </div>
   ;
-
   return (
     <>
       {loaded}

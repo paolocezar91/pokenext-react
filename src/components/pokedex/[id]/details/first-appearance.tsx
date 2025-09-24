@@ -5,15 +5,15 @@ import {
   normalizeVersionGroup,
   normalizeGeneration,
 } from "@/components/shared/utils";
-import { IPokemon, IPokemonSpecies } from "pokeapi-typescript";
+import { Pokemon, PokemonSpecies } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 
 export default function PokemonFirstAppearance({
   pokemon,
   species,
 }: {
-  pokemon: IPokemon;
-  species: IPokemonSpecies;
+  pokemon: Pokemon;
+  species: PokemonSpecies;
 }) {
   const normalize = (text: string) => capitilize(kebabToSpace(text));
   const t = useTranslations();

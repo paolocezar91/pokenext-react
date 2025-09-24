@@ -4,11 +4,11 @@ import { capitilize, getIdFromUrlSubstring } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import Link from "@/components/shared/link";
-import { IMove } from "pokeapi-typescript";
+import { Move } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 
-export default function MoveDataTable({ moveData }: { moveData: IMove }) {
+export default function MoveDataTable({ moveData }: { moveData: Move }) {
   const t = useTranslations();
   const { settings } = useUser();
 
@@ -29,7 +29,7 @@ export default function MoveDataTable({ moveData }: { moveData: IMove }) {
                     alt={moveData.type.name}
                     src={getTypeIconById(
                       getIdFromUrlSubstring(moveData.type.url),
-                      settings.typeArtworkUrl,
+                      settings.typeArtworkUrl
                     )}
                   />
                 </Link>

@@ -1,7 +1,7 @@
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { INamedApiResource, IPokemon } from "pokeapi-typescript";
+import { NamedApiResource, Pokemon } from "pokeapi-typescript";
 import { mockAllIsIntersecting } from "react-intersection-observer/test-utils";
 
 jest.mock("next-intl", () => ({
@@ -45,7 +45,7 @@ const mockLearnedByPokemon = [
     name: "mew",
     url: "/api/v2/pokemon/151/",
   },
-] as unknown as INamedApiResource<IPokemon>[];
+] as unknown as NamedApiResource<Pokemon>[];
 
 describe("LearnedByPokemon Component", () => {
   beforeEach(() => {
@@ -58,7 +58,7 @@ describe("LearnedByPokemon Component", () => {
 
     // Test title transformation
     expect(screen.getByRole("heading")).toHaveTextContent(
-      "moves.learnedBy.title",
+      "moves.learnedBy.title"
     );
     expect(screen.getByText("Mew")).toBeInTheDocument();
     expect(screen.getByText("Ditto")).toBeInTheDocument();
@@ -70,7 +70,7 @@ describe("LearnedByPokemon Component", () => {
 
     // Test title transformation
     expect(screen.getByRole("heading")).toHaveTextContent(
-      "moves.learnedBy.title",
+      "moves.learnedBy.title"
     );
     expect(screen.getByText("Mew")).toBeInTheDocument();
     const mewLink = screen.getByRole("link", { name: "Mew" });
@@ -79,7 +79,7 @@ describe("LearnedByPokemon Component", () => {
 
   it("should match snapshot", () => {
     const { asFragment } = render(
-      <LearnedByPokemon pokemonList={mockLearnedByPokemon} />,
+      <LearnedByPokemon pokemonList={mockLearnedByPokemon} />
     );
     mockAllIsIntersecting(true);
     expect(asFragment()).toMatchSnapshot();

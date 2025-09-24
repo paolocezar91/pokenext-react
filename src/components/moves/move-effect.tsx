@@ -1,15 +1,15 @@
 import { useUser } from "@/context/user-context";
-import { IMove } from "pokeapi-typescript";
+import { Move } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 
-export default function MoveEffect({ moveData }: { moveData: IMove }) {
+export default function MoveEffect({ moveData }: { moveData: Move }) {
   const t = useTranslations();
   const { settings } = useUser();
 
   const getEffects = () => {
     return moveData.effect_entries.filter(
-      (effect) => effect.language.name === settings?.descriptionLang,
+      (effect) => effect.language.name === settings?.descriptionLang
     );
   };
 

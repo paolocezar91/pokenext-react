@@ -1,7 +1,7 @@
 import FlavorText from "@/components/moves/flavor-text";
 import "@testing-library/jest-dom";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { IMove } from "pokeapi-typescript";
+import { Move } from "pokeapi-typescript";
 
 jest.mock("@heroicons/react/24/solid", () => ({
   ChevronLeftIcon: () => <div>LeftIcon</div>,
@@ -43,7 +43,7 @@ describe("FlavorText Component", () => {
         version_group: { name: "sword-shield" },
       },
     ],
-  } as unknown as IMove;
+  } as unknown as Move;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -54,7 +54,7 @@ describe("FlavorText Component", () => {
 
     // Test title transformation
     expect(screen.getByRole("heading")).toHaveTextContent(
-      "moves.flavorText.title",
+      "moves.flavorText.title"
     );
 
     // Test initial flavor text

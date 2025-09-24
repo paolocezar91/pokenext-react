@@ -2,7 +2,7 @@ import { idOrName } from "@/app/api/api-utils";
 import { queryGraphql } from "@/app/services/graphql";
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
-import { IMoveTarget } from "pokeapi-typescript";
+import { MoveTarget } from "pokeapi-typescript";
 
 export async function GET(
   req: NextRequest,
@@ -30,7 +30,7 @@ export async function GET(
   `;
   try {
     const { moveTargetById } = await queryGraphql<{
-      moveTargetById: IMoveTarget;
+      moveTargetById: MoveTarget;
     }>(query, vars);
     return NextResponse.json(moveTargetById, { status: 200 });
   } catch (err) {

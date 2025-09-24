@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { IPokemon } from "pokeapi-typescript";
+import { Pokemon } from "pokeapi-typescript";
 import { formatResultsCount } from "../api/api-utils";
 import { queryGraphql } from "./graphql";
 
@@ -125,7 +125,7 @@ export async function getPokemonById(vars: {
   `;
 
   try {
-    const data = await queryGraphql<{ pokemonById: IPokemon }>(query, vars);
+    const data = await queryGraphql<{ pokemonById: Pokemon }>(query, vars);
     return data;
   } catch (err) {
     throw err;
@@ -159,7 +159,7 @@ export async function getPokemonByIds(vars: { ids: string }) {
   `;
 
   try {
-    const data = await queryGraphql<{ pokemonsByIds: IPokemon[] }>(query, vars);
+    const data = await queryGraphql<{ pokemonsByIds: Pokemon[] }>(query, vars);
     return formatResultsCount(data.pokemonsByIds);
   } catch (err) {
     throw err;
@@ -194,7 +194,7 @@ export async function getAllPokemon(vars: {
   `;
 
   try {
-    const data = await queryGraphql<{ pokemons: IPokemon[] }>(query, vars);
+    const data = await queryGraphql<{ pokemons: Pokemon[] }>(query, vars);
     return formatResultsCount(data.pokemons);
   } catch (err) {
     throw err;

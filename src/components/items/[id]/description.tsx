@@ -1,9 +1,9 @@
 import SkeletonBlock from "@/components/shared/skeleton-block";
 import { useUser } from "@/context/user-context";
-import { IItem } from "pokeapi-typescript";
+import { Item } from "pokeapi-typescript";
 import { useCallback } from "react";
 
-export default function ItemDescription({ item }: { item: IItem }) {
+export default function ItemDescription({ item }: { item: Item }) {
   const { settings } = useUser();
 
   const renderFlavorText = useCallback(() => {
@@ -21,9 +21,9 @@ export default function ItemDescription({ item }: { item: IItem }) {
 
     return (
       <div className="flex flex-col items-start pb-6">
-        {short_effect !== effect && (
+        {short_effect !== effect &&
           <div className="flex mb-2 ">{short_effect}</div>
-        )}
+        }
         <div className="flex">{effect}</div>
       </div>
     );

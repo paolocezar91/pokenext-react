@@ -1,11 +1,11 @@
 import { kebabToSpace } from "@/components/shared/utils";
 import Image from "next/image";
-import { IEvolutionDetail } from "pokeapi-typescript";
+import { EvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionItem({
   evolution_details,
 }: {
-  evolution_details: IEvolutionDetail;
+  evolution_details: EvolutionDetail;
 }) {
   return (
     evolution_details.item?.name &&

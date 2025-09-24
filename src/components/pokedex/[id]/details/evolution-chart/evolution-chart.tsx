@@ -3,7 +3,7 @@ import Tooltip from "@/components/shared/tooltip/tooltip";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import Link from "@/components/shared/link";
-import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";
+import { IChainLink, EvolutionChain, Pokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import PokemonThumb, { getNumber } from "../../../../shared/thumb/thumb";
 import PokemonEvolutionHappiness from "./happiness";
@@ -57,9 +57,9 @@ export default function PokemonEvolutionChart({
   speciesChain,
   evolutionChain,
 }: {
-  pokemon?: IPokemon | null;
+  pokemon?: Pokemon | null;
   speciesChain?: SpeciesChain | null;
-  evolutionChain?: IEvolutionChain | null;
+  evolutionChain?: EvolutionChain | null;
 }) {
   const t = useTranslations();
 
@@ -87,7 +87,7 @@ export default function PokemonEvolutionChart({
   }
 
   const firstPkmn = speciesChain.chain.first[0];
-  const firstChainColumn = (
+  const firstChainColumn =
     <Tooltip
       content={`${normalizePokemonName(firstPkmn.name)} ${getNumber(
         firstPkmn.id
@@ -105,15 +105,15 @@ export default function PokemonEvolutionChart({
         />
       </Link>
     </Tooltip>
-  );
-  const chainColumn = (chain: IPokemon[], evolves_to: IChainLink[]) => (
+  ;
+  const chainColumn = (chain: Pokemon[], evolves_to: IChainLink[]) =>
     <ul className="flex flex-col">
       {chain.map((pkmn, idx) => {
         const evolution_details = evolves_to[idx].evolution_details[0];
         return (
           <li className="mb-2 items-center flex text-xs" key={pkmn.id}>
             <div className="flex flex-col items-center flex-1 mx-3">
-              {evolution_details && (
+              {evolution_details &&
                 <span className="flex text-center flex-col">
                   <PokemonEvolutionLevel
                     evolution_details={evolution_details}
@@ -157,7 +157,7 @@ export default function PokemonEvolutionChart({
                     evolution_details={evolution_details}
                   />
                 </span>
-              )}
+              }
               <span className="font-bold text-xl">
                 <ArrowRightIcon className="w-7" />
               </span>
@@ -183,15 +183,15 @@ export default function PokemonEvolutionChart({
         );
       })}
     </ul>
-  );
+  ;
   return (
     <div className="evolution-chain col-span-6 ">
       <h3 className="w-fit text-lg font-semibold mb-2">
         {t("pokedex.details.evolutionChart.title")}
       </h3>
-      {!!speciesChain.loaded && (
+      {!!speciesChain.loaded &&
         <ul className="w-fit flex items-start justify-start overflow-x-auto mt-4">
-          {!!speciesChain.chain.second?.length && (
+          {!!speciesChain.chain.second?.length &&
             <>
               <li>{firstChainColumn}</li>
               <li>
@@ -201,17 +201,17 @@ export default function PokemonEvolutionChart({
                 )}
               </li>
             </>
-          )}
-          {!!speciesChain.chain.third?.length && (
+          }
+          {!!speciesChain.chain.third?.length &&
             <li>
               {chainColumn(
                 speciesChain.chain.third,
                 evolutionChain.chain.evolves_to[0].evolves_to
               )}
             </li>
-          )}
+          }
         </ul>
-      )}
+      }
     </div>
   );
 }

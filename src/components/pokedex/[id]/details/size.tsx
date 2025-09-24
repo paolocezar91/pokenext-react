@@ -1,5 +1,5 @@
 import SkeletonBlock from "@/components/shared/skeleton-block";
-import { IPokemon } from "pokeapi-typescript";
+import { Pokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 
 function metersToFeetInches(meters: number): string {
@@ -13,7 +13,7 @@ function kgToLbs(kg: number) {
   return kg * 2.20462;
 }
 
-export default function PokemonSize({ pokemon }: { pokemon: IPokemon }) {
+export default function PokemonSize({ pokemon }: { pokemon: Pokemon }) {
   const t = useTranslations();
 
   const renderSize = () => {

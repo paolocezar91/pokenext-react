@@ -25,7 +25,7 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { IItemHolderPokemon } from "pokeapi-typescript";
+import { ItemHolderPokemon } from "pokeapi-typescript";
 import { useState } from "react";
 
 export type SortKey = "id" | "name" | "types";
@@ -34,7 +34,7 @@ const pokeApiQuery = new PokeApiQuery();
 export default function HeldByPokemon({
   pokemonList,
 }: {
-  pokemonList: IItemHolderPokemon[];
+  pokemonList: ItemHolderPokemon[];
 }) {
   const t = useTranslations();
   const { settings } = useUser();
@@ -53,11 +53,11 @@ export default function HeldByPokemon({
       !ids.length
         ? []
         : pokeApiQuery
-            .getPokemonByIds(ids, NUMBERS_OF_POKEMON)
-            .then(({ results }) => results),
+          .getPokemonByIds(ids, NUMBERS_OF_POKEMON)
+          .then(({ results }) => results),
   });
 
-  const tableHeaders = (
+  const tableHeaders =
     <>
       <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
       <th className="bg-(--pokedex-red-dark) w-[1%] text-white text-center px-2 py-1">
@@ -88,10 +88,10 @@ export default function HeldByPokemon({
         </SortButton>
       </th>
     </>
-  );
+  ;
 
   if (!heldBy) {
-    const skeletonTableBody = [...Array(10)].map((_, i) => (
+    const skeletonTableBody = [...Array(10)].map((_, i) =>
       <tr key={i} className="border-solid border-foreground border-b-2">
         {[...Array(4)].map((_, j) => {
           if (j === 0) {
@@ -109,7 +109,7 @@ export default function HeldByPokemon({
           );
         })}
       </tr>
-    ));
+    );
 
     return (
       <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">

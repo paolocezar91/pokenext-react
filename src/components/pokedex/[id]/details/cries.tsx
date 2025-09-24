@@ -1,14 +1,14 @@
-import { IPokemon } from "pokeapi-typescript";
+import { Pokemon } from "pokeapi-typescript";
 
-interface PokeIPokemon extends IPokemon {
+interface PokePokemon extends Pokemon {
   cries: {
     legacy?: string;
     latest?: string;
   };
 }
 
-export default function PokemonCries({ pokemon }: { pokemon: IPokemon }) {
-  const cry = (pokemon as PokeIPokemon)?.cries?.latest;
+export default function PokemonCries({ pokemon }: { pokemon: Pokemon }) {
+  const cry = (pokemon as PokePokemon)?.cries?.latest;
   return (
     cry &&
       <div className="pokemon-cries w-full mt-2">

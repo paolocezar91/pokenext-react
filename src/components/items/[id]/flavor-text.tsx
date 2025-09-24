@@ -2,15 +2,15 @@ import SkeletonBlock from "@/components/shared/skeleton-block";
 import { capitilize, kebabToSpace } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { IItem } from "pokeapi-typescript";
+import { Item } from "pokeapi-typescript";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 
-export default function ItemFlavorText({ item }: { item: IItem }) {
+export default function ItemFlavorText({ item }: { item: Item }) {
   const [flavorIdx, setFlavorIdx] = useState(0);
   const { settings } = useUser();
 
-  const getFlavorText = (item: IItem) => {
+  const getFlavorText = (item: Item) => {
     return item?.flavor_text_entries
       .filter((text) => text.language.name === settings?.descriptionLang)
       .map((flavor) => {
