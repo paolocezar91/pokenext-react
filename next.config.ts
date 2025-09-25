@@ -28,6 +28,9 @@ const nextConfig: NextConfig = {
     npm_package_version: process.env.npm_package_version,
     POKEAPI_URL: process.env.POKEAPI_URL,
     GRAPHQL_URL: process.env.GRAPHQL_URL,
+    NUMBERS_OF_POKEMON: process.env.NUMBERS_OF_POKEMON,
+    AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
+    AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
   },
   onDemandEntries: {
     // period (in ms) where the server will keep pages in the buffer

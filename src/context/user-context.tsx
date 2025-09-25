@@ -115,15 +115,18 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
     });
 
   // Guest upsertSettings (always returns full Settings)
-  const handleGuestUpsertSettings = async (body: Partial<Settings>) => {
-    const updated = {
-      ...guestDefaultSettings,
-      ...guestSettings,
-      ...body,
-    } as Settings;
-    setGuestSettings(updated);
-    return updated;
-  };
+  const handleGuestUpsertSettings = useCallback(
+    async (body: Partial<Settings>) => {
+      const updated = {
+        ...guestDefaultSettings,
+        ...guestSettings,
+        ...body,
+      } as Settings;
+      setGuestSettings(updated);
+      return updated;
+    },
+    [guestSettings, setGuestSettings]
+  );
 
   // Upsert settings for authenticated user
   const handleUpsertSettings = useCallback(
@@ -157,7 +160,7 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
         return prevSettings;
       }
     },
-    []
+    [settings, showSnackbar, user?.id]
   );
 
   // Sync context state with fetched data
