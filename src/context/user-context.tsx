@@ -2,7 +2,13 @@ import UserApi, { Settings, User } from "@/app/api/user-api";
 import { TypeUrl } from "@/components/pokedex/[id]/details/types";
 import { useLocalStorage } from "@/components/shared/utils";
 import { useSession } from "next-auth/react";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useSnackbar } from "./snackbar";
 import { useQuery } from "@tanstack/react-query";
 
@@ -51,8 +57,14 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { data: session, status } = useSession();
   const { showSnackbar } = useSnackbar();
-  const isAuthenticated = () => status === "authenticated";
-  const isUnauthenticated = () => status === "unauthenticated";
+  const isAuthenticated = useCallback(
+    () => status === "authenticated",
+    [status]
+  );
+  const isUnauthenticated = useCallback(
+    () => status === "unauthenticated",
+    [status]
+  );
   // State for context values
   const [user, setUser] = useState<User>(null);
   const [settings, setSettings] = useState<Settings>(null);
@@ -114,36 +126,39 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // Upsert settings for authenticated user
-  const handleUpsertSettings = async (body: Partial<Settings>, id?: string) => {
-    // Save previous settings for rollback
-    const prevSettings = settings;
-    // Optimistically update settings
-    const optimisticSettings = { ...settings, ...body } as Settings;
-    setSettings(optimisticSettings);
-    try {
-      const updatedSettings = await userApi.upsertSettings(
-        body,
-        id ?? user?.id
-      );
-      if (updatedSettings) {
-        setSettings(updatedSettings);
-        setSettingsCookies(updatedSettings);
-        return updatedSettings;
+  const handleUpsertSettings = useCallback(
+    async (body: Partial<Settings>, id?: string) => {
+      // Save previous settings for rollback
+      const prevSettings = settings;
+      // Optimistically update settings
+      const optimisticSettings = { ...settings, ...body } as Settings;
+      setSettings(optimisticSettings);
+      try {
+        const updatedSettings = await userApi.upsertSettings(
+          body,
+          id ?? user?.id
+        );
+        if (updatedSettings) {
+          setSettings(updatedSettings);
+          setSettingsCookies(updatedSettings);
+          return updatedSettings;
+        }
+        // If backend returns null, rollback
+        setSettings(prevSettings);
+        setSettingsCookies(prevSettings);
+        return prevSettings;
+      } catch (error) {
+        // Rollback on error
+        setSettings(prevSettings);
+        setSettingsCookies(prevSettings);
+        // Optionally, show error to user here
+        showSnackbar("Error updating settings!");
+        console.error(error);
+        return prevSettings;
       }
-      // If backend returns null, rollback
-      setSettings(prevSettings);
-      setSettingsCookies(prevSettings);
-      return prevSettings;
-    } catch (error) {
-      // Rollback on error
-      setSettings(prevSettings);
-      setSettingsCookies(prevSettings);
-      // Optionally, show error to user here
-      showSnackbar("Error updating settings!");
-      console.error(error);
-      return prevSettings;
-    }
-  };
+    },
+    []
+  );
 
   // Sync context state with fetched data
   useEffect(() => {
@@ -156,22 +171,51 @@ export const UserProvider: React.FC<{ children: React.ReactNode }> = ({
       setSettings(guestSettings);
       setLoading(false);
     }
-  }, [status, fetchedUser, fetchedSettings, guestUser, guestSettings]);
+  }, [
+    status,
+    user,
+    userLoading,
+    fetchedUser,
+    guestUser,
+    settings,
+    settingsLoading,
+    fetchedSettings,
+    guestSettings,
+    isAuthenticated,
+    isUnauthenticated,
+    setLoading,
+  ]);
+
+  const userFn = useCallback(() => {
+    return isAuthenticated() ? user : isUnauthenticated() ? guestUser : null;
+  }, [isAuthenticated, user, isUnauthenticated, guestUser]);
+
+  const settingsFn = useCallback(() => {
+    if (isAuthenticated()) {
+      return settings;
+    } else if (isUnauthenticated()) {
+      return guestSettings;
+    } else {
+      return null;
+    }
+  }, [isAuthenticated, settings, isUnauthenticated, guestSettings]);
+
+  const upsertSettings = useCallback(
+    (body: Partial<Settings>, id?: string) => {
+      return isAuthenticated()
+        ? handleUpsertSettings(body, id)
+        : handleGuestUpsertSettings(body);
+    },
+    [isAuthenticated, handleUpsertSettings, handleGuestUpsertSettings]
+  );
 
   return (
     <UserContext.Provider
       value={{
         loading,
-        user: isAuthenticated() ? user : isUnauthenticated() ? guestUser : null,
-        settings: isAuthenticated()
-          ? settings
-          : isUnauthenticated()
-          ? guestSettings
-          : null,
-        upsertSettings: (body: Partial<Settings>, id?: string) =>
-          isAuthenticated()
-            ? handleUpsertSettings(body, id)
-            : handleGuestUpsertSettings(body),
+        user: userFn(),
+        settings: settingsFn(),
+        upsertSettings: upsertSettings,
       }}
     >
       {status !== "loading" && children}
