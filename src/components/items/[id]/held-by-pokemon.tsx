@@ -1,3 +1,5 @@
+// eslint-disable no-extra-parens
+
 import PokeApiQuery from "@/app/api/poke-api-query";
 import { NUMBERS_OF_POKEMON } from "@/app/const";
 import { getTypeIconById } from "@/components/pokedex/[id]/details/types";
@@ -25,7 +27,11 @@ import { QuestionMarkCircleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { IItemHolderPokemon } from "pokeapi-typescript";
+import {
+  ItemHolderPokemon,
+  NamedApiResource,
+  Pokemon,
+} from "pokeapi-typescript";
 import { useState } from "react";
 
 export type SortKey = "id" | "name" | "types";
@@ -34,7 +40,7 @@ const pokeApiQuery = new PokeApiQuery();
 export default function HeldByPokemon({
   pokemonList,
 }: {
-  pokemonList: IItemHolderPokemon[];
+  pokemonList: ItemHolderPokemon[];
 }) {
   const t = useTranslations();
   const { settings } = useUser();
@@ -43,18 +49,23 @@ export default function HeldByPokemon({
     setSorting((prev) => updateSortKeys(prev, key));
   };
 
-  const ids = pokemonList
-    .map((p) => Number(getIdFromUrlSubstring(p.pokemon.url)))
-    .filter((id) => id < NUMBERS_OF_POKEMON);
-
-  const { data: heldBy } = useQuery({
+  const { data: heldBy = [] } = useQuery({
     queryKey: ["pokemonList", pokemonList],
-    queryFn: () =>
-      !ids.length
-        ? []
-        : pokeApiQuery
-            .getPokemonByIds(ids, NUMBERS_OF_POKEMON)
-            .then(({ results }) => results),
+    queryFn: () => {
+      const ids = (pokemonList ?? [])
+        .map((p) =>
+          Number(
+            getIdFromUrlSubstring(
+              (p.pokemon as unknown as NamedApiResource<Pokemon>).url
+            )
+          )
+        )
+        .filter((id) => id < NUMBERS_OF_POKEMON);
+
+      return pokeApiQuery
+        .getPokemonByIds(ids, NUMBERS_OF_POKEMON)
+        .then(({ results }) => results);
+    },
   });
 
   const tableHeaders = (
@@ -114,7 +125,7 @@ export default function HeldByPokemon({
     return (
       <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
         <h3 className="w-fit text-lg mb-4">
-          {t("item.heldBy.title", { total: String(heldBy?.length) })}
+          {t("item.heldBy.title", { total: 0 })}
         </h3>
         <div className="h-[-webkit-fill-available]">
           <Table headers={tableHeaders}>{skeletonTableBody}</Table>

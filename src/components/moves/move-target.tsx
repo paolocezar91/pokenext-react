@@ -1,12 +1,12 @@
 import { useUser } from "@/context/user-context";
-import { IMoveTarget } from "pokeapi-typescript";
+import { MoveTarget } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 
-export default function MoveTarget({
+export default function PokemonMoveTarget({
   targetData,
 }: {
-  targetData: IMoveTarget | null;
+  targetData: MoveTarget | null;
 }) {
   const t = useTranslations();
   const { settings } = useUser();
@@ -18,7 +18,7 @@ export default function MoveTarget({
 
     const description =
       targetData.descriptions.find(
-        (d) => d.language.name === settings?.descriptionLang,
+        (d) => d.language.name === settings?.descriptionLang
       )?.description || "";
     if (!description) {
       return (

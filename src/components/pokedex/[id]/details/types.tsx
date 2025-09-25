@@ -3,7 +3,7 @@ import { capitilize } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import Link from "@/components/shared/link";
-import { IType } from "pokeapi-typescript";
+import { Type } from "pokeapi-typescript";
 
 export type TypeUrl =
   | "omega-ruby-alpha-sapphire"
@@ -35,7 +35,7 @@ export const getTypeIcon = (type: any): string =>
 export const getTypeIconById = (typeId: string, sprite: TypeUrl): string =>
   spritesUrl(typeId)[sprite];
 
-export default function PokemonTypes({ types }: { types: IType[] }) {
+export default function PokemonTypes({ types }: { types: Type[] }) {
   const { settings } = useUser();
 
   return (

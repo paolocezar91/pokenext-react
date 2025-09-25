@@ -1,10 +1,10 @@
 import { kebabToSpace } from "@/components/shared/utils";
-import { IEvolutionDetail } from "pokeapi-typescript";
+import { EvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionLocation({
   evolution_details,
 }: {
-  evolution_details: IEvolutionDetail;
+  evolution_details: EvolutionDetail;
 }) {
   return (
     evolution_details.location?.name &&

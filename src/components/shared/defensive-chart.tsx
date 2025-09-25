@@ -2,18 +2,20 @@ import { useTranslations } from "next-intl";
 import { getBackgroundStyleWithStrings } from "./thumb/thumb";
 import Tooltip from "./tooltip/tooltip";
 import { capitilize, normalizePokemonName } from "@/components/shared/utils";
-import { DefensiveMatchup, PokemonType } from "@/types/types";
+import { DefensiveMatchup, PokemonTypeEnum } from "@/types/types";
 import { typeChart } from "../pokedex/[id]/details/type-weakness-chart";
 
-function getDefensiveMatchup(types: PokemonType[]): DefensiveMatchup {
+function getDefensiveMatchup(types: PokemonTypeEnum[]): DefensiveMatchup {
   const result: DefensiveMatchup = {
-    weaknesses: {} as Record<PokemonType, number>,
-    resistances: {} as Record<PokemonType, number>,
-    immunities: {} as Record<PokemonType, boolean>,
+    weaknesses: {} as Record<PokemonTypeEnum, number>,
+    resistances: {} as Record<PokemonTypeEnum, number>,
+    immunities: {} as Record<PokemonTypeEnum, boolean>,
   };
 
   // Initialize all types with neutral (1) multiplier
-  const allTypes: PokemonType[] = Object.keys(typeChart) as PokemonType[];
+  const allTypes: PokemonTypeEnum[] = Object.keys(
+    typeChart
+  ) as PokemonTypeEnum[];
   allTypes.forEach((type) => {
     result.weaknesses[type] = 1;
     result.resistances[type] = 1;
@@ -74,7 +76,7 @@ export default function PokemonDefensiveChart({
   name: string;
 }) {
   const t = useTranslations();
-  const defensiveChart = getDefensiveMatchup(types as PokemonType[]);
+  const defensiveChart = getDefensiveMatchup(types as PokemonTypeEnum[]);
 
   return (
     <div className="defensive-chart col-span-6 md:col-span-3">
@@ -86,21 +88,27 @@ export default function PokemonDefensiveChart({
           let tooltipContent = "";
           let tooltipChild = "";
           name = normalizePokemonName(name);
-          if (defensiveChart.immunities[type as PokemonType]) {
+          if (defensiveChart.immunities[type as PokemonTypeEnum]) {
             tooltipContent = `${name} is immune to ${capitilize(type)}`;
             tooltipChild = "0";
-          } else if (defensiveChart.resistances[type as PokemonType]) {
-            tooltipContent = `${name} is ${getFractionValue(defensiveChart.resistances[type as PokemonType])} resistant to ${capitilize(type)}`;
+          } else if (defensiveChart.resistances[type as PokemonTypeEnum]) {
+            tooltipContent = `${name} is ${getFractionValue(
+              defensiveChart.resistances[type as PokemonTypeEnum]
+            )} resistant to ${capitilize(type)}`;
             tooltipChild = getFractionValue(
-              defensiveChart.resistances[type as PokemonType],
+              defensiveChart.resistances[type as PokemonTypeEnum]
             );
-          } else if (defensiveChart.weaknesses[type as PokemonType]) {
-            tooltipContent = `${name} is ${getFractionValue(defensiveChart.weaknesses[type as PokemonType])}x weak to ${capitilize(type)}`;
+          } else if (defensiveChart.weaknesses[type as PokemonTypeEnum]) {
+            tooltipContent = `${name} is ${getFractionValue(
+              defensiveChart.weaknesses[type as PokemonTypeEnum]
+            )}x weak to ${capitilize(type)}`;
             tooltipChild = getFractionValue(
-              defensiveChart.weaknesses[type as PokemonType],
+              defensiveChart.weaknesses[type as PokemonTypeEnum]
             );
           } else {
-            tooltipContent = `${name} is not resistant or weak to ${capitilize(type)}`;
+            tooltipContent = `${name} is not resistant or weak to ${capitilize(
+              type
+            )}`;
             tooltipChild = "-";
           }
 

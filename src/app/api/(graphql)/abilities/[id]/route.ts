@@ -2,7 +2,7 @@ import { idOrName } from "@/app/api/api-utils";
 import { queryGraphql } from "@/app/services/graphql";
 import { gql } from "graphql-request";
 import { NextRequest, NextResponse } from "next/server";
-import { IAbility } from "pokeapi-typescript";
+import { Ability } from "pokeapi-typescript";
 
 export async function GET(
   req: NextRequest,
@@ -29,7 +29,7 @@ export async function GET(
 
   try {
     const { abilityById } = await queryGraphql<{
-      abilityById: IAbility;
+      abilityById: Ability;
     }>(query, vars);
     return NextResponse.json(abilityById, { status: 200 });
   } catch (err) {

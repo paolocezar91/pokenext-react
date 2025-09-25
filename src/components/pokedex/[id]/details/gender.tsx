@@ -1,13 +1,13 @@
 import SkeletonBlock from "@/components/shared/skeleton-block";
 import Tooltip from "@/components/shared/tooltip/tooltip";
 import { normalizePokemonName } from "@/components/shared/utils";
-import { IPokemonSpecies } from "pokeapi-typescript";
+import { PokemonSpecies } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 
 export default function PokemonGender({
   species,
 }: {
-  species: IPokemonSpecies | null;
+  species: PokemonSpecies | null;
 }) {
   const t = useTranslations();
 

@@ -1,15 +1,15 @@
 import { IPkmn } from "@/types/types";
 import {
-  IAbility,
-  IEvolutionChain,
-  IMachine,
-  IMove,
-  IMoveTarget,
-  IPokemon,
-  IPokemonForm,
-  IPokemonSpecies,
-  IPokemonType,
-  IType,
+  Ability,
+  EvolutionChain,
+  Machine,
+  Move,
+  MoveTarget,
+  Pokemon,
+  PokemonForm,
+  PokemonSpecies,
+  PokemonType,
+  Type,
 } from "pokeapi-typescript";
 import BaseQuery from "./base-query";
 
@@ -25,7 +25,7 @@ export default class PokeApiQuery extends BaseQuery {
   getPokemons = async (
     offset: number,
     limit: number,
-    filters?: Record<string, string>,
+    filters?: Record<string, string>
   ): Promise<CountResults<IPkmn>> => {
     let url = `/api/pokemon?limit=${limit}&offset=${offset}`;
     if (filters) {
@@ -37,66 +37,66 @@ export default class PokeApiQuery extends BaseQuery {
 
   getPokemonByIds = async (
     ids: number[],
-    id_limit?: number,
+    id_limit?: number
   ): Promise<CountResults<IPkmn>> => {
     return await this.getURL(`/api/pokemon?ids=${ids}&id_limit=${id_limit}`);
   };
 
-  getPokemonById = async (id: string): Promise<IPokemon> => {
+  getPokemonById = async (id: string): Promise<Pokemon> => {
     return await this.getURL(`/api/pokemon/${id}`);
   };
 
-  getMove = async (id: string): Promise<IMove> => {
+  getMove = async (id: string): Promise<Move> => {
     return await this.getURL(`/api/moves/${id}`);
   };
 
-  getMoves = async (): Promise<CountResults<IMove>> => {
+  getMoves = async (): Promise<CountResults<Move>> => {
     return await this.getURL(`/api/moves`);
   };
 
-  getMovesByIds = async (ids: number[]): Promise<CountResults<IMove>> => {
+  getMovesByIds = async (ids: number[]): Promise<CountResults<Move>> => {
     return await this.getURL(`/api/moves?ids=${ids}`);
   };
 
-  getMachinesByIds = async (ids: number[]): Promise<CountResults<IMachine>> => {
+  getMachinesByIds = async (ids: number[]): Promise<CountResults<Machine>> => {
     return await this.getURL(`/api/machines?ids=${ids}`);
   };
 
-  getSpecies = async (id: string): Promise<IPokemonSpecies> => {
+  getSpecies = async (id: string): Promise<PokemonSpecies> => {
     return await this.getURL(`/api/pokemon-species/${id}`);
   };
 
-  getTypes = async (types: IPokemonType[]): Promise<IType[]> => {
+  getTypes = async (types: PokemonType[]): Promise<Type[]> => {
     const fetchType = async (id: string) =>
-      await this.getURL<IType>(`/api/types/${id}`);
+      await this.getURL<Type>(`/api/types/${id}`);
     return Promise.all(types.map((type) => fetchType(type.type.name)));
   };
 
-  getType = async (id: string): Promise<IType> => {
+  getType = async (id: string): Promise<Type> => {
     return await this.getURL(`/api/types/${id}`);
   };
 
-  getAllTypes = async (): Promise<IType[]> => {
+  getAllTypes = async (): Promise<Type[]> => {
     return await this.getURL(`/api/types`);
   };
 
-  getAbility = async (id: string): Promise<IAbility> => {
+  getAbility = async (id: string): Promise<Ability> => {
     return await this.getURL(`/api/abilities/${id}`);
   };
 
-  getEvolutionChain = async (id: string): Promise<IEvolutionChain> => {
-    return await this.getURL<IEvolutionChain>(`/api/evolution-chain/${id}`);
+  getEvolutionChain = async (id: string): Promise<EvolutionChain> => {
+    return await this.getURL<EvolutionChain>(`/api/evolution-chain/${id}`);
   };
 
-  getMoveTarget = async (id: string): Promise<IMoveTarget> => {
-    return await this.getURL<IMoveTarget>(`/api/move-target/${id}`);
+  getMoveTarget = async (id: string): Promise<MoveTarget> => {
+    return await this.getURL<MoveTarget>(`/api/move-target/${id}`);
   };
 
   getPokemonFormByIds = async (
-    ids: number[],
-  ): Promise<CountResults<IPokemonForm>> => {
-    return await this.getURL<CountResults<IPokemonForm>>(
-      `/api/pokemon-form?ids=${ids}`,
+    ids: number[]
+  ): Promise<CountResults<PokemonForm>> => {
+    return await this.getURL<CountResults<PokemonForm>>(
+      `/api/pokemon-form?ids=${ids}`
     );
   };
 }

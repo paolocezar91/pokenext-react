@@ -9,12 +9,7 @@ import {
 import { useUser } from "@/context/user-context";
 import Image from "next/image";
 import Link from "@/components/shared/link";
-import {
-  IMachine,
-  IMove,
-  IPokemon,
-  IPokemonMoveVersion,
-} from "pokeapi-typescript";
+import { Machine, Move, Pokemon, PokemonMoveVersion } from "pokeapi-typescript";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import LoadingSpinner from "../../../shared/spinner";
@@ -28,8 +23,8 @@ type Moveset = {
   move: string;
   level_learned_at: number;
   url: string;
-  details?: IMove;
-  tmDetails?: IMachine;
+  details?: Move;
+  tmDetails?: Machine;
 };
 
 type MovesetTypes = "level-up" | "machine" | "tutor" | "egg";
@@ -42,7 +37,7 @@ type VersionMoveset = Record<
   }
 >;
 
-export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
+export default function PokemonMoves({ pokemon }: { pokemon: Pokemon }) {
   const [moves, setMoves] = useState<VersionMoveset>({});
   const [movesetActive, setMovesetActive] = useState<MovesetTypes>();
   const [versionGroupActive, setVersionGroupActive] = useState<string>("");
@@ -52,7 +47,7 @@ export default function PokemonMoves({ pokemon }: { pokemon: IPokemon }) {
 
   useEffect(() => {
     const movesData = pokemon?.moves.reduce((acc, move) => {
-      move.version_group_details.forEach((version: IPokemonMoveVersion) => {
+      move.version_group_details.forEach((version: PokemonMoveVersion) => {
         const versionGroup = version.version_group;
         if (!acc[versionGroup.name]) {
           acc = {

@@ -4,12 +4,12 @@ import Tooltip from "@/components/shared/tooltip/tooltip";
 import { getIdFromUrlSubstring } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { useQuery } from "@tanstack/react-query";
-import { IPokemon } from "pokeapi-typescript";
+import { Pokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 
 const pokeApiQuery = new PokeApiQuery();
 
-export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
+export default function PokemonAbilities({ pokemon }: { pokemon: Pokemon }) {
   const t = useTranslations();
   const { settings } = useUser();
 
@@ -18,8 +18,8 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
     queryFn: () =>
       Promise.all(
         pokemon.abilities.map((ability) =>
-          pokeApiQuery.getAbility(getIdFromUrlSubstring(ability.ability.url)),
-        ),
+          pokeApiQuery.getAbility(getIdFromUrlSubstring(ability.ability.url))
+        )
       ),
   });
 
@@ -42,7 +42,7 @@ export default function PokemonAbilities({ pokemon }: { pokemon: IPokemon }) {
         <Tooltip
           content={
             abilityDetails[i].effect_entries.find(
-              (entry) => entry.language.name === settings.descriptionLang,
+              (entry) => entry.language.name === settings.descriptionLang
             )?.short_effect
           }
         >

@@ -1,5 +1,5 @@
 import { gql } from "graphql-request";
-import { IItem } from "pokeapi-typescript";
+import { Item } from "pokeapi-typescript";
 import { formatResultsCount } from "../api/api-utils";
 import { queryGraphql } from "./graphql";
 
@@ -90,7 +90,7 @@ export async function getItemById(vars: {
   `;
 
   try {
-    const data = await queryGraphql<{ itemById: IItem }>(query, vars);
+    const data = await queryGraphql<{ itemById: Item }>(query, vars);
     return data;
   } catch (err) {
     throw err;
@@ -108,7 +108,7 @@ export async function getItemByIds(vars: { ids: string }) {
   `;
 
   try {
-    const data = await queryGraphql<{ itemsByIds: IItem[] }>(query, vars);
+    const data = await queryGraphql<{ itemsByIds: Item[] }>(query, vars);
     return formatResultsCount(data.itemsByIds);
   } catch (err) {
     throw err;
@@ -134,7 +134,7 @@ export async function getAllItem(vars: {
   `;
 
   try {
-    const data = await queryGraphql<{ items: IItem[] }>(query, vars);
+    const data = await queryGraphql<{ items: Item[] }>(query, vars);
     return formatResultsCount(data.items);
   } catch (err) {
     throw err;

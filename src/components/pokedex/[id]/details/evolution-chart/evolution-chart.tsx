@@ -3,9 +3,9 @@ import Tooltip from "@/components/shared/tooltip/tooltip";
 import { normalizePokemonName } from "@/components/shared/utils";
 import { ArrowRightIcon } from "@heroicons/react/24/solid";
 import Link from "@/components/shared/link";
-import { IChainLink, IEvolutionChain, IPokemon } from "pokeapi-typescript";
+import { ChainLink, EvolutionChain, Pokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
-import PokemonThumb, { getNumber } from "../../../../shared/thumb/thumb";
+import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import PokemonEvolutionHappiness from "./happiness";
 import PokemonEvolutionItem from "./item";
 import PokemonEvolutionLocation from "./location";
@@ -57,9 +57,9 @@ export default function PokemonEvolutionChart({
   speciesChain,
   evolutionChain,
 }: {
-  pokemon?: IPokemon | null;
+  pokemon?: Pokemon | null;
   speciesChain?: SpeciesChain | null;
-  evolutionChain?: IEvolutionChain | null;
+  evolutionChain?: EvolutionChain | null;
 }) {
   const t = useTranslations();
 
@@ -106,7 +106,7 @@ export default function PokemonEvolutionChart({
       </Link>
     </Tooltip>
   );
-  const chainColumn = (chain: IPokemon[], evolves_to: IChainLink[]) => (
+  const chainColumn = (chain: Pokemon[], evolves_to: ChainLink[]) => (
     <ul className="flex flex-col">
       {chain.map((pkmn, idx) => {
         const evolution_details = evolves_to[idx].evolution_details[0];

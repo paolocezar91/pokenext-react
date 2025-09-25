@@ -8,7 +8,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import Link from "@/components/shared/link";
-import { IMove, INamedApiResource } from "pokeapi-typescript";
+import { Move, NamedApiResource } from "pokeapi-typescript";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
@@ -27,7 +27,7 @@ export default function MovesByType({
   movesList,
   type,
 }: {
-  movesList: INamedApiResource<IMove>[];
+  movesList: NamedApiResource<Move>[];
   type: string;
 }) {
   const t = useTranslations();
@@ -93,7 +93,7 @@ export default function MovesByType({
       </th>
     </>
   ;
-  const sortMapping: SortMapping<SortKey, IMove> = (a, b) => ({
+  const sortMapping: SortMapping<SortKey, Move> = (a, b) => ({
     id: [a.id, b.id],
     name: [a.name, b.name],
     class: [a.damage_class.name, b.damage_class.name],

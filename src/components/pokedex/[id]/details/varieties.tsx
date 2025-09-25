@@ -6,7 +6,7 @@ import {
 } from "@/components/shared/utils";
 import { useQuery } from "@tanstack/react-query";
 import Link from "@/components/shared/link";
-import { IPokemonForm, IPokemonSpecies } from "pokeapi-typescript";
+import { PokemonForm, PokemonSpecies } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import PokemonThumb from "../../../shared/thumb/thumb";
 import Tooltip from "../../../shared/tooltip/tooltip";
@@ -18,7 +18,7 @@ export default function PokemonVarieties({
   species,
 }: {
   name: string;
-  species: IPokemonSpecies;
+  species: PokemonSpecies;
 }) {
   const t = useTranslations();
   const { data: varieties } = useQuery({
@@ -28,7 +28,7 @@ export default function PokemonVarieties({
         species.varieties
           .filter(({ pokemon }) => pokemon.name !== name)
           .map(({ pokemon }) => Number(getIdFromUrlSubstring(pokemon.url))),
-        NUMBERS_OF_POKEMON,
+        NUMBERS_OF_POKEMON
       ),
   });
 
@@ -39,10 +39,10 @@ export default function PokemonVarieties({
         ? pokeApiQuery.getPokemonFormByIds(
           varieties?.results
             .filter((v) => v.name !== name)
-            .map((v) => Number(getIdFromUrlSubstring(v.forms[0].url))),
+            .map((v) => Number(getIdFromUrlSubstring(v.forms[0].url)))
         )
-        : new Promise<CountResults<IPokemonForm>>((res) =>
-          res({ results: [], count: 0 }),
+        : new Promise<CountResults<PokemonForm>>((res) =>
+          res({ results: [], count: 0 })
         ),
   });
 

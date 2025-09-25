@@ -1,6 +1,6 @@
 import SkeletonBlock from "@/components/shared/skeleton-block";
 import { capitilize, kebabToSpace } from "@/components/shared/utils";
-import { IPokemonSpecies } from "pokeapi-typescript";
+import { PokemonSpecies } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 
 function PokemonMiscSkeleton() {
@@ -32,7 +32,7 @@ export default function PokemonMisc({
   species,
 }: {
   species:
-    | (IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean })
+    | (PokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean })
     | null;
 }) {
   const t = useTranslations();

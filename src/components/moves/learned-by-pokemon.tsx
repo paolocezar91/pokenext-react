@@ -13,7 +13,7 @@ import { IPkmn } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
-import { INamedApiResource, IPokemon } from "pokeapi-typescript";
+import { NamedApiResource, Pokemon } from "pokeapi-typescript";
 import { useState } from "react";
 import { getTypeIconById } from "../pokedex/[id]/details/types";
 import SkeletonBlock from "../shared/skeleton-block";
@@ -32,7 +32,7 @@ const pokeApiQuery = new PokeApiQuery();
 export default function LearnedByPokemon({
   pokemonList,
 }: {
-  pokemonList: INamedApiResource<IPokemon>[];
+  pokemonList: NamedApiResource<Pokemon>[];
 }) {
   const t = useTranslations();
   const { settings } = useUser();

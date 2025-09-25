@@ -1,14 +1,14 @@
 import { normalizeVersionGroup } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { IMove } from "pokeapi-typescript";
+import { Move } from "pokeapi-typescript";
 import { memo, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useTranslations } from "next-intl";
 import SkeletonBlock from "../shared/skeleton-block";
 
 export default memo(
-  function FlavorText({ moveData }: { moveData: IMove }) {
+  function FlavorText({ moveData }: { moveData: Move }) {
     const [flavorIdx, setFlavorIdx] = useState(0);
     const t = useTranslations();
     const { settings } = useUser();
@@ -20,7 +20,7 @@ export default memo(
 
       const getFlavors = () =>
         moveData.flavor_text_entries.filter(
-          (entry) => entry.language.name === settings?.descriptionLang,
+          (entry) => entry.language.name === settings?.descriptionLang
         );
       if (getFlavors().length === 0) {
         return <p> {t("moves.flavorText.empty")} </p>;
@@ -53,7 +53,7 @@ export default memo(
             <small className="mr-2">
               (
               {normalizeVersionGroup(
-                getFlavors()[flavorIdx].version_group.name,
+                getFlavors()[flavorIdx].version_group.name
               )}
               )
             </small>
@@ -74,5 +74,5 @@ export default memo(
   },
   (prev, next) => {
     return prev.moveData.id === next.moveData.id;
-  },
+  }
 );

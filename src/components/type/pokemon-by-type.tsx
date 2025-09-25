@@ -1,5 +1,6 @@
-import { NUMBERS_OF_POKEMON } from "@/app/const";
 import PokeApiQuery from "@/app/api/poke-api-query";
+import { NUMBERS_OF_POKEMON } from "@/app/const";
+import Link from "@/components/shared/link";
 import Table from "@/components/shared/table/table";
 import PokemonThumb, { getNumber } from "@/components/shared/thumb/thumb";
 import {
@@ -10,11 +11,10 @@ import {
 import { useUser } from "@/context/user-context";
 import { IPkmn } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import Image from "next/image";
-import Link from "@/components/shared/link";
-import { ITypePokemon } from "pokeapi-typescript";
-import { useState } from "react";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+import { TypePokemon } from "pokeapi-typescript";
+import { useState } from "react";
 import { getTypeIconById } from "../pokedex/[id]/details/types";
 import SkeletonBlock from "../shared/skeleton-block";
 import SkeletonImage from "../shared/skeleton-image";
@@ -26,7 +26,6 @@ import {
   sortResources,
   updateSortKeys,
 } from "../shared/table/sorting";
-import PokedexList from "../pokedex/pokedex-list/pokedex-list";
 export type SortKey = "id" | "name" | "types";
 const pokeApiQuery = new PokeApiQuery();
 
@@ -34,7 +33,7 @@ export default function PokemonByType({
   pokemonList,
   type,
 }: {
-  pokemonList: ITypePokemon[];
+  pokemonList: TypePokemon[];
   type: string;
 }) {
   const t = useTranslations();
@@ -58,7 +57,7 @@ export default function PokemonByType({
   }
 
   // Creating table headers
-  const tableHeaders = (
+  const tableHeaders =
     <>
       <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
       <th className="bg-(--pokedex-red-dark) w-[1%] text-white text-center px-2 py-1">
@@ -89,19 +88,19 @@ export default function PokemonByType({
         </SortButton>
       </th>
     </>
-  );
+  ;
   // Displaying Skeleton rows while loading
   if (!pokemonByType?.results.length) {
     const skeletonImage = <SkeletonImage className="w-30 h-30" />;
-    const skeletonTableBody = [...Array(10)].map((_, i) => (
+    const skeletonTableBody = [...Array(10)].map((_, i) =>
       <tr key={i} className="border-solid border-foreground border-b-2">
-        {[...Array(4)].map((_, j) => (
+        {[...Array(4)].map((_, j) =>
           <td key={j} className="p-2">
             {j === 0 ? skeletonImage : <SkeletonBlock />}
           </td>
-        ))}
+        )}
       </tr>
-    ));
+    );
 
     return (
       <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">
@@ -131,7 +130,7 @@ export default function PokemonByType({
 
   // Cell for pokemon type images
   const typesCell = (pokemon: IPkmn) =>
-    pokemon.types.map((t) => (
+    pokemon.types.map((t) =>
       <Link href={`/type/${t.type.name}`} key={t.type.name}>
         <Image
           width="100"
@@ -144,7 +143,7 @@ export default function PokemonByType({
           )}
         />
       </Link>
-    ));
+    );
 
   // Creating table body
   // Iterating over sortedPokemon for each column
@@ -184,11 +183,11 @@ export default function PokemonByType({
           length: pokemonByType.results.length,
         })}
       </h3>
-      {!!pokemonByType.results.length && (
+      {!!pokemonByType.results.length &&
         <div className="h-[-webkit-fill-available]">
           <Table headers={tableHeaders}>{tableBody}</Table>
         </div>
-      )}
+      }
     </div>
   );
 }

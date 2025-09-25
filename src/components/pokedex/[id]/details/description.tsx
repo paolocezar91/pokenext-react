@@ -6,7 +6,7 @@ import {
 } from "@/components/shared/utils";
 import { useUser } from "@/context/user-context";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import { IPokemon, IPokemonSpecies } from "pokeapi-typescript";
+import { Pokemon, PokemonSpecies } from "pokeapi-typescript";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
 
@@ -14,13 +14,13 @@ export default function PokemonDescription({
   pokemon,
   species,
 }: {
-  pokemon: IPokemon;
-  species: IPokemonSpecies | null;
+  pokemon: Pokemon;
+  species: PokemonSpecies | null;
 }) {
   const [flavorIdx, setFlavorIdx] = useState(0);
   const { settings } = useUser();
 
-  const getFlavorText = (species: IPokemonSpecies) => {
+  const getFlavorText = (species: PokemonSpecies) => {
     return species?.flavor_text_entries
       .filter((text) => text.language.name === settings?.descriptionLang)
       .map((flavor) => {
@@ -53,7 +53,7 @@ export default function PokemonDescription({
           {normalizePokemonName(species.name)} --{" "}
           {
             species.genera.find(
-              (g) => g.language.name === settings.descriptionLang,
+              (g) => g.language.name === settings.descriptionLang
             )?.genus
           }
         </h2>
@@ -80,8 +80,8 @@ export default function PokemonDescription({
               (
               {capitilize(
                 kebabToSpace(
-                  getFlavorText(species)[flavorIdx].version_group_name,
-                ),
+                  getFlavorText(species)[flavorIdx].version_group_name
+                )
               )}
               )
             </small>

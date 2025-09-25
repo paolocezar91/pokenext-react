@@ -12,7 +12,7 @@ import { locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 import { GetStaticPropsContext } from "next";
 import { useRouter } from "next/router";
-import { IMove, INamedApiResource, IType } from "pokeapi-typescript";
+import { Move, NamedApiResource, Type } from "pokeapi-typescript";
 import RootLayout from "../../../../components/layout/layout";
 import { useTranslations } from "next-intl";
 
@@ -59,8 +59,8 @@ export default function TypeDetails({
   typeData,
   allTypes,
 }: {
-  typeData: IType & { moves: INamedApiResource<IMove>[] };
-  allTypes: IType[];
+  typeData: Type & { moves: NamedApiResource<Move>[] };
+  allTypes: Type[];
 }) {
   const t = useTranslations();
   const { settings } = useUser();

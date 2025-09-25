@@ -5,12 +5,12 @@ import FlavorText from "@/components/moves/flavor-text";
 import LearnedByPokemon from "@/components/moves/learned-by-pokemon";
 import MoveDataTable from "@/components/moves/move-data-table";
 import MoveEffect from "@/components/moves/move-effect";
-import MoveTarget from "@/components/moves/move-target";
+import PokemonMoveTarget from "@/components/moves/move-target";
 import LoadingSpinner from "@/components/shared/spinner";
 import RootLayout from "@/components/layout/layout";
 import { useQuery } from "@tanstack/react-query";
 import { GetStaticPropsContext } from "next";
-import { IMove, INamedApiResource, IPokemon } from "pokeapi-typescript";
+import { Move, NamedApiResource, Pokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 import {
   capitilize,
@@ -21,7 +21,7 @@ import { locales } from "@/i18n/config";
 import { getMessages } from "@/i18n/messages";
 
 const pokeApiQuery = new PokeApiQuery();
-type MoveData = IMove & { learned_by_pokemon: INamedApiResource<IPokemon>[] };
+type MoveData = Move & { learned_by_pokemon: NamedApiResource<Pokemon>[] };
 
 export async function getStaticProps(context: GetStaticPropsContext) {
   const id = String(context?.params?.moveId);
@@ -76,7 +76,9 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
     );
   }
 
-  const title = `${t("moves.title")} - ${capitilize(kebabToSpace(moveData.name))}`;
+  const title = `${t("moves.title")} - ${capitilize(
+    kebabToSpace(moveData.name)
+  )}`;
   return (
     <RootLayout title={title}>
       <div className="h-[inherit] p-4 bg-(--pokedex-red) md:overflow-[initial]">
@@ -90,7 +92,7 @@ export default function MoveDetails({ moveData }: { moveData: MoveData }) {
               <MoveEffect moveData={moveData} />
               <FlavorText moveData={moveData} />
               <MoveDataTable moveData={moveData} />
-              <MoveTarget targetData={targetData} />
+              <PokemonMoveTarget targetData={targetData} />
             </div>
             {/* Right Column */}
             <div className="w-full h-[-webkit-fill-available] md:pl-8 mr-0 md:mr-4 mt-4 md:mt-0">

@@ -5,11 +5,9 @@ import {
   normalizeGeneration,
 } from "@/components/shared/utils";
 import { useTranslations } from "next-intl";
-import { IItem } from "pokeapi-typescript";
+import { Item } from "pokeapi-typescript";
 
 function ItemMiscSkeleton() {
-  const t = useTranslations();
-
   return (
     <>
       {[["Category"], ["Cost"], ["Attributes"]].map(([title]) => {
@@ -24,7 +22,7 @@ function ItemMiscSkeleton() {
   );
 }
 
-export default function ItemMisc({ item }: { item: IItem | null }) {
+export default function ItemMisc({ item }: { item: Item | null }) {
   const t = useTranslations();
   if (!item) {
     return <ItemMiscSkeleton />;

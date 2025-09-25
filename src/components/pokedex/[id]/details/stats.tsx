@@ -1,5 +1,5 @@
 import { capitilize, kebabToSpace } from "@/components/shared/utils";
-import { IPokemon } from "pokeapi-typescript";
+import { Pokemon } from "pokeapi-typescript";
 import { useTranslations } from "next-intl";
 
 export const statName = (name: string) => {
@@ -30,7 +30,7 @@ export const statName = (name: string) => {
   return rv;
 };
 
-export default function PokemonStats({ pokemon }: { pokemon: IPokemon }) {
+export default function PokemonStats({ pokemon }: { pokemon: Pokemon }) {
   const t = useTranslations();
 
   const progressBar = (value: number, dividedBy: number) => {
@@ -56,17 +56,23 @@ export default function PokemonStats({ pokemon }: { pokemon: IPokemon }) {
             return (
               <tr key={stat.stat.name} className="pb-1 pt-1">
                 <th
-                  className={`w-[18%] text-left ${i === pokemon.stats.length - 1 ? "pb-1" : ""}`}
+                  className={`w-[18%] text-left ${
+                    i === pokemon.stats.length - 1 ? "pb-1" : ""
+                  }`}
                 >
                   {statName(stat.stat.name)}
                 </th>
                 <td
-                  className={`pr-4 ${i === pokemon.stats.length - 1 ? "pb-1" : ""}`}
+                  className={`pr-4 ${
+                    i === pokemon.stats.length - 1 ? "pb-1" : ""
+                  }`}
                 >
                   {progressBar(stat.base_stat, 255)}
                 </td>
                 <td
-                  className={`w-[5%] text-left pr-4 ${i === pokemon.stats.length - 1 ? "pb-1" : ""}`}
+                  className={`w-[5%] text-left pr-4 ${
+                    i === pokemon.stats.length - 1 ? "pb-1" : ""
+                  }`}
                 >
                   {stat.base_stat}
                 </td>

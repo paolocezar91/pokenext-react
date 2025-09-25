@@ -1,11 +1,11 @@
 import { ResultsCount } from "@/app/api/api-utils";
 import { getAllItem, getItemByIds } from "@/app/services/item";
 import { NextRequest, NextResponse } from "next/server";
-import { IItem } from "pokeapi-typescript";
+import { Item } from "pokeapi-typescript";
 
 export async function GET(req: NextRequest) {
   try {
-    let response: ResultsCount<IItem>;
+    let response: ResultsCount<Item>;
     const ids = req.nextUrl.searchParams.get("ids") ?? "";
     if (ids) {
       response = await getItemByIds({ ids });

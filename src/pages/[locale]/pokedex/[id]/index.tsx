@@ -27,11 +27,11 @@ import { useTranslations } from "next-intl";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import {
-  IEvolutionChain,
-  INamedApiResourceList,
-  IPokemon,
-  IPokemonSpecies,
-  IType,
+  EvolutionChain,
+  NamedApiResourceList,
+  Pokemon,
+  PokemonSpecies,
+  Type,
 } from "pokeapi-typescript";
 import { useEffect, useReducer } from "react";
 import {
@@ -44,34 +44,34 @@ import "./index.scss";
 const pokeApiQuery = new PokeApiQuery();
 
 export type PokemonState = {
-  pokemon: IPokemon;
+  pokemon: Pokemon;
   speciesChain: SpeciesChain;
   species:
-    | (IPokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean })
+    | (PokemonSpecies & { is_legendary?: boolean; is_mythical?: boolean })
     | null;
-  types: IType[];
-  evolutionChain: IEvolutionChain | null;
+  types: Type[];
+  evolutionChain: EvolutionChain | null;
 };
 
 export type PokemonAction =
-  | { type: "SET_POKEMON"; payload: IPokemon }
+  | { type: "SET_POKEMON"; payload: Pokemon }
   | { type: "SET_SPECIES_CHAIN"; payload: SpeciesChain }
   | {
-      type: "SET_SPECIES";
-      payload: IPokemonSpecies & {
-        is_legendary?: boolean;
-        is_mythical?: boolean;
-      };
-    }
-  | { type: "SET_TYPES"; payload: IType[] }
-  | { type: "SET_EVOLUTION_CHAIN"; payload: IEvolutionChain }
+    type: "SET_SPECIES";
+    payload: PokemonSpecies & {
+      is_legendary?: boolean;
+      is_mythical?: boolean;
+    };
+  }
+  | { type: "SET_TYPES"; payload: Type[] }
+  | { type: "SET_EVOLUTION_CHAIN"; payload: EvolutionChain }
   | { type: "RESET_STATE" };
 
 export async function generateSpeciesEvolutionChain(
-  ec: IEvolutionChain
+  ec: EvolutionChain
 ): Promise<SpeciesChain> {
   const evolve_to_id = getIdFromUrlSubstring(ec.chain.species.url);
-  const chain: { first: IPokemon[]; second: IPokemon[]; third: IPokemon[] } = {
+  const chain: { first: Pokemon[]; second: Pokemon[]; third: Pokemon[] } = {
     first: [await pokeApiQuery.getPokemonById(evolve_to_id)],
     second: [],
     third: [],
@@ -132,7 +132,7 @@ export async function getStaticPaths() {
   const paths = [];
   for (const locale of locales) {
     for (const id of ids) {
-      paths.push({ params: { locale, id } });
+      paths.push({ params: { locale, id }});
     }
   }
 
@@ -149,13 +149,13 @@ export default function PokemonDetails({
   error,
 }: {
   id: string;
-  pokemonData: IPokemon;
-  previousAndAfter: INamedApiResourceList<IPokemon>;
+  pokemonData: Pokemon;
+  previousAndAfter: NamedApiResourceList<Pokemon>;
   error?: { statusText: string; status: number };
 }) {
   const initialState: PokemonState = {
     pokemon: pokemonData,
-    speciesChain: { loaded: false, chain: {} },
+    speciesChain: { loaded: false, chain: {}},
     species: null,
     types: [],
     evolutionChain: null,
@@ -189,7 +189,7 @@ export default function PokemonDetails({
   const [state, dispatch] = useReducer(pokemonReducer, initialState);
 
   useEffect(() => {
-    if (!currentId) return;
+    if (!pokemonData) return;
 
     const getPokemonMetadata = async () => {
       dispatch({ type: "SET_POKEMON", payload: pokemonData });
@@ -204,7 +204,7 @@ export default function PokemonDetails({
 
       const ec = (await pokeApiQuery.getEvolutionChain(
         getIdFromUrlSubstring(speciesData.evolution_chain.url)
-      )) as IEvolutionChain;
+      )) as EvolutionChain;
 
       dispatch({ type: "SET_EVOLUTION_CHAIN", payload: ec });
       dispatch({
@@ -215,7 +215,7 @@ export default function PokemonDetails({
 
     dispatch({ type: "RESET_STATE" });
     getPokemonMetadata();
-  }, [currentId]);
+  }, [currentId, pokemonData]);
 
   if (error)
     return (
@@ -237,8 +237,8 @@ export default function PokemonDetails({
   const title = !state.pokemon
     ? `${t("pokedex.loading")}...`
     : `${normalizePokemonName(state.pokemon.name)} ${getNumber(
-        state.pokemon.id
-      )}`;
+      state.pokemon.id
+    )}`;
 
   return (
     <RootLayout title={title}>
@@ -286,7 +286,7 @@ export default function PokemonDetails({
               <div className="col-span-6 flex flex-wrap gap-4">
                 <PokemonFirstAppearance
                   pokemon={state.pokemon}
-                  species={state.species as IPokemonSpecies}
+                  species={state.species as PokemonSpecies}
                 />
                 <PokemonSize pokemon={state.pokemon} />
                 <PokemonGender species={state.species} />
@@ -298,12 +298,12 @@ export default function PokemonDetails({
                 name={state.pokemon ? capitilize(state.pokemon.name) : ""}
                 types={state.types.map((type) => type.name)}
               />
-              {state.species && state.species.varieties.length > 1 && (
+              {state.species && state.species.varieties.length > 1 &&
                 <PokemonVarieties
                   name={state.pokemon.name}
                   species={state.species}
                 />
-              )}
+              }
               <PokemonEvolutionChart
                 pokemon={state.pokemon}
                 speciesChain={state.speciesChain}

@@ -1,13 +1,13 @@
-import { IEvolutionDetail } from "pokeapi-typescript";
+import { EvolutionDetail } from "pokeapi-typescript";
 
 export default function PokemonEvolutionUpsideDown({
   evolution_details,
 }: {
-  evolution_details: IEvolutionDetail;
+  evolution_details: EvolutionDetail;
 }) {
   return (
-    evolution_details.turn_upside_down && (
+    evolution_details.turn_upside_down &&
       <span className="text-xs"> level up while device is upside down</span>
-    )
+
   );
 }

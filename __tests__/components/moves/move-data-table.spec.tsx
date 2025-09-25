@@ -1,7 +1,7 @@
 import MoveDataTable from "@/components/moves/move-data-table";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { IMove } from "pokeapi-typescript";
+import { Move } from "pokeapi-typescript";
 
 // Mock dependencies
 jest.mock("next/image", () => ({
@@ -22,7 +22,7 @@ jest.mock("next-intl", () => ({
 }));
 
 describe("MoveDataTable Component", () => {
-  const mockMoveData: IMove = {
+  const mockMoveData: Move = {
     name: "thunderbolt",
     type: {
       name: "electric",
@@ -35,7 +35,7 @@ describe("MoveDataTable Component", () => {
     power: 90,
     accuracy: 100,
     pp: 15,
-    // Include other required IMove properties with mock values
+    // Include other required Move properties with mock values
     id: 1,
     effect_chance: 0,
     effect_entries: [],
@@ -45,7 +45,7 @@ describe("MoveDataTable Component", () => {
     past_values: [],
     stat_changes: [],
     target: { name: "", url: "" },
-  } as unknown as IMove;
+  } as unknown as Move;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -56,7 +56,7 @@ describe("MoveDataTable Component", () => {
 
     // Verify table title
     expect(
-      screen.getByRole("heading", { name: "moves.moveData.title" }),
+      screen.getByRole("heading", { name: "moves.moveData.title" })
     ).toBeInTheDocument();
 
     // Verify all headers are rendered
@@ -64,7 +64,7 @@ describe("MoveDataTable Component", () => {
     expect(screen.getByText("pokedex.details.moves.class")).toBeInTheDocument();
     expect(screen.getByText("pokedex.details.moves.power")).toBeInTheDocument();
     expect(
-      screen.getByText("pokedex.details.moves.accuracy"),
+      screen.getByText("pokedex.details.moves.accuracy")
     ).toBeInTheDocument();
     expect(screen.getByText("pokedex.details.moves.pp")).toBeInTheDocument();
 
@@ -72,7 +72,7 @@ describe("MoveDataTable Component", () => {
     const typeImage = screen.getByAltText("electric");
     expect(typeImage).toHaveAttribute(
       "src",
-      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png",
+      "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png"
     );
 
     // Verify damage class tooltip and image
@@ -89,7 +89,7 @@ describe("MoveDataTable Component", () => {
     const moveDataWithoutPower = {
       ...mockMoveData,
       power: null,
-    } as unknown as IMove;
+    } as unknown as Move;
     render(<MoveDataTable moveData={moveDataWithoutPower} />);
     expect(screen.getByText("-")).toBeInTheDocument();
   });
@@ -98,7 +98,7 @@ describe("MoveDataTable Component", () => {
     const moveDataWithoutAccuracy = {
       ...mockMoveData,
       accuracy: null,
-    } as unknown as IMove;
+    } as unknown as Move;
     screen.debug();
     render(<MoveDataTable moveData={moveDataWithoutAccuracy} />);
     expect(screen.getByText("-")).toBeInTheDocument();
@@ -108,7 +108,7 @@ describe("MoveDataTable Component", () => {
     const moveDataWithoutPP = {
       ...mockMoveData,
       pp: null,
-    } as unknown as IMove;
+    } as unknown as Move;
     render(<MoveDataTable moveData={moveDataWithoutPP} />);
     expect(screen.getByText("-")).toBeInTheDocument();
   });
@@ -124,9 +124,9 @@ describe("MoveDataTable Component", () => {
       power: null,
       accuracy: null,
       pp: null,
-    } as unknown as IMove;
+    } as unknown as Move;
     const { asFragment } = render(
-      <MoveDataTable moveData={moveDataWithNulls} />,
+      <MoveDataTable moveData={moveDataWithNulls} />
     );
     expect(asFragment()).toMatchSnapshot();
   });

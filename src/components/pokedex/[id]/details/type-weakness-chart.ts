@@ -1,6 +1,9 @@
-import { PokemonType } from "@/types/types";
+import { PokemonTypeEnum } from "@/types/types";
 
-export const typeChart: Record<PokemonType, Record<PokemonType, number>> = {
+export const typeChart: Record<
+  PokemonTypeEnum,
+  Record<PokemonTypeEnum, number>
+> = {
   normal: {
     normal: 1,
     fire: 1,
