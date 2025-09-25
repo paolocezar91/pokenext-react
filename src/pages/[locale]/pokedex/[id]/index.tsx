@@ -189,7 +189,7 @@ export default function PokemonDetails({
   const [state, dispatch] = useReducer(pokemonReducer, initialState);
 
   useEffect(() => {
-    if (!currentId) return;
+    if (!pokemonData) return;
 
     const getPokemonMetadata = async () => {
       dispatch({ type: "SET_POKEMON", payload: pokemonData });
@@ -215,7 +215,7 @@ export default function PokemonDetails({
 
     dispatch({ type: "RESET_STATE" });
     getPokemonMetadata();
-  }, [currentId]);
+  }, [currentId, pokemonData]);
 
   if (error)
     return (

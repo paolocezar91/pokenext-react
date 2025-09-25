@@ -20,7 +20,7 @@ export type SpeciesChain = {
   chain: Record<string, Pokemon[]>;
 };
 
-export type PokemonType =
+export type PokemonTypeEnum =
   | "normal"
   | "fire"
   | "water"
@@ -41,7 +41,7 @@ export type PokemonType =
   | "fairy";
 
 export type DefensiveMatchup = {
-  weaknesses: Record<PokemonType, number>;
-  resistances: Record<PokemonType, number>;
-  immunities: Record<PokemonType, boolean>;
+  weaknesses: Record<PokemonTypeEnum, number>;
+  resistances: Record<PokemonTypeEnum, number>;
+  immunities: Record<PokemonTypeEnum, boolean>;
 };

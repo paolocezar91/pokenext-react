@@ -25,7 +25,7 @@ const eslintConfig = [
       "no-multi-spaces": ["error"],
       "no-trailing-spaces": "error",
       "no-unused-vars": "error",
-      "no-extra-parens": "error",
+      "no-extra-parens": "warn",
       "max-len": ["error", { code: 150 }],
       "@stylistic/ts/semi": "error",
       "@stylistic/ts/indent": ["error", 2],

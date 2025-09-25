@@ -1,5 +1,5 @@
 import { capitilize, normalizePokemonName } from "@/components/shared/utils";
-import { PokemonType } from "@/types/types";
+import { PokemonTypeEnum } from "@/types/types";
 import { useTranslations } from "next-intl";
 import { typeChart } from "../pokedex/[id]/details/type-weakness-chart";
 import { getBackgroundStyleWithStrings } from "./thumb/thumb";
@@ -25,10 +25,15 @@ const getFractionValue = (value: number) => {
 };
 
 function getOffensiveMatchup(
-  types: PokemonType[],
-): Record<PokemonType, number> {
-  const allTypes: PokemonType[] = Object.keys(typeChart) as PokemonType[];
-  const result: Record<PokemonType, number> = {} as Record<PokemonType, number>;
+  types: PokemonTypeEnum[]
+): Record<PokemonTypeEnum, number> {
+  const allTypes: PokemonTypeEnum[] = Object.keys(
+    typeChart
+  ) as PokemonTypeEnum[];
+  const result: Record<PokemonTypeEnum, number> = {} as Record<
+    PokemonTypeEnum,
+    number
+  >;
 
   // Initialize all types with neutral (1) multiplier
   allTypes.forEach((type) => {
@@ -54,7 +59,7 @@ export function PokemonOffensiveChart({
   name: string;
 }) {
   const t = useTranslations();
-  const offensiveChart = getOffensiveMatchup(types as PokemonType[]);
+  const offensiveChart = getOffensiveMatchup(types as PokemonTypeEnum[]);
 
   return (
     <div className="offensive-chart col-span-6 md:col-span-3">
@@ -66,18 +71,24 @@ export function PokemonOffensiveChart({
           let tooltipContent = "";
           let tooltipChild = "";
           name = normalizePokemonName(name);
-          const value = offensiveChart[type as PokemonType];
+          const value = offensiveChart[type as PokemonTypeEnum];
           if (value === 0) {
             tooltipContent = `${name} cannot hit ${capitilize(type)}`;
             tooltipChild = "0";
           } else if (value > 1) {
-            tooltipContent = `${name} is ${getFractionValue(value)}x effective against ${capitilize(type)}`;
+            tooltipContent = `${name} is ${getFractionValue(
+              value
+            )}x effective against ${capitilize(type)}`;
             tooltipChild = getFractionValue(value);
           } else if (value < 1 && value > 0) {
-            tooltipContent = `${name} is ${getFractionValue(value)} effective against ${capitilize(type)}`;
+            tooltipContent = `${name} is ${getFractionValue(
+              value
+            )} effective against ${capitilize(type)}`;
             tooltipChild = getFractionValue(value);
           } else {
-            tooltipContent = `${name} is normally effective against ${capitilize(type)}`;
+            tooltipContent = `${name} is normally effective against ${capitilize(
+              type
+            )}`;
             tooltipChild = "-";
           }
 
