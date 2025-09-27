@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
     NUMBERS_OF_POKEMON: process.env.NUMBERS_OF_POKEMON,
     AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
     AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
   onDemandEntries: {
     // period (in ms) where the server will keep pages in the buffer
