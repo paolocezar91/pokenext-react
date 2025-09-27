@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
+import { decode, encode } from "next-auth/jwt";
 import GitHub from "next-auth/providers/github";
-import { encode, decode } from "next-auth/jwt";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -17,20 +17,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     decode,
   },
   callbacks: {
-    async jwt({ token, user }: { token: any; user?: any }) {
+    async jwt({ token, user }) {
       console.log("jwt", { user, token });
       if (user) {
-        (token as any).id = user.id;
-        (token as any).email = user.email;
+        token.id = user.id;
+        token.email = user.email;
       }
       return token;
     },
-    async session({ token, session }: { token: any; session: any }) {
+    async session({ token, session }) {
       console.log("session", { session, token });
 
-      (session as any).user.id = (token as any).id as string;
-      (session as any).user.email = (token as any).email as string;
+      session.user.id = token.id as string;
+      session.user.email = token.email as string;
       return session;
     },
   },
-} as any);
+});
