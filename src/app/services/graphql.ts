@@ -25,6 +25,7 @@ export const authorizedQueryGraphql = async <T extends Record<string, unknown>>(
   additionalHeaders?: HeadersInit
 ) => {
   const headers = await getAuthorizationToken(req, additionalHeaders);
+  console.log({ headers });
 
   try {
     return await queryGraphql<T>(query, vars, headers);
@@ -44,6 +45,7 @@ const getAuthorizationToken = async (
   additionalHeaders: HeadersInit = {}
 ) => {
   const token = (await getToken({ req, secret })) as object;
+  console.log({ token });
 
   const headers = token
     ? { Authorization: `Bearer ${sign(token, secret)}`, ...additionalHeaders }
