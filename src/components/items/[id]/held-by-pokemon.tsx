@@ -68,7 +68,7 @@ export default function HeldByPokemon({
     },
   });
 
-  const tableHeaders = (
+  const tableHeaders =
     <>
       <th className="bg-(--pokedex-red-dark) w-[5%]"></th>
       <th className="bg-(--pokedex-red-dark) w-[1%] text-white text-center px-2 py-1">
@@ -99,10 +99,10 @@ export default function HeldByPokemon({
         </SortButton>
       </th>
     </>
-  );
+  ;
 
   if (!heldBy) {
-    const skeletonTableBody = [...Array(10)].map((_, i) => (
+    const skeletonTableBody = [...Array(10)].map((_, i) =>
       <tr key={i} className="border-solid border-foreground border-b-2">
         {[...Array(4)].map((_, j) => {
           if (j === 0) {
@@ -120,7 +120,7 @@ export default function HeldByPokemon({
           );
         })}
       </tr>
-    ));
+    );
 
     return (
       <div className="h-[-webkit-fill-available] w-fit learned-by-pokemon w-full flex flex-col flex-1 h-0">

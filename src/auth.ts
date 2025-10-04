@@ -9,6 +9,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientSecret: process.env.AUTH_GITHUB_SECRET,
     }),
   ],
+  // ensure NextAuth uses a stable secret across environments; prefer NEXTAUTH_SECRET
+  // but fall back to the older AUTH_SECRET if present (keeps .env.local working)
+  secret: process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET,
   session: {
     strategy: "jwt",
   },
