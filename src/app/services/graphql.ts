@@ -45,7 +45,7 @@ const getAuthorizationToken = async (
   additionalHeaders: HeadersInit = {}
 ) => {
   const token = (await getToken({ req, secret })) as object;
-  console.log({ token });
+  console.log("getAuthorizationToken", { token, secret });
 
   const headers = token
     ? { Authorization: `Bearer ${sign(token, secret)}`, ...additionalHeaders }
