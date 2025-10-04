@@ -26,11 +26,12 @@ const nextConfig: NextConfig = {
   },
   env: {
     npm_package_version: process.env.npm_package_version,
+    AUTH_SECRET: process.env.AUTH_SECRET,
+    AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
+    AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
     POKEAPI_URL: process.env.POKEAPI_URL,
     GRAPHQL_URL: process.env.GRAPHQL_URL,
     NUMBERS_OF_POKEMON: process.env.NUMBERS_OF_POKEMON,
-    AUTH_GITHUB_ID: process.env.AUTH_GITHUB_ID,
-    AUTH_GITHUB_SECRET: process.env.AUTH_GITHUB_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
   onDemandEntries: {
