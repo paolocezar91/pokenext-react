@@ -6,6 +6,12 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ user_id: string }> }
 ) {
+  // debug incoming cookies
+  console.log(
+    "GET /api/settings ... cookie header:",
+    req.headers.get("cookie")
+  );
+
   const { user_id } = await params;
   const query = gql`
     query ($user_id: ID!) {
@@ -57,6 +63,12 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ user_id: string }> }
 ) {
+  // debug incoming cookies
+  console.log(
+    "POST /api/settings ... cookie header:",
+    req.headers.get("cookie")
+  );
+
   const user_id = (await params).user_id;
   const body = await req.json();
   const input = parseSettings(user_id!, body);
@@ -124,8 +136,8 @@ const parseSettings = (userId: string, data: Record<string, unknown>) => {
 const serializeSettings = (data: Record<string, unknown>) => {
   const showColumn = data.showColumn
     ? Array.from(data.showColumn as string).map((v) =>
-      v === "y" ? true : false
-    )
+        v === "y" ? true : false
+      )
     : null;
   return { ...data, showColumn };
 };

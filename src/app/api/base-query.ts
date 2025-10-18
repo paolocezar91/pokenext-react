@@ -16,6 +16,7 @@ export default class BaseQuery {
   private _getUrl = async (url: string) => {
     const data = await fetch(url, {
       cache: "force-cache",
+      credentials: "include",
     });
 
     if (data.status === 200) {
@@ -29,6 +30,7 @@ export default class BaseQuery {
     try {
       const data = await fetch(url, {
         method: "POST",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
@@ -45,7 +47,7 @@ export default class BaseQuery {
 
   protected cleanParams = (params: Record<string, string>) => {
     Object.keys(params).forEach(
-      (key) => params[key] === undefined && delete params[key],
+      (key) => params[key] === undefined && delete params[key]
     );
     return params;
   };
