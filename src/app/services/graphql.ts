@@ -54,13 +54,15 @@ const getAuthorizationToken = async (
     secureCookie: isVercel,
     cookieName:
       !isVercel
-        ? "next-auth.session-token"
-        : "__Secure-next-auth.session-token",
+        ? "authjs.session-token"
+        : "__Secure-authjs.session-token",
   })) as Record<string, unknown> | null;
 
+  const cookieHeader = req.headers.get("cookie");
+  console.log({ cookieHeader });
+  console.log({ token });
+
   if (!token) {
-    const cookieHeader = req.headers.get("cookie");
-    console.log({ cookieHeader });
     if (cookieHeader) {
       // First try the full cookie header shim (existing fallback)
       try {
@@ -74,6 +76,7 @@ const getAuthorizationToken = async (
       } catch (e) {
         console.log("getToken fallback failed", e);
       }
+      console.log({ token2: token });
 
       // If still null, try individual cookie names commonly used in prod (Vercel/NextAuth)
       if (!token) {
@@ -119,6 +122,7 @@ const getAuthorizationToken = async (
         } catch (e) {
           console.log("cookie parse fallback failed", e);
         }
+        console.log({ token3: token });
       }
     }
   }
