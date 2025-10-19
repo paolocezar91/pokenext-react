@@ -5,6 +5,7 @@ import { sign } from "jsonwebtoken";
 // prefer the NextAuth env var but support older AUTH_SECRET in .env.local
 const secret = (process.env.NEXTAUTH_SECRET ||
   process.env.AUTH_SECRET) as string;
+const isProduction = process.env.ENVIRONMENT !== "local";
 
 export async function queryGraphql<T>(
   query: RequestDocument,
@@ -47,10 +48,15 @@ const getAuthorizationToken = async (
   additionalHeaders: HeadersInit = {}
 ) => {
   // Try retrieving the token using the Next Request first.
-  let token = (await getToken({ req, secret })) as Record<
-    string,
-    unknown
-  > | null;
+  let token = (await getToken({
+    req,
+    secret,
+    secureCookie: isProduction,
+    cookieName:
+      isProduction
+        ? "next-auth.session-token"
+        : "__Secure-next-auth.session-token",
+  })) as Record<string, unknown> | null;
 
   if (!token) {
     const cookieHeader = req.headers.get("cookie");
