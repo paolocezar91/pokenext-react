@@ -46,11 +46,7 @@ const getAuthorizationToken = async (
   req: NextRequest,
   additionalHeaders: HeadersInit = {}
 ) => {
-  // Try retrieving the token using the Next Request first. In some hosted/test
-  // environments next-auth's getToken can't find the cookie from the provided
-  // request object; if that happens, attempt a fallback using only the
-  // cookie header (shim a minimal request object). We avoid passing unknown
-  // params to getToken to keep TypeScript happy.
+  // Try retrieving the token using the Next Request first.
   let token = (await getToken({ req, secret })) as Record<
     string,
     unknown
@@ -59,6 +55,7 @@ const getAuthorizationToken = async (
   if (!token) {
     const cookieHeader = req.headers.get("cookie");
     if (cookieHeader) {
+      // First try the full cookie header shim (existing fallback)
       try {
         const shimReq = {
           headers: { cookie: cookieHeader },
@@ -69,6 +66,52 @@ const getAuthorizationToken = async (
         > | null;
       } catch (e) {
         console.log("getToken fallback failed", e);
+      }
+
+      // If still null, try individual cookie names commonly used in prod (Vercel/NextAuth)
+      if (!token) {
+        try {
+          const parsed = Object.fromEntries(
+            cookieHeader
+              .split(";")
+              .map((c) => c.trim())
+              .map((s) => {
+                const idx = s.indexOf("=");
+                return [s.slice(0, idx), s.slice(idx + 1)];
+              })
+          );
+
+          const candidates = [
+            "__Host-authjs.session-token",
+            "__Secure-authjs.session-token",
+            "authjs.session-token",
+            "__Host-next-auth.session-token",
+            "__Secure-next-auth.session-token",
+            "next-auth.session-token",
+          ];
+
+          for (const name of candidates) {
+            const val = parsed[name];
+            if (!val) continue;
+            try {
+              const shimReqSingle = {
+                headers: { cookie: `${name}=${val}` },
+              } as unknown as NextRequest;
+              token = (await getToken({
+                req: shimReqSingle,
+                secret,
+              })) as Record<string, unknown> | null;
+              if (token) {
+                console.log("getToken succeeded with cookie:", name);
+                break;
+              }
+            } catch (e) {
+              console.log("getToken candidate failed", name, e);
+            }
+          }
+        } catch (e) {
+          console.log("cookie parse fallback failed", e);
+        }
       }
     }
   }
