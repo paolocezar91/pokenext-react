@@ -63,12 +63,6 @@ export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ user_id: string }> }
 ) {
-  // debug incoming cookies
-  console.log(
-    "POST /api/settings ... cookie header:",
-    req.headers.get("cookie")
-  );
-
   const user_id = (await params).user_id;
   const body = await req.json();
   const input = parseSettings(user_id!, body);
