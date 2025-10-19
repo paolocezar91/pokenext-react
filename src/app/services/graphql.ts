@@ -54,7 +54,7 @@ const getAuthorizationToken = async (
 
   if (!token) {
     const cookieHeader = req.headers.get("cookie");
-    console.log({ cookieHeader })
+    console.log({ cookieHeader });
     if (cookieHeader) {
       // First try the full cookie header shim (existing fallback)
       try {
